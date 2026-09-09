@@ -6,11 +6,11 @@ export const classLevel=(c:Character,id:string)=>c.classLevels.filter(x=>x.class
 export function featCount(c:Character,name:string,choice?:string){return c.features.filter(f=>f.kind==='Feat'&&f.name.toLowerCase().replace(/\s*\(.*/, '')===name.toLowerCase()&&(!choice||(f.choice||f.name.match(/\((.*)\)/)?.[1]||'').toLowerCase()===choice.toLowerCase())).length;}
 export const hasFeat=(c:Character,name:string,choice?:string)=>featCount(c,name,choice)>0;
 export function baseVariables(c:Character){const v:Record<string,number>={LEVEL:c.level,HD:c.level,BAB:c.bab,CL:Math.max(0,...c.casters.map(p=>p.level)),ML:Math.max(0,...c.psionics.map(p=>p.level)),BARBARIAN:0};for(const a of ['STR','DEX','CON','INT','WIS','CHA'] as const){v[a]=c.scores[a]+c.temps[a];v[a+'_MOD']=Math.floor((v[a]-10)/2)}for(const e of c.classLevels){const k=e.classId.toUpperCase().replaceAll('-','_');v[k]=(v[k]||0)+e.level}return v;}
-export function effectActive(c:Character,id:string){return c.automation.enabled&&c.effects.some(e=>e.active&&e.preset===id);}
+export function effectActive(c:Character,id:string){return c.automation.enabled&&c.effects.some(e=>e.active&&e.preset===id)&&!(id==='fatigued'&&c.effects.some(e=>e.active&&e.preset==='exhausted'));}
 export function conditionMatches(c:Character,when:string,context:Record<string,string|number|boolean>={}){if(!when)return true;const [key,value]=when.split('=');return String(context[key]??(c.automation.context as Record<string,unknown>)[key]??'').toLowerCase()===value?.toLowerCase();}
 export type BonusTerm={value:number,type:string,source:string};
 export function stackBonuses(terms:BonusTerm[]){const groups=new Map<string,number[]>();for(const t of terms){const key=['untyped','dodge','circumstance'].includes(t.type)?t.type+':'+t.source:t.type;const a=groups.get(key)||[];a.push(t.value);groups.set(key,a)}return [...groups.values()].reduce((n,a)=>n+Math.max(0,...a)+Math.min(0,...a),0);}
-export function effectTerms(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false):BonusTerm[]{if(!c.automation.enabled)return [];const v=baseVariables(c);return c.effects.filter(e=>e.active&&(!lasting||e.permanent)).flatMap(e=>e.modifiers.filter(m=>m.target===target&&conditionMatches(c,m.when,context)).map(m=>{let value=0;try{value=expression(m.value,{...v,...Object.fromEntries(Object.entries(context).filter(([,v])=>typeof v==='number')),CL:e.casterLevel||v.CL})}catch{}return {value,type:m.type,source:e.preset||e.id}}));}
+export function effectTerms(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false):BonusTerm[]{if(!c.automation.enabled)return [];const v=baseVariables(c);return c.effects.filter(e=>e.active&&(!lasting||e.permanent)&&!(e.preset==='fatigued'&&effectActive(c,'exhausted'))).flatMap(e=>e.modifiers.filter(m=>m.target===target&&conditionMatches(c,m.when,context)).map(m=>{let value=0;try{value=expression(m.value,{...v,...Object.fromEntries(Object.entries(context).filter(([,v])=>typeof v==='number')),CL:e.casterLevel})}catch{}return {value,type:m.type,source:e.preset||e.id}}));}
 export function effectBonus(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false){return stackBonuses(effectTerms(c,target,context,lasting));}
 export function classAbilityBonus(c:Character,a:string){if(!c.automation.enabled)return 0;const n=classLevel(c,'dragon-disciple');return a==='STR'?(n>=10?8:n>=4?4:n>=2?2:0):a==='CON'&&n>=6?2:a==='INT'&&n>=8?2:a==='CHA'&&n>=10?2:0;}
 const m=(target:string,type:Modifier['type'],value:string,when=''):Modifier=>({target,type,value,when});
@@ -41,4 +41,21 @@ export const effectPresets:Preset[]=[
  {id:'resistance',name:'Resistance',notes:'+1 resistance bonus to all saving throws.',modifiers:[m('saves','resistance','1')]},
  {id:'heroism',name:'Heroism',notes:'+2 morale on attacks, saves and skill checks.',modifiers:['attack','saves','skills'].map(t=>m(t,'morale','2'))}
 ];
-export function addEffect(c:Character,id:string){const p=effectPresets.find(p=>p.id===id);if(!p)return;const existing=c.effects.find(e=>e.preset===id);if(existing){existing.active=!existing.active;return}const opposites:Record<string,string[]>={haste:['slow'],slow:['haste'],fatigued:['exhausted'],exhausted:['fatigued'],'enlarge-person':['reduce-person'],'reduce-person':['enlarge-person']};for(const e of c.effects)if(opposites[id]?.includes(e.preset))e.active=false;c.effects.push({id:crypto.randomUUID(),preset:p.id,name:p.name,notes:p.notes,active:true,permanent:false,casterLevel:Math.max(1,...c.casters.map(p=>p.level)),rounds:0,modifiers:structuredClone(p.modifiers)});}
+export function setEffectActive(c:Character,id:string,active:boolean){
+ const effect=c.effects.find(e=>e.id===id);if(!effect)return;
+ if(active){
+  const opposites:Record<string,string[]>={haste:['slow'],slow:['haste'],fatigued:['exhausted'],exhausted:['fatigued'],'enlarge-person':['reduce-person'],'reduce-person':['enlarge-person']};
+  for(const other of c.effects)if(opposites[effect.preset]?.includes(other.preset))other.active=false;
+ }
+ effect.active=active;
+}
+export function addEffect(c:Character,id:string){
+ const preset=effectPresets.find(p=>p.id===id);if(!preset)return;
+ const existing=c.effects.find(e=>e.preset===id);
+ if(existing){setEffectActive(c,existing.id,!existing.active);return;}
+ const effect={id:crypto.randomUUID(),preset:preset.id,name:preset.name,notes:preset.notes,active:false,permanent:false,casterLevel:Math.max(1,...c.casters.map(p=>p.level)),rounds:0,modifiers:structuredClone(preset.modifiers)};
+ c.effects.push(effect);setEffectActive(c,effect.id,true);
+}
+export function advanceEffects(c:Character){
+ for(const e of c.effects)if(e.active&&e.rounds>0){e.rounds--;if(e.rounds===0)e.active=false;}
+}

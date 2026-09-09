@@ -1,32 +1,28 @@
-# Source snapshot — September 9, 2026
+# Calculation update — September 9, 2026
 
-Project: Barrow Ledger, the D&D 3.5 character sheet built with Astra for ClockworkKit.
+Barrow Ledger is the D&D 3.5 character sheet built with Astra for ClockworkKit, maintained in `ClockworkKit/DnD3.5CharacterSheet`.
 
-GitHub repository: `ClockworkKit/DnD3.5CharacterSheet`.
+## Completed
 
-## Contents
+The calculation expansion connects advancement, HP, equipped gear, encumbrance, combat routines, common feats and effects, spellcasting progression, psionic progression, and daily resources. Calculations exposes the inputs, progression choices, recorded Hit Dice and Intelligence, effect formulas, and house-rule overrides.
 
-This snapshot contains the full application source, dependency lockfile, character API and database migrations, reference data and licensing notices, tests, importer scripts, and Sites configuration. Saved characters, database contents, credentials, dependency installations, and generated build output are excluded.
+The finishing changes correct bonus stacking, conflicting-effect reactivation, effect expiry, movement overrides, masterwork/magic interactions, thrown weapons, flurry and off-hand routines, prestige advancement targets, casting requirements, and stale casting values after class removal. Recalculation preserves damage, prepared spells, and spent resources. Existing characters retain entered totals through visible adjustments.
 
-The last published source commit is `9bebace`, which includes the race expansion. This snapshot additionally preserves the subsequent automatic-calculation work: equipment and encumbrance, HP and advancement, caster progression, effects, daily resources, and formula controls. That expansion remains under development and has not been published as part of this GitHub export task.
+See [README.md](README.md) for the supported rules and choices that still require player or DM input. This is not an exhaustive implementation of every published 3.5 exception.
 
-## Checks performed
+## Validation
 
-- Fixed TypeScript errors in recursive caster progression and escaped literal formula examples in the spell and power interfaces.
-- TypeScript check passed: `node node_modules/typescript/bin/tsc --noEmit --incremental false`.
-- All 44 existing automated tests passed: `node --test tests/*.test.mjs`.
-- Production build passed using the Sites build helper.
+- All 60 automated tests pass, including 16 calculation tests. One exercises all 525 base-class/race combinations for validation, import/export, and repeat-calculation stability.
+- The suite also covers legacy sheets, character persistence, ownership isolation, revision conflicts, request validation, dice parsing, and Beyond20 message handling.
+- TypeScript checking passed. The production build also passed using the Sites build helper.
+- No browser walkthrough or live Roll20 delivery test was performed.
 
-The existing tests cover the previously published features. They do not establish complete coverage of the new automatic-calculation rules. No browser or live Roll20 delivery test was performed for this snapshot.
+## Publication and runtime
 
-## Runtime
+This is a source update to GitHub. The live Site's last published source is the race expansion (`9bebace`); these calculation changes have not been redeployed to the live URL.
 
-The project uses React, Vinext, and a Cloudflare Worker with a D1 binding named `DB`. The character API relies on authenticated identity supplied by Sites. Copying the source to GitHub does not transfer saved characters or publish the application through GitHub Pages. A deployment outside Sites requires equivalent authentication, database bindings, and migrations.
+The repository contains application source, the dependency lockfile, database migrations, reference data and licensing, tests, importers, and Sites configuration. It excludes saved characters, database contents, credentials, installed dependencies, and generated build output.
 
-The existing `.openai/hosting.json` identifies the user's current Site. Preserve it when continuing that Site; use an appropriate independent deployment configuration for a separate installation.
+The runtime uses React/Vinext, a Cloudflare Worker, D1, and Sites authentication. GitHub Pages does not supply that runtime. The existing Site configuration is preserved, and no database migration is needed for this update.
 
-## GitHub source
-
-The repository's current files are replaced with this Astra-built web application at the owner's request. The earlier C# application remains available through the repository's existing commit history.
-
-This source import preserves the repository's private visibility and default `master` branch. It does not update the live Site or transfer its saved character data.
+The earlier C# application remains in the repository's commit history. The repository retains its private visibility and `master` branch.

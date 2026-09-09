@@ -2,63 +2,86 @@
 
 A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
-Live sheet: https://barrow-sheet-demo.clockworkkit.chatgpt.site
+[Character sheet](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md)
 
-This source snapshot also preserves the automatic-calculation expansion under development. See `SOURCE-STATUS.md` for its validation and publication status; the sections below document the previously published features.
+## Character sheet
 
-A complete, editable 3.5 character sheet and Beyond20 companion. The existing Site identity and visual design are preserved.
+- Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.
+- Abilities, combat, the complete core skill list, custom specialties, equipment, feats, daily resources, and campaign notes.
+- 606 SRD spells, 110 SRD feats, 286 psionic powers, 15 base classes (11 core and 4 psionic), 24 prestige classes, and 35 races.
+- Searchable references, separate casting traditions, prepared copies, spontaneous slots, domain pools, custom spells and powers, and daily reset.
+- Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 
-## What it does
+## Automatic calculations
 
-- Saves multiple private characters with authenticated ownership, autosave, explicit Save, optimistic revision checks, and JSON import/export.
-- Tracks ability scores and temporary adjustments, HP, AC/touch/flat-footed, saves, base attack, grapple, iterative attacks, weapon damage, initiative, and the complete core skill list with custom specialties.
-- Includes 606 spells and 110 feats from the revised 3.5 SRD, with searchable spell lists, domains, levels, full reference text, and source links.
-- Tracks separate casting traditions, caster levels, save DCs, prepared copies, spontaneous slots including level 0, metamagic slot levels, spell penetration, and daily reset.
-- Supports custom spells, feats, class and racial features, daily resources, inventory, coin weight, conditions, background, and campaign notes.
-- Rolls locally or hands generic Roll20 chat macros to Beyond20, with a copyable macro for each journal entry. The early bridge catches Beyond20's custom-site events before hydration.
+Open **Calculations** to review progression, equipment and load, casting choices, daily ability numbers, and house-rule adjustments. New characters calculate automatically. Existing characters retain their entered totals through visible additive adjustments; remove an adjustment when you want the standard result.
 
-This is an editable sheet, not an automatic class progression or rules validation engine. Class totals can apply base attack and saves; selected racial bonuses are calculated separately. Equipment/feat bonuses, encumbrance penalties, spell exceptions, and house rules are entered manually. Common spell damage/healing formulas scale with caster level; other effects accept explicit custom dice. Initiative posts to chat. No token, HP, turn tracker, or character attribute synchronization is claimed. Beyond20's custom-site event API provides no delivery acknowledgement; a handoff is labeled accordingly.
+The calculation engine connects:
 
-## Source and licensing
+- Race, class levels, abilities, base attack, saves, HP, skill-point grants, rank limits, feat budgets, and experience thresholds.
+- Equipped armor, shields, masterwork and magic weapons, maximum Dexterity, check penalties, spell failure, carrying capacity, movement, and running.
+- Attack routines, critical threats and damage, off-hand attacks, monk flurry, Rapid Shot, Haste, common combat feats, and selected situational bonuses.
+- Class and prestige spellcasting progression, available slots, bonus spells, spells-known limits, caster levels, save DCs, power points, and manifester limits.
+- Common buffs and conditions, bonus-type stacking, timed effect expiry, daily ability limits, and custom arithmetic formulas.
 
-`public/data/spells.json` and `public/data/feats.json` are plain-text conversions of the revised SRD mirror at https://github.com/olimot/srd-v3.5. Their Open Game Content notice, full OGL 1.0a, and original copyright notice are included in `public/data/OPEN-GAME-LICENSE.txt` and linked from the sheet. Reference HTML is never rendered as executable HTML.
+Changing Constitution or Hit Dice preserves damage already taken. Changing spell progression preserves preparations and spent uses. Recalculation does not refund daily resources. Recorded Hit Die rolls and historical Intelligence stay attached to their levels. Temporary ability effects affect current checks, HP, and DCs; lasting scores determine bonus daily slots and power points.
 
-`python scripts/import-srd.py /path/to/srd-source` rebuilds the data from the mirror's `spells/spells-*.html`, `basic-rules-and-legal/feats.html`, and `basic-rules-and-legal/legal-information.html`. Keep the directory structure intact.
+You still choose ability increases, feats, skill purchases, class levels, targets, equipment, preparations, and power augmentation. Select the relevant situation in Combat to apply conditional modifiers. Prestige prerequisites, form changes, unusual feat/spell exceptions, and custom classes require a ruling or manual adjustment. Gestalt and fractional progression use overrides. The skill allocation estimate uses current class-skill flags; historical purchase costs need review when multiclassing.
 
-Beyond20 reference: https://beyond20.here-for-more.info/api#integrating-with-beyond20
+Fixed overrides and additive adjustments are available for house rules. Casting and manifesting can also be set to manual progression. Custom effects accept bounded arithmetic and dice formulas; they do not execute JavaScript.
 
-## Application
+## Classes, races, and reference data
 
-React/Vinext Worker using the Sites starter. D1 is declared logically as `DB` in `.openai/hosting.json`. The `characters` schema is in `db/schema.ts`; generated migrations are in `drizzle/`. Schema changes are applied through the hosting migration pipeline, never created at request time.
+Classes include progression tables, prerequisites, full SRD reference text, multiclass entries, and reusable feature summaries. In Calculations, choose which tradition a prestige class advances when more than one qualifies. Assassin and Blackguard have their own spell lists. Psionic traditions share a power-point reserve while observing their own manifester limits; Soulknife begins with Wild Talent's 2 PP and no powers.
 
-The API trusts the authenticated identity headers supplied by Sites and includes the owner key in every database query. Writes require JSON and same-origin requests. Updates and deletes require the current saved revision. Failed writes retain page edits and expose retry, export backup, and save-as-new options. Character switching flushes in-flight and subsequent edits before loading another character.
+Race ability adjustments and trait bonuses are separate layers, so selecting a race repeatedly cannot accumulate bonuses. Existing sheets preserve manually included racial adjustments. Racial Hit Dice and level adjustment are recorded separately; LA changes effective character level without adding Hit Dice or class progression. The library includes the seven core races, common subraces, planetouched and psionic choices, and concise summaries of Changeling, Warforged, Goliath, and Whisper Gnome.
 
-## Verification
+## Roll20 connection
 
-- `node --test tests/*.test.mjs`: dice grammar/randomness, 3.5 mechanics, prepared/spontaneous spell accounting, reference completeness, Beyond20 event contract and macro safety, actual API create/load/update/delete against SQLite, ownership isolation, stale revision protection, validation, and request origin checks.
-- `node node_modules/typescript/bin/tsc --noEmit`: type checks.
-- Build with the installed Sites `scripts/build-site.mjs` helper.
+Enable the sheet's URL in Beyond20's custom-site settings and keep Roll20 open in the same desktop browser. Use **Roll20 setup → Send test roll** to verify your game connection.
 
-No agent browser testing or live Roll20 end-to-end test was performed. The user can send a test roll from the Roll20 setup dialog with Beyond20 enabled in their desktop browser.
+The sheet sends generic chat macros through [Beyond20's custom-site API](https://beyond20.here-for-more.info/api#integrating-with-beyond20). That API provides no delivery acknowledgement, so the app labels a successful handoff accordingly. Initiative posts to chat; token HP, turn-tracker entries, inventory, and character attributes are not synchronized. No live Roll20 delivery test was performed for this update.
 
-## Class expansion
+## Development
 
-All 11 core base classes and 4 psionic classes have level 1–20 starting templates. The Classes tab includes 24 SRD prestige classes, their entry requirements, progression tables and full class text. Multiclass totals can be reviewed and explicitly applied; miscellaneous modifiers, current HP and bought skill ranks are retained. Feats can receive reusable class-feature summaries. Existing saved characters and JSON exports default to empty class and psionic records without discarding their prior data.
+React/Vinext with a Cloudflare Worker and a D1 binding named `DB`. Use a current Node.js release with native TypeScript support (Node 24 works), Linux or WSL, and the committed dependency lockfile.
 
-Prestige casting advancement and eligibility remain manual. Ordinary class totals do not implement gestalt, fractional progression, racial Hit Dice, or level adjustment. Custom classes can be named and recorded for use with the user's own books. Assassin and Blackguard spell-list levels are included; the older Blackguard list name “Protection from Elements” is mapped to “Protection from Energy.” Corrupt Weapon uses the source's reversed Bless Weapon effects.
+```sh
+npm run install:ci
+npm run dev
+```
 
-Psionics adds 286 SRD powers, editable powers known, a shared multiclass power-point reserve, per-tradition manifester levels, focus tracking, and cast/post/effect-roll controls. Augmentation costs, wild surge exceptions and power-specific DC adjustments are manual. Soulknife starts with Wild Talent's 2 PP, no powers, and no manifester level.
+Verification commands:
 
-`python scripts/import-classes.py /path/to/class-source` rebuilds the class and psionic catalogs from `character-classes-i.html`, `character-classes-ii.html`, `prestige-classes.html`, `psionic-classes.html`, and the four `psionic-powers-*.html` source files. Run it after the base spell importer to restore prestige spell-list levels. All reference data is covered by the included OGL notice. No database table migration is needed for these additions to the saved character JSON.
+```sh
+node --test tests/*.test.mjs
+node node_modules/typescript/bin/tsc --noEmit --incremental false
+npm run build
+```
 
-## Race expansion
+In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The Race tab and new-character dialog include 35 races: seven core choices, ten subraces, six monstrous races, two planetouched races, six psionic choices, and four popular book races. SRD entries include full source text; Changeling, Warforged, Goliath, and Whisper Gnome use concise original summaries and source links.
+The 60 automated tests cover calculation interactions, all 525 base-class/race combinations with automation enabled, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, and the character API against SQLite. No browser walkthrough was performed for this update.
 
-Ability adjustments and unconditional trait bonuses are separate calculation layers, each explicitly enabled. Selecting a race repeatedly cannot accumulate modifiers. Existing sheets default to neither layer, preserving scores and manually included bonuses. A review dialog separately controls size, land speed, and automatic languages. Custom race names and trait notes remain supported.
+The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 
-Enabled traits affect skill checks, general saves, natural armor, dodge AC, powerful-build grapple checks, and the shared psionic reserve. Small-size Hide adjustments are included with trait bonuses; conditional bonuses and racial spell-like abilities remain reference notes. Plating, spell resistance, resistances, and class-dependent bonuses are entered in the corresponding fields.
+Database schema: `db/schema.ts`. Generated migrations: `drizzle/`. Migrations are applied through the hosting pipeline. This calculation update changes the saved character JSON and requires no new database migration.
 
-Racial HD and level adjustment are recorded separately; a house-rule checkbox excludes LA from the displayed ECL. Class totals include gnoll and lizardfolk racial HD progression, and new characters include those HD in HP and experience. Updating an existing race does not change its HP, prepared spells, class resources, or weapon dice; these require review. New characters calculate starting racial abilities, Constitution HP, casting ability bonuses, and Small weapon dice.
+The Sites configuration identifies the existing character-sheet Site. A separate installation needs its own authentication, database bindings, and migrations. A GitHub push does not deploy the application or transfer saved characters.
 
-`python scripts/import-races.py /path/to/race-source` rebuilds the catalogs from the revised SRD race files and the listed Monster Manual files, with the concise book summaries maintained in the script. No database migration is needed.
+## Sources and licensing
+
+The SRD catalogs are plain-text conversions of the [revised SRD mirror](https://github.com/olimot/srd-v3.5). Their Open Game Content notice, full OGL 1.0a, and original copyright notice are included in [OPEN-GAME-LICENSE.txt](public/data/OPEN-GAME-LICENSE.txt) and linked from the sheet. Book-race entries use concise original summaries and source links. Reference HTML is never rendered as executable HTML.
+
+Calculation references include the SRD's [basic ability and stacking rules](https://www.d20srd.org/srd/theBasics.htm), [carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm), [movement](https://www.d20srd.org/srd/movement.htm), and [special materials](https://www.d20srd.org/srd/specialMaterials.htm), along with the class, feat, spell, and equipment sources in the catalogs.
+
+Importer scripts retain the source directory structures:
+
+```sh
+python scripts/import-srd.py /path/to/srd-source
+python scripts/import-classes.py /path/to/class-source
+python scripts/import-races.py /path/to/race-source
+python scripts/import-equipment.py /path/to/equipment-source
+```
+
+Run the class importer after the base spell importer to restore prestige spell-list levels. Each script names its required source files. The Blackguard list's older “Protection from Elements” name maps to “Protection from Energy”; Corrupt Weapon uses the source's reversed Bless Weapon effects.

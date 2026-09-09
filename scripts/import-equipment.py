@@ -19,7 +19,7 @@ for t in re.findall(r'<table\b.*?</table>',(src/'equipment.html').read_text(),re
    if len(c)==1:group=c[0];continue
    if len(c)!=8 or not re.match(r'\d',c[3]):continue
    name=c[0];id='weapon-'+slug(name);damage=c[3].split('/')[0];small=c[2].split('/')[0]
-   items.append(dict(id=id,name=name,kind='weapon',category=category,weight=num(c[6]),price=num(c[1])*(.1 if 'sp' in c[1] else 1),damage=damage,small=small,threat=num(c[4],20) if '–' in c[4] else 20,multiplier=int(re.search(r'x(\d)',c[4])[1]) if 'x' in c[4] else 2,range=num(c[5]),ranged=group=='Ranged Weapons',thrown=name in ['Dart','Javelin','Bolas','Shuriken (5)'],hands='light' if 'Light' in group or 'Unarmed' in group else 'two' if 'Two-Handed' in group else 'one',damageType=c[7],double='/' in c[3]))
+   items.append(dict(id=id,name=name,kind='weapon',category=category,weight=num(c[6]),price=num(c[1])*(.1 if 'sp' in c[1] else 1),damage=damage,small=small,threat=num(c[4],20) if '–' in c[4] else 20,multiplier=int(re.search(r'x(\d)',c[4])[1]) if 'x' in c[4] else 2,range=num(c[5]),ranged=group=='Ranged Weapons',thrown=(num(c[5])>0 and group!='Ranged Weapons') or name in ['Dart','Javelin','Bolas','Shuriken (5)'],hands='light' if 'Light' in group or 'Unarmed' in group else 'two' if 'Two-Handed' in group else 'one',damageType=c[7],double='/' in c[3]))
  if 'Table: Armor and Shields' in text:
   for tr in re.findall(r'<tr\b.*?</tr>',t,re.S):
    c=[plain(v) for v in re.findall(r'<t[dh]\b[^>]*>(.*?)</t[dh]>',tr,re.S)]
