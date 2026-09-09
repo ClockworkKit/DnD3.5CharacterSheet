@@ -1,0 +1,9 @@
+import type {Character,Psionic} from './model.ts';
+import type {Roll} from './rules.ts';
+import {racialPowerPoints,effectiveScore} from './ancestry.ts';
+export type PowerReference={id:string,name:string,school:string,levels:Record<string,number>,levelText:string,cost:number,display:string,manifesting:string,range:string,target:string,duration:string,save:string,resistance:string,description:string,source:string};
+export function powerReserve(c:Character){const max=c.psionics.reduce((a,p)=>a+p.max,0)+racialPowerPoints(c),spent=c.psionics.reduce((a,p)=>a+p.spent,0)+c.ancestry.powerPointsSpent;return {max,spent,remaining:Math.max(0,max-spent)};}
+export function powerDC(c:Character,p:Psionic,k:Psionic['powers'][number]){return 10+k.level+Math.floor((effectiveScore(c,p.ability)-10)/2)+p.dcExtra;}
+export function canManifest(c:Character,p:Psionic,k:Psionic['powers'][number]){return k.cost>=1&&k.cost<=p.level&&k.cost<=powerReserve(c).remaining;}
+export function spendPower(c:Character,profileId:string,powerId:string){const p=c.psionics.find(x=>x.id===profileId),k=p?.powers.find(x=>x.id===powerId);if(!p||!k||!canManifest(c,p,k))throw new Error('The power exceeds your remaining power points or manifester-level spending limit.');p.spent+=k.cost;}
+export function powerCard(c:Character,p:Psionic,k:Psionic['powers'][number],r?:PowerReference):Roll{return {title:k.name,details:k.notes,fields:[['Tradition',p.name],['Manifester level',String(p.level)],['Power level',String(k.level)],['Power points',String(k.cost)],...(r?[[ 'Manifesting time',r.manifesting],['Range',r.range],['Duration',r.duration],['Save',r.save+(r.save.toLowerCase()==='none'?'':' (DC '+powerDC(c,p,k)+')')],['Power resistance',r.resistance],['Summary',r.description.slice(0,240)]] as Array<[string,string]>:[[ 'Base save DC',String(powerDC(c,p,k))] as [string,string]])]};}
