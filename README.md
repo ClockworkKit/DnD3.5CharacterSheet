@@ -2,7 +2,7 @@
 
 A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
-[Character sheet](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md)
+[Character sheet](https://clockworkkit.github.io/DnD3.5CharacterSheet/) · [Original Sites edition](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md)
 
 ## Character sheet
 
@@ -13,6 +13,14 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 - Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 - Skill-point purchases by character level, automatic class/cross-class costs, rank limits, and refunds.
 - Parchment, dark purple Amethyst, and black-and-white Classic 3.5 page themes.
+
+## Create a character
+
+An empty ledger opens with **Create character** and **Import character**. No demo character is opened or saved automatically. Existing saved characters still load normally; deleting the open character returns to the creation screen, with any remaining saves available in the picker.
+
+Choose **New → Roll six scores** to generate abilities with **4d6, drop the lowest**, or **3d6**. Every die is shown, with the dropped die crossed out. Assign each result to an ability; selecting an already-used roll swaps the assignments. Manual score entry is also available. The preview shows base scores, racial adjustments, final scores, and modifiers.
+
+New characters default to class level 1. They begin with their class and racial rules, full HP, and the chosen abilities; equipment, money, feat choices, and spell selections are left for the player. HP, skill-point grants, spell slots, and power points use the chosen scores immediately. Starting abilities and rolled dice are retained in Notes and survive saving and export/import. Rolling or cancelling the creation dialog does not change the open character.
 
 ## Skill points and themes
 
@@ -88,7 +96,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 74 automated tests cover calculation interactions, all 525 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. No browser walkthrough was performed for this update.
+The 81 automated tests cover character creation and ability rolls, all 525 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. No browser walkthrough was performed for this update.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 

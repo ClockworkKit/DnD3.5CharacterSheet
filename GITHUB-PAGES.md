@@ -6,7 +6,7 @@ The Pages edition has the same character sheet, reference libraries, automatic c
 
 [GitHub Pages](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages) is included with GitHub Free for **public repositories**. A private personal repository needs GitHub Pro or another eligible paid plan. Check [GitHub's current plans](https://docs.github.com/en/get-started/learning-about-github/githubs-plans) before upgrading. This setup does not change visibility or purchase a plan.
 
-`ClockworkKit/DnD3.5CharacterSheet` is now public, so it qualifies for Pages on GitHub Free. Pages was still disabled when the skill-point and theme update was prepared. A Pages website from a personal account is public even when its source repository is private.
+`ClockworkKit/DnD3.5CharacterSheet` is public and Pages is enabled. The sheet is available at [clockworkkit.github.io/DnD3.5CharacterSheet](https://clockworkkit.github.io/DnD3.5CharacterSheet/). A Pages website from a personal account is public even when its source repository is private.
 
 ## Activate once
 
@@ -14,7 +14,7 @@ The Pages edition has the same character sheet, reference libraries, automatic c
 2. Open [the Pages workflow](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/workflows/pages.yml). Select **Run workflow**, keep `master`, and run it.
 3. Wait for both the build and deployment to succeed. GitHub displays the published website link in the deployment and Pages settings.
 
-The expected address after successful deployment is `https://clockworkkit.github.io/DnD3.5CharacterSheet/`. This document is not confirmation that it is live. Subsequent pushes to `master` deploy automatically while Pages remains enabled. A push with Pages disabled builds and packages the site without deploying it.
+The current repository has already completed these steps. Subsequent pushes to `master` deploy automatically while Pages remains enabled. A push with Pages disabled builds and packages the site without deploying it.
 
 ## Bring your characters
 
