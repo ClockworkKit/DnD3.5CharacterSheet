@@ -11,7 +11,19 @@ export function classTotals(entries:ClassLevel[],ancestry?:Character['ancestry']
  for(const e of entries){const d=findClass(e.classId);level+=e.level;if(!d){missing.push(e.name);continue}const r=d.levels.find(r=>r.level===e.level);if(!r){missing.push(e.name+' '+e.level);continue}bab+=r.bab;fort+=r.fort;ref+=r.ref;will+=r.will;dice[d.hitDie]=(dice[d.hitDie]||0)+e.level;}
  return {level,bab,fort,ref,will,hitDice:Object.entries(dice).map(([die,n])=>`${n}d${die}`).join(' + '),missing};
 }
-export function isClassSkill(name:string,definitions:ClassDefinition[]){return definitions.some(d=>{const text=d.skills.toLowerCase();if(name.startsWith('Knowledge (')){const specialty=name.slice(11,-1).toLowerCase();return /knowledge \(all/.test(text)||text.includes(specialty);}return text.includes(name.toLowerCase().replace(/ \(.*/,''));});}
+export function isClassSkill(name:string,definitions:ClassDefinition[]){
+ const normalized=name.toLowerCase().trim(),base=normalized.replace(/\s*\(.*/,'').replace(/[^a-z]+/g,' ').trim();
+ if(!base)return false;
+ const specialty=normalized.match(/\(([^)]+)\)/)?.[1].trim();
+ return definitions.some(d=>{
+  const text=d.skills.toLowerCase().replace(/\bhandle animals\b/g,'handle animal');
+  if(['knowledge','craft','perform','profession'].includes(base)){
+   const entries=[...text.matchAll(new RegExp('\\b'+base+'\\s*\\(([^)]+)\\)','g'))];
+   return entries.some(([,category])=>/^(all\b|any\b|int$|wis$|cha$|dex$|str$|con$)/.test(category)||!!specialty&&category.trim()===specialty);
+  }
+  return (' '+text.replace(/[^a-z]+/g,' ')+' ').includes(' '+base+' ');
+ });
+}
 export function applyClassTotals(c:Character){const t=classTotals(c.classLevels,c.ancestry);if(t.missing.length)throw new Error('Enter custom class totals manually. Unknown table: '+t.missing.join(', '));if(!t.level||t.level>100)throw new Error('Choose between 1 and 100 total class levels.');c.classes=c.classLevels.map(e=>e.name+' '+e.level).join(' / ');c.level=t.level;c.bab=t.bab;c.hitDice=t.hitDice;c.saves.fort.base=t.fort;c.saves.ref.base=t.ref;c.saves.will.base=t.will;const definitions=c.classLevels.map(e=>findClass(e.classId)).filter((d):d is ClassDefinition=>!!d);c.skills.forEach(s=>{s.classSkill=s.classSkillOverride??(isClassSkill(s.name,definitions)||(c.ancestry.racialHitDice>0&&(c.ancestry.raceId==='lizardfolk'?['Balance','Jump','Swim']:c.ancestry.raceId==='gnoll'?['Climb','Listen','Spot']:[]).includes(s.name)))});}
 export function inferClassEntries(label:string):ClassLevel[]{const parts=label.split(/\s*\/\s*/);const result:ClassLevel[]=[];for(const part of parts){const m=part.trim().match(/^(.+?)\s+(\d+)$/);if(!m)return [];const def=findClass(m[1]);if(!def||!def.levels.some(r=>r.level===Number(m[2])))return [];result.push({id:crypto.randomUUID(),classId:def.id,name:def.name,level:Number(m[2]),notes:''});}return result;}
 export function spellSlots(def:ClassDefinition,level:number,score:number){const r=classRow(def,level),mod=Math.floor((score-10)/2);return Array.from({length:10},(_,i)=>{const base=r.slots?.[i];return {max:base==null||score<10+i?0:base+(i>0&&mod>=i?1+Math.floor((mod-i)/4):0),used:0}});}

@@ -19,8 +19,8 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <head><script src="/bridge.js" /></head>
+    <html lang="en" suppressHydrationWarning>
+      <head><script src="/theme.js" /><script src="/bridge.js" /></head>
       <body className="antialiased">{children}</body>
     </html>
   );

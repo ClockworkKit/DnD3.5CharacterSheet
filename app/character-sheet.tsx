@@ -21,6 +21,7 @@ import {raceCatalog,findRace} from '@/lib/ancestry';
 import {activateAutomation,recompute} from '@/lib/automation';
 import {Calculations} from './calculations';
 import {baseClasses} from '@/lib/classes';
+import {ThemePicker} from './theme-picker';
 import {characterApi} from '@/lib/character-client';
 import {assetUrl,browserStorage} from '@/lib/deployment';
 declare global {interface Window {BarrowBeyond20?:{detected:boolean,send:(request:ReturnType<typeof makeRequest>)=>void}}}
@@ -74,7 +75,7 @@ export default function CharacterSheet(){
  const props={c,edit,roll,confirm};const t=sheetTotals(c);
  return <>
  <a href="#character" className="skip-link">Skip to character sheet</a>
- <header className="masthead"><a href={assetUrl('')} className="wordmark"><span className="brand-mark">B</span><strong>BARROW<br/>LEDGER</strong></a><div className="masthead-right"><span className="edition">3.5 ADVENTURER’S RECORD</span><Btn className="header-button" onClick={()=>setGuide(true)}>Roll20 setup</Btn></div></header>
+ <header className="masthead"><a href={assetUrl('')} className="wordmark"><span className="brand-mark">B</span><strong>BARROW<br/>LEDGER</strong></a><div className="masthead-right"><ThemePicker/><span className="edition">3.5 ADVENTURER’S RECORD</span><Btn className="header-button" onClick={()=>setGuide(true)}>Roll20 setup</Btn></div></header>
  <main className="workbench"><div className="sheet-column">
  <div className="character-toolbar"><div className="character-picker"><Choice label="Your characters" value={record?.id||'unsaved'} options={[...(!record?[[ 'unsaved',c.name+' · new'] as [string,string]]:[]),...items.map(x=>[x.id,x.name] as [string,string])]} onChange={v=>{if(v!=='unsaved')void loadCharacter(v)}}/></div><Btn disabled={busy||switching||!loaded} onClick={()=>setNewOpen(true)}><Plus size={16}/> New</Btn><Btn className="save-button" disabled={busy||switching||!loaded} onClick={()=>void save()}><Save size={16}/>{busy?'Saving…':'Save'}</Btn></div>
  <div className="save-status" role="status">{switching?'Loading character…':!loaded?'Opening your ledger…':busy?'Saving character…':saveError?'Not saved — your edits are still on this page.':dirty?'Changes waiting to save…':record?(browserStorage?'Saved in this browser':'Character saved'):'Example character · edit or save to keep it'}</div>
