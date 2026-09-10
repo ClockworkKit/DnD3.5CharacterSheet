@@ -1,4 +1,5 @@
 'use client';
+import {assetUrl} from '@/lib/deployment';
 import {useEffect,useState} from 'react';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {uid,abilityKeys,type Psionic} from '@/lib/model';
@@ -11,7 +12,7 @@ import {F,N,Choice,Check,Btn,Section,Stat,type SheetProps} from './sheet-ui';
 import {toast} from 'sonner';
 import {effectiveScore,racialPowerPoints} from '@/lib/ancestry';
 export function Powers({c,edit,roll,confirm}:SheetProps){const [active,setActive]=useState(''),[library,setLibrary]=useState(false),[query,setQuery]=useState(''),[filter,setFilter]=useState('all'),[detail,setDetail]=useState<PowerReference|null>(null);const [refs,setRefs]=useState<PowerReference[]>([]),[error,setError]=useState(''),[attempt,setAttempt]=useState(0);const [addOpen,setAddOpen]=useState(false),[kind,setKind]=useState('Psion');
- useEffect(()=>{let live=true;fetch('/data/powers.json').then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<PowerReference[]>}).then(r=>{if(live){setRefs(r);setError('')}}).catch(()=>{if(live)setError('The power library could not be loaded.')});return()=>{live=false}},[attempt]);
+ useEffect(()=>{let live=true;fetch(assetUrl('data/powers.json')).then(r=>{if(!r.ok)throw new Error();return r.json() as Promise<PowerReference[]>}).then(r=>{if(live){setRefs(r);setError('')}}).catch(()=>{if(live)setError('The power library could not be loaded.')});return()=>{live=false}},[attempt]);
  const p=c.psionics.find(x=>x.id===active)||c.psionics[0],reserve=powerReserve(c);const update=(patch:Partial<Psionic>)=>p&&edit(d=>Object.assign(d.psionics.find(x=>x.id===p.id)!,patch));
  const lists=Array.from(new Set(refs.flatMap(r=>Object.keys(r.levels)))).sort();const matches=refs.filter(r=>(r.name+' '+r.school).toLowerCase().includes(query.toLowerCase())&&(filter==='all'||r.levels[filter]!==undefined));
  return <><Section title="Psionics" action={<Btn onClick={()=>setAddOpen(true)}>+ Psionic tradition</Btn>}>

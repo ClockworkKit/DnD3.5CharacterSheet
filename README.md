@@ -42,6 +42,21 @@ Enable the sheet's URL in Beyond20's custom-site settings and keep Roll20 open i
 
 The sheet sends generic chat macros through [Beyond20's custom-site API](https://beyond20.here-for-more.info/api#integrating-with-beyond20). That API provides no delivery acknowledgement, so the app labels a successful handoff accordingly. Initiative posts to chat; token HP, turn-tracker entries, inventory, and character attributes are not synchronized. No live Roll20 delivery test was performed for this update.
 
+## GitHub Pages edition
+
+A second build runs the complete sheet on GitHub Pages with browser storage. The original Sites build continues to use authenticated server storage.
+
+In the Pages edition, each visitor's characters stay in that browser profile on that device. They are not committed to GitHub or shared with other visitors. Saves do not follow you between devices, and clearing site data removes them. Export backups regularly; use Export on the original Site and Import on Pages to move a character. Private browsing and blocked/full storage can prevent persistence. A current browser over HTTPS is required for safe saves across multiple tabs.
+
+See [GitHub Pages setup](GITHUB-PAGES.md) for the one-time repository settings. After Pages is enabled, pushes to `master` build and deploy automatically. While Pages is disabled, pushes only verify and package the application.
+
+```sh
+npm run build:pages
+npm run preview:pages
+```
+
+The static output is `dist-pages/`, and the default project path is `/DnD3.5CharacterSheet/`. Set `PAGES_BASE_PATH` when building for a renamed repository or custom domain. The Pages build contains public assets and client code only; it does not contain the Worker, database, or saved character data.
+
 ## Development
 
 React/Vinext with a Cloudflare Worker and a D1 binding named `DB`. Use a current Node.js release with native TypeScript support (Node 24 works), Linux or WSL, and the committed dependency lockfile.
@@ -61,7 +76,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 60 automated tests cover calculation interactions, all 525 base-class/race combinations with automation enabled, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, and the character API against SQLite. No browser walkthrough was performed for this update.
+The 65 automated tests cover calculation interactions, all 525 base-class/race combinations with automation enabled, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. No browser walkthrough was performed for this update.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 

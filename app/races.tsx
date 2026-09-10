@@ -1,4 +1,5 @@
 'use client';
+import {assetUrl} from '@/lib/deployment';
 import {useState} from 'react';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from '@/components/ui/table';
@@ -15,7 +16,7 @@ export function Races({c,edit,confirm}:SheetProps){
  const [refs,setRefs]=useState<RaceDefinition[]>([]),[error,setError]=useState('');
  const race=findRace(c.ancestry.raceId),reserve=powerReserve(c);const classLevels=c.classLevels.length?c.classLevels.reduce((n,e)=>n+e.level,0):Math.max(0,c.level-c.ancestry.racialHitDice);const totalHD=classLevels+c.ancestry.racialHitDice;const ecl=totalHD+(c.ancestry.ignoreLevelAdjustment?0:c.ancestry.levelAdjustment);
  const matches=raceCatalog.filter(r=>(group==='all'||r.group===group)&&(r.name+' '+r.type+' '+r.book).toLowerCase().includes(query.toLowerCase()));
- async function loadReference(){if(refs.length)return;try{setError('');const res=await fetch('/data/races.json');if(!res.ok)throw new Error();setRefs(await res.json() as RaceDefinition[])}catch{setError('Full reference text could not be loaded. The race summary remains available.')}}
+ async function loadReference(){if(refs.length)return;try{setError('');const res=await fetch(assetUrl('data/races.json'));if(!res.ok)throw new Error();setRefs(await res.json() as RaceDefinition[])}catch{setError('Full reference text could not be loaded. The race summary remains available.')}}
  function review(r:RaceDefinition){setPreview(r);setAbilities(c.ancestry.abilityAdjustments);setTraits(c.ancestry.traitBonuses);setBody(false);setLanguages(true);setSpeedBonus(race?Math.max(0,c.speed-race.speed):0);void loadReference();}
  const full=refs.find(r=>r.id===preview?.id);
  return <>

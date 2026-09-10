@@ -1,4 +1,5 @@
 'use client';
+import {assetUrl} from '@/lib/deployment';
 import {useState} from 'react';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {Table,TableBody,TableCell,TableHead,TableHeader,TableRow} from '@/components/ui/table';
@@ -11,7 +12,7 @@ import {effectiveScore} from '@/lib/ancestry';
 export function Classes({c,edit,confirm}:SheetProps){
  const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[kind,setKind]=useState('all');const [detail,setDetail]=useState<ClassDefinition|null>(null);const [refs,setRefs]=useState<ClassDefinition[]>([]),[refError,setRefError]=useState('');
  const t=classTotals(c.classLevels,c.ancestry),inferred=inferClassEntries(c.classes);const matches=classCatalog.filter(d=>(kind==='all'||d.kind===kind)&&d.name.toLowerCase().includes(query.toLowerCase()));
- async function show(def:ClassDefinition){setDetail(def);if(refs.length)return;try{setRefError('');const res=await fetch('/data/classes.json');if(!res.ok)throw new Error();setRefs(await res.json() as ClassDefinition[])}catch{setRefError('Full class text could not be loaded. The progression table is available below.')}}
+ async function show(def:ClassDefinition){setDetail(def);if(refs.length)return;try{setRefError('');const res=await fetch(assetUrl('data/classes.json'));if(!res.ok)throw new Error();setRefs(await res.json() as ClassDefinition[])}catch{setRefError('Full class text could not be loaded. The progression table is available below.')}}
  function add(def:ClassDefinition){if(c.classLevels.some(x=>x.classId===def.id)){toast.error('That class is already recorded. Change its level on the sheet.');return}edit(d=>{d.classLevels.push({id:uid(),classId:def.id,name:def.name,level:1,notes:''})});setOpen(false);toast.success(def.name+' added. Totals now follow the recorded class levels.');}
  const reference=refs.find(d=>d.id===detail?.id)||detail;
  return <><Section title="Classes & advancement" action={<Btn onClick={()=>setOpen(true)}>+ Add class</Btn>}>
