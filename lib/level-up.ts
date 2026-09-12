@@ -1,5 +1,5 @@
 import {uid,type Character} from './model.ts';
-import {classCatalog,classTotals,findClass,copyClassFeatures,makeCaster,makePsionic} from './classes.ts';
+import {classCatalog,classTotals,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility} from './classes.ts';
 import {advancementNumbers} from './advancement.ts';
 import {effectiveScore} from './ancestry.ts';
 import {skillIntelligence} from './level-history.ts';
@@ -22,8 +22,8 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};c.classLevels.push(entry);}
  if(c.automation.hpMethod==='rolled')c.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});
  if(def.levels.some(r=>r.slots)&&(!['paladin','ranger'].includes(def.id)||entry.level>=4)&&!c.casters.some(p=>p.casting?.classId===def.id||p.name===def.name)){
-  const ability=['wizard','assassin'].includes(def.id)?'INT':['bard','sorcerer'].includes(def.id)?'CHA':'WIS';c.casters.push(makeCaster(def,entry.level,effectiveScore(c,ability)));
+  const ability=castingAbility(def);c.casters.push(makeCaster(def,entry.level,effectiveScore(c,ability),effectiveScore(c,def.casting?.bonusAbility||ability)));
  }
- if(def.kind==='Psionic'&&!c.psionics.some(p=>p.manifesting?.classId===def.id||p.name===def.name))c.psionics.push(makePsionic(def,entry.level,effectiveScore(c,def.id==='psion'?'INT':def.id==='wilder'?'CHA':'WIS')));
+ if((def.kind==='Psionic'||def.manifesting)&&!c.psionics.some(p=>p.manifesting?.classId===def.id||p.name===def.name))c.psionics.push(makePsionic(def,entry.level,effectiveScore(c,manifestingAbility(def))));
  copyClassFeatures(c);
 }

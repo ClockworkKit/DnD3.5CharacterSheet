@@ -48,7 +48,7 @@ export const uid = () => globalThis.crypto.randomUUID();
 export const baseSkills: Array<[string,Skill['ability'],boolean,number]> = [
  ['Appraise','INT',false,0],['Balance','DEX',false,1],['Bluff','CHA',false,0],['Climb','STR',false,1],['Concentration','CON',false,0],['Craft','INT',false,0],['Decipher Script','INT',true,0],['Diplomacy','CHA',false,0],['Disable Device','INT',true,0],['Disguise','CHA',false,0],['Escape Artist','DEX',false,1],['Forgery','INT',false,0],['Gather Information','CHA',false,0],['Handle Animal','CHA',true,0],['Heal','WIS',false,0],['Hide','DEX',false,1],['Intimidate','CHA',false,0],['Jump','STR',false,1],
  ...['arcana','architecture and engineering','dungeoneering','geography','history','local','nature','nobility and royalty','religion','the planes'].map(x=>['Knowledge ('+x+')','INT',true,0] as [string,'INT',boolean,number]),
- ['Listen','WIS',false,0],['Move Silently','DEX',false,1],['Open Lock','DEX',true,0],['Perform','CHA',false,0],['Profession','WIS',true,0],['Ride','DEX',false,0],['Search','INT',false,0],['Sense Motive','WIS',false,0],['Sleight of Hand','DEX',true,1],['Spellcraft','INT',true,0],['Spot','WIS',false,0],['Survival','WIS',false,0],['Swim','STR',false,2],['Tumble','DEX',true,1],['Use Magic Device','CHA',true,0],['Use Rope','DEX',false,0],['Speak Language','INT',false,0]
+ ['Listen','WIS',false,0],['Move Silently','DEX',false,1],['Open Lock','DEX',true,0],['Perform','CHA',false,0],['Profession','WIS',true,0],['Ride','DEX',false,0],['Search','INT',false,0],['Sense Motive','WIS',false,0],['Sleight of Hand','DEX',true,1],['Spellcraft','INT',true,0],['Spot','WIS',false,0],['Survival','WIS',false,0],['Swim','STR',false,2],['Tumble','DEX',true,1],['Use Magic Device','CHA',true,0],['Use Rope','DEX',false,0],['Speak Language','INT',false,0],['Martial Lore','INT',true,0],['Truespeak','INT',true,0]
 ];
 export function newCaster(kind='Cleric'): Caster {const def=findClass(kind);if(!def)throw new Error('Choose a known casting class.');return makeCaster(def);}
 export function newWeapon(): Weapon {return {id:uid(),name:'New weapon',ability:'STR',attack:0,damage:'1d6',damageAbility:'STR',strength:'one',damageExtra:0,crit:'20 / ×2',range:'Melee',ammo:0,notes:''};}
@@ -65,7 +65,7 @@ export function newCharacter(kind='Fighter',level=3,raceId?:string): Character {
   c.maxHp=Math.max(c.level,(race.rhd?8+Math.ceil((race.rhd-1)*4.5+level*(def.hitDie/2+.5)):hp)+con*c.level);c.hp=c.maxHp;
   if(kind==='Monk')c.defense.misc+=Math.floor((effectiveScore(c,'WIS')-10)/2)-oldWis;
   if(kind==='Paladin'&&level>=2){const change=Math.max(0,Math.floor((effectiveScore(c,'CHA')-10)/2))-oldCha;c.saves.fort.misc+=change;c.saves.ref.misc+=change;c.saves.will.misc+=change;}
-  c.casters=c.casters.map(p=>makeCaster(def,level,effectiveScore(c,p.ability)));
+  c.casters=c.casters.map(p=>makeCaster(def,level,effectiveScore(c,p.ability),effectiveScore(c,def.casting?.bonusAbility||p.ability)));
   c.psionics=c.psionics.map(p=>makePsionic(def,level,effectiveScore(c,p.ability)));
   if(c.size==='Small'){const small:Record<string,string>={'1d12':'1d10','1d10':'1d8','1d8':'1d6','1d6':'1d4','2d6':'1d10','2d8':'2d6','2d10':'2d8'};c.weapons.forEach(w=>{w.damage=small[w.damage]||w.damage});}
   if(kind==='Fighter'&&raceId!=='dwarf'){c.name='New '+race.name.toLowerCase()+' fighter';c.gear=[];c.defense.armor=0;c.defense.shield=0;c.defense.dexCap=100;c.defense.checkPenalty=0;c.defense.spellFailure=0;}

@@ -46,7 +46,11 @@ for filename in ['character-classes-i.html','character-classes-ii.html','prestig
   classes.append({'id':cid,'name':plain(h[2]),'kind':'Core' if cid in core else 'Psionic' if cid in psi else 'Prestige','hitDie':int(die[1]),'skillPoints':int(skillpoints[1]) if skillpoints else 2,'skills':plain(skills[1]) if skills else '', 'alignment':plain(alignment[1]) if alignment else '', 'requirements':plain(req[1]) if req else '', 'headers':headers[:len(rows[0]['extra'])+6], 'levels':rows,'source':'https://olimot.github.io/srd-v3.5/'+directory+'/'+filename+'#'+cid,'description':plain(body.replace(table,'',1))})
 classes.sort(key=lambda x:({'Core':0,'Psionic':1,'Prestige':2}[x['kind']],x['name']))
 assert len(classes)==39,len(classes)
-(root/'public/data/classes.json').write_text(json.dumps(classes,ensure_ascii=False,separators=(',',':')))
+# Curated supplemental entries are not part of the SRD HTML source.
+existing=json.loads((root/'public/data/classes.json').read_text())
+classes += [c for c in existing if c['id']=='factotum']
+supplemental=json.loads((root/'lib/supplemental-class-data.json').read_text())
+(root/'public/data/classes.json').write_text(json.dumps(classes+supplemental,ensure_ascii=False,separators=(',',':')))
 (root/'lib/class-data.json').write_text(json.dumps([{k:v for k,v in c.items() if k!='description'} for c in classes],ensure_ascii=False,separators=(',',':')))
 powers=[]
 for file in sorted(src.glob('psionic-powers-*.html')):
