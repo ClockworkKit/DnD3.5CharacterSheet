@@ -122,3 +122,18 @@ test('enhancement Intelligence does not grant skill points and restricted specia
   assert.equal(last.costs[skill(archmage,'Craft').id],2);assert.equal(last.costs[skill(archmage,'Spellcraft').id],1);
   assert.equal(last.costs[skill(archmage,'Craft (alchemy)').id],1);assert.equal(last.costs[skill(archmage,'Craft (bookbinding)').id],2);
 });
+
+test('repeated + purchases advance past four ranks while preserving each level budget',async()=>{
+ const {nextSkillPurchase,spendNextSkillPoint}=await import('../lib/skill-points.ts');
+ const c=automatic('Fighter',5),s=skill(c,'Climb');let key=hitDieSequence(c)[0].key;
+ for(let n=1;n<=8;n++){edit(c,c=>{key=spendNextSkillPoint(c,key,s.id)});assert.equal(s.ranks,n);}
+ const rows=skillLedger(c).levels;assert.deepEqual(rows.map(r=>r.spent),[4,1,1,1,1]);assert.ok(rows.every(r=>r.remaining>=0));assert.equal(nextSkillPurchase(rows,key,s.id),undefined);assert.throws(()=>spendNextSkillPoint(c,key,s.id));assert.equal(skillLedger(c).warnings.length,0);
+});
+test('continued purchases keep cross-class half ranks and maximum limits',async()=>{
+ const {spendNextSkillPoint}=await import('../lib/skill-points.ts');const c=automatic('Fighter',5),s=skill(c,'Bluff');let key=hitDieSequence(c)[0].key;
+ for(let n=0;n<8;n++)edit(c,c=>{key=spendNextSkillPoint(c,key,s.id)});
+ assert.equal(s.ranks,4);assert.throws(()=>spendNextSkillPoint(c,key,s.id));assert.equal(skillLedger(c).spent,8);
+});
+test('continuation uses the advancing class cost and skips exhausted budgets',async()=>{
+ const {spendNextSkillPoint}=await import('../lib/skill-points.ts');const c=automatic('Rogue',1);edit(c,c=>addClass(c,'Fighter',2));const s=skill(c,'Bluff'),rows=hitDieSequence(c);edit(c,c=>setSkillPoints(c,rows[0].key,s.id,4));edit(c,c=>{c.automation.history.find(h=>h.key===rows[1].key).skillPoints=0});let key;edit(c,c=>{key=spendNextSkillPoint(c,rows[0].key,s.id)});assert.equal(key,rows[2].key);assert.equal(s.ranks,4.5);assert.equal(skillLedger(c).levels[2].spent,1);
+});
