@@ -8,7 +8,7 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
 - Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.
 - Abilities, combat, the complete core skill list, custom specialties, equipment, feats, daily resources, and campaign notes.
-- 606 SRD spells, 110 SRD feats, 286 psionic powers, 16 base classes (11 core, 4 psionic, and Factotum), 24 prestige classes, and 35 races.
+- 606 SRD spells, 110 SRD feats, 286 psionic powers, 50 base classes (11 core, 4 SRD psionic, Factotum, and 34 supplemental), 24 prestige classes, and 35 races.
 - Searchable references, separate casting traditions, prepared copies, spontaneous slots, domain pools, custom spells and powers, and daily reset.
 - Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 - Skill-point purchases by character level, automatic class/cross-class costs, rank limits, and refunds.
@@ -96,8 +96,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 94 automated tests cover character creation and ability rolls, all 560 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
-The 89 automated tests cover character creation and ability rolls, all 560 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; the owner has confirmed actual Roll20 delivery. Detailed roll-type and cross-browser acceptance checks remain documented separately.
+The automated tests cover character creation and ability rolls, all 1,750 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; the owner has confirmed actual Roll20 delivery. Detailed roll-type and cross-browser acceptance checks remain documented separately.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 
@@ -134,6 +133,12 @@ Axe Brother of Clangeddin is a campaign cleric specialty, retaining normal 3.5 c
 
 ### Advancement reminders
 
-A reminder above the sheet tabs lists earned ability increases and unrecorded general, human, fighter, wizard, and psionic bonus-feat selections. It updates when recorded levels change. Expand it to apply an earned +1 to a base ability, acknowledge an increase already included in an existing character, or associate a recorded feat with its selection. Add feats in the Feats tab first; prerequisites and restricted bonus-feat lists still require player/DM review. Other class-granted feats follow their class references.
+A reminder above the sheet tabs lists earned ability increases and unrecorded general, human, fighter, wizard, and psionic bonus-feat selections. It updates when recorded levels change. Expand it to apply an earned +1 to a base ability, acknowledge an increase already included in an existing character, or associate a recorded feat with its selection. Add feats in the Feats tab first; prerequisites and restricted bonus-feat lists still require player/DM review. Supplemental class levels that grant a bonus-feat selection also get reminders. Fixed granted feats and restricted lists still follow their class references.
 
 Choices persist in saves and exports. Old saves start with unrecorded choices: mark existing ability increases as already included to avoid adding them twice. Reducing levels hides unearned reminders while preserving their records; it does not automatically undo changes to base scores. XP alone does not select or add a class level.
+
+### Supplemental class library
+
+The sheet now includes 34 additional base classes from the Complete books, Player’s Handbook II, Heroes of Horror, Miniatures Handbook, Dragon Magic, Tome of Battle, Tome of Magic, Magic of Incarnum, and Eberron. They are available in character creation, Classes, and guided XP level-up. See [Supplemental class support](SUPPLEMENTAL-CLASSES.md) for every class, source, and automation boundary.
+
+Basic progression, skill training, proficiencies, ordinary spell slots, and power-point pools calculate automatically. Invocations, infusions, maneuvers, vestiges, mysteries, utterances, soulmelds, auras, conditional feature bonuses, and supplemental spell/power selection remain player-managed.

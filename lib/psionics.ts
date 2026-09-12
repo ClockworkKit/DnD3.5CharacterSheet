@@ -10,7 +10,7 @@ export function manifestingProblem(c:Character,p:Psionic,k:Psionic['powers'][num
  if(c.automation.enabled){
   if(effectiveScore(c,p.ability)<10+k.level)return p.ability+' is too low to manifest this power level.';
   const d=manifestDefinition(p),progression=psionicProgression(c,p).progression;
-  const highest=d?.levels.find(r=>r.level===Math.min(progression,d.levels.length))?.powerLevel;
+  const highest=d?.id==='ardent'?Math.min(9,Math.floor((p.level+1)/2)):d?.levels.find(r=>r.level===Math.min(progression,d.levels.length))?.powerLevel;
   if(p.manifesting?.automatic&&d&&(highest===undefined||k.level>highest))return 'This tradition cannot manifest that power level yet.';
  }
  if(k.cost<2*k.level-1)return 'The cost is below the base cost for this power level.';
