@@ -12,12 +12,13 @@ import {F,N,Choice,Btn} from './sheet-ui';
 export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boolean,onOpenChange:(open:boolean)=>void,busy:boolean,onCreate:(character:Character)=>Promise<boolean>}){
   const [name,setName]=useState(''),[kind,setKind]=useState('Fighter'),[raceId,setRaceId]=useState('human'),[level,setLevel]=useState(1);
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
+  const [hpMethod,setHpMethod]=useState<'average'|'maximum'>('average'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
   const [error,setError]=useState(''),[creating,setCreating]=useState(false);
   const ready=method==='manual'||rolls.length===6,scores=method==='manual'||!ready?manual:assignedScores(rolls,assignment),totals=startingAbilityScores(scores,raceId),race=findRace(raceId);
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
   async function create(){if(creating||busy||!ready)return;setCreating(true);setError('');try{
-    const character=createPlayerCharacter({name,kind,level,raceId,scores,method,rolls,assignment});
+    const character=createPlayerCharacter({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:kind==='Cleric'?specialty:'none'});
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
   }catch(e){setError(e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
@@ -25,6 +26,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
     <fieldset className="sheet-fieldset" disabled={busy||creating}>
       <F label="Character name" value={name} onChange={setName} placeholder="Your adventurer’s name"/>
       <div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.map(r=>[r.id,r.name])}/><Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/><N label="Starting class level" value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
+      <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={[['average','Maximum first die, then average'],['maximum','Maximum every Hit Die']]}/>{kind==='Cleric'&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
       <section className="creation-abilities" aria-labelledby="starting-abilities"><h3 id="starting-abilities">Ability scores</h3><Choice label="Generation method" value={method} onChange={chooseMethod} options={abilityMethods}/>
         {method!=='manual'&&<><Btn className="primary" onClick={rollScores}><Dices size={18}/>{rolls.length?'Reroll all six scores':'Roll six scores'}</Btn><p className="fine creation-hint">{method==='4d6-drop-lowest'?'Roll four six-sided dice for each score and drop one lowest die.':'Roll three six-sided dice for each score and add them together.'} Assign the results to any abilities.</p></>}

@@ -1,6 +1,8 @@
 import {abilityKeys,newCharacter,type Character} from './model.ts';
 import {findRace} from './ancestry.ts';
 import {activateAutomation} from './automation.ts';
+import {applyClericSpecialty} from './cleric-specialty.ts';
+import {recompute} from './automation.ts';
 import {secureDie} from './dice.mjs';
 
 export type AbilityMethod='4d6-drop-lowest'|'3d6'|'manual';
@@ -48,7 +50,7 @@ export function abilityRollRecord(method:AbilityMethod,scores:AbilityScores,roll
   })].join('\n');
 }
 
-export function createPlayerCharacter(options:{name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[]}):Character{
+export function createPlayerCharacter(options:{name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],clericSpecialty?:Character['clericSpecialty']}):Character{
   const {name,kind,level,raceId,scores}=options;
   if(abilityKeys.some(a=>!Number.isInteger(scores[a])||scores[a]<1||scores[a]>100))throw new Error('Enter whole ability scores between 1 and 100.');
   if(!Number.isInteger(level)||level<1||level>20)throw new Error('Choose a starting class level from 1 to 20.');
@@ -63,6 +65,9 @@ export function createPlayerCharacter(options:{name:string,kind:string,level:num
   c.psionics.forEach(tradition=>{tradition.powers=[];tradition.spent=0});
   c.features=c.features.filter(feature=>feature.kind==='Class feature'||feature.kind==='Racial trait');
   c.features.forEach(feature=>feature.used=0);c.notes=record;c.hp=c.maxHp;
-  activateAutomation(c,false);c.hp=c.maxHp;
+  activateAutomation(c,false);
+  if(options.hpMethod){c.automation.hpMethod=options.hpMethod;recompute(c);}
+  if(options.clericSpecialty&&kind==='Cleric')applyClericSpecialty(c,options.clericSpecialty);
+  c.hp=c.maxHp;
   return c;
 }

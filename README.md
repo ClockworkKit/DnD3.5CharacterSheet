@@ -8,7 +8,7 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
 - Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.
 - Abilities, combat, the complete core skill list, custom specialties, equipment, feats, daily resources, and campaign notes.
-- 606 SRD spells, 110 SRD feats, 286 psionic powers, 15 base classes (11 core and 4 psionic), 24 prestige classes, and 35 races.
+- 606 SRD spells, 110 SRD feats, 286 psionic powers, 16 base classes (11 core, 4 psionic, and Factotum), 24 prestige classes, and 35 races.
 - Searchable references, separate casting traditions, prepared copies, spontaneous slots, domain pools, custom spells and powers, and daily reset.
 - Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 - Skill-point purchases by character level, automatic class/cross-class costs, rank limits, and refunds.
@@ -96,7 +96,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 84 automated tests cover character creation and ability rolls, all 525 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
+The 89 automated tests cover character creation and ability rolls, all 560 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 
@@ -122,3 +122,11 @@ python scripts/import-equipment.py /path/to/equipment-source
 ```
 
 Run the class importer after the base spell importer to restore prestige spell-list levels. Each script names its required source files. The Blackguard list's older “Protection from Elements” name maps to “Protection from Energy”; Corrupt Weapon uses the source's reversed Bless Weapon effects.
+
+### Additional character options
+
+Choose maximum HP for every Hit Die during character creation or from the Sheet’s Hit points section (with automatic calculations enabled). Calculations retains average, maximum, and recorded-roll methods.
+
+Factotum includes normal Dungeonscape progression, all class skills, inspiration tracking, daily Cunning Knowledge/Piety/Dodge uses, and Arcane Dilettante choices and spell cards. Brains over Brawn and Improved Cunning Defense calculate automatically. One-roll and target-specific features need manual application; record Cunning Brilliance choices and individual daily uses in class notes. Encounter resets preserve spent daily spells; daily resets clear Dilettante choices for selection after rest.
+
+Axe Brother of Clangeddin is a campaign cleric specialty, retaining normal 3.5 cleric progression and domain choices. Choose it during creation or in Classes to add Silverbeard as a first-level cleric spell, then prepare it normally. Casting activates its timed +2 sacred AC effect; select dwarf under Target ancestry for its conditional +2 Diplomacy bonus.

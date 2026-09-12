@@ -18,7 +18,7 @@ const feat=(c,name,choice)=>c.features.push({id:uid(),name,choice,kind:'Feat',de
 const effect=(c,id)=>{addEffect(c,id);return c.effects.find(e=>e.preset===id);};
 const known=(level=1)=>({id:uid(),spellId:'custom',level,slotLevel:level,prepared:1,spent:0,formula:'',notes:'',custom:null});
 
-test('all 525 base-class/race combinations remain valid and stable with automation enabled',()=>{
+test('all 560 base-class/race combinations remain valid and stable with automation enabled',()=>{
  for(const race of raceCatalog)for(const def of baseClasses){
   const c=automatic(def.name,3,race.id);
   assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c,def.name+' '+race.name);

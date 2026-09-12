@@ -1,8 +1,8 @@
 import raw from './class-data.json' with {type:'json'};
 import {racialHDProgression} from './ancestry.ts';
 import type {Character,ClassLevel,Caster,Psionic} from './model.ts';
-export type ClassRow={level:number,bab:number,fort:number,ref:number,will:number,special:string,extra:string[],slots?:Array<number|null>,powerPoints?:number,powersKnown?:number,powerLevel?:number};
-export type ClassDefinition={id:string,name:string,kind:'Core'|'Psionic'|'Prestige',hitDie:number,skillPoints:number,skills:string,alignment:string,requirements:string,headers:string[],levels:ClassRow[],source:string,description?:string};
+export type ClassRow={level:number,bab:number,fort:number,ref:number,will:number,special:string,extra:string[],slots?:Array<number|null>,powerPoints?:number,powersKnown?:number,powerLevel?:number,inspiration?:number,dilettanteLevel?:number};
+export type ClassDefinition={id:string,name:string,kind:'Core'|'Psionic'|'Prestige'|'Supplemental',hitDie:number,skillPoints:number,skills:string,alignment:string,requirements:string,headers:string[],levels:ClassRow[],source:string,description?:string};
 export const classCatalog=raw as ClassDefinition[];
 export const baseClasses=classCatalog.filter(c=>c.kind!=='Prestige');
 export const findClass=(idOrName:string)=>classCatalog.find(c=>c.id===idOrName||c.name.toLowerCase()===idOrName.toLowerCase());
@@ -16,6 +16,7 @@ export function isClassSkill(name:string,definitions:ClassDefinition[]){
  if(!base)return false;
  const specialty=normalized.match(/\(([^)]+)\)/)?.[1].trim();
  return definitions.some(d=>{
+  if(d.id==='factotum')return true;
   const text=d.skills.toLowerCase().replace(/\bhandle animals\b/g,'handle animal');
   if(['knowledge','craft','perform','profession'].includes(base)){
    const entries=[...text.matchAll(new RegExp('\\b'+base+'\\s*\\(([^)]+)\\)','g'))];
@@ -34,7 +35,7 @@ export function applyStartingClass(c:Character,kind:string,level:number){const d
  c.classLevels=[{id:crypto.randomUUID(),classId:def.id,name:def.name,level,notes:''}];c.psionics=[];c.casters=[];c.features=[];
  if(def.id!=='fighter'){
   const spreads:Record<string,number[]>={barbarian:[16,12,14,10,10,8],bard:[10,14,12,12,10,16],cleric:[10,12,14,12,16,10],druid:[10,12,14,10,16,8],monk:[14,14,12,10,16,8],paladin:[16,10,12,8,14,14],ranger:[14,16,12,10,14,8],rogue:[10,16,12,14,10,12],sorcerer:[10,12,14,12,10,16],wizard:[10,12,14,16,10,10],psion:[8,12,14,16,10,12],'psychic-warrior':[16,12,14,10,16,8],soulknife:[16,14,14,10,12,8],wilder:[10,12,14,10,12,16]};
-  const [STR,DEX,CON,INT,WIS,CHA]=spreads[def.id];c.scores={STR,DEX,CON,INT,WIS,CHA};c.race='Human';c.languages='Common';c.speed=def.id==='barbarian'?40:def.id==='monk'?30+Math.floor(level/3)*10:30;c.gear=[];c.defense={armor:0,shield:0,natural:0,deflection:0,dodge:0,misc:def.id==='monk'?Math.floor((WIS-10)/2)+Math.floor(level/5):0,dexCap:100,checkPenalty:0,spellFailure:0,sr:0,dr:'',resistances:''};
+  const [STR,DEX,CON,INT,WIS,CHA]=(spreads[def.id]||[10,14,12,16,10,10]);c.scores={STR,DEX,CON,INT,WIS,CHA};c.race='Human';c.languages='Common';c.speed=def.id==='barbarian'?40:def.id==='monk'?30+Math.floor(level/3)*10:30;c.gear=[];c.defense={armor:0,shield:0,natural:0,deflection:0,dodge:0,misc:def.id==='monk'?Math.floor((WIS-10)/2)+Math.floor(level/5):0,dexCap:100,checkPenalty:0,spellFailure:0,sr:0,dr:'',resistances:''};
   const w=c.weapons[0];w.name=def.id==='monk'?'Unarmed strike':def.id==='soulknife'?'Mind blade':def.id==='barbarian'?'Greataxe':def.id==='paladin'?'Longsword':def.id==='ranger'?'Longbow':def.id==='rogue'||def.id==='bard'?'Short sword':'Quarterstaff';w.damage=def.id==='barbarian'?'1d12':def.id==='paladin'||def.id==='ranger'?'1d8':def.id==='monk'?(level<4?'1d6':level<8?'1d8':level<12?'1d10':level<16?'2d6':level<20?'2d8':'2d10'):'1d6';w.crit=def.id==='barbarian'||def.id==='ranger'?'20 / ×3':def.id==='paladin'||def.id==='rogue'||def.id==='bard'||def.id==='soulknife'?'19–20 / ×2':'20 / ×2';w.ability=def.id==='ranger'?'DEX':'STR';w.damageAbility=def.id==='ranger'?'none':'STR';w.strength=def.id==='barbarian'?'two':'one';w.range=def.id==='ranger'?'110 ft.':'Melee';
   if(def.id==='paladin')c.saves.fort.misc=c.saves.ref.misc=c.saves.will.misc=level>=2?Math.max(0,Math.floor((CHA-10)/2)):0;
  }
