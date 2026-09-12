@@ -96,7 +96,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 89 automated tests cover character creation and ability rolls, all 560 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
+The 94 automated tests cover character creation and ability rolls, all 560 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 
@@ -130,3 +130,9 @@ Choose maximum HP for every Hit Die during character creation or from the Sheetâ
 Factotum includes normal Dungeonscape progression, all class skills, inspiration tracking, daily Cunning Knowledge/Piety/Dodge uses, and Arcane Dilettante choices and spell cards. Brains over Brawn and Improved Cunning Defense calculate automatically. One-roll and target-specific features need manual application; record Cunning Brilliance choices and individual daily uses in class notes. Encounter resets preserve spent daily spells; daily resets clear Dilettante choices for selection after rest.
 
 Axe Brother of Clangeddin is a campaign cleric specialty, retaining normal 3.5 cleric progression and domain choices. Choose it during creation or in Classes to add Silverbeard as a first-level cleric spell, then prepare it normally. Casting activates its timed +2 sacred AC effect; select dwarf under Target ancestry for its conditional +2 Diplomacy bonus.
+
+### Advancement reminders
+
+A reminder above the sheet tabs lists earned ability increases and unrecorded general, human, fighter, wizard, and psionic bonus-feat selections. It updates when recorded levels change. Expand it to apply an earned +1 to a base ability, acknowledge an increase already included in an existing character, or associate a recorded feat with its selection. Add feats in the Feats tab first; prerequisites and restricted bonus-feat lists still require player/DM review. Other class-granted feats follow their class references.
+
+Choices persist in saves and exports. Old saves start with unrecorded choices: mark existing ability increases as already included to avoid adding them twice. Reducing levels hides unearned reminders while preserving their records; it does not automatically undo changes to base scores. XP alone does not select or add a class level.
