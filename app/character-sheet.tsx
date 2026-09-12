@@ -1,5 +1,6 @@
 'use client';
 import {useState,useEffect,useRef,useCallback} from 'react';
+import {LevelUp} from './level-up';
 import {AdvancementReminders} from './advancement-reminders';
 import {Tabs,TabsList,TabsTrigger,TabsContent} from '@/components/ui/tabs';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
@@ -87,6 +88,7 @@ export default function CharacterSheet(){
  {!loaded?<div className="loading-sheet"><Skeleton className="h-16 w-3/4"/><Skeleton className="h-44 w-full"/><Skeleton className="h-80 w-full"/></div>:c&&t&&props?<fieldset disabled={switching} className="sheet-fieldset">
  <div className="sheet-rule"><span>CHARACTER RECORD</span><span>LEVEL {c.level}</span></div>
  <div className="identity"><div className="identity-main"><F className="character-name" label="Character name" value={c.name} onChange={v=>edit(d=>{d.name=v})}/><p className="character-subtitle">{c.race} · {c.classes}</p></div><div className="character-seal"><strong>{t.ac}</strong><small>ARMOR CLASS</small></div></div>
+ <LevelUp c={c} edit={edit} navigate={setTab}/>
  <div className="quick-vitals"><span><b>{c.hp}</b> / {c.maxHp} HP</span><span>Touch <b>{t.touch}</b></span><span>Flat-footed <b>{t.flat}</b></span><span><b>{c.speed}</b> ft.</span></div>
  <AdvancementReminders c={c} edit={edit} openFeats={()=>setTab('features')}/>
  <Tabs value={tab} onValueChange={setTab}><TabsList className="sheet-tabs">{[['overview','Sheet',Shield],['race','Race',Feather],['classes','Classes',ScrollText],['combat','Combat',Swords],['skills','Skills',Dices],['spells','Spells',BookOpen],['powers','Powers',BookOpen],['gear','Gear',Backpack],['features','Feats',ScrollText],['calculations','Calculations',Dices],['notes','Notes',Feather]].map(([value,label,Icon])=>{const Glyph=Icon as typeof Shield;return <TabsTrigger key={String(value)} value={String(value)}><Glyph size={16}/>{String(label)}</TabsTrigger>})}</TabsList>
