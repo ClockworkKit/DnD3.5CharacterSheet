@@ -1,6 +1,10 @@
-# Character creation and ability rolling — September 10, 2026
+# Pages verification and import validation — September 12, 2026
 
 Barrow Ledger is the D&D 3.5 character sheet built with Astra for ClockworkKit, maintained in `ClockworkKit/DnD3.5CharacterSheet`.
+
+## Latest verification
+
+The live Pages edition was walked through on September 12. Creation, saves, backup round trips, themes, skill purchases, HP recalculation, and missing-extension behavior were checked. This branch fixes import format/version validation and adds three regression tests: all 84 tests, TypeScript, and the Pages build pass. The patched local browser preview was blocked; actual Roll20 delivery remains unverified. See [PAGES-VERIFICATION.md](PAGES-VERIFICATION.md) for evidence and limits.
 
 ## Completed
 
@@ -18,18 +22,18 @@ The finishing changes correct bonus stacking, conflicting-effect reactivation, e
 
 See [README.md](README.md) for the supported rules and choices that still require player or DM input. This is not an exhaustive implementation of every published 3.5 exception.
 
-## Validation
+## Previous update validation (September 10)
 
 - All 81 automated tests pass, including 7 character-creation tests, 9 skill-training tests, 16 calculation tests, and 5 browser-storage tests. Creation and calculation checks exercise all 525 base-class/race combinations for validation, import/export, racial score previews, and repeat-calculation stability.
 - The suite also covers legacy sheets, character persistence, ownership isolation, revision conflicts, request validation, dice parsing, and Beyond20 message handling.
 - TypeScript checking and the Pages production build passed. Static asset paths and all five reference catalogs were verified for the repository URL. The Sites production build also passed, preserving the original edition.
-- No browser walkthrough or live Roll20 delivery test was performed.
+- At that update, no browser walkthrough or live Roll20 delivery test had been performed. The September 12 walkthrough and remaining gaps are recorded above.
 
 ## GitHub Pages build
 
 The new standalone build reuses the same character sheet and calculation engine. It saves characters in browser storage with validation, revision conflict checks, atomic writes under Web Locks, and explicit error messages when storage is blocked or full. Existing import/export files remain compatible. The original Sites edition retains its authenticated server API.
 
-The public repository has Pages enabled. The latest verified deployment before this update published the skill-training and theme changes (`a10ed45`). Pushes to `master` now verify, build, and deploy the static site through GitHub Actions. See GITHUB-PAGES.md for the hosting setup.
+The public repository has Pages enabled. The latest verified deployment published character creation (`038c8a8`); the September 12 import fix awaits PR review and deployment. Pushes to `master` now verify, build, and deploy the static site through GitHub Actions. See GITHUB-PAGES.md for the hosting setup.
 
 ## Publication and runtime
 

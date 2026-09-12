@@ -96,7 +96,7 @@ npm run build
 
 In a Sites workspace, run production builds with the installed Sites `scripts/build-site.mjs` helper. `npm test` also builds before running the tests.
 
-The 81 automated tests cover character creation and ability rolls, all 525 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. No browser walkthrough was performed for this update.
+The 84 automated tests cover character creation and ability rolls, all 525 base-class/race combinations with automation enabled, skill-point purchases and refunds, multiclass training, historical Intelligence, old ranks, export/import, legacy characters, dice parsing, reference data, Beyond20 message safety, the character API against SQLite, and browser-save conflicts and storage failures. A desktop Chrome walkthrough of the live Pages edition was completed on September 12, 2026. See [Pages verification](PAGES-VERIFICATION.md) for results, the import validation fix, and remaining acceptance checks; actual Roll20 receipt remains unverified.
 
 The API uses the authenticated identity supplied by Sites and includes the owner key in database queries. Writes require same-origin JSON; updates and deletes require the current revision. Failed saves retain edits and offer retry, export backup, and save-as-new. Character switching flushes pending edits before loading another character.
 
