@@ -67,6 +67,7 @@ function DialogContent({
         {...props}
       >
         {children}
+        {showCloseButton && <div className="dialog-close-footer"><DialogPrimitive.Close className="dialog-close-action">Close</DialogPrimitive.Close></div>}
         {showCloseButton && (
           <DialogPrimitive.Close
             data-slot="dialog-close"

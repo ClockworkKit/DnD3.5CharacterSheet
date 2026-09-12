@@ -16,6 +16,7 @@ export function classAbilityBonus(c:Character,a:string){if(!c.automation.enabled
 const m=(target:string,type:Modifier['type'],value:string,when=''):Modifier=>({target,type,value,when});
 type Preset={id:string,name:string,notes:string,modifiers:Modifier[]};
 export const effectPresets:Preset[]=[
+ {id:'silverbeard',name:'Silverbeard',notes:'+2 sacred AC; +2 circumstance Diplomacy with dwarves. Choose dwarf as the target race for that check. Duration: 1 minute/level.',modifiers:[m('ac.misc','sacred','2'),m('skill.Diplomacy','circumstance','2','targetRace=dwarf')]},
  {id:'bless',name:'Bless',notes:'+1 morale to attacks and saves against fear.',modifiers:[m('attack','morale','1'),m('saves','morale','1','saveAgainst=fear')]},
  {id:'divine-favor',name:'Divine favor',notes:'Luck bonus to weapon attacks and damage, maximum +3.',modifiers:[m('attack','luck','min(3,max(1,floor(CL/3)))'),m('damage','luck','min(3,max(1,floor(CL/3)))')]},
  {id:'mage-armor',name:'Mage armor',notes:'Armor bonus; does not stack with worn armor.',modifiers:[m('ac.armor','armor','4')]},

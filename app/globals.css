@@ -222,3 +222,10 @@
 .creation-score-total span{font-size:.875rem}.creation-score .fine{margin-top:.4rem}
 .creation-actions{display:flex;flex-wrap:wrap;justify-content:flex-end;gap:.75rem;margin-top:1.25rem}
 @media(max-width:620px){.generation-rolls{grid-template-columns:repeat(3,minmax(0,1fr))}.creation-score-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:.5rem}.creation-score-total{align-items:start;flex-direction:column;gap:.15rem}.ledger-empty{min-height:19rem}.ledger-empty h1{font-size:1.65rem}.creation-actions>.ledger-button{flex:1}}
+
+/* Keep dropdown scrolling inside its viewport, including nested modal menus. */
+[data-slot=select-content]{max-height:min(22rem,var(--radix-select-content-available-height,70dvh));z-index:70}
+[data-slot=select-viewport]{max-height:min(20rem,calc(var(--radix-select-content-available-height,70dvh) - 3rem));overflow-y:auto!important;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin}
+.dialog-close-footer{position:sticky;bottom:-1.5rem;z-index:2;display:flex;justify-content:flex-end;background:var(--paper-light,var(--background));border-top:1px solid var(--rule,var(--border));padding:.65rem 0;margin-top:.5rem}
+.dialog-close-action{min-height:44px;padding:.5rem 1.25rem;border:1px solid var(--rule,var(--border));border-radius:3px;background:var(--paper-light,var(--background));color:var(--ink,var(--foreground));font-weight:600}
+@media(max-width:620px){.dialog-close-footer{bottom:-1.2rem}}

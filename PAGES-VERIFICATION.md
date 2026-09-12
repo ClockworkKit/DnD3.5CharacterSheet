@@ -54,3 +54,9 @@ These require another browser environment or a connected tabletop. Do not label 
 5. Repeat backup recovery in a second browser profile/device and test blocked/full storage. The existing storage tests cover these failures at the API layer; they were not forced in this browser walkthrough. Mobile layouts, Firefox/Safari, deletion, and the original Sites-to-Pages migration were not tested here.
 
 The bridge follows [Beyond20's documented DOM/custom-site API](https://beyond20.here-for-more.info/api#integrating-with-beyond20). Its synthetic event tests validate request shape and detection gating, not live delivery.
+
+## Follow-up: character options and scrolling
+
+The follow-up branch adds bounded dropdown viewports, sticky dialog Close footers, maximum-HP controls, Factotum, and the Axe Brother cleric specialty. Automated checks cover maximum HP and damage preservation, Factotum progression/resources/spell limits, Silverbeard effects and unchanged cleric slots, and legacy/new save round trips.
+
+The changed visual behavior still requires a deployed-browser check: the available browser rejected the local preview with `ERR_BLOCKED_BY_CLIENT`. On the deployed update, verify dropdown wheel/touch/keyboard scrolling and Close-footer reachability in long class, spell, and equipment dialogs at desktop and mobile widths, in every theme. Verify Factotum spell-card receipt in Roll20 with Beyond20; actual external receipt remains unverified. The existing live walkthrough above predates this follow-up.
