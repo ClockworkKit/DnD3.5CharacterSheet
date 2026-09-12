@@ -231,3 +231,4 @@
 @media(max-width:620px){.dialog-close-footer{bottom:-1.2rem}}
 
 .level-up-notice{margin:0 0 1rem;padding:1rem;border:2px solid var(--red);background:var(--paper-light)}.level-up-notice h2{color:var(--red);font-family:var(--serif);font-size:1.4rem}.level-up-notice p{margin:.5rem 0}
+.advancement-reminders{margin:0 0 1rem;border:1px solid var(--rule);padding:.8rem;background:var(--paper-light)}.advancement-reminders>summary{cursor:pointer;font-weight:600;color:var(--red);min-height:44px}.advancement-reminders>.fine{margin:.6rem 0}

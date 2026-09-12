@@ -60,3 +60,34 @@ The bridge follows [Beyond20's documented DOM/custom-site API](https://beyond20.
 The follow-up branch adds bounded dropdown viewports, sticky dialog Close footers, maximum-HP controls, Factotum, and the Axe Brother cleric specialty. Automated checks cover maximum HP and damage preservation, Factotum progression/resources/spell limits, Silverbeard effects and unchanged cleric slots, and legacy/new save round trips.
 
 The changed visual behavior still requires a deployed-browser check: the available browser rejected the local preview with `ERR_BLOCKED_BY_CLIENT`. On the deployed update, verify dropdown wheel/touch/keyboard scrolling and Close-footer reachability in long class, spell, and equipment dialogs at desktop and mobile widths, in every theme. Verify Factotum spell-card receipt in Roll20 with Beyond20; actual external receipt remains unverified. The existing live walkthrough above predates this follow-up.
+
+## Live verification after PR #2 — September 12, 2026
+
+Tested the deployed Pages edition from merge `5c7aa9e9335324403a63b664b85f9f40c971c6ed` in desktop Chrome. The production workflow passed all 89 tests, TypeScript, and the Pages build. These results supersede the local-preview limitation above for the desktop checks listed here.
+
+| Check | Observed result |
+| --- | --- |
+| Live app | Loaded the character sheet at the canonical Pages URL; existing QA browser saves opened. |
+| Rolled creation | Created a fifth-level Axe Brother cleric using 4d6/drop-lowest; all six rolls and dropped dice were visible. |
+| Maximum HP | With CON 11, the fifth-level cleric received 40/40 HP and 5d8. |
+| Cleric specialty | Silverbeard appeared as level 1; normal cleric spell slots remained available. |
+| Casting and persistence | Preparing and casting Silverbeard spent one copy and raised AC 11 → 13. Save/reload retained the effect and spent copy. |
+| Export/import | Downloaded the actual JSON export, checked specialty/HP/preparation/spent data, and imported it successfully. |
+| Invalid import | A wrong-format fixture displayed “This file is not a Barrow Ledger character export.” The open Factotum remained unchanged. |
+| Themes | Switched among Parchment, Amethyst, and Classic. Amethyst selection survived reload; its character-name field computed to light text on the dark sheet. |
+| Dropdown wheel | Spell class/domain viewport scrolled from 0 to 570 pixels while remaining bounded. |
+| Dropdown keyboard | End focused Factotum at the bottom of the starting-class list; Enter selected it successfully. |
+| Long dialog Close | Cleric reference scrolled from 0 to its 596-pixel maximum; the 44-pixel footer Close remained within the viewport and dismissed the dialog. Nested spell-reference footer dismissal also passed. |
+| Factotum | Created level 4 with INT 18: BAB +3, saves +1/+4/+1, 3 inspiration, 2 daily spell choices. |
+| Factotum daily limits | Using Magic Missile in practice mode spent 1 inspiration and disabled further use. Encounter reset restored inspiration but preserved the spent spell; save/reload preserved both states. |
+| Roll20 delivery | Owner explicitly confirmed actual Roll20 delivery works. This is user-verified; the cloud test browser lacks Beyond20, so the walkthrough used practice mode. |
+
+### README deployment diagnosis
+
+The same merge launched two successful publishers: [automatic Jekyll run](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/runs/34697709399) and [app workflow](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/runs/34697709855). Jekyll finished around 13:54:42 UTC; the app followed around 13:55:03 UTC. This is consistent with the reported temporary README page. The app was live throughout this walkthrough.
+
+The repository owner needs to confirm **Settings → Pages → Source: GitHub Actions** to eliminate the competing branch publisher. The connected GitHub tools cannot change this administration setting. See GITHUB-PAGES.md for recovery steps. No source or workflow change is needed to build the application correctly.
+
+### Still outside this verification
+
+Mobile/touch layouts, Firefox/Safari, cross-device recovery, and the complete Roll20 matrix (individual attack/damage, whispers, and the newly added Factotum card) were not independently checked. The owner's general delivery confirmation does not imply that each of those cases was exercised. Desktop testing found no additional application defect requiring a code patch.

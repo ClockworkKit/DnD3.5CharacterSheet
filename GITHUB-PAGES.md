@@ -14,7 +14,15 @@ The Pages edition has the same character sheet, reference libraries, automatic c
 2. Open [the Pages workflow](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/workflows/pages.yml). Select **Run workflow**, keep `master`, and run it.
 3. Wait for both the build and deployment to succeed. GitHub displays the published website link in the deployment and Pages settings.
 
-The current repository has already completed these steps. Subsequent pushes to `master` deploy automatically while Pages remains enabled. A push with Pages disabled builds and packages the site without deploying it.
+Confirm that Source is **GitHub Actions**, even if a previous deployment succeeded. Subsequent pushes to `master` deploy automatically while Pages remains enabled. A push with Pages disabled builds and packages the site without deploying it.
+
+## If the website shows the README
+
+Set **Settings → Pages → Build and deployment → Source** to **GitHub Actions**, then run the existing Pages workflow on `master`. Do not choose “Deploy from a branch” for this application: the repository root contains source code and a README; the usable app is built into `dist-pages/` by the custom workflow.
+
+On September 12, 2026, merge `5c7aa9e` triggered both the automatic Jekyll “pages build and deployment” run and “Publish character sheet to GitHub Pages.” Jekyll published first, then the app published successfully. These competing publishers explain why the README can appear temporarily or replace the application. A successful app deployment alone does not establish that the publishing source is correct.
+
+After selecting GitHub Actions, future merges should use the custom workflow alone. If your browser still shows the README after the app deployment finishes, reload the page; do not clear site data, since that would remove browser-saved characters.
 
 ## Bring your characters
 

@@ -1,6 +1,7 @@
 'use client';
 import {useState,useEffect,useRef,useCallback} from 'react';
 import {LevelUp} from './level-up';
+import {AdvancementReminders} from './advancement-reminders';
 import {Tabs,TabsList,TabsTrigger,TabsContent} from '@/components/ui/tabs';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {AlertDialog,AlertDialogContent,AlertDialogHeader,AlertDialogTitle,AlertDialogDescription,AlertDialogFooter,AlertDialogCancel,AlertDialogAction} from '@/components/ui/alert-dialog';
@@ -89,6 +90,7 @@ export default function CharacterSheet(){
  <div className="identity"><div className="identity-main"><F className="character-name" label="Character name" value={c.name} onChange={v=>edit(d=>{d.name=v})}/><p className="character-subtitle">{c.race} · {c.classes}</p></div><div className="character-seal"><strong>{t.ac}</strong><small>ARMOR CLASS</small></div></div>
  <LevelUp c={c} edit={edit} navigate={setTab}/>
  <div className="quick-vitals"><span><b>{c.hp}</b> / {c.maxHp} HP</span><span>Touch <b>{t.touch}</b></span><span>Flat-footed <b>{t.flat}</b></span><span><b>{c.speed}</b> ft.</span></div>
+ <AdvancementReminders c={c} edit={edit} openFeats={()=>setTab('features')}/>
  <Tabs value={tab} onValueChange={setTab}><TabsList className="sheet-tabs">{[['overview','Sheet',Shield],['race','Race',Feather],['classes','Classes',ScrollText],['combat','Combat',Swords],['skills','Skills',Dices],['spells','Spells',BookOpen],['powers','Powers',BookOpen],['gear','Gear',Backpack],['features','Feats',ScrollText],['calculations','Calculations',Dices],['notes','Notes',Feather]].map(([value,label,Icon])=>{const Glyph=Icon as typeof Shield;return <TabsTrigger key={String(value)} value={String(value)}><Glyph size={16}/>{String(label)}</TabsTrigger>})}</TabsList>
  <TabsContent value="overview"><Overview {...props}/></TabsContent><TabsContent value="race"><Races {...props}/></TabsContent><TabsContent value="classes"><Classes {...props} spells={spells}/></TabsContent><TabsContent value="powers"><Powers {...props}/></TabsContent><TabsContent value="combat"><Combat {...props}/></TabsContent><TabsContent value="skills"><SkillsView {...props}/></TabsContent><TabsContent value="spells"><Spellbook {...props} spells={spells} referenceError={referenceError} retry={()=>setReferenceAttempt(n=>n+1)}/></TabsContent><TabsContent value="gear"><Gear {...props}/></TabsContent><TabsContent value="features"><Features {...props} feats={feats}/>{referenceError&&<div className="error-box">{referenceError}<Btn onClick={()=>setReferenceAttempt(n=>n+1)}>Retry library</Btn></div>}</TabsContent><TabsContent value="calculations"><Calculations {...props}/></TabsContent><TabsContent value="notes"><Notes {...props}/></TabsContent>
  </Tabs><div className="sheet-bottom"><span>BARROW LEDGER</span><span>Keep a good record. Leave a legible corpse.</span></div>
