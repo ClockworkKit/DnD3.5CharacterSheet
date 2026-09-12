@@ -118,3 +118,16 @@ export function removeSkillPurchases(c:Character,id:string) {
   delete c.automation.skillTraining.unassigned[id];
   for(const history of c.automation.history){delete history.skillRanks[id];delete history.skillClassOverrides[id]}
 }
+
+/** Continue a purchase through later training levels without pooling their budgets. */
+export function nextSkillPurchase(levels:ReturnType<typeof skillLedger>['levels'],key:string,id:string) {
+  const start=levels.findIndex(row=>row.key===key);
+  return start<0?undefined:levels.slice(start).find(row=>row.available[id]>=1);
+}
+export function spendNextSkillPoint(c:Character,key:string,id:string) {
+  const row=nextSkillPurchase(skillLedger(c).levels,key,id);
+  if(!row)throw new Error('No remaining points or rank capacity at this or a later level.');
+  const history=c.automation.history.find(h=>h.key===row.key);
+  setSkillPoints(c,row.key,id,(history?.skillRanks[id]||0)*row.costs[id]+1);
+  return row.key;
+}
