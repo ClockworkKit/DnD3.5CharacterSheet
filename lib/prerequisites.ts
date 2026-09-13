@@ -1,3 +1,4 @@
+import {krauBonus} from './racial-abilities.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
 import {newWeapon,uid} from './model.ts';
@@ -35,7 +36,7 @@ function has(c:Character,name:string,choice?:string){
  if(name==='Wild Talent'&&classLevel(c,'soulknife')>0)return true;
  return false;
 }
-function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),classLevel(c,'warlock'),classLevel(c,'dragonfire-adept'),classLevel(c,'shadowcaster'),classLevel(c,'factotum')>=2?classLevel(c,'factotum'):0);}
+function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),(classLevel(c,'warlock')+krauBonus(c,classLevel(c,'warlock'))),(classLevel(c,'dragonfire-adept')+krauBonus(c,classLevel(c,'dragonfire-adept'))),(classLevel(c,'shadowcaster')+krauBonus(c,classLevel(c,'shadowcaster'))),classLevel(c,'factotum')>=2?classLevel(c,'factotum')+krauBonus(c,classLevel(c,'factotum')):0);}
 export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  const q=checker(c,'feat:'+f.id+':'+choice),{check,manual}=q;
  const choices=featChoices(c,f);if(choices.length)check('Select a weapon, skill or school',choices.includes(choice));

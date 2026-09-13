@@ -1,3 +1,4 @@
+import {krauBonus} from './racial-abilities.ts';
 import type {Character, Spell} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
 
@@ -7,7 +8,7 @@ export function factotumNumbers(c:Character) {
   const inspiration=([2,3,3,3,4,4,4,5,5,5,6,6,6,7,7,7,8,8,8,10][index]||0)+(level?c.factotum.inspirationExtra:0);
   const maxSpellLevel=[-1,0,1,1,2,2,2,3,3,4,4,4,5,5,6,6,6,7,7,7][index]??-1;
   const spells=[2,4,7,9,12,14,17,20].filter(n=>level>=n).length;
-  return {level,inspiration,remaining:Math.max(0,inspiration-c.factotum.spent),maxSpellLevel,spells,
+  return {level,casterLevel:level+krauBonus(c,level),inspiration,remaining:Math.max(0,inspiration-c.factotum.spent),maxSpellLevel,spells,
     intelligence:Math.floor((effectiveScore(c,'INT')-10)/2),
     piety:level<5?0:3+Math.max(0,Math.floor((effectiveScore(c,'WIS')-10)/2))+Math.floor(level/5)-1};
 }

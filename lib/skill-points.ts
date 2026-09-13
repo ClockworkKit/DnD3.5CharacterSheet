@@ -6,6 +6,7 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   const override=c.automation.history.find(h=>h.key===row.key)?.skillClassOverrides[skill.id];
   if(override!==undefined)return override;
   if(skill.classSkillOverride!==undefined)return skill.classSkillOverride;
+  if(c.ancestry.raceId==='illumian'&&skill.name==='Speak Language')return true;
   if(row.classId==='racial')return (c.ancestry.raceId==='lizardfolk'?['Balance','Jump','Swim']:c.ancestry.raceId==='gnoll'?['Climb','Listen','Spot']:[]).includes(skill.name);
   const definition=findClass(row.classId);
   return definition?isClassSkill(skill.name,[definition]):skill.classSkill;
