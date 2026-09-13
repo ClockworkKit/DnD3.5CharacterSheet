@@ -67,7 +67,7 @@ The existing catalog contains 50 base classes and 24 prestige classes. This pass
 | Crusader | Maneuver/stance counts, initiator level, ready/granted/expended state; delayed damage settlement; Furious Counterstrike; Indomitable Soul; smite and Zealous Surge counters | Random grants and recovery timing, maneuvers, smite target/effect, mettle |
 | Divine Mind | Existing WIS power points/manifester progression retained | Mantles, psychic auras, aura switching and ranges |
 | Dragon Shaman | Breath damage/DC/recharge roll; aura count; Touch of Vitality healing-point pool | Totem, aura choice/effect, breath energy/shape, immunity and condition removal |
-| Dragonfire Adept | Breath damage/DC; invocation count/equivalent-level ceiling | Breath effects, invocation grades/prerequisites, scales, immunities and resistances |
+| Dragonfire Adept | Breath damage/DC; invocation catalog, grades and known limits | Breath effects, individual invocation effects/prerequisites, scales, immunities and resistances |
 | Dread Necromancer | Fixed-list learning; rebuking and listed daily counters; armored casting | Charnel touch, fear aura, familiar, advanced learning, undead control and transformation |
 | Duskblade | Combat Casting; quick-cast counter; spell list; evolving armor/shield casting exceptions | Arcane channeling, spell power conditions, spells-known selections |
 | Favored Soul | Cleric list alias and spells-known counts | Deity weapon feats, resistance choices, wings, capstone DR |
@@ -90,7 +90,7 @@ The existing catalog contains 50 base classes and 24 prestige classes. This pass
 | Totemist | CON-limited soulmelds, combined essentia, totem capacity/level increases, DC; Totem Embodiment counter | Chakra access, soulmeld effects, rebinding and timed capstone changes |
 | Truenamer | Utterance total, success counter, Evolving Mind DC and Truespeak roll, save DC; Sending counter | Other lexicons, personal truenames, Law of Sequence and individual utterance effects |
 | Warblade | Maneuver/stance limits, initiator level, readiness/recovery; Battle Clarity/Ardor/Cunning/Mastery | Discipline prerequisites, opposed combat checks, maneuver effects and recovery actions |
-| Warlock | Eldritch blast damage/touch attack/SR rolls; invocation limits; fiendish resilience counter; armored casting | Invocation grades, shapes/essences, DR/resistance choices, item-creation abilities |
+| Warlock | Eldritch blast damage/touch attack/SR rolls; invocation catalog, grades and known limits; fiendish resilience counter; armored casting | Individual invocation effects, shapes/essences, DR/resistance choices, item-creation abilities |
 | Warmage | Fixed-list learning; spell list; armored casting including medium armor at 8 | Warmage Edge per-target/per-round application, advanced learning, metamagic selections |
 | Wu Jen | Expanded spell menu and existing INT prepared slots | Elemental mastery, spell secrets, taboos and watchful spirit |
 

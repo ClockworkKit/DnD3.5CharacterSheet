@@ -32,7 +32,7 @@ export const characterSchema = z.object({
   skills:z.array(skillSchema).max(120),weapons:z.array(weaponSchema).max(50),casters:z.array(casterSchema).max(15),
   gear:z.array(z.object({id:ident,name:short,qty:count,weight:z.number().min(0).max(100000),carried:z.boolean(),equipped:z.boolean(),notes:z.string().max(2000),catalogId:short.optional(),enhancement:count.optional(),masterwork:z.boolean().optional(),material:z.enum(['standard','mithral','adamantine']).optional(),proficient:z.boolean().optional(),weaponId:short.optional()})).max(500),
   coins:z.object({cp:count,sp:count,gp:count,pp:count}),coinWeight:z.boolean(),
-  features:z.array(z.object({id:ident,name:short,kind:z.enum(['Feat','Class feature','Racial trait','Other']),description:note,max:count,used:count,source:z.string().max(500),choice:short.optional(),ruleId:short.optional(),formula:z.string().max(200).optional()})).max(250),
+  features:z.array(z.object({id:ident,name:short,kind:z.enum(['Feat','Class feature','Racial trait','Other']),description:note,max:count,used:count,source:z.string().max(500),magic:z.boolean().optional(),choice:short.optional(),ruleId:short.optional(),formula:z.string().max(200).optional()})).max(250),
   conditions:z.string().max(2000),notes:note,background:note,
   automation:automationSchema.default({}),effects:z.array(effectSchema).max(100).default([]),
   classLevels:z.array(classLevelSchema).max(30).default([]),

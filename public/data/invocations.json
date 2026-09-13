@@ -1,0 +1,1046 @@
+[
+  {
+    "id": "dragonfire-adept:aquatic-adaptation",
+    "name": "Aquatic Adaptation",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#AQUATIC%20ADAPTATION"
+  },
+  {
+    "id": "dragonfire-adept:aura-of-flame",
+    "name": "Aura of Flame",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#AURA%20OF%20FLAME"
+  },
+  {
+    "id": "dragonfire-adept:baleful-geas",
+    "name": "Baleful Geas",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#BALEFUL%20GEAS"
+  },
+  {
+    "id": "dragonfire-adept:beguiling-influence",
+    "name": "Beguiling Influence",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#BEGUILING%20INFLUENCE"
+  },
+  {
+    "id": "dragonfire-adept:breath-of-the-night",
+    "name": "Breath of the Night",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 1,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#BREATH%20OF%20THE%20NIGHT"
+  },
+  {
+    "id": "dragonfire-adept:charm",
+    "name": "Charm",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#CHARM"
+  },
+  {
+    "id": "dragonfire-adept:chilling-fog",
+    "name": "Chilling Fog",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#CHILLING%20FOG"
+  },
+  {
+    "id": "dragonfire-adept:darkness",
+    "name": "Darkness",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DARKNESS"
+  },
+  {
+    "id": "dragonfire-adept:deafening-roar",
+    "name": "Deafening Roar",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DEAFENING%20ROAR"
+  },
+  {
+    "id": "dragonfire-adept:devour-magic",
+    "name": "Devour Magic",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DEVOUR%20MAGIC"
+  },
+  {
+    "id": "dragonfire-adept:draconic-flight",
+    "name": "Draconic Flight",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DRACONIC%20FLIGHT"
+  },
+  {
+    "id": "dragonfire-adept:draconic-flight-greater",
+    "name": "Draconic Flight, Greater",
+    "classId": "dragonfire-adept",
+    "grade": "dark",
+    "level": 7,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DRACONIC%20FLIGHT%2C%20GREATER"
+  },
+  {
+    "id": "dragonfire-adept:draconic-knowledge",
+    "name": "Draconic Knowledge",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DRACONIC%20KNOWLEDGE"
+  },
+  {
+    "id": "dragonfire-adept:draconic-toughness",
+    "name": "Draconic Toughness",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DRACONIC%20TOUGHNESS"
+  },
+  {
+    "id": "dragonfire-adept:endure-exposure",
+    "name": "Endure Exposure",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ENDURE%20EXPOSURE"
+  },
+  {
+    "id": "dragonfire-adept:energy-immunity",
+    "name": "Energy Immunity",
+    "classId": "dragonfire-adept",
+    "grade": "dark",
+    "level": 8,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ENERGY%20IMMUNITY"
+  },
+  {
+    "id": "dragonfire-adept:energy-resistance",
+    "name": "Energy Resistance",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ENERGY%20RESISTANCE"
+  },
+  {
+    "id": "dragonfire-adept:enthralling-voice",
+    "name": "Enthralling Voice",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ENTHRALLING%20VOICE"
+  },
+  {
+    "id": "dragonfire-adept:frightful-presence",
+    "name": "Frightful Presence",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#FRIGHTFUL%20PRESENCE"
+  },
+  {
+    "id": "dragonfire-adept:humanoid-shape",
+    "name": "Humanoid Shape",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#HUMANOID%20SHAPE"
+  },
+  {
+    "id": "dragonfire-adept:instill-vulnerability",
+    "name": "Instill Vulnerability",
+    "classId": "dragonfire-adept",
+    "grade": "dark",
+    "level": 7,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#INSTILL%20VULNERABILITY"
+  },
+  {
+    "id": "dragonfire-adept:magic-insight",
+    "name": "Magic Insight",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#MAGIC%20INSIGHT"
+  },
+  {
+    "id": "dragonfire-adept:perilous-veil",
+    "name": "Perilous Veil",
+    "classId": "dragonfire-adept",
+    "grade": "dark",
+    "level": 7,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#PERILOUS%20VEIL"
+  },
+  {
+    "id": "dragonfire-adept:scalding-gust",
+    "name": "Scalding Gust",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#SCALDING%20GUST"
+  },
+  {
+    "id": "dragonfire-adept:see-the-unseen",
+    "name": "See the Unseen",
+    "classId": "dragonfire-adept",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#SEE%20THE%20UNSEEN"
+  },
+  {
+    "id": "dragonfire-adept:terrifying-roar",
+    "name": "Terrifying Roar",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#TERRIFYING%20ROAR"
+  },
+  {
+    "id": "dragonfire-adept:voidsense",
+    "name": "Voidsense",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#VOIDSENSE"
+  },
+  {
+    "id": "dragonfire-adept:voracious-dispelling",
+    "name": "Voracious Dispelling",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#VORACIOUS%20DISPELLING"
+  },
+  {
+    "id": "dragonfire-adept:walk-unseen",
+    "name": "Walk Unseen",
+    "classId": "dragonfire-adept",
+    "grade": "lesser",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#WALK%20UNSEEN"
+  },
+  {
+    "id": "dragonfire-adept:wingstorm",
+    "name": "Wingstorm",
+    "classId": "dragonfire-adept",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#WINGSTORM"
+  },
+  {
+    "id": "warlock:all-seeing-eyes",
+    "name": "All-Seeing Eyes",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#ALL-SEEING%20EYES"
+  },
+  {
+    "id": "warlock:baleful-utterance",
+    "name": "Baleful Utterance",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BALEFUL%20UTTERANCE"
+  },
+  {
+    "id": "warlock:baneful-blast",
+    "name": "Baneful Blast",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#BANEFUL%20BLAST"
+  },
+  {
+    "id": "warlock:beguiling-influence",
+    "name": "Beguiling Influence",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BEGUILING%20INFLUENCE"
+  },
+  {
+    "id": "warlock:beshadowed-blast",
+    "name": "Beshadowed Blast",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BESHADOWED%20BLAST"
+  },
+  {
+    "id": "warlock:bewitching-blast",
+    "name": "Bewitching Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 4,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BEWITCHING%20BLAST"
+  },
+  {
+    "id": "warlock:binding-blast",
+    "name": "Binding Blast",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 7,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#BINDING%20BLAST"
+  },
+  {
+    "id": "warlock:breath-of-the-night",
+    "name": "Breath of the Night",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 1,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BREATH%20OF%20THE%20NIGHT"
+  },
+  {
+    "id": "warlock:brimstone-blast",
+    "name": "Brimstone Blast",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#BRIMSTONE%20BLAST"
+  },
+  {
+    "id": "warlock:call-of-the-beast",
+    "name": "Call of the Beast",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#CALL%20OF%20THE%20BEAST"
+  },
+  {
+    "id": "warlock:caster-s-lament",
+    "name": "Caster's Lament",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 8,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#CASTER%E2%80%99S%20LAMENT"
+  },
+  {
+    "id": "warlock:caustic-mire",
+    "name": "Caustic Mire",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#CAUSTIC%20MIRE"
+  },
+  {
+    "id": "warlock:charm",
+    "name": "Charm",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#CHARM"
+  },
+  {
+    "id": "warlock:chilling-tentacles",
+    "name": "Chilling Tentacles",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#CHILLING%20TENTACLES"
+  },
+  {
+    "id": "warlock:cocoon-of-refuse",
+    "name": "Cocoon of Refuse",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 1,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscity.html#COCOON%20OF%20REFUSE"
+  },
+  {
+    "id": "warlock:cold-comfort",
+    "name": "Cold Comfort",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#COLD%20COMFORT"
+  },
+  {
+    "id": "warlock:crawling-eye",
+    "name": "Crawling Eye",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#CRAWLING%20EYE"
+  },
+  {
+    "id": "warlock:curse-of-despair",
+    "name": "Curse of Despair",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#CURSE%20OF%20DESPAIR"
+  },
+  {
+    "id": "warlock:dark-discorporation",
+    "name": "Dark Discorporation",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 8,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DARK%20DISCORPORATION"
+  },
+  {
+    "id": "warlock:dark-foresight",
+    "name": "Dark Foresight",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 9,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DARK%20FORESIGHT"
+  },
+  {
+    "id": "warlock:dark-one-s-own-luck",
+    "name": "Dark One’s Own Luck",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DARK%20ONE%E2%80%99S%20OWN%20LUCK"
+  },
+  {
+    "id": "warlock:darkness",
+    "name": "Darkness",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DARKNESS"
+  },
+  {
+    "id": "warlock:deteriorating-blast",
+    "name": "Deteriorating Blast",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DETERIORATING%20BLAST"
+  },
+  {
+    "id": "warlock:devil-s-sight",
+    "name": "Devil’s Sight",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DEVIL%E2%80%99S%20SIGHT"
+  },
+  {
+    "id": "warlock:devil-s-whispers",
+    "name": "Devil’s Whispers",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscity.html#DEVIL%E2%80%99S%20WHISPERS"
+  },
+  {
+    "id": "warlock:devour-magic",
+    "name": "Devour Magic",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#DEVOUR%20MAGIC"
+  },
+  {
+    "id": "warlock:disembodied-hand",
+    "name": "Disembodied Hand",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#DISEMBODIED%20HAND"
+  },
+  {
+    "id": "warlock:dragonward",
+    "name": "Dragonward",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DRAGONWARD"
+  },
+  {
+    "id": "warlock:dread-seizure",
+    "name": "Dread Seizure",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#DREAD%20SEIZURE"
+  },
+  {
+    "id": "warlock:earthen-grasp",
+    "name": "Earthen Grasp",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#EARTHEN%20GRASP"
+  },
+  {
+    "id": "warlock:eldritch-chain",
+    "name": "Eldritch Chain",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ELDRITCH%20CHAIN"
+  },
+  {
+    "id": "warlock:eldritch-cone",
+    "name": "Eldritch Cone",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ELDRITCH%20CONE"
+  },
+  {
+    "id": "warlock:eldritch-doom",
+    "name": "Eldritch Doom",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 8,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ELDRITCH%20DOOM"
+  },
+  {
+    "id": "warlock:eldritch-glaive",
+    "name": "Eldritch Glaive",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ELDRITCH%20GLAIVE"
+  },
+  {
+    "id": "warlock:eldritch-line",
+    "name": "Eldritch Line",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#ELDRITCH%20LINE"
+  },
+  {
+    "id": "warlock:eldritch-spear",
+    "name": "Eldritch Spear",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ELDRITCH%20SPEAR"
+  },
+  {
+    "id": "warlock:enervating-shadow",
+    "name": "Enervating Shadow",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ENERVATING%20SHADOW"
+  },
+  {
+    "id": "warlock:entropic-warding",
+    "name": "Entropic Warding",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#ENTROPIC%20WARDING"
+  },
+  {
+    "id": "warlock:fell-flight",
+    "name": "Fell flight",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#FELL%20FLIGHT"
+  },
+  {
+    "id": "warlock:flee-the-scene",
+    "name": "Flee the Scene",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#FLEE%20THE%20SCENE"
+  },
+  {
+    "id": "warlock:frightful-blast",
+    "name": "Frightful Blast",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#FRIGHTFUL%20BLAST"
+  },
+  {
+    "id": "warlock:hammer-blast",
+    "name": "Hammer Blast",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#HAMMER%20BLAST"
+  },
+  {
+    "id": "warlock:hellrime-blast",
+    "name": "Hellrime Blast",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#HELLRIME%20BLAST"
+  },
+  {
+    "id": "warlock:hellspawned-grace",
+    "name": "Hellspawned Grace",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#HELLSPAWNED%20GRACE"
+  },
+  {
+    "id": "warlock:hideous-blow",
+    "name": "Hideous Blow",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 1,
+    "category": "shape",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#HIDEOUS%20BLOW"
+  },
+  {
+    "id": "warlock:hindering-blast",
+    "name": "Hindering Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 4,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#HINDERING%20BLAST"
+  },
+  {
+    "id": "warlock:hungry-darkness",
+    "name": "Hungry Darkness",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#HUNGRY%20DARKNESS"
+  },
+  {
+    "id": "warlock:ignore-the-pyre",
+    "name": "Ignore the Pyre",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#IGNORE%20THE%20PYRE"
+  },
+  {
+    "id": "warlock:impenetrable-barrier",
+    "name": "Impenetrable Barrier",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 7,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#IMPENETRABLE%20BARRIER"
+  },
+  {
+    "id": "warlock:leaps-and-bounds",
+    "name": "Leaps and Bounds",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#LEAPS%20AND%20BOUNDS"
+  },
+  {
+    "id": "warlock:mask-of-flesh",
+    "name": "Mask of Flesh",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#MASK%20OF%20FLESH"
+  },
+  {
+    "id": "warlock:miasmic-cloud",
+    "name": "Miasmic Cloud",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 1,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#MIASMIC%20CLOUD"
+  },
+  {
+    "id": "warlock:nightmares-made-real",
+    "name": "Nightmares Made Real",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#NIGHTMARES%20MADE%20REAL"
+  },
+  {
+    "id": "warlock:noxious-blast",
+    "name": "Noxious Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#NOXIOUS%20BLAST"
+  },
+  {
+    "id": "warlock:otherworldly-whispers",
+    "name": "Otherworldly Whispers",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#OTHERWORLDLY%20WHISPERS"
+  },
+  {
+    "id": "warlock:painful-slumber-of-ages",
+    "name": "Painful Slumber of Ages",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#PAINFUL%20SLUMBER%20OF%20AGES"
+  },
+  {
+    "id": "warlock:path-of-shadow",
+    "name": "Path of Shadow",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#PATH%20OF%20SHADOW"
+  },
+  {
+    "id": "warlock:penetrating-blast",
+    "name": "Penetrating Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#PENETRATING%20BLAST"
+  },
+  {
+    "id": "warlock:relentless-dispelling",
+    "name": "Relentless Dispelling",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#RELENTLESS%20DISPELLING"
+  },
+  {
+    "id": "warlock:repelling-blast",
+    "name": "Repelling Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#REPELLING%20BLAST"
+  },
+  {
+    "id": "warlock:retributive-invisibility",
+    "name": "Retributive Invisibility",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#RETRIBUTIVE%20INVISIBILITY"
+  },
+  {
+    "id": "warlock:see-the-unseen",
+    "name": "See the Unseen",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#SEE%20THE%20UNSEEN"
+  },
+  {
+    "id": "warlock:serpent-s-tongue",
+    "name": "Serpent's Tongue",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#SERPENT%E2%80%99S%20TONGUE"
+  },
+  {
+    "id": "warlock:sickening-blast",
+    "name": "Sickening Blast",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#SICKENING%20BLAST"
+  },
+  {
+    "id": "warlock:soulreaving-aura",
+    "name": "Soulreaving Aura",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#SOULREAVING%20AURA"
+  },
+  {
+    "id": "warlock:spider-shape",
+    "name": "Spider-Shape",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdotu.html#SPIDER-SHAPE"
+  },
+  {
+    "id": "warlock:spiderwalk",
+    "name": "Spiderwalk",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#SPIDERWALK"
+  },
+  {
+    "id": "warlock:steal-summoning",
+    "name": "Steal Summoning",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#STEAL%20SUMMONING"
+  },
+  {
+    "id": "warlock:stony-grasp",
+    "name": "Stony Grasp",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#STONY%20GRASP"
+  },
+  {
+    "id": "warlock:sudden-swarm",
+    "name": "Sudden Swarm",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdotu.html#SUDDEN%20SWARM"
+  },
+  {
+    "id": "warlock:summon-swarm",
+    "name": "Summon Swarm",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#SUMMON%20SWARM"
+  },
+  {
+    "id": "warlock:swimming-the-styx",
+    "name": "Swimming the Styx",
+    "classId": "warlock",
+    "grade": "least",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#SWIMMING%20THE%20STYX"
+  },
+  {
+    "id": "warlock:tenacious-plague",
+    "name": "Tenacious Plague",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#TENACIOUS%20PLAGUE"
+  },
+  {
+    "id": "warlock:the-dead-walk",
+    "name": "The Dead Walk",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#THE%20DEAD%20WALK"
+  },
+  {
+    "id": "warlock:thieves-bane",
+    "name": "Thieves’ Bane",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscity.html#THIEVES%E2%80%99%20BANE"
+  },
+  {
+    "id": "warlock:utterdark-blast",
+    "name": "Utterdark Blast",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 8,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#UTTERDARK%20BLAST"
+  },
+  {
+    "id": "warlock:vitriolic-blast",
+    "name": "Vitriolic Blast",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 6,
+    "category": "essence",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#VITRIOLIC%20BLAST"
+  },
+  {
+    "id": "warlock:voidsense",
+    "name": "Voidsense",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#VOIDSENSE"
+  },
+  {
+    "id": "warlock:voracious-dispelling",
+    "name": "Voracious Dispelling",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#VORACIOUS%20DISPELLING"
+  },
+  {
+    "id": "warlock:walk-unseen",
+    "name": "Walk Unseen",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#WALK%20UNSEEN"
+  },
+  {
+    "id": "warlock:wall-of-gloom",
+    "name": "Wall of Gloom",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 2,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#WALL%20OF%20GLOOM"
+  },
+  {
+    "id": "warlock:wall-of-perilous-flame",
+    "name": "Wall of Perilous flame",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#WALL%20OF%20PERILOUS%20FLAME"
+  },
+  {
+    "id": "warlock:warlock-s-call",
+    "name": "Warlock’s Call",
+    "classId": "warlock",
+    "grade": "greater",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#WARLOCK%E2%80%99S%20CALL"
+  },
+  {
+    "id": "warlock:weighty-utterance",
+    "name": "Weighty Utterance",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 4,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationsdragonmagic.html#WEIGHTY%20UTTERANCE"
+  },
+  {
+    "id": "warlock:witchwood-step",
+    "name": "Witchwood Step",
+    "classId": "warlock",
+    "grade": "lesser",
+    "level": 3,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscm.html#WITCHWOOD%20STEP"
+  },
+  {
+    "id": "warlock:word-of-changing",
+    "name": "Word of Changing",
+    "classId": "warlock",
+    "grade": "dark",
+    "level": 5,
+    "category": "other",
+    "source": "https://srd.dndtools.org/srd/magic/invocations/invocations/invocationscarc.html#WORD%20OF%20CHANGING"
+  }
+]
