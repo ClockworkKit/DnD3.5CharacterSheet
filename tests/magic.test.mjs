@@ -30,7 +30,7 @@ test('invocation selection checks class, grade rather than equivalent level, dup
 });
 test('invocations survive saves and daily resets, and level loss flags grade access',()=>{
  const c=create('Warlock',16),v=catalog.find(v=>v.classId==='warlock'&&v.grade==='dark');learnInvocation(c,v);
- const restored=characterSchema.parse(JSON.parse(JSON.stringify(c)));resetDaily(restored);assert.deepEqual(restored.classSystems.choices,c.classSystems.choices);
+ const restored=resetDaily(characterSchema.parse(JSON.parse(JSON.stringify(c))));assert.deepEqual(restored.classSystems.choices,c.classSystems.choices);
  restored.classLevels[0].level=1;assert.ok(systemWarnings(restored).some(w=>w.includes('level limit')));assert.throws(()=>useSystemChoice(restored,restored.classSystems.choices[0].id),/level limit/);
 });
 test('custom spell-like placement survives save parsing and can be reversed',()=>{

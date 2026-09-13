@@ -41,7 +41,7 @@ export function recoverManeuvers(c:Character,id:string){for(const s of c.classSy
 export function settleDelayedDamage(c:Character){const damage=c.classSystems.delayedDamage;c.classSystems.delayedDamage=0;const absorbed=Math.min(c.tempHp,damage);c.tempHp-=absorbed;c.hp-=damage-absorbed;}
 export function delayedCapacity(c:Character){const l=lv(c,'crusader');return l?l>=20?30:l>=16?25:l>=12?20:l>=8?15:l>=4?10:5:0;}
 export function specialSpellFailure(c:Character,id:string){
- if(findClass(id)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard','dragonfire-adept'].includes(id))return 0;
+ if(findClass(id)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard'].includes(id))return 0;
  const level=lv(c,id);let allowed=0,shield='none';if(['bard','beguiler','dread-necromancer','hexblade','spellthief','warlock'].includes(id))allowed=1;if(id==='warmage'){allowed=level>=8?2:1;shield='light'}if(id==='duskblade'){allowed=level>=4?2:1;shield=level>=7?'standard':'light'}
  let total=0;const a=equippedArmor(c);for(const g of a.selected){const e=equipmentById(g.catalogId)!;const rank=Math.max(1,['light','medium','heavy'].indexOf(e.category)+1-(g.material==='mithral'?1:0));const ignored=e.kind==='armor'?rank<=allowed:e.kind==='shield'&&(shield==='standard'&&!e.name.includes('tower')||shield==='light'&&(/light/i.test(e.name)||e.name==='Buckler'));if(!ignored)total+=Math.max(0,(e.spellFailure||0)-(g.material==='mithral'?10:0));}return Math.min(100,total+(c.ancestry.raceId==='warforged'&&allowed===0?5:0));
 }

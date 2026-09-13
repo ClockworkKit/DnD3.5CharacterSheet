@@ -17,6 +17,7 @@ export async function payload(request:Request){
  const raw=await request.text();
  if(raw.length>1000000)throw new RequestError('This character is too large to save.',413);
  let parsed;try{parsed=JSON.parse(raw);}catch{throw new RequestError('That character file is not valid JSON.');}
+ if(!parsed||typeof parsed!=='object'||Array.isArray(parsed))throw new RequestError('A JSON object containing character data is required.');
  const result=characterSchema.safeParse(parsed.data);
  if(!result.success)throw new RequestError('Check the character fields: '+result.error.issues.slice(0,3).map(x=>x.path.join('.')+' '+x.message).join('; '));
  const revision=parsed.revision;

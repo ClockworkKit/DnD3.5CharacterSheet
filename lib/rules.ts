@@ -44,6 +44,7 @@ export function spellDC(c:Character,p:Caster,s:KnownSpell,reference?:Spell){cons
 export function spellPenetration(c:Character,p:Caster){return p.level+p.penetration+(c.automation.enabled?(hasFeat(c,'Spell Penetration')?2:0)+(hasFeat(c,'Greater Spell Penetration')?2:0)+effectBonus(c,'penetration'):0);}
 export function preparedAt(p:Caster,level:number){return p.spells.filter(s=>s.slotLevel===level).reduce((a,s)=>a+s.prepared,0);}
 export function castingProblem(p:Caster,s:KnownSpell,c?:Character){
+ if(c?.automation.enabled&&s.slotLevel<s.level)return 'The slot level is below the spell level. Use a sufficient slot or turn off automation for a house-rule exception.';
  if(c?.automation.enabled&&effectiveScore(c,p.ability)<10+s.level)return p.ability+' must be at least '+(10+s.level)+' to cast this spell.';
  const slot=p.slots[s.slotLevel];
  if(!slot||slot.max<=0)return 'No daily slots are available at this level.';
