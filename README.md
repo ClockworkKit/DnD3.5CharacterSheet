@@ -8,7 +8,7 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
 - Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.
 - Abilities, combat, the complete core skill list, custom specialties, equipment, feats, daily resources, and campaign notes.
-- 606 SRD spells, 110 SRD feats, 286 psionic powers, 50 base classes (11 core, 4 SRD psionic, Factotum, and 34 supplemental), 24 prestige classes, and 35 races.
+- 867 spell-menu entries (606 SRD spells and 261 supplemental source references), 110 SRD feats, 286 psionic powers, 50 base classes (11 core, 4 SRD psionic, Factotum, and 34 supplemental), 24 prestige classes, and 35 races.
 - Searchable references, separate casting traditions, prepared copies, spontaneous slots, domain pools, custom spells and powers, and daily reset.
 - Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 - Skill-point purchases by character level, automatic class/cross-class costs, rank limits, and refunds.
@@ -141,4 +141,6 @@ Choices persist in saves and exports. Old saves start with unrecorded choices: m
 
 The sheet now includes 34 additional base classes from the Complete books, Player’s Handbook II, Heroes of Horror, Miniatures Handbook, Dragon Magic, Tome of Battle, Tome of Magic, Magic of Incarnum, and Eberron. They are available in character creation, Classes, and guided XP level-up. See [Supplemental class support](SUPPLEMENTAL-CLASSES.md) for every class, source, and automation boundary.
 
-Basic progression, skill training, proficiencies, ordinary spell slots, and power-point pools calculate automatically. Invocations, infusions, maneuvers, vestiges, mysteries, utterances, soulmelds, auras, conditional feature bonuses, and supplemental spell/power selection remain player-managed.
+Basic progression, skill training, proficiencies, ordinary spell slots, and power-point pools calculate automatically. Class abilities now track maneuver readiness/recovery, invocation and vestige limits, soulmeld/essentia allocation, mystery uses, utterance checks, infusions, and craft reserve. Daily resources, fixed granted feats, and several conditional combat bonuses also calculate automatically. Individual ability effects, prerequisites, and target choices still need review; the class-by-class audit lists the remaining gaps.
+
+The spell menu includes supplemental list entries for Beguiler, Dread Necromancer, Warmage, Duskblade, Hexblade, Healer, Shugenja, Wu Jen, and Spellthief, plus derived Cleric/Druid lists for related classes. Coverage is partial. Supplemental entries without full effect data are clearly marked and linked to their sources. Beguiler, Warmage, and Dread Necromancer can add their available indexed class list with one button, preserving existing spell use.
