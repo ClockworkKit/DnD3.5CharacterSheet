@@ -1,3 +1,4 @@
+import {supplementalTerms} from './class-systems.ts';
 import type {Character} from './model.ts';
 import {expression} from './formulas.ts';
 type Effect=Character['effects'][number];
@@ -10,7 +11,7 @@ export function effectActive(c:Character,id:string){return c.automation.enabled&
 export function conditionMatches(c:Character,when:string,context:Record<string,string|number|boolean>={}){if(!when)return true;const [key,value]=when.split('=');return String(context[key]??(c.automation.context as Record<string,unknown>)[key]??'').toLowerCase()===value?.toLowerCase();}
 export type BonusTerm={value:number,type:string,source:string};
 export function stackBonuses(terms:BonusTerm[]){const groups=new Map<string,number[]>();for(const t of terms){const key=['untyped','dodge','circumstance'].includes(t.type)?t.type+':'+t.source:t.type;const a=groups.get(key)||[];a.push(t.value);groups.set(key,a)}return [...groups.values()].reduce((n,a)=>n+Math.max(0,...a)+Math.min(0,...a),0);}
-export function effectTerms(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false):BonusTerm[]{if(!c.automation.enabled)return [];const v=baseVariables(c);return c.effects.filter(e=>e.active&&(!lasting||e.permanent)&&!(e.preset==='fatigued'&&effectActive(c,'exhausted'))).flatMap(e=>e.modifiers.filter(m=>m.target===target&&conditionMatches(c,m.when,context)).map(m=>{let value=0;try{value=expression(m.value,{...v,...Object.fromEntries(Object.entries(context).filter(([,v])=>typeof v==='number')),CL:e.casterLevel})}catch{}return {value,type:m.type,source:e.preset||e.id}}));}
+export function effectTerms(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false):BonusTerm[]{if(!c.automation.enabled)return [];const v=baseVariables(c);return [...supplementalTerms(c,target,context),...c.effects.filter(e=>e.active&&(!lasting||e.permanent)&&!(e.preset==='fatigued'&&effectActive(c,'exhausted'))).flatMap(e=>e.modifiers.filter(m=>m.target===target&&conditionMatches(c,m.when,context)).map(m=>{let value=0;try{value=expression(m.value,{...v,...Object.fromEntries(Object.entries(context).filter(([,v])=>typeof v==='number')),CL:e.casterLevel})}catch{}return {value,type:m.type,source:e.preset||e.id}}))];}
 export function effectBonus(c:Character,target:string,context:Record<string,string|number|boolean>={},lasting=false){return stackBonuses(effectTerms(c,target,context,lasting));}
 export function classAbilityBonus(c:Character,a:string){if(!c.automation.enabled)return 0;const n=classLevel(c,'dragon-disciple');return a==='STR'?(n>=10?8:n>=4?4:n>=2?2:0):a==='CON'&&n>=6?2:a==='INT'&&n>=8?2:a==='CHA'&&n>=10?2:0;}
 const m=(target:string,type:Modifier['type'],value:string,when=''):Modifier=>({target,type,value,when});
