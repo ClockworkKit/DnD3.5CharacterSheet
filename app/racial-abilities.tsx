@@ -12,6 +12,8 @@ export function RacialAbilities({c,edit,roll,spells}:{spells?:import('@/lib/mode
  const [fireDamage,setFireDamage]=useState(0),[otherResistance,setOtherResistance]=useState(0);const [casterId,setCaster]=useState(''),[level,setLevel]=useState(1),[turnId,setTurn]=useState(''),[mode,setMode]=useState('turn'),[meta,setMeta]=useState(''),[targetId,setTarget]=useState(''),[spellId,setSpell]=useState('');
  const race=findRace(c.ancestry.raceId),word=illumianWord(c),env=c.racialState.environment,swim=swimSpeed(c),enabled=racialEnabled(c);
  if(!race)return null;
+ const sensitive=['kobold','earth-kobold','aquatic-kobold','orc','water-orc','duergar','deep-dwarf'].includes(race.id);
+ const environmentRelevant=swim>0||race.waterBreathing||race.element||race.type.includes('dwarf')||race.id==='illumian'||sensitive||racialWarnings(c).length>0;
  const attempt=(f:()=>void)=>{try{f()}catch(e){toast.error(e instanceof Error?e.message:'Check the racial ability.')}};
  const setEnv=(patch:Partial<typeof env>)=>edit(d=>{Object.assign(d.racialState.environment,patch)});
  const donor=c.casters.find(p=>p.id===casterId)||c.casters[0],turns=c.features.filter(f=>/^(?:turn(?: or rebuke)?|rebuke|command) undead/i.test(f.name)),turn=turns.find(f=>f.id===turnId)||turns[0];
@@ -37,7 +39,7 @@ export function RacialAbilities({c,edit,roll,spells}:{spells?:import('@/lib/mode
  <p className="fine">Tick effects when the named turn boundary occurs; Hoonkrau lasts through your next turn, Uurhoon uses minutes, and Vaulkrau ends after the next save. The general Advance one round button also advances racial timers. Naenhoon records the paid metamagic; apply its spell effect using the spell’s existing controls.</p>
  <a className="source-link" href={race.source} target="_blank" rel="noreferrer">Illumian source rules</a>
  </Section>}
- <Section title="Racial environment & defenses">
+ {environmentRelevant&&<Section title="Racial environment & defenses">
  {racialWarnings(c).map(s=><p key={s} className="fine">{s}</p>)}
  {swim>0&&<><p>Swim speed: <strong>{swim} ft.</strong> · +8 racial Swim bonus · take 10 while threatened · run in a straight line.</p><Btn onClick={()=>{const s=c.skills.find(s=>s.name==='Swim');if(s)roll({title:'Swim',formula:withBonus('1d20',skillBonus(c,s)),details:'Racial swim speed '+swim+' ft. Ordinary swimming at this speed needs no check.'})}}>Roll Swim</Btn><Btn onClick={()=>{const s=c.skills.find(s=>s.name==='Swim');if(s)roll({title:'Swim · take 10',fields:[['Result',String(10+skillBonus(c,s))]],details:'May take 10 despite distraction or danger.'})}}>Take 10</Btn></>}
  {race.waterBreathing&&<><Check label="Currently underwater" checked={env.underwater} onChange={v=>setEnv({underwater:v})}/><N label="Rounds spent holding breath outside water" value={env.breathRounds} min={0} max={10000} onChange={v=>setEnv({breathRounds:v})}/><p className="fine">{Math.max(0,2*effectiveScore(c,'CON')-env.breathRounds)} breath rounds remain. After the limit, make escalating Constitution checks (starting DC 10) and apply suffocation rules; ordinary air breathing is not granted.</p></>}
@@ -45,8 +47,8 @@ export function RacialAbilities({c,edit,roll,spells}:{spells?:import('@/lib/mode
  {race.element&&<div className="fields two"><Choice label="Opponent subtype" value={env.targetElement} options={elements} onChange={v=>setEnv({targetElement:v as typeof env.targetElement})}/><Choice label="Incoming magical effect element" value={env.magicElement} options={elements} onChange={v=>setEnv({magicElement:v as typeof env.magicElement})}/><Choice label="Incoming magical ability: source creature subtype" value={env.magicSource} options={elements} onChange={v=>setEnv({magicSource:v as typeof env.magicSource})}/>{race.id==='air-gnome'&&<Check label="Opponent is Large or larger" checked={env.targetLarge} onChange={v=>setEnv({targetLarge:v})}/>}</div>}
  {(race.element==='earth'||race.type.includes('dwarf'))&&<><Check label="Standing firmly on the ground" checked={env.grounded} onChange={v=>setEnv({grounded:v})}/><Check label="Ability check resists a bull rush or trip" checked={env.resistTrip} onChange={v=>setEnv({resistTrip:v})}/></>}
  {race.element==='earth'&&<Check label="Relevant stonework / stone or metal crafting task" checked={env.stonework} onChange={v=>setEnv({stonework:v})}/>}
- <Check label="Bright sunlight or daylight (for light-sensitive races)" checked={env.brightLight} onChange={v=>setEnv({brightLight:v})}/>
+ {sensitive&&<Check label="Bright sunlight or daylight" checked={env.brightLight} onChange={v=>setEnv({brightLight:v})}/>}
  {race.id==='illumian'&&<><Check label="Incoming spell has the shadow descriptor" checked={env.shadow} onChange={v=>setEnv({shadow:v})}/><Check label="Incoming magic is glyph, rune, sigil, or symbol based" checked={env.glyph} onChange={v=>setEnv({glyph:v})}/>{env.glyph&&<N label={'Incoming caster level (racial HD '+racialHD(c)+')'} value={env.incomingCasterLevel} min={0} max={100} onChange={v=>setEnv({incomingCasterLevel:v})}/>}</>}
  <p className="fine">Set these for the current roll, then clear them when the situation changes. Bonuses follow the racial automation switch. Environmental variants retain their original creature type; elemental affinity alone does not give the elemental type or subtype.</p>
- </Section></>;
+ </Section>}</>;
 }

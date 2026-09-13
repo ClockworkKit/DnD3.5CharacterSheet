@@ -1,0 +1,29 @@
+'use client';
+import {useEffect,useState} from 'react';
+import {toast} from 'sonner';
+import {uid,type Spell} from '@/lib/model';
+import {assetUrl} from '@/lib/deployment';
+import {magicSections,isSpellLikeFeature} from '@/lib/magic';
+import {invocationProblem,learnInvocation,type Invocation} from '@/lib/invocations';
+import {Spellbook} from './spellbook';
+import {Powers} from './powers';
+import {FactotumPanel} from './factotum-panel';
+import {ClassSystems} from './class-systems';
+import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
+import {Btn,Section,F,N,Check,type SheetProps} from './sheet-ui';
+
+function Invocations({c,edit}:SheetProps){
+ const [open,setOpen]=useState(false),[rows,setRows]=useState<Invocation[]>([]),[error,setError]=useState(''),[attempt,setAttempt]=useState(0),[query,setQuery]=useState(''),[all,setAll]=useState(false);
+ useEffect(()=>{if(!open)return;let live=true;setError('');fetch(assetUrl('data/invocations.json')).then(r=>{if(!r.ok)throw Error();return r.json() as Promise<Invocation[]>}).then(r=>{if(live)setRows(r)}).catch(()=>{if(live)setError('The invocation library could not be loaded.')});return()=>{live=false}},[open,attempt]);
+ if(!c.classLevels.some(e=>['warlock','dragonfire-adept'].includes(e.classId)&&e.level>0))return null;
+ const matches=rows.filter(v=>(v.name+' '+v.classId+' '+v.grade+' '+v.category).toLowerCase().includes(query.toLowerCase())&&(all||!invocationProblem(c,v)));
+ return <><Section title="Invocations" action={<Btn onClick={()=>setOpen(true)}>Browse invocations</Btn>}><p className="fine">Choose invocations from your class list. Known choices and at-will cards appear below. Individual effects, blast shapes, and essences require player resolution using the linked rules.</p></Section><Dialog open={open} onOpenChange={setOpen}><DialogContent className="ledger-modal library-modal"><DialogHeader><DialogTitle>Invocation library</DialogTitle><DialogDescription>Eligible invocations appear by default. Class levels determine available grades and choices known.</DialogDescription></DialogHeader><F label="Find an invocation" value={query} onChange={setQuery}/><Check label="Show all invocations, including unavailable choices" checked={all} onChange={setAll}/>{error?<p className="error-box">{error}<Btn onClick={()=>setAttempt(n=>n+1)}>Retry library</Btn></p>:<><p className="fine">{rows.length?matches.length+' matching invocations':'Loading invocations…'}</p><div className="catalog-list">{matches.map(v=>{const problem=invocationProblem(c,v);return <div className="catalog-row" key={v.id}><div><strong>{v.name}</strong><p className="fine">{v.classId==='warlock'?'Warlock':'Dragonfire Adept'} · {v.grade} · spell level {v.level} · {v.category}</p><a href={v.source} target="_blank" rel="noreferrer">Read invocation rules</a>{problem&&<p className="fine">{problem}</p>}</div><Btn disabled={!!problem} onClick={()=>{try{edit(d=>learnInvocation(d,v));toast.success(v.name+' learned')}catch(e){toast.error(e instanceof Error?e.message:'Could not learn invocation')}}}>Learn</Btn></div>})}</div>{rows.length>0&&!matches.length&&<p>No eligible choices match. Show all to inspect the requirements.</p>}</>}</DialogContent></Dialog></>;
+}
+export function Magic(props:SheetProps&{spells:Spell[],referenceError:string,retry:()=>void}){
+ const {c,edit,roll}=props,[setup,setSetup]=useState(false),sections=magicSections(c);
+ return <><div className="button-row"><Btn onClick={()=>setSetup(v=>!v)}>{setup?'Hide extra traditions':'Add another magic tradition'}</Btn>{setup&&<Btn onClick={()=>edit(d=>{d.features.push({id:uid(),name:'New spell-like ability',kind:'Other',magic:true,description:'Spell-like ability. Record its rules here.',source:'',max:0,used:0})})}>+ Custom spell-like ability</Btn>}</div>{!Object.values(sections).some(Boolean)&&!setup&&<p className="empty-note">This character has no recorded magic. Add a casting or psionic tradition here, or gain a class or racial ability.</p>}
+ {(sections.spells||setup)&&<Spellbook {...props}/>}{(sections.powers||setup)&&<Powers {...props}/>}
+ {sections.abilities&&<Section title="Spell-like abilities" note="Daily uses share the character’s existing counters and reset with daily rest. See each source for caster level, targeting, and restrictions.">{c.features.filter(isSpellLikeFeature).map(f=><div className="subcard" key={f.id}><h3>{f.name}</h3><p>{f.description}</p><details><summary>Edit ability</summary><Btn onClick={()=>edit(d=>{d.features.find(x=>x.id===f.id)!.magic=false})}>Move to Feats & features</Btn><F label="Name" value={f.name} onChange={v=>edit(d=>{d.features.find(x=>x.id===f.id)!.name=v})}/><F label="Description" area value={f.description} onChange={v=>edit(d=>{d.features.find(x=>x.id===f.id)!.description=v})}/><N label="Daily limit (0 = untracked)" min={0} value={f.max} onChange={v=>edit(d=>{d.features.find(x=>x.id===f.id)!.max=v})}/><Btn onClick={()=>props.confirm("Remove ability?","Remove this spell-like ability from the character.",()=>edit(d=>{d.features=d.features.filter(x=>x.id!==f.id)}))}>Remove ability</Btn></details><N label="Used today" min={0} value={f.used} onChange={v=>edit(d=>{d.features.find(x=>x.id===f.id)!.used=v})}/><Btn disabled={f.max>0&&f.used>=f.max} onClick={()=>{if(roll({title:f.name,details:f.description,fields:[['Type','Spell-like ability']]}))edit(d=>{const row=d.features.find(x=>x.id===f.id)!;if(row.max>0)row.used++})}}>Use and send card{f.max>0?' ('+Math.max(0,f.max-f.used)+' left)':''}</Btn></div>)}</Section>}
+ {sections.factotum&&<FactotumPanel {...props}/>}{sections.systems&&<><Invocations {...props}/><ClassSystems {...props} scope="magic"/></>}
+ </>;
+}
