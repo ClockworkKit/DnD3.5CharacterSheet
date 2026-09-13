@@ -4,7 +4,8 @@ import {expression} from './formulas.ts';
 type Effect=Character['effects'][number];
 export type Modifier=Effect['modifiers'][number];
 export const classLevel=(c:Character,id:string)=>c.classLevels.filter(x=>x.classId===id).reduce((n,x)=>n+x.level,0);
-export function featCount(c:Character,name:string,choice?:string){return c.features.filter(f=>f.kind==='Feat'&&f.name.toLowerCase().replace(/\s*\(.*/, '')===name.toLowerCase()&&(!choice||(f.choice||f.name.match(/\((.*)\)/)?.[1]||'').toLowerCase()===choice.toLowerCase())).length;}
+export const featName=(name:string)=>name.toLowerCase().replace(/\s*\[[^\]]*\]/g,'').replace(/\s*\(.*/, '').replace(/[–—-]/g,' ').replace(/\s+/g,' ').trim();
+export function featCount(c:Character,name:string,choice?:string){return c.features.filter(f=>f.kind==='Feat'&&featName(f.name)===featName(name)&&(!choice||(f.choice||f.name.match(/\((.*?)\)/)?.[1]||'').trim().toLowerCase()===choice.trim().toLowerCase())).length;}
 export const hasFeat=(c:Character,name:string,choice?:string)=>featCount(c,name,choice)>0;
 export function baseVariables(c:Character){const v:Record<string,number>={LEVEL:c.level,HD:c.level,BAB:c.bab,CL:Math.max(0,...c.casters.map(p=>p.level)),ML:Math.max(0,...c.psionics.map(p=>p.level)),BARBARIAN:0};for(const a of ['STR','DEX','CON','INT','WIS','CHA'] as const){v[a]=c.scores[a]+c.temps[a];v[a+'_MOD']=Math.floor((v[a]-10)/2)}for(const e of c.classLevels){const k=e.classId.toUpperCase().replaceAll('-','_');v[k]=(v[k]||0)+e.level}return v;}
 export function effectActive(c:Character,id:string){return c.automation.enabled&&c.effects.some(e=>e.active&&e.preset===id)&&!(id==='fatigued'&&c.effects.some(e=>e.active&&e.preset==='exhausted'));}
