@@ -82,3 +82,33 @@ test('catalog indices stay synchronized with feat categories and spell metadata'
  assert.deepEqual(index.feats,feats.map(({id,name})=>({id,name})));
  assert.equal(index.spells.length,867);
 });
+
+test('per-round usage wording does not permit duplicate Combat Reflexes or Stunning Fist',()=>{
+ const c=create('Fighter',12);for(const id of ['combat-reflexes','stunning-fist']){grant(c,feat(id).name);assert.equal(featEligibility(c,feat(id)).requirements[0].state,'missing',id);assert.throws(()=>addEligibleFeat(c,feat(id)),/prerequisites/);}
+ for(const id of ['toughness','extra-turning','spell-mastery']){const d=create(id==='extra-turning'?'Cleric':'Wizard',6);grant(d,feat(id).name);assert.equal(featEligibility(d,feat(id)).eligible,true,id);}
+});
+test('nested imported skill choices and weapon name order unlock matching prerequisites only',()=>{
+ const c=create('Fighter',8);grant(c,'Skill Focus (Knowledge (arcana)) [General]');assert.equal(hasFeat(c,'Skill Focus','Knowledge (arcana)'),true);assert.equal(featEligibility(c,feat('skill-focus'),'Knowledge (arcana)').eligible,false);assert.equal(featEligibility(c,feat('skill-focus'),'Knowledge (religion)').eligible,true);
+ grant(c,'Weapon Focus [General]','Composite Longbow');assert.equal(featEligibility(c,feat('greater-weapon-focus'),'Longbow, composite').eligible,true);assert.equal(featEligibility(c,feat('weapon-focus'),'Longbow, composite').eligible,false);assert.equal(featEligibility(c,feat('greater-weapon-focus'),'Longbow').eligible,false);
+ grant(c,'Armor Proficiency (Light) [General]');assert.equal(hasFeat(c,'Armor Proficiency (Heavy)'),false); // A different stored armor feat is not a match.
+});
+test('same-level ability, BAB, and prerequisite feat changes unlock and relock the chain',()=>{
+ const c=create('Fighter',3);grant(c,'Dodge');grant(c,'Mobility');assert.equal(featEligibility(c,feat('spring-attack')).eligible,false);
+ c.classLevels[0].level=4;assert.equal(featEligibility(c,feat('spring-attack')).eligible,true);
+ c.scores.DEX=12;assert.equal(featEligibility(c,feat('spring-attack')).eligible,false);c.scores.DEX=13;assert.equal(featEligibility(c,feat('spring-attack')).eligible,true);
+ c.features=c.features.filter(f=>f.name!=='Mobility');assert.equal(featEligibility(c,feat('spring-attack')).eligible,false);
+ const w=create('Wizard',1);w.automation.overrides.bab=1;assert.equal(featEligibility(w,feat('quick-draw')).eligible,true);w.automation.overrides.bab=0;assert.equal(featEligibility(w,feat('quick-draw')).eligible,false);
+});
+test('class-granted simple and tower proficiencies are recognized as already available',()=>{
+ const f=create();for(const id of ['simple-weapon-proficiency','tower-shield-proficiency'])assert.equal(featEligibility(f,feat(id)).eligible,false,id);
+ const w=create('Wizard');assert.equal(featEligibility(w,feat('simple-weapon-proficiency')).eligible,true);
+});
+test('single-line imported prerequisite sections stop before the benefit and choices survive saves',()=>{
+ const c=create();grant(c,'Power Attack');const f={...feat('cleave'),description:'Prerequisites: Str 13, Power Attack. Benefit: Attack another creature.'};assert.equal(featEligibility(c,f).eligible,true);
+ grant(c,'Skill Focus (Knowledge (arcana)) [General]');const saved=characterSchema.parse(JSON.parse(JSON.stringify(c)));assert.equal(hasFeat(saved,'Skill Focus','Knowledge (arcana)'),true);
+});
+test('Weapon Aptitude unlocks fighter-level feat requirements without waiving other prerequisites',()=>{
+ const c=create('Warblade',5);grant(c,'Weapon Focus','Longsword');assert.equal(featEligibility(c,feat('weapon-specialization'),'Longsword').eligible,false);
+ c.classLevels[0].level=6;assert.equal(featEligibility(c,feat('weapon-specialization'),'Longsword').eligible,true);assert.equal(featEligibility(c,feat('weapon-specialization'),'Greatsword').eligible,false);
+ c.classLevels[0].level=4;c.classLevels.push(...create('Fighter',2).classLevels);assert.equal(featEligibility(c,feat('weapon-specialization'),'Longsword').eligible,true);
+});

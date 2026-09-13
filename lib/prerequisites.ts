@@ -3,7 +3,7 @@ import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
 import {newWeapon,uid} from './model.ts';
 import {classTotals,findClass,type ClassDefinition} from './classes.ts';
-import {classLevel,hasFeat,featName} from './effects.ts';
+import {classLevel,hasFeat,featName,featChoice,featChoiceKey} from './effects.ts';
 import {effectiveScore,findRace} from './ancestry.ts';
 import {equipmentCatalog,matchEquipment,weaponProficient,armorProficient} from './equipment.ts';
 import {castingNumbers,psionicProgression} from './advancement.ts';
@@ -15,7 +15,7 @@ const clean=(s:string)=>s.replace(/\s*\[[^\]]*\]/g,'').trim();
 const rank=(c:Character,name:string)=>Math.max(0,...c.skills.filter(s=>norm(s.name)===norm(name)||!name.includes('(')&&norm(s.name).startsWith(norm(name)+' (')).map(s=>s.ranks));
 function result(requirements:Requirement[]):Eligibility {const missing=requirements.some(r=>r.state==='missing'),pending=requirements.some(r=>r.state==='confirm'&&!r.confirmed);return {eligible:!missing&&!pending,requirements,status:missing?'Missing prerequisites':pending?'Needs confirmation':'Eligible'};}
 function checker(c:Character,id:string){const rows:Requirement[]=[];return {rows,check:(label:string,met:boolean)=>rows.push({label,state:met?'met':'missing'}),manual:(label:string)=>{const key=id+':'+label;rows.push({label,state:'confirm',key,confirmed:!!c.prerequisiteConfirmations?.[key]});}};}
-export function prerequisiteText(f:Feat){return f.description.match(/Prerequisites?:\s*([\s\S]*?)(?:\n\n|$)/i)?.[1]||'';}
+export function prerequisiteText(f:Feat){return f.description.match(/Prerequisites?:\s*([\s\S]*?)(?=\n\s*\n|\b(?:Benefits?|Normal|Special):|$)/i)?.[1]?.trim()||'';}
 const weaponFeats=['weapon-focus','greater-weapon-focus','weapon-specialization','greater-weapon-specialization','improved-critical','rapid-reload','exotic-weapon-proficiency','martial-weapon-proficiency'];
 const schools=['Abjuration','Conjuration','Divination','Enchantment','Evocation','Illusion','Necromancy','Transmutation'];
 export function featChoices(c:Character,f:Feat):string[]{
@@ -29,6 +29,9 @@ function has(c:Character,name:string,choice?:string){
  if(hasFeat(c,name,choice))return true;
  if(name==='Armor Proficiency'&&choice){const e=equipmentCatalog.find(e=>e.kind==='armor'&&e.category===choice.toLowerCase());return !!e&&armorProficient(c,e);}
  if(name==='Shield Proficiency'){const e=equipmentCatalog.find(e=>e.kind==='shield'&&e.name==='Heavy wooden shield');return !!e&&armorProficient(c,e);}
+ if(name==='Simple Weapon Proficiency')return equipmentCatalog.filter(e=>e.kind==='weapon'&&e.category==='simple').every(e=>proficient(c,e.name));
+ if(name==='Martial Weapon Proficiency'&&choice)return proficient(c,choice);
+ if(name==='Tower Shield Proficiency'){const e=equipmentCatalog.find(e=>e.kind==='shield'&&/tower/i.test(e.name));return !!e&&armorProficient(c,e);}
  if(name==='Improved Unarmed Strike'&&classLevel(c,'monk')>0)return true;
  if(name==='Scribe Scroll'&&classLevel(c,'wizard')>0)return true;
  if(name==='Endurance'&&classLevel(c,'ranger')>=3)return true;
@@ -37,17 +40,18 @@ function has(c:Character,name:string,choice?:string){
  return false;
 }
 function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),(classLevel(c,'warlock')+krauBonus(c,classLevel(c,'warlock'))),(classLevel(c,'dragonfire-adept')+krauBonus(c,classLevel(c,'dragonfire-adept'))),(classLevel(c,'shadowcaster')+krauBonus(c,classLevel(c,'shadowcaster'))),classLevel(c,'factotum')>=2?classLevel(c,'factotum')+krauBonus(c,classLevel(c,'factotum')):0);}
+function prerequisiteBab(c:Character){const totals=classTotals(c.classLevels,c.ancestry);return !c.automation.enabled||totals.missing.length?c.bab:c.automation.overrides.bab??totals.bab+(c.automation.adjustments.bab||0);}
 export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  const q=checker(c,'feat:'+f.id+':'+choice),{check,manual}=q;
- const choices=featChoices(c,f);if(choices.length)check('Select a weapon, skill or school',choices.includes(choice));
- const name=clean(f.name),intrinsic=name.match(/\((.+)\)/)?.[1],baseName=name.replace(/\s*\(.*/,''),repeat=/multiple times|more than once|each time you take/i.test(f.description);
+ const choices=featChoices(c,f);choice=choices.find(v=>featChoiceKey(v)===featChoiceKey(choice))||choice;if(choices.length)check('Select a weapon, skill or school',choices.includes(choice));
+ const name=clean(f.name),intrinsic=featChoice(name),baseName=name.replace(/\s*\(.*/,''),repeat=['toughness','extra-turning','spell-mastery'].includes(f.id);
  check(choices.length?'Not already selected for '+(choice||'this choice'):'Not already selected',repeat&&!choices.length||!has(c,baseName,choices.length?choice:intrinsic));
- const bab=c.automation.enabled?classTotals(c.classLevels,c.ancestry).bab:c.bab;
+ const bab=prerequisiteBab(c);
  for(const raw of prerequisiteText(f).split(/,\s*(?![^()]*\))/)){
   const s=raw.trim().replace(/\.$/,'');if(!s)continue;let m:RegExpMatchArray|null;
   if((m=s.match(/^(Str|Dex|Con|Int|Wis|Cha) (\d+)$/i)))check(s,effectiveScore(c,m[1].toUpperCase() as keyof Character['scores'],true)>=+m[2]);
   else if((m=s.match(/^base attack bonus \+(\d+)/i))){check('Base attack bonus +'+m[1],bab>=+m[1]);if(/plus Str 13/i.test(s)&&/bastard|dwarven waraxe|waraxe, dwarven/i.test(choice))check('Strength 13 for '+choice,effectiveScore(c,'STR',true)>=13);}
-  else if((m=s.match(/^(caster|character|fighter|wizard) level (\d+)/i))){const kind=m[1].toLowerCase(),n=kind==='caster'?casterLevel(c):kind==='character'?(classTotals(c.classLevels,c.ancestry).level||c.level):classLevel(c,kind);check(s,n>=+m[2]);}
+  else if((m=s.match(/^(caster|character|fighter|wizard) level (\d+)/i))){const kind=m[1].toLowerCase(),n=kind==='caster'?casterLevel(c):kind==='character'?(classTotals(c.classLevels,c.ancestry).level||c.level):kind==='fighter'?classLevel(c,'fighter')+Math.max(0,classLevel(c,'warblade')-2):classLevel(c,kind);check(s,n>=+m[2]);}
   else if((m=s.match(/^(.+?) (\d+) ranks?$/i)))check(s,rank(c,m[1])>=+m[2]);
   else if(/^(proficiency with selected weapon|proficient with weapon|weapon proficiency \(crossbow type chosen\))$/i.test(s))check('Proficiency with '+(choice||'selected weapon'),proficient(c,choice));
   else if((m=s.match(/^(.+?) with selected weapon$/i)))check(m[1]+' ('+(choice||'selected weapon')+')',has(c,m[1],choice));
@@ -61,7 +65,7 @@ export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  if(choices.includes('Ray')&&choice==='Ray')check('Spellcaster for ray selection',c.casters.some(p=>p.level>0));
  return result(q.rows);
 }
-export function addEligibleFeat(c:Character,f:Feat,choice='') {if(!featEligibility(c,f,choice).eligible)throw new Error('Feat prerequisites are not met.');c.features.push({id:uid(),name:clean(f.name),choice,kind:'Feat',description:f.description,max:0,used:0,source:f.source});}
+export function addEligibleFeat(c:Character,f:Feat,choice='') {choice=featChoices(c,f).find(v=>featChoiceKey(v)===featChoiceKey(choice))||choice;if(!featEligibility(c,f,choice).eligible)throw new Error('Feat prerequisites are not met.');c.features.push({id:uid(),name:clean(f.name),choice,kind:'Feat',description:f.description,max:0,used:0,source:f.source});}
 function traditionType(p:Character['casters'][number]){const d=findClass(p.casting?.classId||p.name);return d?.casting?.type||(['wizard','sorcerer','bard','assassin'].includes(d?.id||'')?'arcane':['cleric','druid','paladin','ranger','blackguard'].includes(d?.id||'')?'divine':'unknown');}
 function canSpell(c:Character,level:number,type?:string,spontaneous=false){return c.casters.some(p=>(!type||traditionType(p)===type)&&(!spontaneous||p.mode==='spontaneous')&&(p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).slots:p.slots.map(s=>s.max)).some((max,i)=>i>=level&&max>0&&effectiveScore(c,p.ability,true)>=10+i));}
 function knownSpells(c:Character,type?:string){
@@ -81,7 +85,7 @@ const alignment=(s:string)=>({lg:'lawful good',ng:'neutral good',cg:'chaotic goo
 export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
  const q=checker(c,'class:'+d.id),{check,manual}=q;
  if(d.kind!=='Prestige')return result([]);
- const bab=c.automation.enabled?classTotals(c.classLevels,c.ancestry).bab:c.bab;
+ const bab=prerequisiteBab(c);
  const spellRequirement=(s:string)=>{let matched=false;for(const m of s.matchAll(/(\d+)(?:st|nd|rd|th)(?:-level| level)? (arcane|divine) spells?/gi)){matched=true;check(m[0],canSpell(c,+m[1],m[2].toLowerCase()));}if(/without preparation/i.test(s)){matched=true;check(s,canSpell(c,0,'arcane',true));}
   if(/mage hand/i.test(s)){matched=true;check('Able to cast mage hand',knownSpells(c,'arcane').some(s=>s.id==='mage-hand'));}
   if(/lesser planar ally/i.test(s)){matched=true;check('Able to cast lesser planar ally',canSpell(c,4,'divine')&&(classLevel(c,'cleric')>0||c.casters.some(p=>p.spells.some(k=>['lesser-planar-ally','planar-ally-lesser'].includes(k.spellId)||norm(k.custom?.name||'')==='lesser planar ally'))));}
@@ -100,10 +104,10 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
    if(/any (three )?metamagic/i.test(s)){
     const allowed=catalog.feats.filter(f=>/\[Metamagic\]/i.test(f.name)||/three/i.test(s)&&/\[Item Creation\]/i.test(f.name));
     check(/three/i.test(s)?'Three metamagic or item creation feats':'Any metamagic feat',allowed.filter(f=>has(c,clean(f.name))).length>=(/three/i.test(s)?3:1));
-    if(/Skill Focus/i.test(s))check('Skill Focus in an individual Knowledge skill',c.features.some(f=>featName(f.name)==='skill focus'&&/^Knowledge \(/i.test(f.choice||f.name.match(/Skill Focus\s*\((.+)\)/i)?.[1]||'')));
+    if(/Skill Focus/i.test(s))check('Skill Focus in an individual Knowledge skill',c.features.some(f=>featName(f.name)==='skill focus'&&/^Knowledge \(/i.test(f.choice||featChoice(f.name)||'')));
     continue;
    }
-   for(const f of s.split(/,\s*(?![^()]*\))/)){if(/Spell Focus in two schools/i.test(f)){check(f,new Set(c.features.filter(f=>featName(f.name)==='spell focus').map(f=>norm(f.choice||f.name.match(/\((.+)\)/)?.[1]||'')).filter(s=>schools.some(k=>norm(k)===s))).size>=2);continue;}
+   for(const f of s.split(/,\s*(?![^()]*\))/)){if(/Spell Focus in two schools/i.test(f)){check(f,new Set(c.features.filter(f=>featName(f.name)==='spell focus').map(f=>norm(f.choice||featChoice(f.name)||'')).filter(s=>schools.some(k=>norm(k)===s))).size>=2);continue;}
     const m=f.match(/^(.+?)\s*\((.+)\)$/);const name=m?m[1]:f,choices=m?.[2].split(' or ');check(f,choices?choices.some(choice=>has(c,name,choice)):has(c,name));
    }
   }
