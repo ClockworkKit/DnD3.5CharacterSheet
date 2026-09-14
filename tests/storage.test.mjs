@@ -18,3 +18,12 @@ test('another user cannot list, read, overwrite or delete a character',async()=>
 test('stale revisions cannot overwrite newer edits',async()=>{const ctx={params:Promise.resolve({id})};assert.equal((await item.PUT(request('PUT',{data:newCharacter(),revision:1}),ctx)).status,409);assert.equal((await (await item.GET(request('GET'),ctx)).json()).data.hp,7)});
 test('invalid character data and cross-origin writes are rejected',async()=>{assert.equal((await list.POST(request('POST',{data:{name:'Incomplete'}}))).status,400);assert.equal((await list.POST(request('POST',{data:newCharacter()},'owner-a','https://other.example'))).status,403);});
 test('delete removes only the selected owned revision',async()=>{const ctx={params:Promise.resolve({id})};assert.equal((await item.DELETE(request('DELETE',{revision} ),ctx)).status,200);assert.equal((await item.GET(request('GET'),ctx)).status,404);assert.deepEqual((await (await list.GET(request('GET'))).json()).characters,[])});
+test('malformed JSON request shapes return validation errors rather than service failures',async()=>{
+ const ctx={params:Promise.resolve({id:'unused'})};
+ for(const raw of ['null','[]','false','"text"','{']){
+  const req=method=>new Request('https://ledger.example/api/characters',{method,headers:{'Content-Type':'application/json','oai-authenticated-user-id':'owner-a',origin:'https://ledger.example'},body:raw});
+  assert.equal((await list.POST(req('POST'))).status,400,raw+' POST');
+  assert.equal((await item.PUT(req('PUT'),ctx)).status,400,raw+' PUT');
+  assert.equal((await item.DELETE(req('DELETE'),ctx)).status,400,raw+' DELETE');
+ }
+});

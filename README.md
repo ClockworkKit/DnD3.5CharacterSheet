@@ -2,7 +2,7 @@
 
 A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
-[Character sheet](https://clockworkkit.github.io/DnD3.5CharacterSheet/) · [Original Sites edition](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md)
+[Character sheet](https://clockworkkit.github.io/DnD3.5CharacterSheet/) · [Original Sites edition](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md) · [Latest debug audit](DEBUG-AUDIT.md)
 
 ## Character sheet
 
@@ -176,7 +176,7 @@ Spells, psionic powers, recorded spell-like abilities, Factotum resources, and m
 
 The invocation catalog stores factual metadata and source links, not full rules descriptions. Rebuild it with `python scripts/import-invocations.py` (requires lxml). The [source's draconic list](https://srd.dndtools.org/srd/magic/invocations/classInvocationLists/dragonShamanInvocations.html) is headed “Dragon Shaman”; this sheet assigns those Dragon Magic invocations to Dragonfire Adept, as established by its [class rules](https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html). Individual invocation entries supply grades, levels, and shape/essence types where list headings disagree.
 
-Validation: 158 automated tests, TypeScript, and the Pages build pass. Magic UI loads in a separate on-demand chunk, and the invocation catalog loads when its picker opens. The browser blocks local preview access; visual acceptance and new invocation cards still need a live check after deployment.
+Validation when introduced: 158 automated tests, TypeScript, and the Pages build passed. Magic UI loads in a separate on-demand chunk, and the invocation catalog loads when its picker opens. The [latest debug audit](DEBUG-AUDIT.md) records subsequent live invocation and Magic checks, current fixes, and remaining acceptance checks.
 
 ### Feat prerequisite recognition fixes
 
@@ -184,4 +184,4 @@ Feat ownership checks distinguish repeatable selections from per-round use limit
 
 Checks recognize class-granted simple/tower proficiencies, saved BAB overrides/adjustments, and the [Warblade’s Weapon Aptitude](https://srd.dndtools.org/srd/classes/baseTob/warblade.html) effective fighter levels. They recalculate from current abilities, ranks, class levels, and feat selections. Single-line imported prerequisite text stops at its next labeled rules section. Existing duplicate records are preserved for player review; these changes prevent new duplicates and do not automatically delete feats or disable their effects after prerequisites are lost.
 
-Validation: 164 automated tests, TypeScript, and the Pages production build pass. Live browser verification remains pending after deployment.
+Validation when introduced: 164 automated tests, TypeScript, and the Pages production build passed. The [latest debug audit](DEBUG-AUDIT.md) records live duplicate-prevention checks and a further correction for shield proficiency. The current suite has 171 passing tests; new audit fixes still need a browser recheck after deployment.

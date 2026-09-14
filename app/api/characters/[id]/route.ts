@@ -16,7 +16,9 @@ export async function PUT(request:Request,context:Context){try{
 }catch(e){return failure(e);}}
 export async function DELETE(request:Request,context:Context){try{
  const key=owner(request),{id}=await context.params;sameOrigin(request);
- const {revision}=await request.json() as {revision:unknown};
+ let body;try{body=await request.json()}catch{throw new RequestError('That character request is not valid JSON.');}
+ if(!body||typeof body!=='object'||Array.isArray(body))throw new RequestError('A saved revision is required.');
+ const {revision}=body as {revision:unknown};
  if(typeof revision!=='number'||!Number.isInteger(revision)||revision<1)throw new RequestError('A saved revision is required.');
  const result=await getDB().prepare('DELETE FROM characters WHERE id=? AND owner_id=? AND revision=?').bind(id,key,revision).run();
  if(!result.meta.changes)throw new RequestError('This character changed in another tab. Reload it before deleting.',409);

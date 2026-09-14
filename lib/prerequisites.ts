@@ -28,7 +28,7 @@ function proficient(c:Character,choice:string){if(norm(choice)==='grapple')retur
 function has(c:Character,name:string,choice?:string){
  if(hasFeat(c,name,choice))return true;
  if(name==='Armor Proficiency'&&choice){const e=equipmentCatalog.find(e=>e.kind==='armor'&&e.category===choice.toLowerCase());return !!e&&armorProficient(c,e);}
- if(name==='Shield Proficiency'){const e=equipmentCatalog.find(e=>e.kind==='shield'&&e.name==='Heavy wooden shield');return !!e&&armorProficient(c,e);}
+ if(name==='Shield Proficiency'){const e=matchEquipment('Heavy wooden shield','shield');return !!e&&armorProficient(c,e);}
  if(name==='Simple Weapon Proficiency')return equipmentCatalog.filter(e=>e.kind==='weapon'&&e.category==='simple').every(e=>proficient(c,e.name));
  if(name==='Martial Weapon Proficiency'&&choice)return proficient(c,choice);
  if(name==='Tower Shield Proficiency'){const e=equipmentCatalog.find(e=>e.kind==='shield'&&/tower/i.test(e.name));return !!e&&armorProficient(c,e);}
@@ -39,7 +39,7 @@ function has(c:Character,name:string,choice?:string){
  if(name==='Wild Talent'&&classLevel(c,'soulknife')>0)return true;
  return false;
 }
-function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),(classLevel(c,'warlock')+krauBonus(c,classLevel(c,'warlock'))),(classLevel(c,'dragonfire-adept')+krauBonus(c,classLevel(c,'dragonfire-adept'))),(classLevel(c,'shadowcaster')+krauBonus(c,classLevel(c,'shadowcaster'))),classLevel(c,'factotum')>=2?classLevel(c,'factotum')+krauBonus(c,classLevel(c,'factotum')):0);}
+function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),(classLevel(c,'warlock')?classLevel(c,'warlock')+krauBonus(c,classLevel(c,'warlock')):0),(classLevel(c,'dragonfire-adept')?classLevel(c,'dragonfire-adept')+krauBonus(c,classLevel(c,'dragonfire-adept')):0),(classLevel(c,'shadowcaster')?classLevel(c,'shadowcaster')+krauBonus(c,classLevel(c,'shadowcaster')):0),classLevel(c,'factotum')>=2?classLevel(c,'factotum')+krauBonus(c,classLevel(c,'factotum')):0);}
 function prerequisiteBab(c:Character){const totals=classTotals(c.classLevels,c.ancestry);return !c.automation.enabled||totals.missing.length?c.bab:c.automation.overrides.bab??totals.bab+(c.automation.adjustments.bab||0);}
 export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  const q=checker(c,'feat:'+f.id+':'+choice),{check,manual}=q;
