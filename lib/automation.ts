@@ -2,17 +2,23 @@ import {racialWarnings,krauBonus} from './racial-abilities.ts';
 import {syncSupplementalResources,syncGrantedFeats} from './class-systems.ts';
 import type {Character} from './model.ts';
 import {defaultAutomation} from './automation-schema.ts';
-import {findClass,classTotals,applyClassTotals,inferClassEntries,makeCaster,makePsionic} from './classes.ts';
+import {classTotals,applyClassTotals,inferClassEntries} from './classes.ts';
 import {effectiveScore,racialTraits} from './ancestry.ts';
 import {effectBonus,effectActive,classLevel,featCount,hasFeat,baseVariables} from './effects.ts';
-import {equippedArmor,carrying,movement,matchEquipment,equipmentById,gearWeight,allSizes} from './equipment.ts';
+import {equippedArmor,carrying,movement,matchEquipment,gearWeight,allSizes} from './equipment.ts';
 import {castingDefinition,castingNumbers,manifestDefinition,psionicProgression,hitDieSequence,hitPoints,advanceTargets} from './advancement.ts';
 import {skillIntelligence} from './level-history.ts';
 import {initializeSkillTraining,preserveRemovedSkillLevels,syncSkillRanks,adoptManualSkillChanges} from './skill-points.ts';
 import {expression,expandFormula} from './formulas.ts';
 export const calculationFields:Array<[string,string]>=[['maxHp','Maximum HP'],['speed','Speed'],['bab','Base attack'],['defense.armor','Armor bonus'],['defense.shield','Shield bonus'],['defense.dexCap','Maximum Dexterity bonus'],['defense.checkPenalty','Armor check penalty'],['defense.spellFailure','Arcane spell failure'],['defense.sr','Spell resistance'],['saves.fort.base','Base Fortitude'],['saves.ref.base','Base Reflex'],['saves.will.base','Base Will']];
-function read(c:Character,path:string){return path.split('.').reduce((v,k)=>v?.[k],c as any) as number;}
-function assign(c:Character,path:string,n:number){const keys=path.split('.'),last=keys.pop()!;const object=keys.reduce((o,k)=>o[k],c as any);object[last]=n;}
+function numericField(c:Character,path:string){
+ const keys=path.split('.'),key=keys.pop()!;let object=c as unknown as Record<string,unknown>;
+ for(const part of keys){const child=Object.hasOwn(object,part)?object[part]:null;if(!child||typeof child!=='object'||Array.isArray(child))throw Error('Unknown calculation field: '+path);object=child as Record<string,unknown>;}
+ if(!Object.hasOwn(object,key)||typeof object[key]!=='number')throw Error('Unknown calculation field: '+path);
+ return {object,key};
+}
+function read(c:Character,path:string){const {object,key}=numericField(c,path);return object[key] as number;}
+function assign(c:Character,path:string,n:number){const {object,key}=numericField(c,path);object[key]=n;}
 function number(c:Character,path:string,value:number){const result=c.automation.overrides[path]??value+(c.automation.adjustments[path]||0);const bounded=path==='defense.checkPenalty'?Math.min(0,Math.max(-100,result)):path==='defense.dexCap'?Math.min(100,Math.max(-100,result)):path==='defense.spellFailure'?Math.min(100,Math.max(0,result)):['maxHp','speed','defense.sr'].includes(path)?Math.min(10000,Math.max(0,Math.round(result))):result;assign(c,path,bounded);}
 export function formulaVariables(c:Character,extra:Record<string,number>={}){const v=baseVariables(c);for(const a of ['STR','DEX','CON','INT','WIS','CHA'] as const){v[a]=effectiveScore(c,a);v[a+'_MOD']=Math.floor((v[a]-10)/2)}return {...v,...extra};}
 export function diceFormula(c:Character,input:string,extra:Record<string,number>={}){return expandFormula(input,formulaVariables(c,extra));}

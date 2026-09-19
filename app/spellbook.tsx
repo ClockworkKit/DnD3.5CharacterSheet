@@ -10,7 +10,6 @@ import {classCatalog,findClass} from '@/lib/classes';
 import {illumianSpellFormula} from '@/lib/racial-abilities';
 import {unrecordedClassSpells,learnClassList} from '@/lib/spell-catalog';
 import {specialSpellFailure} from '@/lib/class-systems';
-import {castingNumbers} from '@/lib/advancement';
 import {activateSilverbeard} from '@/lib/cleric-specialty';
 import {toast} from 'sonner';
 export type ReferenceProps={spells:Spell[],referenceError:string,retry:()=>void};

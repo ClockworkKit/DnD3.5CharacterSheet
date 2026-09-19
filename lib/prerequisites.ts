@@ -15,7 +15,7 @@ const clean=(s:string)=>s.replace(/\s*\[[^\]]*\]/g,'').trim();
 const rank=(c:Character,name:string)=>Math.max(0,...c.skills.filter(s=>norm(s.name)===norm(name)||!name.includes('(')&&norm(s.name).startsWith(norm(name)+' (')).map(s=>s.ranks));
 function result(requirements:Requirement[]):Eligibility {const missing=requirements.some(r=>r.state==='missing'),pending=requirements.some(r=>r.state==='confirm'&&!r.confirmed);return {eligible:!missing&&!pending,requirements,status:missing?'Missing prerequisites':pending?'Needs confirmation':'Eligible'};}
 function checker(c:Character,id:string){const rows:Requirement[]=[];return {rows,check:(label:string,met:boolean)=>rows.push({label,state:met?'met':'missing'}),manual:(label:string)=>{const key=id+':'+label;rows.push({label,state:'confirm',key,confirmed:!!c.prerequisiteConfirmations?.[key]});}};}
-export function prerequisiteText(f:Feat){return f.description.match(/Prerequisites?:\s*([\s\S]*?)(?=\n\s*\n|\b(?:Benefits?|Normal|Special):|$)/i)?.[1]?.trim()||'';}
+export function prerequisiteText(f:Feat){return f.prerequisites??(f.description.match(/Prerequisites?:\s*([\s\S]*?)(?=\n\s*\n|\b(?:Benefits?|Normal|Special):|$)/i)?.[1]?.trim()||'');}
 const weaponFeats=['weapon-focus','greater-weapon-focus','weapon-specialization','greater-weapon-specialization','improved-critical','rapid-reload','exotic-weapon-proficiency','martial-weapon-proficiency'];
 const schools=['Abjuration','Conjuration','Divination','Enchantment','Evocation','Illusion','Necromancy','Transmutation'];
 export function featChoices(c:Character,f:Feat):string[]{
@@ -44,7 +44,7 @@ function prerequisiteBab(c:Character){const totals=classTotals(c.classLevels,c.a
 export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  const q=checker(c,'feat:'+f.id+':'+choice),{check,manual}=q;
  const choices=featChoices(c,f);choice=choices.find(v=>featChoiceKey(v)===featChoiceKey(choice))||choice;if(choices.length)check('Select a weapon, skill or school',choices.includes(choice));
- const name=clean(f.name),intrinsic=featChoice(name),baseName=name.replace(/\s*\(.*/,''),repeat=['toughness','extra-turning','spell-mastery'].includes(f.id);
+ const name=clean(f.name),intrinsic=featChoice(name),baseName=name.replace(/\s*\(.*/,''),repeat=f.repeatable??['toughness','extra-turning','spell-mastery'].includes(f.id);
  check(choices.length?'Not already selected for '+(choice||'this choice'):'Not already selected',repeat&&!choices.length||!has(c,baseName,choices.length?choice:intrinsic));
  const bab=prerequisiteBab(c);
  for(const raw of prerequisiteText(f).split(/,\s*(?![^()]*\))/)){

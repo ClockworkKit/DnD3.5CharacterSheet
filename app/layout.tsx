@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Script from "next/script";
 import "./globals.css";
 
 export const metadata: Metadata = {
@@ -20,7 +21,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <head><script src="/theme.js" /><script src="/bridge.js" /></head>
+      <head><Script src="/theme.js" strategy="beforeInteractive" /><Script src="/bridge.js" strategy="beforeInteractive" /></head>
       <body className="antialiased">{children}</body>
     </html>
   );

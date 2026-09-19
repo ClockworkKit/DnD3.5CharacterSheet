@@ -2,7 +2,7 @@ import raw from './equipment-data.json' with {type:'json'};
 import {findClass} from './classes.ts';
 import type {Character,Weapon} from './model.ts';
 import {effectiveScore,racialTraits} from './ancestry.ts';
-import {classLevel,hasFeat,effectBonus,effectTerms,stackBonuses,effectActive} from './effects.ts';
+import {classLevel,hasFeat,effectTerms,stackBonuses,effectActive} from './effects.ts';
 export type Equipment={id:string,name:string,kind:'weapon'|'armor'|'shield',category:string,weight:number,price:number,source:string,damage?:string,small?:string,threat?:number,multiplier?:number,range?:number,ranged?:boolean,thrown?:boolean,hands?:string,damageType?:string,double?:boolean,armor?:number,dexCap?:number,checkPenalty?:number,spellFailure?:number};
 export const equipmentCatalog=raw as Equipment[];
 export const equipmentById=(id?:string)=>equipmentCatalog.find(e=>e.id===id);
