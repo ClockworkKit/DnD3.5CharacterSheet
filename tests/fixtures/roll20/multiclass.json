@@ -1,0 +1,497 @@
+{
+  "format": "roll20-dnd35-export",
+  "version": 1,
+  "exportedAt": "2026-09-19T00:00:00Z",
+  "character": {
+    "id": "C-test",
+    "name": "Import Regression",
+    "customMetadata": {
+      "preserve": true
+    }
+  },
+  "attributes": [
+    {
+      "id": "A0",
+      "name": "race",
+      "current": "Illumian",
+      "max": ""
+    },
+    {
+      "id": "A1",
+      "name": "class1",
+      "current": "Wizard",
+      "max": ""
+    },
+    {
+      "id": "A2",
+      "name": "level1",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A3",
+      "name": "class2",
+      "current": "Cleric",
+      "max": ""
+    },
+    {
+      "id": "A4",
+      "name": "level2",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A5",
+      "name": "level",
+      "current": "6",
+      "max": ""
+    },
+    {
+      "id": "A6",
+      "name": "str",
+      "current": "8",
+      "max": ""
+    },
+    {
+      "id": "A7",
+      "name": "dex",
+      "current": "14",
+      "max": ""
+    },
+    {
+      "id": "A8",
+      "name": "con",
+      "current": "12",
+      "max": ""
+    },
+    {
+      "id": "A9",
+      "name": "int",
+      "current": "18",
+      "max": ""
+    },
+    {
+      "id": "A10",
+      "name": "int-temp",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A11",
+      "name": "wis",
+      "current": "16",
+      "max": ""
+    },
+    {
+      "id": "A12",
+      "name": "cha",
+      "current": "10",
+      "max": ""
+    },
+    {
+      "id": "A13",
+      "name": "size",
+      "current": "0",
+      "max": ""
+    },
+    {
+      "id": "A14",
+      "name": "hitpoints",
+      "current": "0",
+      "max": "24"
+    },
+    {
+      "id": "A15",
+      "name": "temphp",
+      "current": "5",
+      "max": ""
+    },
+    {
+      "id": "A16",
+      "name": "nonlethaldamage",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A17",
+      "name": "expcurrent",
+      "current": "15,000",
+      "max": ""
+    },
+    {
+      "id": "A18",
+      "name": "speed",
+      "current": "30 ft.",
+      "max": ""
+    },
+    {
+      "id": "A19",
+      "name": "bab",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A20",
+      "name": "init",
+      "current": "6",
+      "max": ""
+    },
+    {
+      "id": "A21",
+      "name": "grapple",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A22",
+      "name": "fortitude",
+      "current": "5",
+      "max": ""
+    },
+    {
+      "id": "A23",
+      "name": "reflex",
+      "current": "4",
+      "max": ""
+    },
+    {
+      "id": "A24",
+      "name": "will",
+      "current": "8",
+      "max": ""
+    },
+    {
+      "id": "A25",
+      "name": "armorclass",
+      "current": "17",
+      "max": ""
+    },
+    {
+      "id": "A26",
+      "name": "acitembonus",
+      "current": "4",
+      "max": ""
+    },
+    {
+      "id": "A27",
+      "name": "shieldbonus",
+      "current": "0",
+      "max": ""
+    },
+    {
+      "id": "A28",
+      "name": "armorclassnaturalarmor",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A29",
+      "name": "spotranks",
+      "current": "4.5",
+      "max": ""
+    },
+    {
+      "id": "A30",
+      "name": "spotmiscmod",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A31",
+      "name": "spot",
+      "current": "9",
+      "max": ""
+    },
+    {
+      "id": "A32",
+      "name": "knowarcanaranks",
+      "current": "6",
+      "max": ""
+    },
+    {
+      "id": "A33",
+      "name": "craft1name",
+      "current": "alchemy",
+      "max": ""
+    },
+    {
+      "id": "A34",
+      "name": "craft1ranks",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A35",
+      "name": "gold",
+      "current": "0",
+      "max": ""
+    },
+    {
+      "id": "A36",
+      "name": "silver",
+      "current": "12",
+      "max": ""
+    },
+    {
+      "id": "A37",
+      "name": "languages",
+      "current": "Common, Illumian",
+      "max": ""
+    },
+    {
+      "id": "A38",
+      "name": "feats",
+      "current": "Combat Casting\nWeapon Focus (Ray)",
+      "max": ""
+    },
+    {
+      "id": "A39",
+      "name": "arcanecasterlevel",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A40",
+      "name": "arcanecastingstat",
+      "current": "@{int-mod}",
+      "max": ""
+    },
+    {
+      "id": "A41",
+      "name": "arcanespells0",
+      "current": "4",
+      "max": ""
+    },
+    {
+      "id": "A42",
+      "name": "arcanespells1",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A43",
+      "name": "arcanespells2",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A44",
+      "name": "divinecasterlevel",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A45",
+      "name": "divinecastingstat",
+      "current": "@{wis-mod}",
+      "max": ""
+    },
+    {
+      "id": "A46",
+      "name": "divinespells0",
+      "current": "4",
+      "max": ""
+    },
+    {
+      "id": "A47",
+      "name": "divinespells1",
+      "current": "3",
+      "max": ""
+    },
+    {
+      "id": "A48",
+      "name": "divinespells2",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A49",
+      "name": "repeating_spells12_ROW1_spellname12",
+      "current": "Magic Missile",
+      "max": ""
+    },
+    {
+      "id": "A50",
+      "name": "repeating_spells12_ROW1_spelllevel12",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A51",
+      "name": "repeating_spells12_ROW1_spellprep12",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A52",
+      "name": "repeating_spells12_ROW1_spellused12",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A53",
+      "name": "repeating_spells11_ROW2_spellname11",
+      "current": "Cure Light Wounds",
+      "max": ""
+    },
+    {
+      "id": "A54",
+      "name": "repeating_spells11_ROW2_spellprep11",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A55",
+      "name": "repeating_spells11_ROW2_spellused11",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A56",
+      "name": "repeating_spells22_ROW3_spellname22",
+      "current": "My Custom Ward",
+      "max": ""
+    },
+    {
+      "id": "A57",
+      "name": "repeating_spells22_ROW3_spellprep22",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A58",
+      "name": "repeating_spells22_ROW3_spellused22",
+      "current": "0",
+      "max": ""
+    },
+    {
+      "id": "A59",
+      "name": "repeating_spells22_ROW3_spellschool22",
+      "current": "Abjuration",
+      "max": ""
+    },
+    {
+      "id": "A60",
+      "name": "repeating_spells22_ROW3_description",
+      "current": "Custom rules remain intact.",
+      "max": ""
+    },
+    {
+      "id": "A61",
+      "name": "repeating_weapons_W1_weaponname",
+      "current": "Dagger",
+      "max": ""
+    },
+    {
+      "id": "A62",
+      "name": "repeating_weapons_W1_weaponstat",
+      "current": "@{dex-mod}",
+      "max": ""
+    },
+    {
+      "id": "A63",
+      "name": "repeating_weapons_W1_weapondamagestat",
+      "current": "@{str-mod}",
+      "max": ""
+    },
+    {
+      "id": "A64",
+      "name": "repeating_weapons_W1_weapondicenumber",
+      "current": "1",
+      "max": ""
+    },
+    {
+      "id": "A65",
+      "name": "repeating_weapons_W1_weapondicetype",
+      "current": "4",
+      "max": ""
+    },
+    {
+      "id": "A66",
+      "name": "repeating_weapons_W1_weaponattackcalc",
+      "current": "5",
+      "max": ""
+    },
+    {
+      "id": "A67",
+      "name": "repeating_weapons_W1_weaponrange",
+      "current": "10 ft.",
+      "max": ""
+    },
+    {
+      "id": "A68",
+      "name": "repeating_equipment_E1_equipmentname",
+      "current": "Rope",
+      "max": ""
+    },
+    {
+      "id": "A69",
+      "name": "repeating_equipment_E1_equipmentquantity",
+      "current": "2",
+      "max": ""
+    },
+    {
+      "id": "A70",
+      "name": "repeating_equipment_E1_equipmentweight",
+      "current": "5",
+      "max": ""
+    },
+    {
+      "id": "A71",
+      "name": "repeating_equipment_E1_equipmentnotes",
+      "current": "Hemp, not silk.",
+      "max": ""
+    },
+    {
+      "id": "A72",
+      "name": "repeating_mystery_X1_homebrew",
+      "current": "false",
+      "max": ""
+    },
+    {
+      "id": "A73",
+      "name": "custom_formula",
+      "current": "@{str}+[[1d20]]",
+      "max": ""
+    },
+    {
+      "id": "A74",
+      "name": "custom_empty",
+      "current": "",
+      "max": ""
+    },
+    {
+      "id": "A75",
+      "name": "custom_null",
+      "current": null,
+      "max": ""
+    },
+    {
+      "id": "A76",
+      "name": "custom_false",
+      "current": false,
+      "max": ""
+    },
+    {
+      "id": "A77",
+      "name": "custom_zero",
+      "current": 0,
+      "max": ""
+    }
+  ],
+  "abilities": [
+    {
+      "id": "ability1",
+      "name": "Custom action",
+      "action": "[[1d20]]"
+    }
+  ],
+  "extension": {
+    "value": [
+      0,
+      false,
+      null,
+      ""
+    ]
+  }
+}
