@@ -1,4 +1,5 @@
 import {racialStateSchema,emptyRacialState} from './racial-state.ts';
+import {roll20ImportDataSchema} from './roll20-schema.ts';
 import { z } from 'zod';
 import {classSystemsSchema} from './class-systems.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
@@ -23,6 +24,7 @@ const weaponSchema = z.object({id:ident,name:short,ability,attack:num,damage:z.s
 const classLevelSchema = z.object({id:ident,classId:short,name:short,level:z.number().int().min(1).max(30),notes:z.string().max(2000),castingTarget:short.optional(),divineTarget:short.optional(),psionicTarget:short.optional()});
 const psionicSchema = z.object({id:ident,name:short,ability,level:z.number().int().min(0).max(100),max:count,spent:count,focused:z.boolean(),dcExtra:num,notes:z.string().max(4000),powers:z.array(z.object({id:ident,name:short,powerId:short.default(''),level:z.number().int().min(1).max(9),cost:z.number().int().min(1).max(100),formula:z.string().max(80),notes:z.string().max(10000)})).max(200),manifesting:z.object({classId:short,progression:z.number().min(0).max(100).nullable().default(null),levelAdjustment:num.default(0),pointsAdjustment:num.default(0),automatic:z.boolean().default(true)}).optional()});
 export const characterSchema = z.object({
+  roll20Import:roll20ImportDataSchema.optional(),
   racialState:racialStateSchema,prerequisiteConfirmations:z.record(z.string().max(1000),z.boolean()).default({}),classSystems:classSystemsSchema,schemaVersion:z.literal(1),clericSpecialty:z.enum(['none','axe-brother']).default('none'),factotum:z.object({spent:count.default(0),inspirationExtra:count.default(0),knowledgeUsed:z.array(ident).max(120).default([]),pietyUsed:count.default(0),dodgeUsed:z.boolean().default(false),spells:z.array(z.object({spell:spellSchema,spent:z.boolean().default(false)})).max(8).default([])}).default({}), name:short.min(1),race:short,classes:z.string().max(2000),level:z.number().int().min(1).max(100),alignment:short,deity:short,player:short,experience:z.number().int().min(0).max(100000000),languages:z.string().max(2000),appearance:z.string().max(2000),size:z.enum(['Fine','Diminutive','Tiny','Small','Medium','Large','Huge','Gargantuan','Colossal']),
   advancementChoices:z.record(z.string().max(100),z.string().max(200)).default({}),
   scores:z.object({STR:num,DEX:num,CON:num,INT:num,WIS:num,CHA:num}),temps:z.object({STR:num,DEX:num,CON:num,INT:num,WIS:num,CHA:num}),

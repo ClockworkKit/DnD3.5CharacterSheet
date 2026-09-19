@@ -4,6 +4,8 @@ Barrow Ledger is the D&D 3.5 character sheet built with Astra for ClockworkKit, 
 
 ## Latest verification
 
+The September 19 review branch verifies Luna's maintenance contributions and continues the Roll20 importer: 203 automated tests, lint, TypeScript, the Pages build, and the server build pass. See [Luna review](LUNA-REVIEW.md) for corrections, browser results, and remaining acceptance checks. These changes are proposed for review and are not a claim about the currently deployed site.
+
 The live Pages edition was walked through on September 12. Creation, saves, backup round trips, themes, skill purchases, HP recalculation, and missing-extension behavior were checked. This branch fixes import format/version validation and adds three regression tests: all 84 tests, TypeScript, and the Pages build pass. The patched local browser preview was blocked; actual Roll20 delivery remains unverified. See [PAGES-VERIFICATION.md](PAGES-VERIFICATION.md) for evidence and limits.
 
 ## Completed

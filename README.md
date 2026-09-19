@@ -56,6 +56,10 @@ Classes include progression tables, prerequisites, full SRD reference text, mult
 
 Race ability adjustments and trait bonuses are separate layers, so selecting a race repeatedly cannot accumulate bonuses. Existing sheets preserve manually included racial adjustments. Racial Hit Dice and level adjustment are recorded separately; LA changes effective character level without adding Hit Dice or class progression. The library includes the seven core races, common subraces, planetouched and psionic choices, and concise summaries of Changeling, Warforged, Goliath, and Whisper Gnome.
 
+## Import a Roll20 character
+
+Use the GM exporter in [roll20/README.md](roll20/README.md), then choose **Import from Roll20** on the creation screen or below an open sheet. Paste or upload its JSON, review the conversion, and import it as a new character. Imports retain the original JSON and a mapping report in Notes, preserve source totals in manual calculation mode, and keep arcane, divine, domain, and psionic records separate. Unknown fields stay attached for review and survive normal save and backup round trips. This is a one-time import; see the exporter guide for supported fields and limitations.
+
 ## Roll20 connection
 
 Enable the sheet's URL in Beyond20's custom-site settings and keep Roll20 open in the same desktop browser. Use **Roll20 setup → Send test roll** to verify your game connection.
@@ -184,4 +188,4 @@ Feat ownership checks distinguish repeatable selections from per-round use limit
 
 Checks recognize class-granted simple/tower proficiencies, saved BAB overrides/adjustments, and the [Warblade’s Weapon Aptitude](https://srd.dndtools.org/srd/classes/baseTob/warblade.html) effective fighter levels. They recalculate from current abilities, ranks, class levels, and feat selections. Single-line imported prerequisite text stops at its next labeled rules section. Existing duplicate records are preserved for player review; these changes prevent new duplicates and do not automatically delete feats or disable their effects after prerequisites are lost.
 
-Validation when introduced: 164 automated tests, TypeScript, and the Pages production build passed. The [latest debug audit](DEBUG-AUDIT.md) records live duplicate-prevention checks and a further correction for shield proficiency. The current suite has 171 passing tests; new audit fixes still need a browser recheck after deployment.
+Validation when introduced: 164 automated tests, TypeScript, and the Pages production build passed. The [debug audit](DEBUG-AUDIT.md) records live duplicate-prevention checks and a further correction for shield proficiency. The [September 19 review](LUNA-REVIEW.md) records subsequent verification, corrections, and the 203-test suite.
