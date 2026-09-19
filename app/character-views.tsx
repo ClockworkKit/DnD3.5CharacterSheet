@@ -1,4 +1,5 @@
 'use client';
+import {Roll20ImportReport} from './roll20-import-report';
 import {glyphStatus} from '@/lib/racial-abilities';
 
 import {EquipmentPicker,GearOptions,CombatContext} from './equipment-picker';
@@ -38,4 +39,4 @@ export function Gear({c,edit,confirm}:SheetProps){return <>
  <Section title="Coin purse"><div className="fields four">{(['cp','sp','gp','pp'] as const).map(k=><N key={k} label={k.toUpperCase()} value={c.coins[k]} onChange={v=>edit(d=>{d.coins[k]=v})} min={0}/>)}</div><Check label="Count coin weight (50 coins per pound)" checked={c.coinWeight} onChange={v=>edit(d=>{d.coinWeight=v})}/></Section>
  </>;}
 
-export function Notes({c,edit}:SheetProps){return <><Section title="Languages & appearance"><F label="Languages (including Speak Language purchases)" value={c.languages} onChange={v=>edit(d=>{d.languages=v})}/><F label="Age, height, weight, eyes, hair, and distinguishing marks" value={c.appearance} onChange={v=>edit(d=>{d.appearance=v})} area/></Section><Section title="Background"><F label="History, allies, enemies, and ties" value={c.background} onChange={v=>edit(d=>{d.background=v})} area/></Section><Section title="Campaign notes"><F label="Quests, discoveries, house rules, and reminders" value={c.notes} onChange={v=>edit(d=>{d.notes=v})} area/></Section></>;}
+export function Notes({c,edit}:SheetProps){return <>{c.roll20Import&&<Roll20ImportReport source={c.roll20Import}/>} <Section title="Languages & appearance"><F label="Languages (including Speak Language purchases)" value={c.languages} onChange={v=>edit(d=>{d.languages=v})}/><F label="Age, height, weight, eyes, hair, and distinguishing marks" value={c.appearance} onChange={v=>edit(d=>{d.appearance=v})} area/></Section><Section title="Background"><F label="History, allies, enemies, and ties" value={c.background} onChange={v=>edit(d=>{d.background=v})} area/></Section><Section title="Campaign notes"><F label="Quests, discoveries, house rules, and reminders" value={c.notes} onChange={v=>edit(d=>{d.notes=v})} area/></Section></>;}
