@@ -79,7 +79,8 @@ test('feat tags retain their numeric effects and spell-like caster levels suppor
 });
 test('catalog indices stay synchronized with feat categories and spell metadata',()=>{
  const index=JSON.parse(readFileSync(new URL('../lib/prerequisite-catalog.json',import.meta.url)));
- assert.deepEqual(index.feats,feats.map(({id,name})=>({id,name})));
+ assert.deepEqual(index.feats.map(({id,name})=>({id,name})),feats.map(({id,name})=>({id,name})));
+ assert.deepEqual(index.feats.map(({category,prerequisites,repeatable,specialConditions,tags})=>({category,prerequisites,repeatable,specialConditions,tags})),feats.map(({category,prerequisites,repeatable,specialConditions,tags})=>({category,prerequisites,repeatable,specialConditions,tags})));
  assert.equal(index.spells.length,867);
 });
 
