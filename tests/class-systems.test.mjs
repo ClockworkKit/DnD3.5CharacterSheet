@@ -4,8 +4,8 @@ import {readFileSync} from 'node:fs';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
 import {characterSchema,newWeapon,spellSchema} from '../lib/model.ts';
 import {recompute,resourceNumbers} from '../lib/automation.ts';
-import {systemLimits,systemWarnings,useSystemChoice,recoverManeuvers,choiceDailyUses,essentiaCapacity,settleDelayedDamage,supplementalResources,supplementalTerms,specialSpellFailure} from '../lib/class-systems.ts';
-import {resetDaily,weaponDamage,weaponAttack,criticalConfirmation,sheetTotals} from '../lib/rules.ts';
+import {systemLimits,systemWarnings,spendSystemChoice,recoverManeuvers,choiceDailyUses,essentiaCapacity,settleDelayedDamage,supplementalResources,supplementalTerms,specialSpellFailure} from '../lib/class-systems.ts';
+import {resetDaily,weaponDamage,weaponAttack,criticalConfirmation} from '../lib/rules.ts';
 import {equipmentCatalog} from '../lib/equipment.ts';
 import {advancementChoices,recordAdvancementChoice} from '../lib/advancement-choices.ts';
 import {expandSpellCatalog,learnClassList,unrecordedClassSpells} from '../lib/spell-catalog.ts';
@@ -30,9 +30,9 @@ test('managed uses survive changes and daily rests preserve craft reserve, weekl
 });
 
 test('maneuvers require readiness, recovery and crusader grants; multiclass levels advance initiator limits',()=>{
- const c=create('Crusader',1),s=choice(c,'crusader','maneuver');assert.throws(()=>useSystemChoice(c,s.id),/Ready/);s.readied=true;assert.throws(()=>useSystemChoice(c,s.id),/Ready/);s.granted=true;useSystemChoice(c,s.id);assert.equal(s.spent,1);assert.equal(s.granted,false);assert.throws(()=>useSystemChoice(c,s.id),/Ready/);recoverManeuvers(c,'crusader');assert.equal(s.spent,0);assert.equal(s.granted,false);
+ const c=create('Crusader',1),s=choice(c,'crusader','maneuver');assert.throws(()=>spendSystemChoice(c,s.id),/Ready/);s.readied=true;assert.throws(()=>spendSystemChoice(c,s.id),/Ready/);s.granted=true;spendSystemChoice(c,s.id);assert.equal(s.spent,1);assert.equal(s.granted,false);assert.throws(()=>spendSystemChoice(c,s.id),/Ready/);recoverManeuvers(c,'crusader');assert.equal(s.spent,0);assert.equal(s.granted,false);
  c.classLevels.push({...create('Fighter',8).classLevels[0]});assert.equal(systemLimits(c,'crusader').initiator,5);assert.equal(systemLimits(c,'crusader').maxLevel,3);
- s.kind='mystery';assert.throws(()=>useSystemChoice(c,s.id),/level limit/);assert.ok(systemWarnings(c).some(w=>/different ability system/.test(w)));
+ s.kind='mystery';assert.throws(()=>spendSystemChoice(c,s.id),/level limit/);assert.ok(systemWarnings(c).some(w=>/different ability system/.test(w)));
 });
 
 test('Crusader counterstrike follows pool boundaries and settlement uses temporary HP first',()=>{
@@ -41,8 +41,8 @@ test('Crusader counterstrike follows pool boundaries and settlement uses tempora
 });
 
 test('mystery category transitions, Intelligence eligibility and at-will fundamentals are enforced',()=>{
- for(const [lv,uses] of [[6,1],[7,2],[13,3]]){const c=create('Shadowcaster',lv),s=choice(c,'shadowcaster','mystery',3);assert.equal(choiceDailyUses(c,s),uses);for(let i=0;i<uses;i++)useSystemChoice(c,s.id);assert.throws(()=>useSystemChoice(c,s.id),/No daily/);}
- const c=create('Shadowcaster',14),s=choice(c,'shadowcaster','fundamental',0,{spent:3});assert.equal(choiceDailyUses(c,s),Infinity);useSystemChoice(c,s.id);assert.equal(s.spent,3);const m=choice(c,'shadowcaster','mystery',7);c.scores.INT=16;assert.throws(()=>useSystemChoice(c,m.id),/Intelligence/);
+ for(const [lv,uses] of [[6,1],[7,2],[13,3]]){const c=create('Shadowcaster',lv),s=choice(c,'shadowcaster','mystery',3);assert.equal(choiceDailyUses(c,s),uses);for(let i=0;i<uses;i++)spendSystemChoice(c,s.id);assert.throws(()=>spendSystemChoice(c,s.id),/No daily/);}
+ const c=create('Shadowcaster',14),s=choice(c,'shadowcaster','fundamental',0,{spent:3});assert.equal(choiceDailyUses(c,s),Infinity);spendSystemChoice(c,s.id);assert.equal(s.spent,3);const m=choice(c,'shadowcaster','mystery',7);c.scores.INT=16;assert.throws(()=>spendSystemChoice(c,m.id),/Intelligence/);
 });
 
 test('incarnum limits use Constitution, combined HD, class increases and a shared pool',()=>{

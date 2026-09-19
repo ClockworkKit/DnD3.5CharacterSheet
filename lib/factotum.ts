@@ -32,7 +32,7 @@ export function chooseDilettante(c:Character,spell:Spell) {
   const problem=dilettanteProblem(c,spell);if(problem)throw new Error(problem);
   c.factotum.spells.push({spell:structuredClone(spell),spent:false});
 }
-export function useDilettante(c:Character,id:string) {
+export function castDilettante(c:Character,id:string) {
   const choice=c.factotum.spells.find(s=>s.spell.id===id);if(!choice||choice.spent)throw new Error('That spell has already been used or is not selected.');
   const problem=dilettanteProblem(c,choice.spell,c.factotum.spells.filter(s=>s!==choice).map(s=>s.spell));if(problem)throw new Error(problem);
   spendInspiration(c,1);choice.spent=true;

@@ -3,7 +3,7 @@ import {useState} from 'react';
 import {toast} from 'sonner';
 import {findRace,effectiveScore} from '@/lib/ancestry';
 import {hasFeat} from '@/lib/effects';
-import {applyRacialFireDamage,sigils,sigilLimit,illumianWord,setSigils,useIllumianWord,reserveIllumianSlot,swimSpeed,racialWarnings,racialHD,metamagicCosts,advanceRacialRound,racialEnabled} from '@/lib/racial-abilities';
+import {applyRacialFireDamage,sigils,sigilLimit,illumianWord,setSigils,activateIllumianWord,reserveIllumianSlot,swimSpeed,racialWarnings,racialHD,metamagicCosts,advanceRacialRound,racialEnabled} from '@/lib/racial-abilities';
 import {skillBonus,withBonus,makeSpellRoll} from '@/lib/rules';
 import {Choice,Check,N,Btn,Section,type SheetProps} from './sheet-ui';
 const elements=['none','air','earth','fire','water','cold'];
@@ -19,7 +19,7 @@ export function RacialAbilities({c,edit,roll,spells}:{spells?:import('@/lib/mode
  const donor=c.casters.find(p=>p.id===casterId)||c.casters[0],turns=c.features.filter(f=>/^(?:turn(?: or rebuke)?|rebuke|command) undead/i.test(f.name)),turn=turns.find(f=>f.id===turnId)||turns[0];
  const target=c.casters.find(p=>p.id===targetId)||c.casters[0],prepared=target?.spells.find(k=>k.id===spellId)||target?.spells[0];
  const metas=Object.keys(metamagicCosts).filter(m=>hasFeat(c,m)),chosenMeta=metas.includes(meta)?meta:metas[0]||'';
- const activate=()=>attempt(()=>{const options={casterId:donor?.id,level,turnId:turn?.id,mode,metamagic:chosenMeta,targetCasterId:target?.id,targetSpellId:prepared?.id};const draft=structuredClone(c);useIllumianWord(draft,options);if(word==='Vaulnaen'){const reference=prepared?.custom||spells?.find(s=>s.id===prepared?.spellId);if(!target||!prepared||!reference)throw new Error('Open the spell library to load this spell reference, or use a custom spell.');if(!roll({...makeSpellRoll(c,target,prepared,reference),details:'Vaulnaen: donor slot spent; original preparation retained.'}))return;}edit(d=>useIllumianWord(d,options));});
+ const activate=()=>attempt(()=>{const options={casterId:donor?.id,level,turnId:turn?.id,mode,metamagic:chosenMeta,targetCasterId:target?.id,targetSpellId:prepared?.id};const draft=structuredClone(c);activateIllumianWord(draft,options);if(word==='Vaulnaen'){const reference=prepared?.custom||spells?.find(s=>s.id===prepared?.spellId);if(!target||!prepared||!reference)throw new Error('Open the spell library to load this spell reference, or use a custom spell.');if(!roll({...makeSpellRoll(c,target,prepared,reference),details:'Vaulnaen: donor slot spent; original preparation retained.'}))return;}edit(d=>activateIllumianWord(d,options));});
  return <>
  {race.id==='illumian'&&<Section title="Illumian sigils & words">
  {!enabled&&<p className="fine">Enable automatic calculations and racial trait bonuses to apply these powers.</p>}

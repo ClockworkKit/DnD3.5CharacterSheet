@@ -5,7 +5,6 @@ import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@
 import {uid,abilityKeys,type Psionic} from '@/lib/model';
 import {findClass,makePsionic,classCatalog,manifestingAbility} from '@/lib/classes';
 import {formulaPreview} from '@/lib/automation';
-import {psionicProgression} from '@/lib/advancement';
 import {powerReserve,powerDC,canManifest,manifestingProblem,spendPower,powerCard,type PowerReference} from '@/lib/psionics';
 import {withBonus} from '@/lib/rules';
 import {F,N,Choice,Check,Btn,Section,Stat,type SheetProps} from './sheet-ui';

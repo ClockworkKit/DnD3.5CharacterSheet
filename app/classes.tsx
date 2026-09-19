@@ -15,7 +15,7 @@ import {ClassSystems} from './class-systems';
 import type {Spell} from '@/lib/model';
 import {toast} from 'sonner';
 import {effectiveScore} from '@/lib/ancestry';
-export function Classes({c,edit,confirm,roll,spells}:SheetProps&{spells:Spell[]}){
+export function Classes({c,edit,confirm,roll}:SheetProps&{spells:Spell[]}){
  const [eligibility,setEligibility]=useState('eligible');const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[kind,setKind]=useState('all');const [detail,setDetail]=useState<ClassDefinition|null>(null);const [refs,setRefs]=useState<ClassDefinition[]>([]),[refError,setRefError]=useState('');
  const t=classTotals(c.classLevels,c.ancestry),inferred=inferClassEntries(c.classes);const matches=classCatalog.filter(d=>(kind==='all'||d.kind===kind)&&(d.name+' '+(d.book||'')).toLowerCase().includes(query.toLowerCase())&&(d.kind!=='Prestige'||eligibility==='all'||eligibility==='eligible'&&prestigeEligibility(c,d).eligible||eligibility==='confirm'&&prestigeEligibility(c,d).status==='Needs confirmation'));
  async function show(def:ClassDefinition){setDetail(def);if(refs.length)return;try{setRefError('');const res=await fetch(assetUrl('data/classes.json'));if(!res.ok)throw new Error();setRefs(await res.json() as ClassDefinition[])}catch{setRefError('Full class text could not be loaded. The progression table is available below.')}}

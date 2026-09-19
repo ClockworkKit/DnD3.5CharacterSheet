@@ -2,12 +2,12 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {newCharacter,characterSchema,uid} from '../lib/model.ts';
 import {activateAutomation,recompute,calculationFields,resourceNumbers,formulaPreview} from '../lib/automation.ts';
-import {baseClasses,findClass,makeCaster,makePsionic} from '../lib/classes.ts';
-import {raceCatalog,effectiveScore} from '../lib/ancestry.ts';
+import {baseClasses,findClass,makeCaster} from '../lib/classes.ts';
+import {raceCatalog} from '../lib/ancestry.ts';
 import {castingNumbers,advancementNumbers,hitDieSequence,hitPoints} from '../lib/advancement.ts';
 import {addEffect,setEffectActive,advanceEffects,stackBonuses} from '../lib/effects.ts';
-import {addEquipment,matchEquipment,carrying,movement,equippedArmor} from '../lib/equipment.ts';
-import {sheetTotals,weaponAttack,weaponDamage,weaponRange,weaponCritical,attackRoutine,skillBonus,spellDC,canCast,spendSpell,resetDaily} from '../lib/rules.ts';
+import {addEquipment,matchEquipment,carrying,movement} from '../lib/equipment.ts';
+import {sheetTotals,weaponAttack,weaponDamage,weaponRange,weaponCritical,attackRoutine,spellDC,canCast,spendSpell,resetDaily} from '../lib/rules.ts';
 import {powerReserve,canManifest,spendPower} from '../lib/psionics.ts';
 import {expression} from '../lib/formulas.ts';
 
@@ -80,7 +80,7 @@ test('re-enabling stored effects excludes opposites and expiry does not change u
 test('equipped armor, shields, mithral, encumbrance, and force armor use separate limits',()=>{
  const c=automatic('Fighter',3);addEquipment(c,matchEquipment('Full plate'));addEquipment(c,matchEquipment('Heavy steel shield'));recompute(c);
  assert.deepEqual([c.defense.armor,c.defense.shield,c.defense.dexCap,c.defense.checkPenalty,c.speed],[8,2,1,-8,20]);
- const armor=c.gear.find(g=>g.name==='Full plate');edit(c,c=>{armor.material='mithral';armor.enhancement=1;});
+ const armor=c.gear.find(g=>g.name==='Full plate');edit(c,()=>{armor.material='mithral';armor.enhancement=1;});
  assert.deepEqual([c.defense.armor,c.defense.dexCap,c.defense.checkPenalty,c.defense.spellFailure],[9,3,-5,40]);
  effect(c,'mage-armor');effect(c,'shield');recompute(c);assert.equal(sheetTotals(c).ac,24);
  edit(c,c=>{for(const g of c.gear)g.equipped=false;});assert.equal(c.defense.armor,0);assert.equal(sheetTotals(c).ac,19);

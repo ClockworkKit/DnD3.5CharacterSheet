@@ -1,6 +1,6 @@
 import {krauBonus,racialBonusAbility,reservedSlots} from './racial-abilities.ts';
 import type {Character,Caster,Psionic} from './model.ts';
-import {findClass,spellSlots,castingLevel,manifestingLevel,classCatalog,isClassSkill,classTotals} from './classes.ts';
+import {findClass,spellSlots,castingLevel,manifestingLevel,classCatalog,classTotals} from './classes.ts';
 import {effectiveScore,racialTraits} from './ancestry.ts';
 import {classLevel,featCount,hasFeat} from './effects.ts';
 import {hitDieSequence,skillPointGrant} from './level-history.ts';
@@ -16,13 +16,13 @@ export function advancementCandidates(c:Character,e:Character['classLevels'][num
  if(kind==='psi')return c.psionics.filter(p=>manifestDefinition(p)?.id!=='soulknife').map(p=>({id:p.id,name:p.name}));
  return c.casters.filter(p=>!p.casting?.domain&&(kind==='divine'?!arcaneClasses.includes(castingDefinition(p)?.id||''):!target.arcane||arcaneClasses.includes(castingDefinition(p)?.id||''))).map(p=>({id:p.id,name:p.name}));
 }
-function selected(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi',arcane=false){
+function selected(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi'){
  const explicit=kind==='psi'?e.psionicTarget:kind==='divine'?e.divineTarget:e.castingTarget;
  const candidates=advancementCandidates(c,e,kind);
  if(explicit)return explicit!=='none'&&candidates.some(p=>p.id===explicit)?explicit:'';
  return candidates.length===1?candidates[0].id:'';
 }
-export function casterProgression(c:Character,p:Caster):{progression:number;level:number;linked:boolean}{const d=castingDefinition(p);if(!d)return {progression:0,level:p.level,linked:false};const base=classLevel(c,d.id);let addition=0,clOnly=0;for(const e of c.classLevels){const t=advanceTargets(c,e);if(t.spell&&selected(c,e,'spell',t.arcane)===p.id)addition+=t.spellLevels;if(t.divine&&selected(c,e,'divine')===p.id){if(e.classId==='hierophant')clOnly+=e.level;else addition+=t.spellLevels;}}
+export function casterProgression(c:Character,p:Caster):{progression:number;level:number;linked:boolean}{const d=castingDefinition(p);if(!d)return {progression:0,level:p.level,linked:false};const base=classLevel(c,d.id);let addition=0,clOnly=0;for(const e of c.classLevels){const t=advanceTargets(c,e);if(t.spell&&selected(c,e,'spell')===p.id)addition+=t.spellLevels;if(t.divine&&selected(c,e,'divine')===p.id){if(e.classId==='hierophant')clOnly+=e.level;else addition+=t.spellLevels;}}
  // Domain profiles follow the selected cleric tradition, including prestige advancement.
  if(p.casting?.domain){const primary=c.casters.find(q=>q.id!==p.id&&!q.casting?.domain&&castingDefinition(q)?.id===d.id);if(primary){const r=casterProgression(c,primary);return {...r,level:r.level+(p.casting.levelAdjustment||0)}}}
  const progression=p.casting?.progression??(base+addition);const level=castingLevel(d,progression)+clOnly+(p.casting?.levelAdjustment||0);return {progression,level:level+krauBonus(c,level),linked:base>0||p.casting?.progression!=null};}
