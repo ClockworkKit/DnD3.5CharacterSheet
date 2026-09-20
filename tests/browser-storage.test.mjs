@@ -3,6 +3,7 @@ import assert from 'node:assert/strict';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
 import {newCharacter,characterSchema} from '../lib/model.ts';
 import {activateAutomation} from '../lib/automation.ts';
+import {newDamageReductionSource} from '../lib/damage-reduction.ts';
 
 function environment() {
   const values = new Map(), tails = new Map();
@@ -34,6 +35,9 @@ const body = (method, data, revision) => ({method, body: JSON.stringify({data, r
 test('browser characters survive a fresh client, preserve calculated resources, and export/import', async () => {
   const env = environment(), data = character();
   data.hp -= 8; data.casters[0].slots[1].used = 2;
+  data.gear.push({id:'armor',name:'Metal armor',qty:1,weight:30,carried:true,equipped:true,notes:''});
+  data.defense.dr='Existing DR note';
+  data.defense.drSources=[{...newDamageReductionSource(),source:'Campaign armor',amount:3,gearId:'armor',notes:'House rule'}];
   const row = await env.api(route, body('POST', data));
   const reopened = createBrowserCharacterApi(env.options);
   assert.deepEqual((await reopened(route)).characters, [row]);

@@ -59,7 +59,7 @@ export function createPlayerCharacter(options:{name:string,kind:string,level:num
   c.name=name.trim()||'Unnamed adventurer';c.scores={...scores};
   // Keep class/race rules, but do not give new players a sample character's possessions or choices.
   c.gear=[];c.weapons=[];c.coins={cp:0,sp:0,gp:0,pp:0};
-  c.defense={armor:0,shield:0,natural:0,deflection:0,dodge:0,misc:0,dexCap:100,checkPenalty:0,spellFailure:0,sr:0,dr:'',resistances:''};
+  c.defense={armor:0,shield:0,natural:0,deflection:0,dodge:0,misc:0,dexCap:100,checkPenalty:0,spellFailure:0,sr:0,dr:'',drSources:[],resistances:''};
   c.skills.forEach(skill=>{skill.ranks=0;skill.misc=0});
   c.casters.forEach(caster=>{caster.spells=[];caster.slots.forEach(slot=>slot.used=0)});
   c.psionics.forEach(tradition=>{tradition.powers=[];tradition.spent=0});

@@ -56,6 +56,16 @@ Classes include progression tables, prerequisites, full SRD reference text, mult
 
 Race ability adjustments and trait bonuses are separate layers, so selecting a race repeatedly cannot accumulate bonuses. Existing sheets preserve manually included racial adjustments. Racial Hit Dice and level adjustment are recorded separately; LA changes effective character level without adding Hit Dice or class progression. The library includes the seven core races, common subraces, planetouched and psionic choices, and concise summaries of Changeling, Warforged, Goliath, and Whisper Gnome.
 
+## Damage reduction
+
+Open **Combat → Damage reduction → + Add DR** to record a source, amount, and bypass condition. Leave the bypass blank for DR/—. Active sources also appear beside AC on the Sheet tab.
+
+For metal armor house rules, enter the campaign’s DR value and optionally link the entry to its item in Gear. Linked DR is active only while its checkbox is on and the item is carried, equipped, and has a positive quantity. Unequipping or removing the item suppresses its DR; a removed link remains visible for correction. Unlinked entries use the Active checkbox alone.
+
+Sources are listed individually. Apply the best relevant DR for each hit unless the rule explicitly permits stacking; use each entry’s notes for exceptions or remaining absorption. Existing DR text and Roll20-imported DR remain editable under Other DR / imported notes and appear in the summary. All fields survive saves and JSON backups, including older characters that have no structured DR entries.
+
+This is a tracker: enter armor DR values yourself and resolve damage at the table. It does not change armor AC or automatically reduce HP. The [SRD armor variant](https://srd.dndtools.org/srd/variant/unearthedDefence.html) has its own AC changes and stacking exceptions; this tracker does not assume that variant is the campaign’s metal armor rule.
+
 ## Import a Roll20 character
 
 Use the GM exporter in [roll20/README.md](roll20/README.md), then choose **Import from Roll20** on the creation screen or below an open sheet. Paste or upload its JSON, review the conversion, and import it as a new character. Imports retain the original JSON and a mapping report in Notes, preserve source totals in manual calculation mode, and keep arcane, divine, domain, and psionic records separate. Unknown fields stay attached for review and survive normal save and backup round trips. This is a one-time import; see the exporter guide for supported fields and limitations.
