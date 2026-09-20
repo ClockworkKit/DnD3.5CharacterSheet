@@ -41,6 +41,53 @@ test('empty and custom-class imports never gain demo data or a fabricated Fighte
  assert.equal(custom.classLevels[0].classId,'');assert.equal(custom.classLevels[0].name,'My Custom Class');assert.equal(custom.hp,-3);assert.equal(custom.maxHp,0);assert.equal(custom.weapons.length,0);
 });
 
+test('armor check totals accept positive deductions and negative modifiers without changing the export',()=>{
+ for(const name of ['armorcheckpenalty','armor_check_penalty'])for(const [value,expected] of [[6,-6],['+6',-6],['-6',-6],['−6',-6],[0,0],['0',0]]){
+  const source=raw(attrs({[name]:value,acitemcheckpenalty:4,shieldcheckpenalty:2})),before=structuredClone(source);
+  const {character:c}=importRoll20(source);
+  assert.equal(c.defense.checkPenalty,expected,`${name}: ${value}`);
+  assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Climb')),expected);
+  assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Swim')),expected*2);
+  assert.deepEqual(source,before);assert.deepEqual(c.roll20Import.raw,before);
+ }
+ const resolved=importRoll20(raw(attrs({armorcheckpenalty:'@{armorpenalty}'}),{resolvedCoreValues:{armorcheckpenalty:6}}));
+ assert.equal(resolved.character.defense.checkPenalty,-6);assert.ok(resolved.report.unmapped.includes('armorcheckpenalty'));
+});
+
+test('armor and shield check penalties combine without cancelling mixed signs and respect worn flags',()=>{
+ const cases=[
+  [{acitemcheckpenalty:'6',shieldcheckpenalty:'2'},-8],
+  [{acitemcheckpenalty:'-6',shieldcheckpenalty:'-2'},-8],
+  [{acitemcheckpenalty:'-6',shieldcheckpenalty:'2'},-8],
+  [{acitemcheckpenalty:'6',shieldcheckpenalty:'-2'},-8],
+  [{acitemcheckpenalty:'6',shieldcheckpenalty:'2',armorworn:'0'},-2],
+  [{acitemcheckpenalty:'6',shieldcheckpenalty:'2',shieldworn:'0'},-6],
+  [{acitemcheckpenalty:'6',shieldcheckpenalty:'2',armorworn:'0',shieldworn:'0'},0],
+  [{acitemcheckpenalty:0,shieldcheckpenalty:0},0],
+  [{},0],
+ ];
+ for(const [values,expected] of cases){
+  const source=raw(attrs({armorcheckpenalty:'@{armorpenalty}',...values})),before=structuredClone(source);
+  const {character:c,report}=importRoll20(source);
+  assert.equal(c.defense.checkPenalty,expected,JSON.stringify(values));
+  assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Climb')),expected);
+  assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Swim')),expected*2);
+  assert.ok(report.unmapped.includes('armorcheckpenalty'));
+  assert.deepEqual(source,before);assert.deepEqual(c.roll20Import.raw,before);
+ }
+});
+
+test('normalized armor penalties preserve recorded skill totals and survive native backup imports',()=>{
+ const source=raw(attrs({str:16,acitemcheckpenalty:6,shieldcheckpenalty:2,climbranks:4,climb:2,swimranks:3,swim:-7}));
+ const {character:c,report}=importRoll20(source);
+ assert.equal(c.defense.checkPenalty,-8);
+ assert.equal(c.skills.find(s=>s.name==='Climb').misc,3);assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Climb')),2);
+ assert.equal(c.skills.find(s=>s.name==='Swim').misc,3);assert.equal(skillBonus(c,c.skills.find(s=>s.name==='Swim')),-7);
+ assert.ok(report.warnings.some(w=>w.includes('Positive armor check penalties')));
+ const parsed=parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:c}));
+ assert.equal(parsed.defense.checkPenalty,-8);assert.deepEqual(parsed.roll20Import.raw,source);
+});
+
 test('official weapon selectors preserve handedness and modifiers without doubling complete damage formulas',()=>{
  const selections=['(@{str-mod} +floor(@{str-mod}/2))','(floor(@{str-mod}/2))','(@{str-mod} + @{int-mod})','@{wis-mod}','0','@{unknown}'];
  const values={str:16,int:14,wis:12};
@@ -104,7 +151,7 @@ test('ambiguous arcane traditions, domain spells, boolean preparations, and dist
 });
 
 test('malformed input, invalid numeric bounds, missing current, and oversized imports leave the source untouched',()=>{
- for(const source of [raw([{name:'missing'}]),raw(attrs({class1:'Wizard',level1:1,hp_max:-1})),raw(attrs({str:999999})),raw([],{version:2}),raw([],{padding:'a'.repeat(1000001)})]){
+ for(const source of [raw([{name:'missing'}]),raw(attrs({class1:'Wizard',level1:1,hp_max:-1})),raw(attrs({str:999999})),raw(attrs({armorcheckpenalty:101})),raw(attrs({armorcheckpenalty:-101})),raw([],{version:2}),raw([],{padding:'a'.repeat(1000001)})]){
   const before=structuredClone(source);assert.throws(()=>importRoll20(source));assert.deepEqual(source,before);
  }
 });

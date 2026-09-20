@@ -106,7 +106,12 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  c.defense.dodge=core.n('totaldodgebonus','acdodgemod','armorclassdodgemod','dodge')??0;
  c.defense.misc=core.n('totalmiscacbonus','acmiscmod','armorclassmiscmod','ac_misc')??0;
  c.defense.dexCap=core.b('armorworn')===false?100:core.n('acitemdex','max_dex','dex_cap')??100;
- c.defense.checkPenalty=core.n('armorcheckpenalty','armor_check_penalty')??sum(core,[(core.b('armorworn')===false?'':'acitemcheckpenalty'),(core.b('shieldworn')===false?'':'shieldcheckpenalty')].filter(Boolean));
+ // Some exports record deductions as positive magnitudes. Normalize each
+ // component before adding, so mixed armor/shield signs cannot cancel out.
+ const checkPenalty=(value=0)=>{if(value>0){warn('Positive armor check penalties were converted to negative modifiers.');return -value;}return value;};
+ const totalCheckPenalty=core.n('armorcheckpenalty','armor_check_penalty');
+ c.defense.checkPenalty=totalCheckPenalty!==undefined?checkPenalty(totalCheckPenalty):
+  (core.b('armorworn')===false?0:checkPenalty(core.n('acitemcheckpenalty')))+(core.b('shieldworn')===false?0:checkPenalty(core.n('shieldcheckpenalty')));
  c.defense.spellFailure=core.n('arcane_spell_failure')??sum(core,['arcanespellfailure',...(core.b('armorworn')===false?[]:['acitemspellfailure']),...(core.b('shieldworn')===false?[]:['shieldspellfailure'])]);
  c.defense.sr=core.n('spellresistance','sr','spell_resistance')??0;c.defense.dr=core.t('damagereduction','dr','damage_reduction')||'';
  c.defense.resistances=['resistances','energy_resistance','immunities'].map(k=>core.t(k)).filter(Boolean).join('\n');
