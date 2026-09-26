@@ -67,6 +67,7 @@ export function spellFormula(s:Spell,cl:number):string {
  const fixed:Record<string,string>={'acid-splash':'1d3','ray-of-frost':'1d3','acid-arrow':'2d4','acid-fog':'2d6','cure-minor-wounds':'1','inflict-minor-wounds':'1'};
  if(fixed[s.id])return fixed[s.id];
  if(s.id==='magic-missile'){const n=Math.min(5,1+Math.floor((cl-1)/2));return `${n}d4+${n}`;}
+ if(s.id==='supp-kelgore-s-fire-bolt')return `${Math.max(1,Math.min(5,cl))}d6`;
  if(s.id==='burning-hands')return `${Math.min(5,cl)}d4`;
  if(['fireball','lightning-bolt','cone-of-cold'].includes(s.id))return `${Math.min(s.id==='cone-of-cold'?15:10,cl)}d6`;
  if(['heal','harm'].includes(s.id))return String(Math.min(150,cl*10));
