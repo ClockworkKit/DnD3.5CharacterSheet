@@ -1,5 +1,5 @@
 import {abilityKeys,abilityNames,baseSkills,characterSchema,newWeapon,uid,type Character,type Caster,type Skill,type Spell} from './model.ts';
-import {findClass,makeCaster,makePsionic,castingAbility,manifestingAbility,classTotals} from './classes.ts';
+import {findClass,makeCaster,makePsionic,castingAbility,manifestingAbility,classTotals,syncFactotumClassSkills} from './classes.ts';
 import {raceCatalog} from './ancestry.ts';
 import {sheetTotals,skillBonus,weaponAttack} from './rules.ts';
 import {parseDiceFormula} from './dice.mjs';
@@ -140,6 +140,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   if(!c.skills.includes(s))c.skills.push(s);s.ranks=r.n('otherskillranks','ranks')??0;s.misc=sum(r,['otherskillmiscmod','otherskilltempmod','otherskillactionmod','misc']);
   const total=r.n('otherskill','total');if(total!==undefined)skillTotals.push([s,total]);
  }
+ syncFactotumClassSkills(c);
  // Apply total offsets after all ranks are known, so synergy is not added twice.
  for(const [s,total] of skillTotals)s.misc+=total-skillBonus(c,s);
 
