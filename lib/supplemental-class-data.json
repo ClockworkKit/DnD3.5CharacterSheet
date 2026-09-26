@@ -234,7 +234,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Bluff, Concentration, Craft (all), Disguise, Intimidate, Jump, Knowledge (arcana), Knowledge (religion), Knowledge (the planes), Profession (all), Sense Motive, Spellcraft, Use Magic Device",
-    "source": "https://dndtools.net/classes/warlock/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warlock.html",
     "description": "Complete Arcane, p. 5. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Invocations, eldritch blast shapes and essences, and item-use abilities require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -908,7 +908,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Decipher Script, Diplomacy, Gather Information, Heal, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Profession (all), Search, Spellcraft",
-    "source": "https://dndtools.net/classes/archivist/",
+    "source": "https://srd.dndtools.org/srd/classes/baseHoh/archivist.html",
     "description": "Heroes of Horror, p. 82. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Prayerbook learning, dark knowledge, and bonus feat choices require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -1202,7 +1202,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Balance, Climb, Concentration, Craft (all), Diplomacy, Intimidate, Jump, Knowledge (history), Knowledge (local), Martial Lore, Swim, Tumble",
-    "source": "https://dndtools.net/classes/warblade/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/warblade.html",
     "description": "Tome of Battle: The Book of Nine Swords, p. 20. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Maneuver and stance selection, initiator level, recovery, and discipline bonuses require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -1491,7 +1491,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Balance, Concentration, Craft (all), Diplomacy, Intimidate, Jump, Knowledge (history), Knowledge (religion), Martial Lore, Ride",
-    "source": "https://dndtools.net/classes/crusader/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/crusader.html",
     "description": "Tome of Battle: The Book of Nine Swords, p. 8. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Maneuver and stance selection, granted maneuvers, initiator level, and delayed damage require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -1778,7 +1778,7 @@
     "requirements": "",
     "skillPoints": 6,
     "skills": "Balance, Climb, Concentration, Craft (all), Heal, Hide, Intimidate, Jump, Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Listen, Martial Lore, Move Silently, Profession (all), Ride, Sense Motive, Swim, Tumble",
-    "source": "https://dndtools.net/classes/swordsage/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/swordsage.html",
     "description": "Tome of Battle: The Book of Nine Swords, p. 15. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Maneuver and stance selection, initiator level, recovery, and discipline bonuses require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -2150,7 +2150,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Appraise, Concentration, Craft (all), Disable Device, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (the planes), Open Lock, Profession (all), Search, Spellcraft, Use Magic Device",
-    "source": "https://dndtools.net/classes/artificer/",
+    "source": "https://srd.dndtools.org/srd/classes/baseEcs/artificer.html",
     "description": "Eberron Campaign Setting, p. 29. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Infusions, craft reserve spending, crafting costs, and item creation require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -2824,7 +2824,7 @@
     "requirements": "",
     "skillPoints": 6,
     "skills": "Appraise, Balance, Bluff, Climb, Concentration, Decipher Script, Diplomacy, Disable Device, Disguise, Escape Artist, Forgery, Gather Information, Hide, Jump, Knowledge (arcana), Knowledge (local), Listen, Move Silently, Open Lock, Profession (all), Search, Sense Motive, Sleight of Hand, Speak Language, Spellcraft, Spot, Swim, Tumble, Use Magic Device",
-    "source": "https://dndtools.net/classes/beguiler/",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/beguiler.html",
     "description": "Player's Handbook II, p. 6. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spell list, advanced learning, and conditional casting bonuses require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -3487,7 +3487,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Bluff, Concentration, Craft (all), Decipher Script, Disguise, Hide, Intimidate, Knowledge (arcana), Knowledge (religion), Profession (all), Spellcraft",
-    "source": "https://dndtools.net/classes/dread-necromancer/",
+    "source": "https://srd.dndtools.org/srd/classes/baseHoh/dreadNecromancer.html",
     "description": "Heroes of Horror, p. 84. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spell list, advanced learning, undead control, and touch abilities require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -3737,7 +3737,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Appraise, Bluff, Climb, Concentration, Craft (all), Decipher Script, Diplomacy, Intimidate, Jump, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Listen, Search, Sense Motive, Speak Language, Spellcraft, Spot, Use Magic Device",
-    "source": "https://dndtools.net/classes/dragonfire-adept/",
+    "source": "https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html",
     "description": "Dragon Magic, p. 24. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Invocations, breath effects, and breath damage require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -3982,7 +3982,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Climb, Craft (all), Intimidate, Knowledge (nature), Search",
-    "source": "https://dndtools.net/classes/dragon-shaman/",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/dragonShaman.html",
     "description": "Player's Handbook II, p. 11. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Totem choice and its extra class skills, draconic auras, and breath weapon require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -4572,7 +4572,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Climb, Concentration, Craft (all), Decipher Script, Jump, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Ride, Sense Motive, Spellcraft, Swim",
-    "source": "https://dndtools.net/classes/duskblade/",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html",
     "description": "Player's Handbook II, p. 19. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spells known, arcane channeling, armored casting, and quick casting require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -4780,7 +4780,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Climb, Handle Animal, Intimidate, Jump, Knowledge (nobility and royalty), Ride, Swim",
-    "source": "https://dndtools.net/classes/knight/",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/knight.html",
     "description": "Player's Handbook II, p. 24. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Challenges, fighting challenge bonuses, and code of conduct require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -5454,7 +5454,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Diplomacy, Heal, Jump, Knowledge (arcana), Profession (all), Sense Motive, Spellcraft",
-    "source": "https://dndtools.net/classes/favored-soul/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html",
     "description": "Complete Divine, p. 6. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Spells known, deity weapon choice, resistances, and wings require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -6135,7 +6135,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Diplomacy, Handle Animal, Heal, Knowledge (nature), Knowledge (religion), Profession (all), Sense Motive, Spellcraft, Survival",
-    "source": "https://dndtools.net/classes/healer/",
+    "source": "https://srd.dndtools.org/srd/classes/baseMh/healer.html",
     "description": "Miniatures Handbook, p. 8. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spell list, healing hands, companion, and nonmetal armor oath require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -6688,7 +6688,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Bluff, Concentration, Craft (all), Diplomacy, Intimidate, Knowledge (arcana), Profession (all), Ride, Spellcraft",
-    "source": "https://dndtools.net/classes/hexblade/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html",
     "description": "Complete Warrior, p. 5. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spells known, curses, familiar, and mettle require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -6960,7 +6960,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Bluff, Diplomacy, Handle Animal, Intimidate, Knowledge (all), Listen, Perform (all), Ride, Sense Motive, Speak Language, Spot, Survival, Swim",
-    "source": "https://dndtools.net/classes/marshal/",
+    "source": "https://srd.dndtools.org/srd/classes/baseMh/marshal.html",
     "description": "Miniatures Handbook, p. 11. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Aura choices and bonuses, Skill Focus, and granted movement require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -7205,7 +7205,7 @@
     "requirements": "",
     "skillPoints": 6,
     "skills": "Balance, Bluff, Climb, Concentration, Craft (all), Disable Device, Disguise, Escape Artist, Gather Information, Hide, Jump, Listen, Move Silently, Open Lock, Search, Sense Motive, Sleight of Hand, Spot, Swim, Tumble",
-    "source": "https://dndtools.net/classes/ninja/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/ninja.html",
     "description": "Complete Adventurer, p. 5. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Ki, sudden strike, conditional AC, and ghost abilities require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -7418,7 +7418,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Diplomacy, Intimidate, Knowledge (nobility and royalty), Ride, Sense Motive",
-    "source": "https://dndtools.net/classes/samurai/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/samurai.html",
     "description": "Complete Warrior, p. 8. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Two-weapon features, intimidation, and code of conduct (Complete Warrior version) require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -7623,7 +7623,7 @@
     "requirements": "",
     "skillPoints": 8,
     "skills": "Balance, Climb, Craft (all), Disable Device, Escape Artist, Hide, Jump, Knowledge (dungeoneering), Knowledge (geography), Knowledge (nature), Listen, Move Silently, Ride, Search, Sense Motive, Speak Language, Spot, Survival, Swim, Tumble, Use Rope",
-    "source": "https://dndtools.net/classes/scout/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html",
     "description": "Complete Adventurer, p. 10. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Skirmish conditions, speed, bonus feats, and senses require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -8302,7 +8302,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Diplomacy, Heal, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Profession (all), Spellcraft",
-    "source": "https://dndtools.net/classes/shugenja/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/shugenja.html",
     "description": "Complete Divine, p. 10. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Element and order choices, restricted spells known, and sense elements require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -8857,7 +8857,7 @@
     "requirements": "",
     "skillPoints": 6,
     "skills": "Appraise, Bluff, Concentration, Craft (all), Decipher Script, Disable Device, Escape Artist, Gather Information, Hide, Jump, Knowledge (arcana), Knowledge (local), Listen, Move Silently, Open Lock, Search, Speak Language, Spellcraft, Spot, Swim, Tumble, Use Magic Device",
-    "source": "https://dndtools.net/classes/spellthief/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html",
     "description": "Complete Adventurer, p. 13. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spells known, stolen spells and effects, and sneak attack require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -9537,7 +9537,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Diplomacy, Handle Animal, Heal, Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Listen, Profession (all), Ride, Spellcraft, Spot, Survival",
-    "source": "https://dndtools.net/classes/spirit-shaman/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html",
     "description": "Complete Divine, p. 14. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Daily spell retrieval, spirit guide, chastisement, and spirit abilities require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": false,
@@ -9760,7 +9760,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Balance, Bluff, Climb, Craft (all), Diplomacy, Escape Artist, Jump, Profession (all), Sense Motive, Swim, Tumble, Use Rope",
-    "source": "https://dndtools.net/classes/swashbuckler/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html",
     "description": "Complete Warrior, p. 11. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Weapon Finesse, insightful strike, grace, and dodge bonuses require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -10434,7 +10434,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Intimidate, Knowledge (arcana), Knowledge (history), Profession (all), Spellcraft",
-    "source": "https://dndtools.net/classes/warmage/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warmage.html",
     "description": "Complete Arcane, p. 10. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Restricted spell list, advanced learning, warmage edge, and armored casting require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -11114,7 +11114,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Profession (all), Spellcraft",
-    "source": "https://dndtools.net/classes/wu-jen/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/wujen.html",
     "description": "Complete Arcane, p. 14. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Spellbook learning, elemental mastery, spell secrets, and taboos require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Daily spell slots and caster level are automatic. Choose spells from your book; the built-in SRD library does not supply complete supplemental spell lists.",
     "proficiencies": {
       "simple": true,
@@ -11364,7 +11364,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Bluff, Concentration, Craft (all), Decipher Script, Diplomacy, Gather Information, Intimidate, Knowledge (arcana), Knowledge (religion), Knowledge (the planes), Profession (all), Sense Motive",
-    "source": "https://dndtools.net/classes/binder/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/binder.html",
     "description": "Tome of Magic, p. 9. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Vestige choices, binding checks, pact augmentation, and granted powers require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -11567,7 +11567,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Hide, Intimidate, Knowledge (arcana), Knowledge (the planes), Move Silently, Profession (all), Spellcraft, Spot",
-    "source": "https://dndtools.net/classes/shadowcaster/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/shadowcaster.html",
     "description": "Tome of Magic, p. 111. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Mystery paths, fundamentals, daily uses, and changes between spell and supernatural use require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -11854,7 +11854,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Knowledge (all), Perform (all), Truespeak, Use Magic Device",
-    "source": "https://dndtools.net/classes/truenamer/",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/truenamer.html",
     "description": "Tome of Magic, p. 198. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Utterance choices, Truespeak DCs, repeated-use limits, and speaking effects require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -12141,7 +12141,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Concentration, Craft (all), Knowledge (arcana), Knowledge (religion), Knowledge (the planes), Profession (all), Spellcraft",
-    "source": "https://dndtools.net/classes/incarnate/",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/incarnate.html",
     "description": "Magic of Incarnum, p. 20. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Soulmeld selection, essentia allocation, chakra binds, and alignment abilities require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -12428,7 +12428,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Climb, Concentration, Craft (all), Handle Animal, Heal, Jump, Knowledge (arcana), Knowledge (the planes), Profession (all), Ride, Spellcraft, Swim",
-    "source": "https://dndtools.net/classes/soulborn/",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/soulborn.html",
     "description": "Magic of Incarnum, p. 25. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Alignment-dependent skills, smites, soulmelds, essentia, and chakra binds require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -12715,7 +12715,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Concentration, Craft (all), Handle Animal, Knowledge (arcana), Knowledge (nature), Knowledge (the planes), Listen, Profession (all), Ride, Spellcraft, Spot, Survival, Swim",
-    "source": "https://dndtools.net/classes/totemist/",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/totemist.html",
     "description": "Magic of Incarnum, p. 29. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Soulmeld selection, essentia allocation, chakra binds, and totem effects require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book.",
     "proficiencies": {
       "simple": true,
@@ -13021,7 +13021,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Autohypnosis, Concentration, Craft (all), Diplomacy, Heal, Knowledge (arcana), Knowledge (architecture and engineering), Knowledge (dungeoneering), Knowledge (geography), Knowledge (history), Knowledge (local), Knowledge (nature), Knowledge (nobility and royalty), Knowledge (psionics), Knowledge (religion), Knowledge (the planes), Profession (all), Psicraft",
-    "source": "https://dndtools.net/classes/ardent/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html",
     "description": "Complete Psionic, p. 5. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Mantle selection, powers known, and manifester-level-based power eligibility require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Power points and manifester level are automatic; choose powers from your book.",
     "proficiencies": {
       "simple": true,
@@ -13373,7 +13373,7 @@
     "requirements": "",
     "skillPoints": 2,
     "skills": "Autohypnosis, Climb, Concentration, Craft (all), Jump, Knowledge (psionics), Knowledge (religion), Profession (all), Psicraft, Ride, Swim",
-    "source": "https://dndtools.net/classes/divine-mind/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html",
     "description": "Complete Psionic, p. 9. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Mantle and aura selection, powers known, and aura effects require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Power points and manifester level are automatic; choose powers from your book.",
     "proficiencies": {
       "simple": true,
@@ -13725,7 +13725,7 @@
     "requirements": "",
     "skillPoints": 4,
     "skills": "Autohypnosis, Bluff, Concentration, Craft (all), Disguise, Escape Artist, Hide, Jump, Knowledge (psionics), Listen, Move Silently, Profession (all), Psicraft, Sleight of Hand, Spot, Swim, Tumble, Use Psionic Device",
-    "source": "https://dndtools.net/classes/lurk/",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html",
     "description": "Complete Psionic, p. 13. Automatic: base attack, base saves, Hit Dice, HP method, and skill training. Powers known, augment selection and uses, and psionic sneak attack require manual choices and tracking in Features, Effects, and notes. Check alignment and class restrictions in your book. Power points and manifester level are automatic; choose powers from your book.",
     "proficiencies": {
       "simple": true,

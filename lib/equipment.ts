@@ -10,8 +10,8 @@ const canonical=(s:string)=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s
 export const matchEquipment=(name:string,kind?:string)=>equipmentCatalog.find(e=>(!kind||e.kind===kind)&&canonical(e.name)===canonical(name));
 function supplementalProficient(c:Character,e:Equipment){return c.classLevels.some(entry=>{
  const p=findClass(entry.classId)?.proficiencies;if(!p)return false;
- if(e.kind==='armor'){const armor=p.mediumAt&&entry.level>=p.mediumAt?'medium':p.armor;return ['none','light','medium','heavy'].indexOf(armor)>=['none','light','medium','heavy'].indexOf(e.category);}
- if(e.kind==='shield')return p.shields==='all'||(!e.name.includes('tower')&&(p.shields==='standard'||p.shields==='light'&&(/light/i.test(e.name)||e.name==='Buckler')));
+ if(e.kind==='armor'){if(p.armors?.includes(e.name))return true;const armor=p.mediumAt&&entry.level>=p.mediumAt?'medium':p.armor;return ['none','light','medium','heavy'].indexOf(armor)>=['none','light','medium','heavy'].indexOf(e.category);}
+ if(e.kind==='shield')return p.shields==='buckler'&&e.name==='Buckler'||p.shields==='all'||(!e.name.includes('tower')&&(p.shields==='standard'||p.shields==='light'&&(/light/i.test(e.name)||e.name==='Buckler')));
  return p.weapons.includes(e.name)||e.category==='simple'&&p.simple&&(!p.simpleMeleeOnly||!e.ranged)||e.category==='martial'&&p.martial&&(!p.martialMeleeOnly||!e.ranged);
 });}
 export const allSizes=['Fine','Diminutive','Tiny','Small','Medium','Large','Huge','Gargantuan','Colossal'] as const;

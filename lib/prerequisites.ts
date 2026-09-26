@@ -91,6 +91,8 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
   if(/lesser planar ally/i.test(s)){matched=true;check('Able to cast lesser planar ally',canSpell(c,4,'divine')&&(classLevel(c,'cleric')>0||c.casters.some(p=>p.spells.some(k=>['lesser-planar-ally','planar-ally-lesser'].includes(k.spellId)||norm(k.custom?.name||'')==='lesser planar ally'))));}
   if(/five schools/i.test(s))check('Knowledge of 5th-level or higher spells from at least five schools',new Set(knownSpells(c).filter(s=>s.level>=5&&schools.includes(s.school)).map(s=>s.school)).size>=5);
   if(/seven different divination/i.test(s)){matched=true;const known=knownSpells(c).filter(s=>s.school==='Divination');check(s,known.length>=7&&known.some(s=>s.level>=3));}
+  if(/at least one abjuration/i.test(s))check('Able to cast an abjuration spell',knownSpells(c,'arcane').some(s=>s.school==='Abjuration'));
+  if(/at least two divination/i.test(s))check('Able to cast two divination spells',knownSpells(c,'arcane').filter(s=>s.school==='Divination').length>=2);
   if(!matched)manual(s);
  };
  for(const section of d.requirements.split(/\n\n+/)){
@@ -98,7 +100,7 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
   const field=match[1].toLowerCase(),s=match[2].trim().replace(/\.$/,'');
   if(field==='base attack bonus')check('Base attack bonus '+s,bab>=Number(s));
   else if(field==='alignment'){const a=alignment(c.alignment),valid=/^(lawful|neutral|chaotic) (good|neutral|evil)$|^true neutral$/.test(a);const pass=/nonlawful/i.test(s)?!a.startsWith('lawful'):/nonchaotic/i.test(s)?!a.startsWith('chaotic'):/lawful/i.test(s)?a.startsWith('lawful'):/chaotic/i.test(s)?a.startsWith('chaotic'):/evil/i.test(s)?a.endsWith('evil'):false;check('Alignment: '+s,valid&&pass);}
-  else if(field==='race'){const r=findRace(c.ancestry.raceId),race=(r?.type||c.race).toLowerCase();if(/nondragon/i.test(s)){if(/dragon/i.test(race)||/half.dragon/i.test(c.race))check('Race: '+s,false);else if(r)check('Race: '+s,true);else manual('Race: '+s);}else check('Race: '+s,/dwarf/i.test(s)?/dwarf/i.test(race):/\belf\b/i.test(race)||/half.elf/i.test(c.race));}
+  else if(field==='race'){const r=findRace(c.ancestry.raceId),race=(r?.type||c.race).toLowerCase();if(/^Any\b/i.test(s))check('Race: '+s,true);else if(/nondragon/i.test(s)){if(/dragon/i.test(race)||/half.dragon/i.test(c.race))check('Race: '+s,false);else if(r)check('Race: '+s,true);else manual('Race: '+s);}else check('Race: '+s,/dwarf/i.test(s)?/dwarf/i.test(race):/\belf\b/i.test(race)||/half.elf/i.test(c.race));}
   else if(field==='skills'||field==='skill'){if(/any two/i.test(s))check(s,new Set(c.skills.filter(k=>/^Knowledge \(/i.test(k.name)&&k.ranks>=10).map(k=>norm(k.name))).size>=2);else for(const m of s.matchAll(/([^,]+?) (\d+) ranks?/g))check(m[0].trim(),rank(c,m[1].trim())>=+m[2]);}
   else if(field==='feats'||field==='feat'){
    if(/any (three )?metamagic/i.test(s)){
@@ -107,7 +109,11 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
     if(/Skill Focus/i.test(s))check('Skill Focus in an individual Knowledge skill',c.features.some(f=>featName(f.name)==='skill focus'&&/^Knowledge \(/i.test(f.choice||featChoice(f.name)||'')));
     continue;
    }
-   for(const f of s.split(/,\s*(?![^()]*\))/)){if(/Spell Focus in two schools/i.test(f)){check(f,new Set(c.features.filter(f=>featName(f.name)==='spell focus').map(f=>norm(f.choice||featChoice(f.name)||'')).filter(s=>schools.some(k=>norm(k)===s))).size>=2);continue;}
+   for(const f of s.split(/,\s*(?![^()]*\))/)){
+    if(/school of specialization/i.test(f)){check('Spell Focus',has(c,'Spell Focus'));manual('Spell Focus matches your specialist school');continue;}
+    if(/Weapon Focus \(any weapon\)/i.test(f)){check(f,has(c,'Weapon Focus'));continue;}
+    if(/Weapon Focus \(any slashing melee weapon\)/i.test(f)){check(f,equipmentCatalog.some(e=>e.kind==='weapon'&&!e.ranged&&/slashing/i.test(e.damageType||'')&&has(c,'Weapon Focus',e.name)));continue;}
+    if(/Spell Focus in two schools/i.test(f)){check(f,new Set(c.features.filter(f=>featName(f.name)==='spell focus').map(f=>norm(f.choice||featChoice(f.name)||'')).filter(s=>schools.some(k=>norm(k)===s))).size>=2);continue;}
     const m=f.match(/^(.+?)\s*\((.+)\)$/);const name=m?m[1]:f,choices=m?.[2].split(' or ');check(f,choices?choices.some(choice=>has(c,name,choice)):has(c,name));
    }
   }
@@ -121,7 +127,8 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
    if(/power point reserve/i.test(s))check(s,c.psionics.some(p=>p.max>=1)||!!findRace(c.ancestry.raceId)?.powerPoints||has(c,'Wild Talent'));
   }
   else if(field==='special'){
-   if(/sneak attack \+2d6/i.test(s)){const rogue=classLevel(c,'rogue'),assassin=classLevel(c,'assassin'),spellthief=classLevel(c,'spellthief');check(s,Math.ceil(rogue/2)+Math.ceil(assassin/2)+(spellthief?1+Math.floor((spellthief-1)/4):0)+Math.floor(classLevel(c,'arcane-trickster')/2)>=2);}
+   if(/proficient with at least one martial weapon/i.test(s))check(s,equipmentCatalog.some(e=>e.kind==='weapon'&&e.category==='martial'&&proficient(c,e.name)));
+   else if(/sneak attack \+2d6/i.test(s)){const rogue=classLevel(c,'rogue'),assassin=classLevel(c,'assassin'),spellthief=classLevel(c,'spellthief');check(s,(classLevel(c,'psychic-rogue')?1+Math.floor((classLevel(c,'psychic-rogue')-1)/3):0)+Math.ceil(rogue/2)+Math.ceil(assassin/2)+(spellthief?1+Math.floor((spellthief-1)/4):0)+Math.floor(classLevel(c,'arcane-trickster')/2)>=2);}
    else if(/Still mind class feature/i.test(s))check(s,classLevel(c,'monk')>=3||c.features.some(f=>norm(f.name)==='still mind'));
    else manual(s);
   }else manual(section);

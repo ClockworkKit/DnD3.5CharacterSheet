@@ -2,15 +2,15 @@
 import {useSyncExternalStore} from 'react';
 import {Choice} from './sheet-ui';
 
-type Theme = 'parchment'|'amethyst'|'classic';
-const themes:Array<[Theme,string]>=[['parchment','Parchment'],['amethyst','Amethyst · dark purple'],['classic','Classic 3.5 · black & white']];
-const key='barrow-ledger:theme:v1';
-const valid=(value:string|null):value is Theme=>themes.some(([id])=>id===value);
+import {themeCatalog,themeStorageKey,findTheme,resolveTheme} from '@/lib/themes';
+const themes:Array<[string,string]>=themeCatalog.map(t=>[t.id,t.label]);
+const key=themeStorageKey;
+const valid=(value:string|null):value is string=>!!findTheme(value);
 const changeEvent='BarrowThemeChanged';
-function apply(value:Theme){document.documentElement.dataset.theme=value;document.documentElement.style.colorScheme=value==='amethyst'?'dark':'light'}
-function snapshot():Theme {const value=document.documentElement.dataset.theme||null;return valid(value)?value:'parchment'}
+function apply(value:string){document.documentElement.dataset.theme=value;document.documentElement.style.colorScheme=resolveTheme(value).mode}
+function snapshot():string {const value=document.documentElement.dataset.theme||null;return valid(value)?value:'parchment'}
 function subscribe(notify:()=>void){
-  const sync=(event:StorageEvent)=>{if(event.key===key||event.key===null){apply(valid(event.newValue)?event.newValue:'parchment');notify()}};
+  const sync=(event:StorageEvent)=>{if(event.key===key||event.key===null){if(event.storageArea&&event.storageArea!==localStorage)return;let value=event.newValue;if(event.key===null){try{value=localStorage.getItem(key)}catch{value=null}}apply(resolveTheme(value).id);notify()}};
   window.addEventListener('storage',sync);window.addEventListener(changeEvent,notify);
   return()=>{window.removeEventListener('storage',sync);window.removeEventListener(changeEvent,notify)};
 }

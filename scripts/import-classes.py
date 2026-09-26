@@ -44,13 +44,15 @@ for filename in ['character-classes-i.html','character-classes-ii.html','prestig
   alignment=re.search(r'<strong>Alignment:</strong>(.*?)</p>',body,re.S)
   directory='psionics' if filename.startswith('psionic') else 'basic-rules-and-legal'
   classes.append({'id':cid,'name':plain(h[2]),'kind':'Core' if cid in core else 'Psionic' if cid in psi else 'Prestige','hitDie':int(die[1]),'skillPoints':int(skillpoints[1]) if skillpoints else 2,'skills':plain(skills[1]) if skills else '', 'alignment':plain(alignment[1]) if alignment else '', 'requirements':plain(req[1]) if req else '', 'headers':headers[:len(rows[0]['extra'])+6], 'levels':rows,'source':'https://olimot.github.io/srd-v3.5/'+directory+'/'+filename+'#'+cid,'description':plain(body.replace(table,'',1))})
+source_urls=json.loads((root/'lib/class-source-urls.json').read_text())
+for c in classes:c['source']=source_urls[c['id']]
 classes.sort(key=lambda x:({'Core':0,'Psionic':1,'Prestige':2}[x['kind']],x['name']))
 assert len(classes)==39,len(classes)
 # Curated supplemental entries are not part of the SRD HTML source.
 existing=json.loads((root/'public/data/classes.json').read_text())
 classes += [c for c in existing if c['id']=='factotum']
 supplemental=json.loads((root/'lib/supplemental-class-data.json').read_text())
-(root/'public/data/classes.json').write_text(json.dumps(classes+supplemental,ensure_ascii=False,separators=(',',':')))
+(root/'public/data/classes.json').write_text(json.dumps(classes+supplemental+json.loads((root/'lib/ultimate-class-data.json').read_text()),ensure_ascii=False,separators=(',',':')))
 (root/'lib/class-data.json').write_text(json.dumps([{k:v for k,v in c.items() if k!='description'} for c in classes],ensure_ascii=False,separators=(',',':')))
 powers=[]
 for file in sorted(src.glob('psionic-powers-*.html')):
@@ -64,6 +66,12 @@ for file in sorted(src.glob('psionic-powers-*.html')):
   if school:desc=desc.replace(school[0],'',1)
   levels={m[1].strip().title():int(m[2]) for m in re.finditer(r'([A-Za-z/ -]+)\s+(\d)',meta['Level'])}
   powers.append({'id':h[1],'name':plain(h[2]),'school':plain(school[1]) if school else '', 'levels':levels,'levelText':meta['Level'],'cost':number(meta.get('Power Points','1')),'display':meta.get('Display','See description'),'manifesting':meta.get('Manifesting Time','See description'),'range':meta.get('Range','See description'),'target':meta.get('Target',meta.get('Area',meta.get('Effect','See description'))),'duration':meta.get('Duration','See description'),'save':meta.get('Saving Throw','None'),'resistance':meta.get('Power Resistance','See description'),'description':plain(desc),'source':'https://olimot.github.io/srd-v3.5/psionics/'+file.name+'#'+h[1]})
+rogue_list=json.loads((root/'lib/psychic-rogue-power-list.json').read_text())
+rogue_levels={p['id']:p['level'] for p in rogue_list['entries']}
+for p in powers:
+ if p['id'] in rogue_levels:
+  p['levels']['Psychic Rogue']=rogue_levels[p['id']]
+  p['levelText']+=', Psychic Rogue '+str(rogue_levels[p['id']])
 powers.sort(key=lambda x:x['name']);assert len(powers)>250
 (root/'public/data/powers.json').write_text(json.dumps(powers,ensure_ascii=False,separators=(',',':')))
 print(json.dumps({'classes':len(classes),'core':len([c for c in classes if c['kind']=='Core']),'psionic':len([c for c in classes if c['kind']=='Psionic']),'prestige':len([c for c in classes if c['kind']=='Prestige']),'powers':len(powers)}))

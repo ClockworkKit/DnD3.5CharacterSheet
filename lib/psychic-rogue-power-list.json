@@ -1,0 +1,311 @@
+{
+  "source": "https://srd.dndtools.org/srd/magic/psionics/classPowerLists/psionicPsychicRogueList.html",
+  "entries": [
+    {
+      "id": "astral-traveler",
+      "level": 1
+    },
+    {
+      "id": "attraction",
+      "level": 1
+    },
+    {
+      "id": "bolt",
+      "level": 1
+    },
+    {
+      "id": "burst",
+      "level": 1
+    },
+    {
+      "id": "catfall",
+      "level": 1
+    },
+    {
+      "id": "compression",
+      "level": 1
+    },
+    {
+      "id": "conceal-thoughts",
+      "level": 1
+    },
+    {
+      "id": "control-light",
+      "level": 1
+    },
+    {
+      "id": "create-sound",
+      "level": 1
+    },
+    {
+      "id": "deja-vu",
+      "level": 1
+    },
+    {
+      "id": "detect-psionics",
+      "level": 1
+    },
+    {
+      "id": "disable",
+      "level": 1
+    },
+    {
+      "id": "distract",
+      "level": 1
+    },
+    {
+      "id": "elfsight",
+      "level": 1
+    },
+    {
+      "id": "empathy",
+      "level": 1
+    },
+    {
+      "id": "empty-mind",
+      "level": 1
+    },
+    {
+      "id": "entangling-ectoplasm",
+      "level": 1
+    },
+    {
+      "id": "far-hand",
+      "level": 1
+    },
+    {
+      "id": "float",
+      "level": 1
+    },
+    {
+      "id": "force-screen",
+      "level": 1
+    },
+    {
+      "id": "know-direction-and-location",
+      "level": 1
+    },
+    {
+      "id": "my-light",
+      "level": 1
+    },
+    {
+      "id": "precognition-defensive",
+      "level": 1
+    },
+    {
+      "id": "precognition-offensive",
+      "level": 1
+    },
+    {
+      "id": "prescience-offensive",
+      "level": 1
+    },
+    {
+      "id": "sense-link",
+      "level": 1
+    },
+    {
+      "id": "skate",
+      "level": 1
+    },
+    {
+      "id": "vigor",
+      "level": 1
+    },
+    {
+      "id": "animal-affinity",
+      "level": 2
+    },
+    {
+      "id": "aversion",
+      "level": 2
+    },
+    {
+      "id": "body-equilibrium",
+      "level": 2
+    },
+    {
+      "id": "chameleon",
+      "level": 2
+    },
+    {
+      "id": "cloud-mind",
+      "level": 2
+    },
+    {
+      "id": "concealing-amorpha",
+      "level": 2
+    },
+    {
+      "id": "control-object",
+      "level": 2
+    },
+    {
+      "id": "control-sound",
+      "level": 2
+    },
+    {
+      "id": "darkvision-psionic",
+      "level": 2
+    },
+    {
+      "id": "detect-hostile-intent",
+      "level": 2
+    },
+    {
+      "id": "feat-leech",
+      "level": 2
+    },
+    {
+      "id": "knock-psionic",
+      "level": 2
+    },
+    {
+      "id": "levitate-psionic",
+      "level": 2
+    },
+    {
+      "id": "object-reading",
+      "level": 2
+    },
+    {
+      "id": "read-thoughts",
+      "level": 2
+    },
+    {
+      "id": "sustenance",
+      "level": 2
+    },
+    {
+      "id": "thought-shield",
+      "level": 2
+    },
+    {
+      "id": "tongues-psionic",
+      "level": 2
+    },
+    {
+      "id": "wall-walker",
+      "level": 2
+    },
+    {
+      "id": "body-adjustment",
+      "level": 3
+    },
+    {
+      "id": "body-purification",
+      "level": 3
+    },
+    {
+      "id": "concealing-amorpha-greater",
+      "level": 3
+    },
+    {
+      "id": "control-air",
+      "level": 3
+    },
+    {
+      "id": "dimension-slide",
+      "level": 3
+    },
+    {
+      "id": "escape-detection",
+      "level": 3
+    },
+    {
+      "id": "hustle",
+      "level": 3
+    },
+    {
+      "id": "keen-edge-psionic",
+      "level": 3
+    },
+    {
+      "id": "mental-barrier",
+      "level": 3
+    },
+    {
+      "id": "telekinetic-force",
+      "level": 3
+    },
+    {
+      "id": "ubiquitous-vision",
+      "level": 3
+    },
+    {
+      "id": "correspond",
+      "level": 4
+    },
+    {
+      "id": "dimension-door-psionic",
+      "level": 4
+    },
+    {
+      "id": "freedom-of-movement-psionic",
+      "level": 4
+    },
+    {
+      "id": "steadfast-perception",
+      "level": 4
+    },
+    {
+      "id": "telekinetic-maneuver",
+      "level": 4
+    },
+    {
+      "id": "wall-of-ectoplasm",
+      "level": 4
+    },
+    {
+      "id": "adapt-body",
+      "level": 5
+    },
+    {
+      "id": "power-resistance",
+      "level": 5
+    },
+    {
+      "id": "remote-viewing",
+      "level": 5
+    },
+    {
+      "id": "retrieve",
+      "level": 5
+    },
+    {
+      "id": "true-seeing-psionic",
+      "level": 5
+    }
+  ],
+  "unbundled": [
+    {
+      "name": "Detect Secret Doors, Psionic",
+      "level": 1
+    },
+    {
+      "name": "Detect Snares and Pits, Psionic",
+      "level": 1
+    },
+    {
+      "name": "Dimensional Pocket",
+      "level": 1
+    },
+    {
+      "name": "Delay Poison",
+      "level": 2
+    },
+    {
+      "name": "Find Traps, Psionic",
+      "level": 2
+    },
+    {
+      "name": "Microkinesis",
+      "level": 3
+    },
+    {
+      "name": "Feather Weight",
+      "level": 5
+    }
+  ]
+}
