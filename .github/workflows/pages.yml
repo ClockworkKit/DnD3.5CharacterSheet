@@ -3,13 +3,15 @@ name: Publish character sheet to GitHub Pages
 on:
   push:
     branches: [master]
+  pull_request:
+    branches: [master]
   workflow_dispatch:
 
 permissions:
   contents: read
 
 concurrency:
-  group: github-pages
+  group: github-pages-${{ github.event.pull_request.number || github.ref }}
   cancel-in-progress: true
 
 jobs:
@@ -33,7 +35,7 @@ jobs:
   deploy:
     # Enable Settings > Pages > GitHub Actions once, then run this workflow.
     # A push while Pages is disabled still verifies and packages the app.
-    if: github.event.repository.has_pages || github.event_name == 'workflow_dispatch'
+    if: github.event_name != 'pull_request' && (github.event.repository.has_pages || github.event_name == 'workflow_dispatch')
     needs: build
     runs-on: ubuntu-latest
     timeout-minutes: 10
