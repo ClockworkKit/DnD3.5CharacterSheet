@@ -1,6 +1,6 @@
 # Supplemental class support
 
-This expansion adds 34 base classes, bringing the catalog to 50 base classes and 24 prestige classes. Factotum retains its existing dedicated automation.
+The original expansion added 34 base classes. The catalog now has 58 base classes and 32 prestige classes; see [Ultimate SRD additions and themes](ULTIMATE-CLASSES.md) for the latest batch. Factotum retains its existing dedicated automation.
 
 All additions have levels 1–20, base attack and saves, Hit Dice and HP progression, class-skill training, ordinary weapon/armor proficiencies, feature milestones, and source links. They work with character creation, multiclassing, XP level-up, browser saves, export/import, and existing roll cards. Alignment, prerequisites, codes of conduct, and feature choices require player/DM review.
 
@@ -8,40 +8,40 @@ All additions have levels 1–20, base attack and saves, Hit Dice and HP progres
 
 | Class | Book | Spell/power automation |
 | --- | --- | --- |
-| [Archivist](https://dndtools.net/classes/archivist/) | Heroes of Horror, p. 82 | INT prepared divine spell slots |
-| [Ardent](https://dndtools.net/classes/ardent/) | Complete Psionic, p. 5 | WIS power points and manifester level |
-| [Artificer](https://dndtools.net/classes/artificer/) | Eberron Campaign Setting, p. 29 | See automation audit below |
-| [Beguiler](https://dndtools.net/classes/beguiler/) | Player's Handbook II, p. 6 | INT spontaneous arcane spell slots |
-| [Binder](https://dndtools.net/classes/binder/) | Tome of Magic, p. 9 | See automation audit below |
-| [Crusader](https://dndtools.net/classes/crusader/) | Tome of Battle: The Book of Nine Swords, p. 8 | See automation audit below |
-| [Divine Mind](https://dndtools.net/classes/divine-mind/) | Complete Psionic, p. 9 | WIS power points and manifester level |
-| [Dragon Shaman](https://dndtools.net/classes/dragon-shaman/) | Player's Handbook II, p. 11 | See automation audit below |
-| [Dragonfire Adept](https://dndtools.net/classes/dragonfire-adept/) | Dragon Magic, p. 24 | See automation audit below |
-| [Dread Necromancer](https://dndtools.net/classes/dread-necromancer/) | Heroes of Horror, p. 84 | CHA spontaneous arcane spell slots |
-| [Duskblade](https://dndtools.net/classes/duskblade/) | Player's Handbook II, p. 19 | INT spontaneous arcane spell slots |
-| [Favored Soul](https://dndtools.net/classes/favored-soul/) | Complete Divine, p. 6 | CHA spontaneous divine spell slots |
-| [Healer](https://dndtools.net/classes/healer/) | Miniatures Handbook, p. 8 | WIS prepared divine spell slots |
-| [Hexblade](https://dndtools.net/classes/hexblade/) | Complete Warrior, p. 5 | CHA spontaneous arcane spell slots |
-| [Incarnate](https://dndtools.net/classes/incarnate/) | Magic of Incarnum, p. 20 | See automation audit below |
-| [Knight](https://dndtools.net/classes/knight/) | Player's Handbook II, p. 24 | See automation audit below |
-| [Lurk](https://dndtools.net/classes/lurk/) | Complete Psionic, p. 13 | INT power points and manifester level |
-| [Marshal](https://dndtools.net/classes/marshal/) | Miniatures Handbook, p. 11 | See automation audit below |
-| [Ninja](https://dndtools.net/classes/ninja/) | Complete Adventurer, p. 5 | See automation audit below |
-| [Samurai](https://dndtools.net/classes/samurai/) | Complete Warrior, p. 8 | See automation audit below |
-| [Scout](https://dndtools.net/classes/scout/) | Complete Adventurer, p. 10 | See automation audit below |
-| [Shadowcaster](https://dndtools.net/classes/shadowcaster/) | Tome of Magic, p. 111 | See automation audit below |
-| [Shugenja](https://dndtools.net/classes/shugenja/) | Complete Divine, p. 10 | CHA spontaneous divine spell slots |
-| [Soulborn](https://dndtools.net/classes/soulborn/) | Magic of Incarnum, p. 25 | See automation audit below |
-| [Spellthief](https://dndtools.net/classes/spellthief/) | Complete Adventurer, p. 13 | CHA spontaneous arcane spell slots |
-| [Spirit Shaman](https://dndtools.net/classes/spirit-shaman/) | Complete Divine, p. 14 | WIS spontaneous divine spell slots |
-| [Swashbuckler](https://dndtools.net/classes/swashbuckler/) | Complete Warrior, p. 11 | See automation audit below |
-| [Swordsage](https://dndtools.net/classes/swordsage/) | Tome of Battle: The Book of Nine Swords, p. 15 | See automation audit below |
-| [Totemist](https://dndtools.net/classes/totemist/) | Magic of Incarnum, p. 29 | See automation audit below |
-| [Truenamer](https://dndtools.net/classes/truenamer/) | Tome of Magic, p. 198 | See automation audit below |
-| [Warblade](https://dndtools.net/classes/warblade/) | Tome of Battle: The Book of Nine Swords, p. 20 | See automation audit below |
-| [Warlock](https://dndtools.net/classes/warlock/) | Complete Arcane, p. 5 | See automation audit below |
-| [Warmage](https://dndtools.net/classes/warmage/) | Complete Arcane, p. 10 | CHA spontaneous arcane spell slots |
-| [Wu Jen](https://dndtools.net/classes/wu-jen/) | Complete Arcane, p. 14 | INT prepared arcane spell slots |
+| [Archivist](https://srd.dndtools.org/srd/classes/baseHoh/archivist.html) | Heroes of Horror, p. 82 | INT prepared divine spell slots |
+| [Ardent](https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html) | Complete Psionic, p. 5 | WIS power points and manifester level |
+| [Artificer](https://srd.dndtools.org/srd/classes/baseEcs/artificer.html) | Eberron Campaign Setting, p. 29 | See automation audit below |
+| [Beguiler](https://srd.dndtools.org/srd/classes/basePhb2/beguiler.html) | Player's Handbook II, p. 6 | INT spontaneous arcane spell slots |
+| [Binder](https://srd.dndtools.org/srd/classes/baseTom/binder.html) | Tome of Magic, p. 9 | See automation audit below |
+| [Crusader](https://srd.dndtools.org/srd/classes/baseTob/crusader.html) | Tome of Battle: The Book of Nine Swords, p. 8 | See automation audit below |
+| [Divine Mind](https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html) | Complete Psionic, p. 9 | WIS power points and manifester level |
+| [Dragon Shaman](https://srd.dndtools.org/srd/classes/basePhb2/dragonShaman.html) | Player's Handbook II, p. 11 | See automation audit below |
+| [Dragonfire Adept](https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html) | Dragon Magic, p. 24 | See automation audit below |
+| [Dread Necromancer](https://srd.dndtools.org/srd/classes/baseHoh/dreadNecromancer.html) | Heroes of Horror, p. 84 | CHA spontaneous arcane spell slots |
+| [Duskblade](https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html) | Player's Handbook II, p. 19 | INT spontaneous arcane spell slots |
+| [Favored Soul](https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html) | Complete Divine, p. 6 | CHA spontaneous divine spell slots |
+| [Healer](https://srd.dndtools.org/srd/classes/baseMh/healer.html) | Miniatures Handbook, p. 8 | WIS prepared divine spell slots |
+| [Hexblade](https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html) | Complete Warrior, p. 5 | CHA spontaneous arcane spell slots |
+| [Incarnate](https://srd.dndtools.org/srd/classes/baseMoi/incarnate.html) | Magic of Incarnum, p. 20 | See automation audit below |
+| [Knight](https://srd.dndtools.org/srd/classes/basePhb2/knight.html) | Player's Handbook II, p. 24 | See automation audit below |
+| [Lurk](https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html) | Complete Psionic, p. 13 | INT power points and manifester level |
+| [Marshal](https://srd.dndtools.org/srd/classes/baseMh/marshal.html) | Miniatures Handbook, p. 11 | See automation audit below |
+| [Ninja](https://srd.dndtools.org/srd/classes/baseCad/ninja.html) | Complete Adventurer, p. 5 | See automation audit below |
+| [Samurai](https://srd.dndtools.org/srd/classes/baseCwar/samurai.html) | Complete Warrior, p. 8 | See automation audit below |
+| [Scout](https://srd.dndtools.org/srd/classes/baseCad/scout.html) | Complete Adventurer, p. 10 | See automation audit below |
+| [Shadowcaster](https://srd.dndtools.org/srd/classes/baseTom/shadowcaster.html) | Tome of Magic, p. 111 | See automation audit below |
+| [Shugenja](https://srd.dndtools.org/srd/classes/baseCd/shugenja.html) | Complete Divine, p. 10 | CHA spontaneous divine spell slots |
+| [Soulborn](https://srd.dndtools.org/srd/classes/baseMoi/soulborn.html) | Magic of Incarnum, p. 25 | See automation audit below |
+| [Spellthief](https://srd.dndtools.org/srd/classes/baseCad/spellthief.html) | Complete Adventurer, p. 13 | CHA spontaneous arcane spell slots |
+| [Spirit Shaman](https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html) | Complete Divine, p. 14 | WIS spontaneous divine spell slots |
+| [Swashbuckler](https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html) | Complete Warrior, p. 11 | See automation audit below |
+| [Swordsage](https://srd.dndtools.org/srd/classes/baseTob/swordsage.html) | Tome of Battle: The Book of Nine Swords, p. 15 | See automation audit below |
+| [Totemist](https://srd.dndtools.org/srd/classes/baseMoi/totemist.html) | Magic of Incarnum, p. 29 | See automation audit below |
+| [Truenamer](https://srd.dndtools.org/srd/classes/baseTom/truenamer.html) | Tome of Magic, p. 198 | See automation audit below |
+| [Warblade](https://srd.dndtools.org/srd/classes/baseTob/warblade.html) | Tome of Battle: The Book of Nine Swords, p. 20 | See automation audit below |
+| [Warlock](https://srd.dndtools.org/srd/classes/baseCarc/warlock.html) | Complete Arcane, p. 5 | See automation audit below |
+| [Warmage](https://srd.dndtools.org/srd/classes/baseCarc/warmage.html) | Complete Arcane, p. 10 | CHA spontaneous arcane spell slots |
+| [Wu Jen](https://srd.dndtools.org/srd/classes/baseCarc/wujen.html) | Complete Arcane, p. 14 | INT prepared arcane spell slots |
 
 ## Casting and psionics
 
@@ -55,7 +55,7 @@ All additions have levels 1–20, base attack and saves, Hit Dice and HP progres
 
 ## Automation audit
 
-The existing catalog contains 50 base classes and 24 prestige classes. This pass covers the 34 supplemental additions; it preserves the core/SRD progression, existing prestige advancement, and dedicated Factotum support. Every supplemental class already had BAB, saves, Hit Dice, skill points, class skills, proficiencies, milestones, and applicable slots or power points. The table below identifies the added support and the remaining work, so “supported” does not imply that every feature is fully automated.
+At the time of this audit, the catalog contained 50 base classes and 24 prestige classes. This pass covers the 34 supplemental additions; it preserves the core/SRD progression, existing prestige advancement, and dedicated Factotum support. Every supplemental class already had BAB, saves, Hit Dice, skill points, class skills, proficiencies, milestones, and applicable slots or power points. The table below identifies the added support and the remaining work, so “supported” does not imply that every feature is fully automated.
 
 | Class | Added automation / controls | Still requires a choice or adjudication |
 | --- | --- | --- |

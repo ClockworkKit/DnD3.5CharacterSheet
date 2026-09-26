@@ -8,11 +8,11 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
 - Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.
 - Abilities, combat, the complete core skill list, custom specialties, equipment, feats, daily resources, and campaign notes.
-- 867 spell-menu entries (606 SRD spells and 261 supplemental source references), 110 SRD feats, 286 psionic powers, 50 base classes (11 core, 4 SRD psionic, Factotum, and 34 supplemental), 24 prestige classes, and 47 races.
+- 4,273 spell-menu entries (606 SRD spells and 3,667 supplemental entries; compendium references are marked separately), 110 SRD feats, 286 psionic powers, 58 base classes (11 core, 4 SRD psionic, Factotum, and 42 supplemental), 32 prestige classes, and 47 races.
 - Searchable references, separate casting traditions, prepared copies, spontaneous slots, domain pools, custom spells and powers, and daily reset.
 - Local practice rolls and Beyond20 handoff to Roll20, with copyable macros in the roll journal.
 - Skill-point purchases by character level, automatic class/cross-class costs, rank limits, and refunds.
-- Parchment, dark purple Amethyst, and black-and-white Classic 3.5 page themes.
+- A dedicated theme for each of the 58 base classes, plus Parchment, dark purple Amethyst, and black-and-white Classic 3.5.
 
 ## Create a character
 
@@ -30,7 +30,7 @@ For multiclass characters, the advancing class determines the purchase cost. Cla
 
 Existing characters keep every entered rank. **Fit existing ranks to levels** assigns those ranks to available legal purchases without adding them twice. Review the proposed allocation; ranks that cannot fit remain visible as unassigned and still count in checks. Removing a level preserves its purchases as unassigned ranks for review. Manual calculation mode retains direct rank entry.
 
-Use **Page theme** in the header to choose **Parchment**, **Amethyst · dark purple**, or **Classic 3.5 · black & white**. Classic uses boxed fields, bold black section bars, and a traditional paper-sheet layout. The choice is remembered in this browser and applies to every character.
+Use **Page theme** in the header to choose **Parchment**, **Amethyst · dark purple**, **Classic 3.5 · black & white**, or a named theme for any base class. Classic uses boxed fields, bold black section bars, and a traditional paper-sheet layout. The choice is remembered in this browser and applies to every character.
 
 ## Automatic calculations
 
@@ -118,13 +118,15 @@ Database schema: `db/schema.ts`. Generated migrations: `drizzle/`. Migrations ar
 
 The Sites configuration identifies the existing character-sheet Site. A separate installation needs its own authentication, database bindings, and migrations. A GitHub push does not redeploy the original Site or transfer saved characters; the Pages workflow deploys its browser-storage edition once Pages is enabled.
 
+See [Ultimate SRD classes and themes](ULTIMATE-CLASSES.md) for the newest classes, automation boundaries, and theme validation.
+
 ## Sources and licensing
 
-The SRD catalogs are plain-text conversions of the [revised SRD mirror](https://github.com/olimot/srd-v3.5). Their Open Game Content notice, full OGL 1.0a, and original copyright notice are included in [OPEN-GAME-LICENSE.txt](public/data/OPEN-GAME-LICENSE.txt) and linked from the sheet. Book-race entries use concise original summaries and source links. Reference HTML is never rendered as executable HTML.
+Class reference links use [Ultimate SRD](https://srd.dndtools.org/srd/classes/classes.html) exclusively. Historical core rule text in the SRD catalogs consists of plain-text conversions of the [revised SRD mirror](https://github.com/olimot/srd-v3.5). Their Open Game Content notice, full OGL 1.0a, and original copyright notice are included in [OPEN-GAME-LICENSE.txt](public/data/OPEN-GAME-LICENSE.txt) and linked from the sheet. Book-race entries use concise original summaries and source links. Reference HTML is never rendered as executable HTML.
 
 Calculation references include the SRD's [basic ability and stacking rules](https://www.d20srd.org/srd/theBasics.htm), [carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm), [movement](https://www.d20srd.org/srd/movement.htm), and [special materials](https://www.d20srd.org/srd/specialMaterials.htm), along with the class, feat, spell, and equipment sources in the catalogs.
 
-Skill training follows the SRD's [skill purchase rules](https://www.d20srd.org/srd/skills/skillsSummary.htm), [multiclass advancement](https://www.d20srd.org/srd/classes/multiclass.htm), and [headband of intellect restriction](https://www.d20srd.org/srd/magicItems/wondrousItems.htm#headbandOfIntellect). Restricted specialties such as the Archmage's [Craft (alchemy)](https://www.d20srd.org/srd/prestigeClasses/archmage.htm) retain their own training costs.
+Skill training follows the SRD's [skill purchase rules](https://www.d20srd.org/srd/skills/skillsSummary.htm), [multiclass advancement](https://srd.dndtools.org/srd/classes/classes.html#multiclass-characters), and [headband of intellect restriction](https://www.d20srd.org/srd/magicItems/wondrousItems.htm#headbandOfIntellect). Restricted specialties such as the Archmage's [Craft (alchemy)](https://srd.dndtools.org/srd/classes/prestigeCore/archmage.html) retain their own training costs.
 
 Importer scripts retain the source directory structures:
 
@@ -163,7 +165,7 @@ The spell menu includes supplemental list entries for Beguiler, Dread Necromance
 
 Feat browsing, Add class, and guided XP level-up now default to eligible selections. Choose **Show all** to inspect missing requirements or **Needs confirmation** for requirements such as special instruction, a story event, or acquiring an improved familiar. Confirm each such requirement only after checking it with the player/DM; confirmations save and export with the character and can be cleared. They do not override failed numeric checks.
 
-The checker covers the current 110 SRD feat entries and 24 prestige classes, using their bundled prerequisite text. It checks lasting ability scores (including racial and lasting effects), BAB, actual skill ranks, prerequisite feats with matching weapon/school choices, proficiencies, class levels, alignment, ancestry, spell/power progression, known spell requirements, and supported class features. Feat names with imported category tags such as `[General]` now count toward prerequisites and existing numerical feat bonuses. Choose a weapon, skill, or school before adding a feat. Duplicate selections are hidden while legal repeatable feats remain available.
+The checker covers the current 110 SRD feat entries and 32 prestige classes, using their bundled prerequisite text. It checks lasting ability scores (including racial and lasting effects), BAB, actual skill ranks, prerequisite feats with matching weapon/school choices, proficiencies, class levels, alignment, ancestry, spell/power progression, known spell requirements, and supported class features. Feat names with imported category tags such as `[General]` now count toward prerequisites and existing numerical feat bonuses. Choose a weapon, skill, or school before adding a feat. Duplicate selections are hidden while legal repeatable feats remain available.
 
 Spell eligibility uses daily capacity, not remaining uses. Full-list casting traditions use their indexed lists; spellbook/known-spell traditions need their spells recorded. Rebuild the compact category/school index with `node scripts/build-prerequisite-catalog.mjs` after updating either catalog. Incomplete supplemental lists also limit those indexed checks. Custom spells or class variants outside the catalogs may need manual character editing.
 

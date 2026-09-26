@@ -1,0 +1,466 @@
+[
+  {
+    "id": "class-archivist",
+    "classId": "archivist",
+    "label": "Archivist \u00b7 Sepia Manuscript",
+    "mode": "light",
+    "hue": 38,
+    "accent": 12
+  },
+  {
+    "id": "class-ardent",
+    "classId": "ardent",
+    "label": "Ardent \u00b7 Amethyst Mantle",
+    "mode": "light",
+    "hue": 281,
+    "accent": 281
+  },
+  {
+    "id": "class-artificer",
+    "classId": "artificer",
+    "label": "Artificer \u00b7 Copper & Aether",
+    "mode": "dark",
+    "hue": 195,
+    "accent": 32
+  },
+  {
+    "id": "class-barbarian",
+    "classId": "barbarian",
+    "label": "Barbarian \u00b7 Iron & Embers",
+    "mode": "dark",
+    "hue": 15,
+    "accent": 8
+  },
+  {
+    "id": "class-bard",
+    "classId": "bard",
+    "label": "Bard \u00b7 Velvet & Brass",
+    "mode": "dark",
+    "hue": 333,
+    "accent": 38
+  },
+  {
+    "id": "class-battle-dancer",
+    "classId": "battle-dancer",
+    "label": "Battle Dancer \u00b7 Saffron Silk",
+    "mode": "light",
+    "hue": 34,
+    "accent": 321
+  },
+  {
+    "id": "class-beguiler",
+    "classId": "beguiler",
+    "label": "Beguiler \u00b7 Orchid Masquerade",
+    "mode": "dark",
+    "hue": 292,
+    "accent": 305
+  },
+  {
+    "id": "class-binder",
+    "classId": "binder",
+    "label": "Binder \u00b7 Sealed Pact",
+    "mode": "dark",
+    "hue": 309,
+    "accent": 286
+  },
+  {
+    "id": "class-cleric",
+    "classId": "cleric",
+    "label": "Cleric \u00b7 Ivory Chapel",
+    "mode": "light",
+    "hue": 43,
+    "accent": 32
+  },
+  {
+    "id": "class-crusader",
+    "classId": "crusader",
+    "label": "Crusader \u00b7 Ruby Oath",
+    "mode": "light",
+    "hue": 4,
+    "accent": 4
+  },
+  {
+    "id": "class-death-master",
+    "classId": "death-master",
+    "label": "Death Master \u00b7 Grave Verdigris",
+    "mode": "dark",
+    "hue": 162,
+    "accent": 168
+  },
+  {
+    "id": "class-divine-mind",
+    "classId": "divine-mind",
+    "label": "Divine Mind \u00b7 Golden Thought",
+    "mode": "dark",
+    "hue": 55,
+    "accent": 53
+  },
+  {
+    "id": "class-dragon-shaman",
+    "classId": "dragon-shaman",
+    "label": "Dragon Shaman \u00b7 Emerald Scale",
+    "mode": "light",
+    "hue": 150,
+    "accent": 153
+  },
+  {
+    "id": "class-dragonfire-adept",
+    "classId": "dragonfire-adept",
+    "label": "Dragonfire Adept \u00b7 Bronze Flame",
+    "mode": "dark",
+    "hue": 25,
+    "accent": 37
+  },
+  {
+    "id": "class-dread-necromancer",
+    "classId": "dread-necromancer",
+    "label": "Dread Necromancer \u00b7 Bone & Obsidian",
+    "mode": "dark",
+    "hue": 280,
+    "accent": 75
+  },
+  {
+    "id": "class-druid",
+    "classId": "druid",
+    "label": "Druid \u00b7 Oak & Moss",
+    "mode": "light",
+    "hue": 95,
+    "accent": 127
+  },
+  {
+    "id": "class-duskblade",
+    "classId": "duskblade",
+    "label": "Duskblade \u00b7 Twilight Steel",
+    "mode": "dark",
+    "hue": 251,
+    "accent": 221
+  },
+  {
+    "id": "class-erudite",
+    "classId": "erudite",
+    "label": "Erudite \u00b7 Astral Library",
+    "mode": "light",
+    "hue": 253,
+    "accent": 245
+  },
+  {
+    "id": "class-factotum",
+    "classId": "factotum",
+    "label": "Factotum \u00b7 Brass Workshop",
+    "mode": "light",
+    "hue": 35,
+    "accent": 25
+  },
+  {
+    "id": "class-favored-soul",
+    "classId": "favored-soul",
+    "label": "Favored Soul \u00b7 Dawnlight",
+    "mode": "light",
+    "hue": 46,
+    "accent": 19
+  },
+  {
+    "id": "class-fighter",
+    "classId": "fighter",
+    "label": "Fighter \u00b7 Tempered Steel",
+    "mode": "light",
+    "hue": 215,
+    "accent": 210
+  },
+  {
+    "id": "class-healer",
+    "classId": "healer",
+    "label": "Healer \u00b7 Pearl & Sage",
+    "mode": "light",
+    "hue": 157,
+    "accent": 145
+  },
+  {
+    "id": "class-hexblade",
+    "classId": "hexblade",
+    "label": "Hexblade \u00b7 Cursed Iron",
+    "mode": "dark",
+    "hue": 282,
+    "accent": 300
+  },
+  {
+    "id": "class-incarnate",
+    "classId": "incarnate",
+    "label": "Incarnate \u00b7 Soul Azure",
+    "mode": "light",
+    "hue": 199,
+    "accent": 197
+  },
+  {
+    "id": "class-jester",
+    "classId": "jester",
+    "label": "Jester \u00b7 Plum & Marigold",
+    "mode": "dark",
+    "hue": 315,
+    "accent": 47
+  },
+  {
+    "id": "class-knight",
+    "classId": "knight",
+    "label": "Knight \u00b7 Heraldic Azure",
+    "mode": "light",
+    "hue": 213,
+    "accent": 216
+  },
+  {
+    "id": "class-lurk",
+    "classId": "lurk",
+    "label": "Lurk \u00b7 Petrol Shadow",
+    "mode": "dark",
+    "hue": 181,
+    "accent": 177
+  },
+  {
+    "id": "class-marshal",
+    "classId": "marshal",
+    "label": "Marshal \u00b7 Officer's Brass",
+    "mode": "dark",
+    "hue": 222,
+    "accent": 44
+  },
+  {
+    "id": "class-monk",
+    "classId": "monk",
+    "label": "Monk \u00b7 Sandalwood",
+    "mode": "light",
+    "hue": 30,
+    "accent": 21
+  },
+  {
+    "id": "class-mountebank",
+    "classId": "mountebank",
+    "label": "Mountebank \u00b7 Infernal Burgundy",
+    "mode": "dark",
+    "hue": 344,
+    "accent": 15
+  },
+  {
+    "id": "class-ninja",
+    "classId": "ninja",
+    "label": "Ninja \u00b7 Indigo Night",
+    "mode": "dark",
+    "hue": 240,
+    "accent": 235
+  },
+  {
+    "id": "class-paladin",
+    "classId": "paladin",
+    "label": "Paladin \u00b7 Silver & Sapphire",
+    "mode": "light",
+    "hue": 220,
+    "accent": 228
+  },
+  {
+    "id": "class-psion",
+    "classId": "psion",
+    "label": "Psion \u00b7 Astral Crystal",
+    "mode": "light",
+    "hue": 260,
+    "accent": 278
+  },
+  {
+    "id": "class-psychic-rogue",
+    "classId": "psychic-rogue",
+    "label": "Psychic Rogue \u00b7 Prismatic Smoke",
+    "mode": "dark",
+    "hue": 233,
+    "accent": 295
+  },
+  {
+    "id": "class-psychic-warrior",
+    "classId": "psychic-warrior",
+    "label": "Psychic Warrior \u00b7 Mindsteel",
+    "mode": "dark",
+    "hue": 204,
+    "accent": 190
+  },
+  {
+    "id": "class-ranger",
+    "classId": "ranger",
+    "label": "Ranger \u00b7 Pine & Leather",
+    "mode": "dark",
+    "hue": 141,
+    "accent": 90
+  },
+  {
+    "id": "class-rogue",
+    "classId": "rogue",
+    "label": "Rogue \u00b7 Smoke & Copper",
+    "mode": "dark",
+    "hue": 225,
+    "accent": 27
+  },
+  {
+    "id": "class-samurai",
+    "classId": "samurai",
+    "label": "Samurai \u00b7 Vermilion Lacquer",
+    "mode": "dark",
+    "hue": 8,
+    "accent": 15
+  },
+  {
+    "id": "class-scout",
+    "classId": "scout",
+    "label": "Scout \u00b7 Heather & Stone",
+    "mode": "light",
+    "hue": 82,
+    "accent": 83
+  },
+  {
+    "id": "class-shair",
+    "classId": "shair",
+    "label": "Sha'ir \u00b7 Desert & Turquoise",
+    "mode": "light",
+    "hue": 40,
+    "accent": 182
+  },
+  {
+    "id": "class-shadowcaster",
+    "classId": "shadowcaster",
+    "label": "Shadowcaster \u00b7 Umbral Ink",
+    "mode": "dark",
+    "hue": 244,
+    "accent": 268
+  },
+  {
+    "id": "class-shugenja",
+    "classId": "shugenja",
+    "label": "Shugenja \u00b7 Elemental Scroll",
+    "mode": "light",
+    "hue": 28,
+    "accent": 350
+  },
+  {
+    "id": "class-sorcerer",
+    "classId": "sorcerer",
+    "label": "Sorcerer \u00b7 Dragonblood",
+    "mode": "dark",
+    "hue": 352,
+    "accent": 345
+  },
+  {
+    "id": "class-soulborn",
+    "classId": "soulborn",
+    "label": "Soulborn \u00b7 Amber Soul",
+    "mode": "dark",
+    "hue": 38,
+    "accent": 48
+  },
+  {
+    "id": "class-soulknife",
+    "classId": "soulknife",
+    "label": "Soulknife \u00b7 Violet Blade",
+    "mode": "dark",
+    "hue": 268,
+    "accent": 262
+  },
+  {
+    "id": "class-spellthief",
+    "classId": "spellthief",
+    "label": "Spellthief \u00b7 Stolen Starlight",
+    "mode": "dark",
+    "hue": 274,
+    "accent": 194
+  },
+  {
+    "id": "class-spirit-shaman",
+    "classId": "spirit-shaman",
+    "label": "Spirit Shaman \u00b7 Willow Mist",
+    "mode": "light",
+    "hue": 175,
+    "accent": 176
+  },
+  {
+    "id": "class-swashbuckler",
+    "classId": "swashbuckler",
+    "label": "Swashbuckler \u00b7 Sea & Scarlet",
+    "mode": "light",
+    "hue": 193,
+    "accent": 7
+  },
+  {
+    "id": "class-swordsage",
+    "classId": "swordsage",
+    "label": "Swordsage \u00b7 Jade Silk",
+    "mode": "light",
+    "hue": 168,
+    "accent": 160
+  },
+  {
+    "id": "class-totemist",
+    "classId": "totemist",
+    "label": "Totemist \u00b7 Ochre & Fur",
+    "mode": "light",
+    "hue": 44,
+    "accent": 17
+  },
+  {
+    "id": "class-truenamer",
+    "classId": "truenamer",
+    "label": "Truenamer \u00b7 Lapis Script",
+    "mode": "light",
+    "hue": 207,
+    "accent": 241
+  },
+  {
+    "id": "class-urban-druid",
+    "classId": "urban-druid",
+    "label": "Urban Druid \u00b7 Ivy & Cobblestone",
+    "mode": "light",
+    "hue": 118,
+    "accent": 156
+  },
+  {
+    "id": "class-warblade",
+    "classId": "warblade",
+    "label": "Warblade \u00b7 Crimson Steel",
+    "mode": "dark",
+    "hue": 0,
+    "accent": 355
+  },
+  {
+    "id": "class-warlock",
+    "classId": "warlock",
+    "label": "Warlock \u00b7 Eldritch Cinder",
+    "mode": "dark",
+    "hue": 155,
+    "accent": 142
+  },
+  {
+    "id": "class-warmage",
+    "classId": "warmage",
+    "label": "Warmage \u00b7 Cobalt Flame",
+    "mode": "dark",
+    "hue": 227,
+    "accent": 202
+  },
+  {
+    "id": "class-wilder",
+    "classId": "wilder",
+    "label": "Wilder \u00b7 Rosefire",
+    "mode": "dark",
+    "hue": 320,
+    "accent": 329
+  },
+  {
+    "id": "class-wizard",
+    "classId": "wizard",
+    "label": "Wizard \u00b7 Midnight Grimoire",
+    "mode": "dark",
+    "hue": 238,
+    "accent": 252
+  },
+  {
+    "id": "class-wu-jen",
+    "classId": "wu-jen",
+    "label": "Wu Jen \u00b7 Jade & Vermilion",
+    "mode": "light",
+    "hue": 160,
+    "accent": 9
+  }
+]

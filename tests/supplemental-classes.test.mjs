@@ -14,7 +14,7 @@ const create=(kind,level=1)=>createPlayerCharacter({name:'Supplement QA',kind,le
 const spell=(level=1)=>({id:'test',spellId:'test',level,slotLevel:level,prepared:1,spent:0,notes:'',formula:'',custom:null});
 
 test('34 supplemental tables are complete and browser reference data matches calculation data',()=>{
- const defs=classCatalog.filter(d=>d.book);assert.equal(defs.length,34);
+ const defs=classCatalog.filter(d=>d.book&&!JSON.parse(readFileSync(new URL('../lib/ultimate-class-data.json',import.meta.url))).some(n=>n.id===d.id));assert.equal(defs.length,34);
  const publicData=JSON.parse(readFileSync(new URL('../public/data/classes.json',import.meta.url)));
  for(const d of defs){assert.deepEqual(publicData.find(x=>x.id===d.id),d);assert.equal(d.levels.length,20);assert.ok(d.skills&&d.source&&d.description);
   for(const [i,r] of d.levels.entries()){assert.equal(r.level,i+1);assert.equal(r.bab,Math.floor(r.level*d.levels[19].bab/20),d.id+' BAB '+r.level);for(const save of ['fort','ref','will'])assert.equal(r[save],d.levels[0][save]===2?2+Math.floor(r.level/2):Math.floor(r.level/3),d.id+' '+save+' '+r.level);assert.equal(r.extra.length,d.headers.length,d.id+' columns '+r.level);if(r.slots)assert.ok(r.slots.length===10&&r.slots.every(v=>v===null||Number.isInteger(v)&&v>=0));}
