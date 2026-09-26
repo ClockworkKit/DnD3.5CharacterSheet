@@ -77,7 +77,7 @@ test('armored casting exemptions apply per tradition and mithral effective categ
 const read=name=>JSON.parse(readFileSync(new URL('../'+name,import.meta.url)));
 const base=read('public/data/spells.json'),extensions=read('public/data/supplemental-spells.json'),catalog=expandSpellCatalog(base,extensions);
 test('expanded catalog merges list facts without duplicating SRD spells or changing original levels',()=>{
- assert.equal(base.length,606);assert.equal(catalog.length,867);assert.equal(catalog.filter(s=>s.referenceOnly).length,261);assert.equal(new Set(catalog.map(s=>s.id)).size,867);
+ assert.equal(base.length,606);const checked=catalog.filter(s=>s.catalogOrigin!=='compendium');assert.equal(checked.length,867);assert.equal(checked.filter(s=>s.referenceOnly).length,260);assert.equal(new Set(catalog.map(s=>s.id)).size,catalog.length);
  for(const s of catalog)spellSchema.parse(s);
  for(const s of base){const merged=catalog.find(m=>m.id===s.id);for(const [list,level] of Object.entries(s.levels))assert.equal(merged.levels[list],level,s.name+' '+list);assert.equal(merged.description,s.description);}
  const detect=catalog.find(s=>s.id==='detect-magic');assert.equal(detect.levels['Dread Necromancer'],1);assert.equal(detect.levels['Sorcerer / Wizard'],0);

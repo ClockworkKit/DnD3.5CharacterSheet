@@ -19,7 +19,7 @@ const damageReductionSourceSchema = z.object({
   id:ident,source:short,amount:count,bypass:short,active:z.boolean().default(true),
   gearId:z.string().max(100).default(''),notes:z.string().max(2000).default(''),
 });
-export const spellSchema = z.object({referenceOnly:z.boolean().optional(),id:ident,name:short,school:short,levels:z.record(z.number().int().min(0).max(9)),levelText:short,components:short,castingTime:short,range:short,target:z.string().max(1000),duration:short,save:short,resistance:short,description:note,source:z.string().max(500)});
+export const spellSchema = z.object({catalogOrigin:z.literal('compendium').optional(),referenceOnly:z.boolean().optional(),id:ident,name:short,school:short,levels:z.record(z.number().int().min(0).max(9)),levelText:short,components:short,castingTime:short,range:short,target:z.string().max(1000),duration:short,save:short,resistance:short,description:note,source:z.string().max(500)});
 export type Spell = z.infer<typeof spellSchema>;
 export type Feat = {id:string,name:string,description:string,source:string,category?:string,prerequisites?:string,repeatable?:boolean,specialConditions?:string,tags?:string[]};
 const knownSchema = z.object({id:ident,spellId:ident,level:z.number().int().min(0).max(9),slotLevel:z.number().int().min(0).max(9),prepared:count,spent:count,formula:z.string().max(80),notes:z.string().max(2000),custom:spellSchema.nullable()});
