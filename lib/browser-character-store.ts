@@ -26,7 +26,7 @@ export interface BrowserStoreEnvironment {
 }
 
 function summary(row: Row) {
-  return {id: row.id, name: row.data.name, revision: row.revision, updated_at: row.updated_at};
+  return {id: row.id, name: row.data.name, sheetKind: row.data.sheetKind, revision: row.revision, updated_at: row.updated_at};
 }
 
 /** A single atomic storage write under a shared Web Lock prevents lost tab edits. */

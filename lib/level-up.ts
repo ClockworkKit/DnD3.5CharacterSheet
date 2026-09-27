@@ -14,6 +14,7 @@ export function levelUpClasses(c:Character,showAll=false){return classCatalog.fi
  return d.levels.some(r=>r.level===level+1)&&(showAll||level>0||prestigeEligibility(c,d).eligible);
 });}
 export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
+ if(c.sheetKind==='monster')throw new Error('Advance monster Hit Dice and class levels manually.');
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
  if(!c.classLevels.length||classTotals(c.classLevels,c.ancestry).missing.length)throw new Error('Record supported class levels before using guided level-up.');
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');

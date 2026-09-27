@@ -7,7 +7,7 @@ import {newCharacter} from '../lib/model.ts';
 const db=new DatabaseSync(':memory:');
 db.exec(readFileSync(new URL('../drizzle/0000_green_mojo.sql',import.meta.url),'utf8'));
 globalThis.testDB={prepare(sql){let values=[];const query={bind(...v){values=v;return query},async first(){return db.prepare(sql).get(...values)||null},async all(){return {results:db.prepare(sql).all(...values)}},async run(){const r=db.prepare(sql).run(...values);return {meta:{changes:Number(r.changes)}}}};return query;}};
-registerHooks({resolve(specifier,context,next){if(specifier==='@/db')return {url:'data:text/javascript,export function getDB(){return globalThis.testDB}',shortCircuit:true};if(specifier==='@/lib/character-store')return {url:new URL('../lib/character-store.ts',import.meta.url).href,shortCircuit:true};return next(specifier,context)}});
+registerHooks({resolve(specifier,context,next){if(specifier==='@/db')return {url:'data:text/javascript,export function getDB(){return globalThis.testDB}',shortCircuit:true};if(specifier==='@/lib/model')return {url:new URL('../lib/model.ts',import.meta.url).href,shortCircuit:true};if(specifier==='@/lib/character-store')return {url:new URL('../lib/character-store.ts',import.meta.url).href,shortCircuit:true};return next(specifier,context)}});
 const list=await import('../app/api/characters/route.ts');
 const item=await import('../app/api/characters/[id]/route.ts');
 const request=(method,body,user='owner-a',origin='https://ledger.example')=>new Request('https://ledger.example/api/characters',{method,headers:{'Content-Type':'application/json',...(user?{'oai-authenticated-user-id':user}:{}),origin},...(body?{body:JSON.stringify(body)}:{})});
@@ -26,4 +26,23 @@ test('malformed JSON request shapes return validation errors rather than service
   assert.equal((await item.PUT(req('PUT'),ctx)).status,400,raw+' PUT');
   assert.equal((await item.DELETE(req('DELETE'),ctx)).status,400,raw+' DELETE');
  }
+});
+
+
+test('monster and NPC data survive authenticated storage with ownership and revision guards',async()=>{
+ const {createMonsterSheet,createNpcSheet}=await import('../lib/creatures.ts');
+ const monster=createMonsterSheet({name:'Skeleton',creature:{type:'Undead',racialHitDice:1,challengeRating:1/3},scores:{STR:10,DEX:12,CON:null,INT:null,WIS:10,CHA:1}});
+ const npc=createNpcSheet({name:'Guard',kind:'Fighter',level:1,raceId:'human',method:'manual',scores:{STR:13,DEX:11,CON:12,INT:10,WIS:9,CHA:8}});
+ for(const data of [monster,npc]){
+  const response=await list.POST(request('POST',{data}));assert.equal(response.status,201);
+  const row=await response.json(),ctx={params:Promise.resolve({id:row.id})};
+  assert.equal(row.sheetKind,data.sheetKind);
+  assert.deepEqual((await (await item.GET(request('GET'),ctx)).json()).data,data);
+  assert.equal((await (await list.GET(request('GET'))).json()).characters.find(c=>c.id===row.id).sheetKind,data.sheetKind);
+  assert.equal((await item.GET(request('GET',null,'intruder'),ctx)).status,404);
+  assert.equal((await item.PUT(request('PUT',{data:{...data,hp:1},revision:1}),ctx)).status,200);
+  assert.equal((await item.PUT(request('PUT',{data,revision:1}),ctx)).status,409);
+  assert.equal((await item.DELETE(request('DELETE',{revision:2}),ctx)).status,200);
+ }
+ const invalid={...monster,creature:null};assert.equal((await list.POST(request('POST',{data:invalid}))).status,400);
 });
