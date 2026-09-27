@@ -1,0 +1,16 @@
+'use client';
+import {useState} from 'react';
+import {abilityKeys,type Character} from '@/lib/model';
+import {bestiary,createBestiaryMonster,challengeRatingLabel} from '@/lib/bestiary';
+import {createMonsterSheet} from '@/lib/creatures';
+import {creatureTypes,type CreatureProfile} from '@/lib/creature-schema';
+import {F,N,Choice,Btn} from './sheet-ui';
+export function MonsterCreation({busy,onCreate}:{busy:boolean,onCreate:(c:Character)=>Promise<boolean>}){
+ const [selected,setSelected]=useState('human-skeleton'),[search,setSearch]=useState(''),[name,setName]=useState(''),[type,setType]=useState<CreatureProfile['type']>('Undead'),[hd,setHd]=useState(1),[hp,setHp]=useState(6),[error,setError]=useState(''),[creating,setCreating]=useState(false);
+ const rows=bestiary.filter(e=>(e.name+' '+e.type).toLowerCase().includes(search.toLowerCase())),entry=bestiary.find(e=>e.id===selected);
+ async function create(){if(busy||creating)return;setCreating(true);setError('');try{const c=selected==='custom'?createMonsterSheet({name:name.trim()||'New monster',maxHp:hp,creature:{type,racialHitDice:hd,...(type==='Elemental'?{goodSaves:[]}:{} )},scores:Object.fromEntries(abilityKeys.map(a=>[a,10])) as Character['scores']}):createBestiaryMonster(selected,name);if(!await onCreate(c))setError('The open sheet could not be saved. Review its save warning before switching.');}catch(e){setError(e instanceof Error?e.message:'Could not create monster.')}finally{setCreating(false)}}
+ return <fieldset className="sheet-fieldset" disabled={busy||creating}><F label="Monster name (optional)" value={name} onChange={setName} placeholder={entry?.name||'New monster'}/><F label="Search bestiary" value={search} onChange={setSearch} placeholder="Skeleton, wolf, undead…"/>
+ <div className="bestiary-options" role="group" aria-label="Monster presets"><Btn aria-pressed={selected==='custom'} onClick={()=>setSelected('custom')}>Custom monster</Btn>{rows.map(e=><Btn key={e.id} aria-pressed={selected===e.id} onClick={()=>setSelected(e.id)}>{e.name} · CR {challengeRatingLabel(e.cr)}</Btn>)}</div>{!rows.length&&<p>No matching presets. You can create a custom monster.</p>}
+ {selected==='custom'?<><div className="fields three"><Choice label="Creature type" value={type} options={[...creatureTypes]} onChange={v=>setType(v as typeof type)}/><N label="Racial Hit Dice" value={hd} min={1} max={100} onChange={v=>setHd(Math.floor(v))}/><N label="Starting HP" value={hp} min={1} max={10000} onChange={v=>setHp(Math.floor(v))}/></div><p className="fine">Set abilities, saves, attacks, and defenses on the sheet. Type defaults provide a starting point; check the creature’s individual rules.</p></>:entry&&<p className="fine">Selected: {entry.name} · {entry.type} · CR {challengeRatingLabel(entry.cr)}. <a href={entry.source} target="_blank" rel="noreferrer">Ultimate SRD reference ↗</a></p>}
+ <p className="fine">Each creation is a separate editable sheet. Printed bonuses are included; monster base statistics stay under your control.</p>{error&&<p className="error-box" role="alert">{error}</p>}<div className="creation-actions"><Btn className="primary" onClick={()=>void create()} disabled={busy||creating}>{creating?'Creating…':'Create monster'}</Btn></div></fieldset>;
+}
