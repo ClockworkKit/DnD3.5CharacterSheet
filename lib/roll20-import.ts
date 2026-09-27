@@ -83,7 +83,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  const classText=core.t('classes','class','class_and_level');
  if(!c.classLevels.length&&classText)for(const part of classText.split(/\s*\/\s*|;/)){const m=part.trim().match(/^(.+?)\s+(\d+)$/);if(m)addClass(m[1],Number(m[2]));else warn('Could not separate class and level in '+part+'; the original class text is retained.');}
  c.classes=c.classLevels.map(e=>e.name+' '+e.level).join(' / ')||classText||'';
- const totals=classTotals(c.classLevels,c.ancestry),explicitLevel=core.n('level','character_level');
+ const totals=classTotals(c.classLevels,c.ancestry,c),explicitLevel=core.n('level','character_level');
  c.level=explicitLevel??(totals.level||1);c.hitDice=core.t('hitdice','hit_dice')||totals.hitDice;
  if(!c.classes)warn('No class was identified. Add the character’s classes before enabling calculations.');
  if(explicitLevel!==undefined&&totals.level&&totals.level!==explicitLevel)warn('The total level differs from the class-level sum; review racial Hit Dice or gestalt progression.');

@@ -1,0 +1,4516 @@
+[
+  {
+    "id": "ninja-blinding-flash",
+    "name": "Blinding Flash",
+    "classId": "ninja",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "ghost-step",
+      "ghost-strike"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/ninja.html#blinding-flash",
+    "description": "Choose the Blinding Flash option for Ninja.",
+    "review": true
+  },
+  {
+    "id": "ninja-deceptive-mist",
+    "name": "Deceptive Mist",
+    "classId": "ninja",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "ghost-step",
+      "ghost-strike"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/ninja.html#deceptive-mist",
+    "description": "Choose the Deceptive Mist option for Ninja.",
+    "review": true
+  },
+  {
+    "id": "ninja-one-with-the-earth",
+    "name": "One with the Earth",
+    "classId": "ninja",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "ghost-step",
+      "ghost-strike"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/ninja.html#one-with-the-earth",
+    "description": "Choose the One with the Earth option for Ninja.",
+    "review": true
+  },
+  {
+    "id": "scout-aquatic-scout",
+    "name": "Aquatic Scout",
+    "classId": "scout",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#aquatic-scout",
+    "description": "Choose the Aquatic Scout option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-dungeon-specialist",
+    "name": "Dungeon Specialist",
+    "classId": "scout",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement",
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#dungeon-specialist",
+    "description": "Choose the Dungeon Specialist option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-go-to-ground",
+    "name": "Go to Ground",
+    "classId": "scout",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trackless-step"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#go-to-ground",
+    "description": "Choose the Go to Ground option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-hidden-stalker",
+    "name": "Hidden Stalker",
+    "classId": "scout",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "camouflage",
+      "hide-in-plain-sight"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#hidden-stalker",
+    "description": "Choose the Hidden Stalker option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-light-cavalry",
+    "name": "Light Cavalry",
+    "classId": "scout",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement",
+      "camouflage",
+      "hide-in-plain-sight",
+      "free-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#light-cavalry",
+    "description": "Choose the Light Cavalry option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-riposte",
+    "name": "Riposte",
+    "classId": "scout",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skirmish"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#riposte",
+    "description": "Choose the Riposte option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-skilled-city-dweller",
+    "name": "Skilled City-Dweller",
+    "classId": "scout",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skill@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#skilled-city-dweller",
+    "choices": [
+      "Handle Animal → Gather Information",
+      "Ride → Tumble",
+      "Survival → Sense Motive",
+      "Knowledge (nature) → Knowledge (local)"
+    ],
+    "description": "Choose the Skilled City-Dweller option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-sniper",
+    "name": "Sniper",
+    "classId": "scout",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skirmish",
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#sniper",
+    "description": "Choose the Sniper option for Scout.",
+    "review": true
+  },
+  {
+    "id": "scout-spell-reflection",
+    "name": "Spell Reflection",
+    "classId": "scout",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html#spell-reflection",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Reflection option for Scout.",
+    "review": true
+  },
+  {
+    "id": "spellthief-cursed-blow",
+    "name": "Cursed Blow",
+    "classId": "spellthief",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "sneak-attack@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html#cursed-blow",
+    "description": "Choose the Cursed Blow option for Spellthief.",
+    "review": true
+  },
+  {
+    "id": "spellthief-hamper-magic",
+    "name": "Hamper Magic",
+    "classId": "spellthief",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "steal-energy-resistance",
+      "steal-spell-like-ability"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html#hamper-magic",
+    "description": "Choose the Hamper Magic option for Spellthief.",
+    "review": true
+  },
+  {
+    "id": "spellthief-spelleater",
+    "name": "Spelleater",
+    "classId": "spellthief",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "absorb-spell"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html#spelleater",
+    "description": "Choose the Spelleater option for Spellthief.",
+    "review": true
+  },
+  {
+    "id": "spellthief-spellskill",
+    "name": "Spellskill",
+    "classId": "spellthief",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "spellcasting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html#spellskill",
+    "description": "Choose the Spellskill option for Spellthief.",
+    "review": true
+  },
+  {
+    "id": "spellthief-trickster",
+    "name": "Trickster",
+    "classId": "spellthief",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skill-points",
+      "class-skills",
+      "trapfinding",
+      "sneak-attack-progression"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html#trickster",
+    "description": "Choose the Trickster option for Spellthief.",
+    "review": true
+  },
+  {
+    "id": "warlock-drow-warlock",
+    "name": "Drow Warlock",
+    "classId": "warlock",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "fiendish-resilience"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warlock.html#drow-warlock",
+    "description": "Choose the Drow Warlock option for Warlock.",
+    "review": true
+  },
+  {
+    "id": "warlock-fiendish-flamewreath",
+    "name": "Fiendish Flamewreath",
+    "classId": "warlock",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "fiendish-resilience"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warlock.html#fiendish-flamewreath",
+    "description": "Choose the Fiendish Flamewreath option for Warlock.",
+    "review": true
+  },
+  {
+    "id": "warmage-dead-levels",
+    "name": "Dead Levels",
+    "classId": "warmage",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warmage.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "warmage-eclectic-learning",
+    "name": "Eclectic Learning",
+    "classId": "warmage",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "advanced-learning@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warmage.html#eclectic-learning",
+    "levels": [
+      3,
+      6,
+      11,
+      16
+    ],
+    "description": "Choose the Eclectic Learning option for Warmage.",
+    "review": true
+  },
+  {
+    "id": "wu-jen-dead-levels",
+    "name": "Dead Levels",
+    "classId": "wu-jen",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/wujen.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "favored-soul-dead-levels",
+    "name": "Dead Levels",
+    "classId": "favored-soul",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "favored-soul-deitys-favor",
+    "name": "Deity's Favor",
+    "classId": "favored-soul",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "deitys-weapon-focus",
+      "deitys-weapon-specialization"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html#deitys-favor",
+    "description": "Choose the Deity's Favor option for Favored Soul.",
+    "review": true
+  },
+  {
+    "id": "favored-soul-drow-favored-soul",
+    "name": "Drow Favored Soul",
+    "classId": "favored-soul",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "energy-resistance"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html#drow-favored-soul",
+    "description": "Choose the Drow Favored Soul option for Favored Soul.",
+    "review": true
+  },
+  {
+    "id": "favored-soul-favored-of-bahamut-tiamat",
+    "name": "Favored of Bahamut/Tiamat",
+    "classId": "favored-soul",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "deitys-weapon-focus",
+      "deitys-weapon-specialization",
+      "wings",
+      "damage-reduction"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html#favored-of-bahamut-tiamat",
+    "description": "Choose the Favored of Bahamut/Tiamat option for Favored Soul.",
+    "review": true
+  },
+  {
+    "id": "favored-soul-favored-of-the-fiends",
+    "name": "Favored of the Fiends",
+    "classId": "favored-soul",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "deitys-weapon-focus",
+      "deitys-weapon-specialization"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html#favored-of-the-fiends",
+    "description": "Choose the Favored of the Fiends option for Favored Soul.",
+    "review": true
+  },
+  {
+    "id": "shugenja-dead-levels",
+    "name": "Dead Levels",
+    "classId": "shugenja",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/shugenja.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "spirit-shaman-dead-levels",
+    "name": "Dead Levels",
+    "classId": "spirit-shaman",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "spirit-shaman-skilled-city-dweller",
+    "name": "Skilled City-Dweller",
+    "classId": "spirit-shaman",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skill@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html#skilled-city-dweller",
+    "choices": [
+      "Handle Animal → Gather Information",
+      "Ride → Tumble",
+      "Survival → Sense Motive",
+      "Knowledge (nature) → Knowledge (local)"
+    ],
+    "description": "Choose the Skilled City-Dweller option for Spirit Shaman.",
+    "review": true
+  },
+  {
+    "id": "spirit-shaman-voice-of-the-city",
+    "name": "Voice of the City",
+    "classId": "spirit-shaman",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html#voice-of-the-city",
+    "description": "Choose the Voice of the City option for Spirit Shaman.",
+    "review": true
+  },
+  {
+    "id": "barbarian-aquatic-barbarian",
+    "name": "Aquatic Barbarian",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#aquatic-barbarian",
+    "description": "Choose the Aquatic Barbarian option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-berserker-strength",
+    "name": "Berserker Strength",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "rage",
+      "greater-rage",
+      "mighty-rage"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#berserker-strength",
+    "description": "Choose the Berserker Strength option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-city-brawler",
+    "name": "City Brawler",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "martial-weapons",
+      "medium-armor",
+      "shields"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#city-brawler",
+    "description": "Choose the City Brawler option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-dashing-step",
+    "name": "Dashing Step",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#dashing-step",
+    "description": "Choose the Dashing Step option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-devils-luck",
+    "name": "Devil's Luck",
+    "classId": "barbarian",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "damage-reduction"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#devils-luck",
+    "description": "Choose the Devil's Luck option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-fearsome-gaze",
+    "name": "Fearsome Gaze",
+    "classId": "barbarian",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "indomitable-will",
+      "trap-sense@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#fearsome-gaze",
+    "description": "Choose the Fearsome Gaze option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-ferocity",
+    "name": "Ferocity",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "rage",
+      "greater-rage",
+      "mighty-rage",
+      "indomitable-will"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#ferocity",
+    "description": "Choose the Ferocity option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-frostfell-barbarian",
+    "name": "Frostfell Barbarian",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#frostfell-barbarian",
+    "description": "Choose the Frostfell Barbarian option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-golarion-barbarian",
+    "name": "Golarion Barbarian",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#golarion-barbarian",
+    "description": "Choose the Golarion Barbarian option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-natural-born-barbarian",
+    "name": "Natural Born Barbarian",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#natural-born-barbarian",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "barbarian-relentless-smash",
+    "name": "Relentless Smash",
+    "classId": "barbarian",
+    "level": 20,
+    "kind": "replacement",
+    "replaces": [
+      "mighty-rage"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#relentless-smash",
+    "description": "Choose the Relentless Smash option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-roof-dweller",
+    "name": "Roof-Dweller",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#roof-dweller",
+    "description": "Choose the Roof-Dweller option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-skilled-city-dweller",
+    "name": "Skilled City-Dweller",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skill@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#skilled-city-dweller",
+    "choices": [
+      "Handle Animal → Gather Information",
+      "Ride → Tumble",
+      "Survival → Sense Motive",
+      "Knowledge (nature) → Knowledge (local)"
+    ],
+    "description": "Choose the Skilled City-Dweller option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-spell-sense",
+    "name": "Spell Sense",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#spell-sense",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Sense option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-spiritual-totem",
+    "name": "Spiritual Totem",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#spiritual-totem",
+    "choices": [
+      "Bear",
+      "Eagle",
+      "Fox",
+      "Lion",
+      "Wolf"
+    ],
+    "description": "Choose the Spiritual Totem option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-streetfighter",
+    "name": "Streetfighter",
+    "classId": "barbarian",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "damage-reduction"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#streetfighter",
+    "description": "Choose the Streetfighter option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-totem-manifestation",
+    "name": "Totem Manifestation",
+    "classId": "barbarian",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "damage-reduction"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#totem-manifestation",
+    "choices": [
+      "Bear",
+      "Eagle",
+      "Fox",
+      "Lion",
+      "Wolf"
+    ],
+    "description": "Choose the Totem Manifestation option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-trapkiller",
+    "name": "Trapkiller",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#trapkiller",
+    "description": "Choose the Trapkiller option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-uncanny-bravery",
+    "name": "Uncanny Bravery",
+    "classId": "barbarian",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "improved-uncanny-dodge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#uncanny-bravery",
+    "description": "Choose the Uncanny Bravery option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-unholy-fury",
+    "name": "Unholy Fury",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#unholy-fury",
+    "description": "Choose the Unholy Fury option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-unshakable",
+    "name": "Unshakable",
+    "classId": "barbarian",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "improved-uncanny-dodge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#unshakable",
+    "description": "Choose the Unshakable option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-view-the-spirit-world",
+    "name": "View the Spirit World",
+    "classId": "barbarian",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "improved-uncanny-dodge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#view-the-spirit-world",
+    "description": "Choose the View the Spirit World option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-wasteland-barbarian",
+    "name": "Wasteland Barbarian",
+    "classId": "barbarian",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense",
+      "improved-uncanny-dodge",
+      "rage-use@8"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#wasteland-barbarian",
+    "description": "Choose the Wasteland Barbarian option for Barbarian.",
+    "review": true
+  },
+  {
+    "id": "barbarian-whirling-frenzy",
+    "name": "Whirling Frenzy",
+    "classId": "barbarian",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "rage",
+      "greater-rage",
+      "mighty-rage",
+      "indomitable-will"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html#whirling-frenzy",
+    "description": "Choose the Whirling Frenzy option for Barbarian.",
+    "review": true,
+    "activation": "Make an extra attack this round (−2 to all attacks)"
+  },
+  {
+    "id": "bard-bardic-knack",
+    "name": "Bardic Knack",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-knowledge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#bardic-knack",
+    "description": "Choose the Bardic Knack option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-dead-levels",
+    "name": "Dead Levels",
+    "classId": "bard",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "bard-drow-bard",
+    "name": "Drow Bard",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-knowledge",
+      "bardic-music-use@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#drow-bard",
+    "description": "Choose the Drow Bard option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-golarion-bard",
+    "name": "Golarion Bard",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-knowledge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#golarion-bard",
+    "description": "Choose the Golarion Bard option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-healing-hymn",
+    "name": "Healing Hymn",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "fascinate"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#healing-hymn",
+    "description": "Choose the Healing Hymn option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-hymn-of-fortification",
+    "name": "Hymn of Fortification",
+    "classId": "bard",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "inspire-competence"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#hymn-of-fortification",
+    "description": "Choose the Hymn of Fortification option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-inspire-awe",
+    "name": "Inspire Awe",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "inspire-courage"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#inspire-awe",
+    "description": "Choose the Inspire Awe option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-inspire-hatred",
+    "name": "Inspire Hatred",
+    "classId": "bard",
+    "level": 9,
+    "kind": "replacement",
+    "replaces": [
+      "inspire-greatness"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#inspire-hatred",
+    "description": "Choose the Inspire Hatred option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-inspire-turning",
+    "name": "Inspire Turning",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "inspire-competence"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#inspire-turning",
+    "description": "Choose the Inspire Turning option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-lore-song",
+    "name": "Lore Song",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-knowledge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#lore-song",
+    "description": "Choose the Lore Song option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-mimicking-song",
+    "name": "Mimicking Song",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "countersong"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#mimicking-song",
+    "description": "Choose the Mimicking Song option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-music-of-creation",
+    "name": "Music of Creation",
+    "classId": "bard",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-music@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#music-of-creation",
+    "levels": [
+      3,
+      6,
+      9,
+      12,
+      15,
+      18
+    ],
+    "description": "Choose the Music of Creation option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-repel-domination",
+    "name": "Repel Domination",
+    "classId": "bard",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "suggestion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#repel-domination",
+    "description": "Choose the Repel Domination option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-spellbreaker-song",
+    "name": "Spellbreaker Song",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "countersong"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#spellbreaker-song",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spellbreaker Song option for Bard.",
+    "review": true
+  },
+  {
+    "id": "bard-undead-bardic-knowledge",
+    "name": "Undead Bardic Knowledge",
+    "classId": "bard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bardic-knowledge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html#undead-bardic-knowledge",
+    "description": "Choose the Undead Bardic Knowledge option for Bard.",
+    "review": true
+  },
+  {
+    "id": "cleric-blasphemous-incantation",
+    "name": "Blasphemous Incantation",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#blasphemous-incantation",
+    "description": "Choose the Blasphemous Incantation option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-dead-levels",
+    "name": "Dead Levels",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "cleric-destroy-undead",
+    "name": "Destroy Undead",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#destroy-undead",
+    "description": "Choose the Destroy Undead option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-divine-counterspell",
+    "name": "Divine Counterspell",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#divine-counterspell",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Divine Counterspell option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-divine-magician",
+    "name": "Divine Magician",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "domain@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#divine-magician",
+    "choices": [
+      "1",
+      "2"
+    ],
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Divine Magician option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-divine-restoration",
+    "name": "Divine Restoration",
+    "classId": "cleric",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "domain-power@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#divine-restoration",
+    "choices": [
+      "1",
+      "2"
+    ],
+    "description": "Choose the Divine Restoration option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-domain-focus",
+    "name": "Domain Focus",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spontaneous-casting",
+      "domain@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#domain-focus",
+    "choices": [
+      "1",
+      "2"
+    ],
+    "description": "Choose the Domain Focus option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-dragonscale-husk",
+    "name": "Dragonscale Husk",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "armor-proficiencies"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#dragonscale-husk",
+    "description": "Choose the Dragonscale Husk option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-drow-cleric",
+    "name": "Drow Cleric",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#drow-cleric",
+    "description": "Choose the Drow Cleric option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-golarion-cleric",
+    "name": "Golarion Cleric",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "domains"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#golarion-cleric",
+    "description": "Choose the Golarion Cleric option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-improved-domain-powers",
+    "name": "Improved Domain Powers",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#improved-domain-powers",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "cleric-no-turning",
+    "name": "No Turning",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#no-turning",
+    "description": "Choose the No Turning option for Cleric.",
+    "review": true,
+    "choices": [
+      "Cultist",
+      "Evangelist"
+    ]
+  },
+  {
+    "id": "cleric-peripheral-beliefs",
+    "name": "Peripheral Beliefs",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#peripheral-beliefs",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "cleric-planar-banishment",
+    "name": "Planar Banishment",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#planar-banishment",
+    "description": "Choose the Planar Banishment option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-pool-of-healing",
+    "name": "Pool of Healing",
+    "classId": "cleric",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "spell-slot@4"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#pool-of-healing",
+    "description": "Choose the Pool of Healing option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-positive-healing",
+    "name": "Positive Healing",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "domain-power@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#positive-healing",
+    "choices": [
+      "1",
+      "2"
+    ],
+    "description": "Choose the Positive Healing option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-rebuke-dragons",
+    "name": "Rebuke Dragons",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#rebuke-dragons",
+    "description": "Choose the Rebuke Dragons option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-spontaneous-domain-casting",
+    "name": "Spontaneous Domain Casting",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spontaneous-casting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#spontaneous-domain-casting",
+    "description": "Choose the Spontaneous Domain Casting option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-true-daylight",
+    "name": "True Daylight",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "domain-power@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#true-daylight",
+    "choices": [
+      "1",
+      "2"
+    ],
+    "description": "Choose the True Daylight option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "cleric-turning-presence",
+    "name": "Turning Presence",
+    "classId": "cleric",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html#turning-presence",
+    "description": "Choose the Turning Presence option for Cleric.",
+    "review": true
+  },
+  {
+    "id": "druid-animal-companions",
+    "name": "Animal Companions",
+    "classId": "druid",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#animal-companions",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "druid-aquatic-druid",
+    "name": "Aquatic Druid",
+    "classId": "druid",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#aquatic-druid",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true,
+    "requirementsNote": "Requires the racial swim speed specified by the source."
+  },
+  {
+    "id": "druid-aspect-of-nature",
+    "name": "Aspect of Nature",
+    "classId": "druid",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "wild-shape"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#aspect-of-nature",
+    "description": "Choose the Aspect of Nature option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-aspect-of-the-dragon",
+    "name": "Aspect of the Dragon",
+    "classId": "druid",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "wild-shape-animal"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#aspect-of-the-dragon",
+    "description": "Choose the Aspect of the Dragon option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-city-shape",
+    "name": "City-Shape",
+    "classId": "druid",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "wild-shape-animal"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#city-shape",
+    "description": "Choose the City-Shape option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-city-soul",
+    "name": "City Soul",
+    "classId": "druid",
+    "level": 16,
+    "kind": "replacement",
+    "replaces": [
+      "wild-shape-elemental"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#city-soul",
+    "description": "Choose the City Soul option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-crowd-walker",
+    "name": "Crowd-Walker",
+    "classId": "druid",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#crowd-walker",
+    "description": "Choose the Crowd-Walker option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-dead-levels",
+    "name": "Dead Levels",
+    "classId": "druid",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "druid-domain-druid",
+    "name": "Domain Druid",
+    "classId": "druid",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#domain-druid",
+    "description": "Optional druid domain rules. Record the granted domain and configure its spells from the linked source.",
+    "review": true,
+    "choiceRequired": true
+  },
+  {
+    "id": "druid-drow-druid",
+    "name": "Drow Druid",
+    "classId": "druid",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "wild-shape-animal"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#drow-druid",
+    "description": "Choose the Drow Druid option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-elemental-companion",
+    "name": "Elemental Companion",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion",
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#elemental-companion",
+    "description": "Choose the Elemental Companion option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-focused-animal",
+    "name": "Focused Animal",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "trackless-step",
+      "wild-shape",
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#focused-animal",
+    "description": "Choose the Focused Animal option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-go-to-ground",
+    "name": "Go to Ground",
+    "classId": "druid",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trackless-step"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#go-to-ground",
+    "description": "Choose the Go to Ground option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-golarion-druid",
+    "name": "Golarion Druid",
+    "classId": "druid",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#golarion-druid",
+    "description": "Choose the Golarion Druid option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-iron-contitution",
+    "name": "Iron Constitution",
+    "classId": "druid",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "resist-natures-lure"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#iron-contitution",
+    "description": "Choose the Iron Constitution option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-phynxkin-companion",
+    "name": "Phynxkin Companion",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#phynxkin-companion",
+    "description": "Choose the Phynxkin Companion option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-plant-companion",
+    "name": "Plant Companion",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#plant-companion",
+    "description": "Choose the Plant Companion option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-skilled-city-dweller",
+    "name": "Skilled City-Dweller",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "skill@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#skilled-city-dweller",
+    "choices": [
+      "Handle Animal → Gather Information",
+      "Ride → Tumble",
+      "Survival → Sense Motive",
+      "Knowledge (nature) → Knowledge (local)"
+    ],
+    "description": "Choose the Skilled City-Dweller option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-root-walker",
+    "name": "Root Walker",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy",
+      "woodland-stride",
+      "resist-natures-lure"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#root-walker",
+    "description": "Choose the Root Walker option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-shapeshift",
+    "name": "Shapeshift",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion",
+      "wild-shape"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#shapeshift",
+    "description": "Choose the Shapeshift option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-spontaneous-affliction",
+    "name": "Spontaneous Affliction",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spontaneous-casting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#spontaneous-affliction",
+    "description": "Choose the Spontaneous Affliction option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-spontaneous-rejuvenation",
+    "name": "Spontaneous Rejuvenation",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spontaneous-casting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#spontaneous-rejuvenation",
+    "description": "Choose the Spontaneous Rejuvenation option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-urban-companion",
+    "name": "Urban Companion",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#urban-companion",
+    "description": "Choose the Urban Companion option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-urban-sense",
+    "name": "Urban Sense",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "nature-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#urban-sense",
+    "description": "Choose the Urban Sense option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-voice-of-the-city",
+    "name": "Voice of the City",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#voice-of-the-city",
+    "description": "Choose the Voice of the City option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-wasteland-druid",
+    "name": "Wasteland Druid",
+    "classId": "druid",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride",
+      "resist-natures-lure",
+      "wild-shape-use@10"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#wasteland-druid",
+    "description": "Choose the Wasteland Druid option for Druid.",
+    "review": true
+  },
+  {
+    "id": "druid-weapon-proficiencies",
+    "name": "Weapon Proficiencies",
+    "classId": "druid",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "weapon-proficiencies"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#weapon-proficiencies",
+    "description": "Choose the Weapon Proficiencies option for Druid.",
+    "review": true,
+    "choices": [
+      "Coastland / Aquatic",
+      "Arctic",
+      "Desert",
+      "Grassland / Savannah",
+      "Mountain",
+      "Subterranean / Underdark"
+    ]
+  },
+  {
+    "id": "fighter-aligned-strike",
+    "name": "Aligned Strike",
+    "classId": "fighter",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#aligned-strike",
+    "levels": [
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ],
+    "description": "Choose the Aligned Strike option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-armor-of-god",
+    "name": "Armor of God",
+    "classId": "fighter",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#armor-of-god",
+    "levels": [
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ],
+    "description": "Choose the Armor of God option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-armored-mage",
+    "name": "Armored Mage",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "medium-armor",
+      "heavy-armor"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#armored-mage",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Armored Mage option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-armored-savant",
+    "name": "Armored Savant",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#armored-savant",
+    "description": "Choose the Armored Savant option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-bonded-armor",
+    "name": "Bonded Armor",
+    "classId": "fighter",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@8"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#bonded-armor",
+    "description": "Choose the Bonded Armor option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-counterattack",
+    "name": "Counterattack",
+    "classId": "fighter",
+    "level": 12,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@12"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#counterattack",
+    "description": "Choose the Counterattack option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-dead-levels",
+    "name": "Dead Levels",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "fighter-dragonscale-husk",
+    "name": "Dragonscale Husk",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "armor-proficiencies"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#dragonscale-husk",
+    "description": "Choose the Dragonscale Husk option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-drow-fighter",
+    "name": "Drow Fighter",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "heavy-armor",
+      "tower-shields"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#drow-fighter",
+    "description": "Choose the Drow Fighter option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-dungeon-crasher",
+    "name": "Dungeon Crasher",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "bonus-feat@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#dungeon-crasher",
+    "description": "Choose the Dungeon Crasher option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-eldritch-grace",
+    "name": "Eldritch Grace",
+    "classId": "fighter",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@4"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#eldritch-grace",
+    "description": "Choose the Eldritch Grace option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-eldritch-juggernaut",
+    "name": "Eldritch Juggernaut",
+    "classId": "fighter",
+    "level": 18,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@18"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#eldritch-juggernaut",
+    "description": "Choose the Eldritch Juggernaut option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-elusive-attack",
+    "name": "Elusive Attack",
+    "classId": "fighter",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#elusive-attack",
+    "description": "Choose the Elusive Attack option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-fortification",
+    "name": "Fortification",
+    "classId": "fighter",
+    "level": 10,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@10",
+      "bonus-feat@14",
+      "bonus-feat@18"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#fortification",
+    "description": "Choose the Fortification option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-golarion-fighter",
+    "name": "Golarion Fighter",
+    "classId": "fighter",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#golarion-fighter",
+    "description": "Choose the Golarion Fighter option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-overpowering-attack",
+    "name": "Overpowering Attack",
+    "classId": "fighter",
+    "level": 16,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@16"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#overpowering-attack",
+    "description": "Choose the Overpowering Attack option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-resolute",
+    "name": "Resolute",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#resolute",
+    "levels": [
+      2,
+      4,
+      6,
+      8,
+      10,
+      12,
+      14,
+      16,
+      18,
+      20
+    ],
+    "description": "Choose the Resolute option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-warrior-of-air",
+    "name": "Warrior of Air",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "bonus-feat@6",
+      "bonus-feat@12",
+      "bonus-feat@20"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#warrior-of-air",
+    "description": "Choose the Warrior of Air option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-warrior-of-earth",
+    "name": "Warrior of Earth",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "bonus-feat@6",
+      "bonus-feat@12",
+      "bonus-feat@20"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#warrior-of-earth",
+    "description": "Choose the Warrior of Earth option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-warrior-of-fire",
+    "name": "Warrior of Fire",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "bonus-feat@6",
+      "bonus-feat@12",
+      "bonus-feat@20"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#warrior-of-fire",
+    "description": "Choose the Warrior of Fire option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "fighter-warrior-of-water",
+    "name": "Warrior of Water",
+    "classId": "fighter",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "bonus-feat@6",
+      "bonus-feat@12",
+      "bonus-feat@20"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html#warrior-of-water",
+    "description": "Choose the Warrior of Water option for Fighter.",
+    "review": true
+  },
+  {
+    "id": "monk-aquatic-monk",
+    "name": "Aquatic Monk",
+    "classId": "monk",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement",
+      "slow-fall"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#aquatic-monk",
+    "description": "Choose the Aquatic Monk option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-bane-of-the-clockwork",
+    "name": "Bane of the Clockwork",
+    "classId": "monk",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "slow-fall",
+      "bonus-feat@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#bane-of-the-clockwork",
+    "description": "Choose the Bane of the Clockwork option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-decisive-strike",
+    "name": "Decisive Strike",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "flurry-of-blows"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#decisive-strike",
+    "description": "Choose the Decisive Strike option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-draconic-fist",
+    "name": "Draconic Fist",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#draconic-fist",
+    "description": "Choose the Draconic Fist option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-eberron-monk",
+    "name": "Eberron Monk",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#eberron-monk",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true,
+    "levels": [
+      1,
+      2,
+      6
+    ],
+    "choiceRequired": true,
+    "requirementsNote": "Record the permitted bonus feat and confirm its prerequisites in the source."
+  },
+  {
+    "id": "monk-feign-death",
+    "name": "Feign Death",
+    "classId": "monk",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#feign-death",
+    "description": "Choose the Feign Death option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-fighting-styles",
+    "name": "Fighting Styles",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1",
+      "bonus-feat@2",
+      "bonus-feat@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#fighting-styles",
+    "description": "Choose the Fighting Styles option for Monk.",
+    "review": true,
+    "choiceRequired": true
+  },
+  {
+    "id": "monk-golarion-monk",
+    "name": "Golarion Monk",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#golarion-monk",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true,
+    "levels": [
+      1,
+      2,
+      6
+    ],
+    "choiceRequired": true,
+    "requirementsNote": "Record the permitted bonus feat and confirm its prerequisites in the source."
+  },
+  {
+    "id": "monk-holy-strike",
+    "name": "Holy Strike",
+    "classId": "monk",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "ki-strike@4"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#holy-strike",
+    "description": "Choose the Holy Strike option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-invisible-fist",
+    "name": "Invisible Fist",
+    "classId": "monk",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "evasion",
+      "improved-evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#invisible-fist",
+    "description": "Choose the Invisible Fist option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-prayerful-meditation",
+    "name": "Prayerful Meditation",
+    "classId": "monk",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "still-mind"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#prayerful-meditation",
+    "description": "Choose the Prayerful Meditation option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-sacred-strike",
+    "name": "Sacred Strike",
+    "classId": "monk",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "ki-strike",
+      "improved-evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#sacred-strike",
+    "description": "Choose the Sacred Strike option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-soulwarp-strike",
+    "name": "Soulwarp Strike",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#soulwarp-strike",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Soulwarp Strike option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-spell-reflection",
+    "name": "Spell Reflection",
+    "classId": "monk",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#spell-reflection",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Reflection option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-standing-jump",
+    "name": "Standing Jump",
+    "classId": "monk",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "fast-movement"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#standing-jump",
+    "description": "Choose the Standing Jump option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-unwavering-dedication",
+    "name": "Unwavering Dedication",
+    "classId": "monk",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "still-mind"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#unwavering-dedication",
+    "description": "Choose the Unwavering Dedication option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-wall-walker",
+    "name": "Wall Walker",
+    "classId": "monk",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "slow-fall"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#wall-walker",
+    "description": "Choose the Wall Walker option for Monk.",
+    "review": true
+  },
+  {
+    "id": "monk-weapon-proficiencies",
+    "name": "Weapon Proficiencies",
+    "classId": "monk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "weapon-proficiencies"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#weapon-proficiencies",
+    "description": "Choose the Weapon Proficiencies option for Monk.",
+    "review": true,
+    "choices": [
+      "Ghurka",
+      "Filipino",
+      "Krabi-Krabong"
+    ]
+  },
+  {
+    "id": "monk-wholeness-of-others",
+    "name": "Wholeness of Others",
+    "classId": "monk",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "wholeness-of-body"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html#wholeness-of-others",
+    "description": "Choose the Wholeness of Others option for Monk.",
+    "review": true
+  },
+  {
+    "id": "paladin-angels-sight",
+    "name": "Angel's Sight",
+    "classId": "paladin",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "divine-health"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#angels-sight",
+    "description": "Choose the Angel's Sight option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-aura-of-banishment",
+    "name": "Aura of Banishment",
+    "classId": "paladin",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "remove-disease"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#aura-of-banishment",
+    "description": "Choose the Aura of Banishment option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-aura-of-sanctity",
+    "name": "Aura of Sanctity",
+    "classId": "paladin",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#aura-of-sanctity",
+    "description": "Choose the Aura of Sanctity option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-charging-smite",
+    "name": "Charging Smite",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#charging-smite",
+    "description": "Choose the Charging Smite option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-curse-breaker",
+    "name": "Curse Breaker",
+    "classId": "paladin",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "remove-disease"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#curse-breaker",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Curse Breaker option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-dead-levels",
+    "name": "Dead Levels",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "paladin-detect-undead",
+    "name": "Detect Undead",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "detect-evil"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#detect-undead",
+    "description": "Choose the Detect Undead option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-divine-counterspell",
+    "name": "Divine Counterspell",
+    "classId": "paladin",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#divine-counterspell",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Divine Counterspell option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-divine-spirit",
+    "name": "Divine Spirit",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#divine-spirit",
+    "description": "Choose the Divine Spirit option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-domain-paladin",
+    "name": "Domain Paladin",
+    "classId": "paladin",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "turn-undead"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#domain-paladin",
+    "description": "Choose the Domain Paladin option for Paladin.",
+    "review": true,
+    "requirementsNote": "The source gives level 3, but paladin turning is gained at level 4; select when the surrendered feature is available.",
+    "choiceRequired": true
+  },
+  {
+    "id": "paladin-dragonscale-husk",
+    "name": "Dragonscale Husk",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "armor-proficiencies"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#dragonscale-husk",
+    "description": "Choose the Dragonscale Husk option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-drakkensteed-mount",
+    "name": "Drakkensteed Mount",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#drakkensteed-mount",
+    "description": "Choose the Drakkensteed Mount option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-gaze-of-truth",
+    "name": "Gaze of Truth",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "detect-evil"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#gaze-of-truth",
+    "description": "Choose the Gaze of Truth option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-gnome-paladin",
+    "name": "Gnome Paladin",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#gnome-paladin",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "paladin-golarion-paladin",
+    "name": "Golarion Paladin",
+    "classId": "paladin",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "remove-disease"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#golarion-paladin",
+    "description": "Choose the Golarion Paladin option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-holy-warrior",
+    "name": "Holy Warrior",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spellcasting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#holy-warrior",
+    "description": "Choose the Holy Warrior option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-hunter-of-fiends",
+    "name": "Hunter of Fiends",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "smite-evil",
+      "skill-knowledge-nobility"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#hunter-of-fiends",
+    "description": "Choose the Hunter of Fiends option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-pelors-blessing",
+    "name": "Pelor's Blessing",
+    "classId": "paladin",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "divine-health"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#pelors-blessing",
+    "description": "Choose the Pelor's Blessing option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-power-of-the-self",
+    "name": "Power of the Self",
+    "classId": "paladin",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "divine-grace",
+      "divine-health",
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#power-of-the-self",
+    "description": "Choose the Power of the Self option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-smiting-arrow",
+    "name": "Smiting Arrow",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "heavy-armor",
+      "shields"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#smiting-arrow",
+    "description": "Choose the Smiting Arrow option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-special-mounts",
+    "name": "Special Mounts",
+    "classId": "paladin",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#special-mounts",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "paladin-stand-fast",
+    "name": "Stand Fast",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#stand-fast",
+    "description": "Choose the Stand Fast option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-sword-of-celestia",
+    "name": "Sword of Celestia",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#sword-of-celestia",
+    "description": "Choose the Sword of Celestia option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "paladin-underdark-knight",
+    "name": "Underdark Knight",
+    "classId": "paladin",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "special-mount"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#underdark-knight",
+    "description": "Choose the Underdark Knight option for Paladin.",
+    "review": true,
+    "activation": "Underground"
+  },
+  {
+    "id": "paladin-warded-special-mount",
+    "name": "Warded Special Mount",
+    "classId": "paladin",
+    "level": 6,
+    "kind": "replacement",
+    "replaces": [
+      "remove-disease@6"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html#warded-special-mount",
+    "description": "Choose the Warded Special Mount option for Paladin.",
+    "review": true
+  },
+  {
+    "id": "ranger-animal-companions",
+    "name": "Animal Companions",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html#animal-companions",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "ranger-arcane-hunter",
+    "name": "Arcane Hunter",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "favored-enemy@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#arcane-hunter",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Arcane Hunter option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-aquatic-ranger",
+    "name": "Aquatic Ranger",
+    "classId": "ranger",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#aquatic-ranger",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true,
+    "requirementsNote": "Requires the racial swim speed specified by the source."
+  },
+  {
+    "id": "ranger-celestial-slayer",
+    "name": "Celestial Slayer",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy",
+      "animal-companion",
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#celestial-slayer",
+    "description": "Choose the Celestial Slayer option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-champion-of-the-wild",
+    "name": "Champion of the Wild",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spellcasting"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#champion-of-the-wild",
+    "description": "Choose the Champion of the Wild option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-combat-styles",
+    "name": "Combat Styles",
+    "classId": "ranger",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "combat-style"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#combat-styles",
+    "description": "Choose the Combat Styles option for Ranger.",
+    "review": true,
+    "choiceRequired": true
+  },
+  {
+    "id": "ranger-crowd-walker",
+    "name": "Crowd-Walker",
+    "classId": "ranger",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "woodland-stride"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#crowd-walker",
+    "description": "Choose the Crowd-Walker option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-dead-levels",
+    "name": "Dead Levels",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "ranger-distracting-attack",
+    "name": "Distracting Attack",
+    "classId": "ranger",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#distracting-attack",
+    "description": "Choose the Distracting Attack option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-favored-environment",
+    "name": "Favored Environment",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "favored-enemy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#favored-environment",
+    "description": "Choose the Favored Environment option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-feign-death",
+    "name": "Feign Death",
+    "classId": "ranger",
+    "level": 9,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#feign-death",
+    "description": "Choose the Feign Death option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-golarion-ranger",
+    "name": "Golarion Ranger",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#golarion-ranger",
+    "description": "Choose the Golarion Ranger option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-hidden-stalker",
+    "name": "Hidden Stalker",
+    "classId": "ranger",
+    "level": 13,
+    "kind": "replacement",
+    "replaces": [
+      "camouflage",
+      "hide-in-plain-sight"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#hidden-stalker",
+    "description": "Choose the Hidden Stalker option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-natural-born-ranger",
+    "name": "Natural Born Ranger",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#natural-born-ranger",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "ranger-phynxkin-companion",
+    "name": "Phynxkin Companion",
+    "classId": "ranger",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#phynxkin-companion",
+    "description": "Choose the Phynxkin Companion option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-rival-organization",
+    "name": "Rival Organization",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "favored-enemy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#rival-organization",
+    "description": "Choose the Rival Organization option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-solitary-hunting",
+    "name": "Solitary Hunting",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#solitary-hunting",
+    "description": "Choose the Solitary Hunting option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-spell-reflection",
+    "name": "Spell Reflection",
+    "classId": "ranger",
+    "level": 9,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#spell-reflection",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Reflection option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-spiritual-connection",
+    "name": "Spiritual Connection",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#spiritual-connection",
+    "description": "Choose the Spiritual Connection option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-spiritual-guide",
+    "name": "Spiritual Guide",
+    "classId": "ranger",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#spiritual-guide",
+    "description": "Choose the Spiritual Guide option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-trap-expert",
+    "name": "Trap Expert",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "track",
+      "swift-tracker"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#trap-expert",
+    "description": "Choose the Trap Expert option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-urban-companion",
+    "name": "Urban Companion",
+    "classId": "ranger",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "animal-companion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#urban-companion",
+    "description": "Choose the Urban Companion option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-urban-tracker",
+    "name": "Urban Tracker",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "track"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#urban-tracker",
+    "description": "Choose the Urban Tracker option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-voice-of-the-city",
+    "name": "Voice of the City",
+    "classId": "ranger",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-empathy"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#voice-of-the-city",
+    "description": "Choose the Voice of the City option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "ranger-wasteland-ranger",
+    "name": "Wasteland Ranger",
+    "classId": "ranger",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "endurance",
+      "woodland-stride",
+      "favored-enemy@10"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html#wasteland-ranger",
+    "description": "Choose the Wasteland Ranger option for Ranger.",
+    "review": true
+  },
+  {
+    "id": "rogue-antiquarian",
+    "name": "Antiquarian",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "trapfinding"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#antiquarian",
+    "description": "Choose the Antiquarian option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-breathstealer",
+    "name": "Breathstealer",
+    "classId": "rogue",
+    "level": 10,
+    "kind": "replacement",
+    "replaces": [
+      "special-ability@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#breathstealer",
+    "levels": [
+      10,
+      13,
+      16,
+      19
+    ],
+    "description": "Choose the Breathstealer option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-criminal-specialist",
+    "name": "Criminal Specialist",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#criminal-specialist",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "rogue-dead-levels",
+    "name": "Dead Levels",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "rogue-deaths-ruin",
+    "name": "Death's Ruin",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#deaths-ruin",
+    "description": "Choose the Death's Ruin option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-disruptive-attack",
+    "name": "Disruptive Attack",
+    "classId": "rogue",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "uncanny-dodge",
+      "improved-uncanny-dodge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#disruptive-attack",
+    "description": "Choose the Disruptive Attack option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-drow-rogue",
+    "name": "Drow Rogue",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "trapfinding"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#drow-rogue",
+    "description": "Choose the Drow Rogue option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-feign-death",
+    "name": "Feign Death",
+    "classId": "rogue",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#feign-death",
+    "description": "Choose the Feign Death option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-friends-evasion",
+    "name": "Friend's Evasion",
+    "classId": "rogue",
+    "level": 10,
+    "kind": "replacement",
+    "replaces": [
+      "special-ability@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#friends-evasion",
+    "levels": [
+      10,
+      13,
+      16,
+      19
+    ],
+    "description": "Choose the Friend's Evasion option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-golarion-rogue",
+    "name": "Golarion Rogue",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#golarion-rogue",
+    "description": "Choose the Golarion Rogue option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-holy-stalker",
+    "name": "Holy Stalker",
+    "classId": "rogue",
+    "level": 10,
+    "kind": "replacement",
+    "replaces": [
+      "special-ability@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#holy-stalker",
+    "levels": [
+      10,
+      13,
+      16,
+      19
+    ],
+    "description": "Choose the Holy Stalker option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-lightbringer-strike",
+    "name": "Lightbringer Strike",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#lightbringer-strike",
+    "description": "Choose the Lightbringer Strike option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-mimic",
+    "name": "Mimic",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "trapfinding"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#mimic",
+    "description": "Choose the Mimic option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-penetrating-strike",
+    "name": "Penetrating Strike",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#penetrating-strike",
+    "description": "Choose the Penetrating Strike option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-quick-fingers",
+    "name": "Quick Fingers",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense@3"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#quick-fingers",
+    "description": "Choose the Quick Fingers option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-special-abilities",
+    "name": "Special Abilities",
+    "classId": "rogue",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#special-abilities",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "rogue-spell-reflection",
+    "name": "Spell Reflection",
+    "classId": "rogue",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "evasion"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#spell-reflection",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Reflection option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-spell-sense",
+    "name": "Spell Sense",
+    "classId": "rogue",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "trap-sense"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#spell-sense",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Spell Sense option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "rogue-uncanny-bravery",
+    "name": "Uncanny Bravery",
+    "classId": "rogue",
+    "level": 8,
+    "kind": "replacement",
+    "replaces": [
+      "improved-uncanny-dodge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html#uncanny-bravery",
+    "description": "Choose the Uncanny Bravery option for Rogue.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-aligned-spellcaster",
+    "name": "Aligned Spellcaster",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#aligned-spellcaster",
+    "description": "Choose the Aligned Spellcaster option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-arcane-reabsorption",
+    "name": "Arcane Reabsorption",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#arcane-reabsorption",
+    "description": "Choose the Arcane Reabsorption option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-beleaguered-spellcaster",
+    "name": "Beleaguered Spellcaster",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#beleaguered-spellcaster",
+    "description": "Choose the Beleaguered Spellcaster option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-blood-of-eberron",
+    "name": "Blood of Eberron",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar",
+      "class-skills"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#blood-of-eberron",
+    "description": "Choose the Blood of Eberron option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-blood-of-khyber",
+    "name": "Blood of Khyber",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar",
+      "class-skills"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#blood-of-khyber",
+    "description": "Choose the Blood of Khyber option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-blood-of-siberys",
+    "name": "Blood of Siberys",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar",
+      "class-skills"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#blood-of-siberys",
+    "description": "Choose the Blood of Siberys option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-dead-levels",
+    "name": "Dead Levels",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-disciple-of-boccob",
+    "name": "Disciple of Boccob",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#disciple-of-boccob",
+    "description": "Choose the Disciple of Boccob option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-divine-companion",
+    "name": "Divine Companion",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#divine-companion",
+    "description": "Choose the Divine Companion option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-draconic-ray",
+    "name": "Draconic Ray",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#draconic-ray",
+    "choices": [
+      "Black",
+      "Blue",
+      "Green",
+      "Red",
+      "White",
+      "Brass",
+      "Bronze",
+      "Copper",
+      "Gold",
+      "Silver"
+    ],
+    "description": "Choose the Draconic Ray option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-drakken-familiar",
+    "name": "Drakken Familar",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#drakken-familiar",
+    "description": "Choose the Drakken Familar option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-domain-access",
+    "name": "Domain Access",
+    "classId": "sorcerer",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "spells-known"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#domain-access",
+    "description": "Choose the Domain Access option for Sorcerer.",
+    "review": true,
+    "choiceRequired": true
+  },
+  {
+    "id": "sorcerer-variant-familiars",
+    "name": "Familiars",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#variant-familiars",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-focus-caster",
+    "name": "Focus Caster",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#focus-caster",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the Focus Caster option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-githyanki-sorcerer",
+    "name": "Githyanki Sorcerer",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#githyanki-sorcerer",
+    "description": "Choose the Githyanki Sorcerer option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-golarion-sorcerer",
+    "name": "Golarion Sorcerer",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#golarion-sorcerer",
+    "description": "Choose the Golarion Sorcerer option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-imbued-staff",
+    "name": "Imbued Staff",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#imbued-staff",
+    "description": "Choose the Imbued Staff option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-impromptu-metamagic",
+    "name": "Impromptu Metamagic",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#impromptu-metamagic",
+    "description": "Choose the Impromptu Metamagic option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-metamagic-specialist",
+    "name": "Metamagic Specialist",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#metamagic-specialist",
+    "description": "Choose the Metamagic Specialist option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-poltergeists",
+    "name": "Poltergeists",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "cantrips-known"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#poltergeists",
+    "description": "Choose the Poltergeists option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-school-mastery",
+    "name": "School Mastery",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#school-mastery",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the School Mastery option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-sorcerer-spheres",
+    "name": "Sorcerer Spheres",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "spell-spheres"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#sorcerer-spheres",
+    "description": "Choose the Sorcerer Spheres option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-spell-shield",
+    "name": "Spell Shield",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#spell-shield",
+    "description": "Choose the Spell Shield option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-stalwart-sorcerer",
+    "name": "Stalwart Sorcerer",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "highest-spells-known"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#stalwart-sorcerer",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Stalwart Sorcerer option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "sorcerer-wilderness-companion",
+    "name": "Wilderness Companion",
+    "classId": "sorcerer",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html#wilderness-companion",
+    "description": "Choose the Wilderness Companion option for Sorcerer.",
+    "review": true
+  },
+  {
+    "id": "wizard-aligned-spellcaster",
+    "name": "Aligned Spellcaster",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#aligned-spellcaster",
+    "description": "Choose the Aligned Spellcaster option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-arcane-reabsorption",
+    "name": "Arcane Reabsorption",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#arcane-reabsorption",
+    "description": "Choose the Arcane Reabsorption option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-beleaguered-spellcaster",
+    "name": "Beleaguered Spellcaster",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#beleaguered-spellcaster",
+    "description": "Choose the Beleaguered Spellcaster option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-dead-levels",
+    "name": "Dead Levels",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "wizard-disciple-of-boccob",
+    "name": "Disciple of Boccob",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#disciple-of-boccob",
+    "description": "Choose the Disciple of Boccob option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-domain-granted-power",
+    "name": "Domain Granted Power",
+    "classId": "wizard",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#domain-granted-power",
+    "levels": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "description": "Choose the Domain Granted Power option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-drakken-familiar",
+    "name": "Drakken Familar",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#drakken-familiar",
+    "description": "Choose the Drakken Familar option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-drow-wizard",
+    "name": "Drow Wizard",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "specialization"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#drow-wizard",
+    "description": "Choose the Drow Wizard option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-eidetic-spellcaster",
+    "name": "Eidetic Spellcaster",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar",
+      "scribe-scroll"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#eidetic-spellcaster",
+    "description": "Choose the Eidetic Spellcaster option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-variant-familiars",
+    "name": "Familiars",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#variant-familiars",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "wizard-focus-caster",
+    "name": "Focus Caster",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#focus-caster",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the Focus Caster option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-focused-specialist",
+    "name": "Focused Specialist",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "specialization"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#focused-specialist",
+    "description": "Choose the Focused Specialist option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-golarion-wizard",
+    "name": "Golarion Wizard",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "scribe-scroll"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#golarion-wizard",
+    "description": "Choose the Golarion Wizard option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-imbued-staff",
+    "name": "Imbued Staff",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#imbued-staff",
+    "description": "Choose the Imbued Staff option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-immediate-magic",
+    "name": "Immediate Magic",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#immediate-magic",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the Immediate Magic option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-impromptu-metamagic",
+    "name": "Impromptu Metamagic",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#impromptu-metamagic",
+    "description": "Choose the Impromptu Metamagic option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-school-mastery",
+    "name": "School Mastery",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#school-mastery",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the School Mastery option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-spontaneous-divination",
+    "name": "Spontaneous Divination",
+    "classId": "wizard",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@choice"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#spontaneous-divination",
+    "levels": [
+      5,
+      10,
+      15,
+      20
+    ],
+    "description": "Choose the Spontaneous Divination option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-wilderness-companion",
+    "name": "Wilderness Companion",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#wilderness-companion",
+    "description": "Choose the Wilderness Companion option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "wizard-wizard-of-sun-and-moon",
+    "name": "Wizard of Sun and Moon",
+    "classId": "wizard",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html#wizard-of-sun-and-moon",
+    "description": "Choose the Wizard of Sun and Moon option for Wizard.",
+    "review": true
+  },
+  {
+    "id": "ardent-dominant-ideal",
+    "name": "Dominant Ideal",
+    "classId": "ardent",
+    "level": 10,
+    "kind": "replacement",
+    "replaces": [
+      "mantle@10"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html#dominant-ideal",
+    "description": "Choose the Dominant Ideal option for Ardent.",
+    "review": true
+  },
+  {
+    "id": "ardent-elemental-mantles",
+    "name": "Elemental Mantles",
+    "classId": "ardent",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html#elemental-mantles",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "ardent-substitute-powers",
+    "name": "Substitute Powers",
+    "classId": "ardent",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html#substitute-powers",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "divine-mind-ectopic-ally",
+    "name": "Ectopic Ally",
+    "classId": "divine-mind",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "psychic-aura"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html#ectopic-ally",
+    "description": "Choose the Ectopic Ally option for Divine Mind.",
+    "review": true
+  },
+  {
+    "id": "divine-mind-hidden-talent",
+    "name": "Hidden Talent",
+    "classId": "divine-mind",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-talent"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html#hidden-talent",
+    "description": "Choose the Hidden Talent option for Divine Mind.",
+    "review": true
+  },
+  {
+    "id": "divine-mind-stygian-path",
+    "name": "Stygian Path",
+    "classId": "divine-mind",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "divine-grace"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html#stygian-path",
+    "description": "Choose the Stygian Path option for Divine Mind.",
+    "review": true
+  },
+  {
+    "id": "erudite-convert-spell-to-power",
+    "name": "Convert Spell to Power",
+    "classId": "erudite",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/erudite.html#convert-spell-to-power",
+    "description": "Choose the Convert Spell to Power option for Erudite.",
+    "review": true
+  },
+  {
+    "id": "erudite-favored-discipline",
+    "name": "Favored Discipline",
+    "classId": "erudite",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/erudite.html#favored-discipline",
+    "description": "Choose the Favored Discipline option for Erudite.",
+    "review": true
+  },
+  {
+    "id": "erudite-mantled-erudite",
+    "name": "Mantled Erudite",
+    "classId": "erudite",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/erudite.html#mantled-erudite",
+    "description": "Choose the Mantled Erudite option for Erudite.",
+    "review": true
+  },
+  {
+    "id": "lurk-tracker",
+    "name": "Tracker",
+    "classId": "lurk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "lurk-augments"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html#tracker",
+    "description": "Choose the Tracker option for Lurk.",
+    "review": true
+  },
+  {
+    "id": "lurk-true-thief",
+    "name": "True Thief",
+    "classId": "lurk",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "lurk-augments"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html#true-thief",
+    "description": "Choose the True Thief option for Lurk.",
+    "review": true
+  },
+  {
+    "id": "hexblade-aligned-spellcaster",
+    "name": "Aligned Spellcaster",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#aligned-spellcaster",
+    "description": "Choose the Aligned Spellcaster option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-arcane-reabsorption",
+    "name": "Arcane Reabsorption",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#arcane-reabsorption",
+    "description": "Choose the Arcane Reabsorption option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-beleaguered-spellcaster",
+    "name": "Beleaguered Spellcaster",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#beleaguered-spellcaster",
+    "description": "Choose the Beleaguered Spellcaster option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-dark-companion",
+    "name": "Dark Companion",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#dark-companion",
+    "description": "Choose the Dark Companion option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-dead-levels",
+    "name": "Dead Levels",
+    "classId": "hexblade",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "hexblade-disciple-of-boccob",
+    "name": "Disciple of Boccob",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#disciple-of-boccob",
+    "description": "Choose the Disciple of Boccob option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-drakken-familiar",
+    "name": "Drakken Familiar",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#drakken-familiar",
+    "description": "Choose the Drakken Familiar option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-focus-caster",
+    "name": "Focus Caster",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#focus-caster",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the Focus Caster option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-impromptu-metamagic",
+    "name": "Impromptu Metamagic",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#impromptu-metamagic",
+    "description": "Choose the Impromptu Metamagic option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "hexblade-school-mastery",
+    "name": "School Mastery",
+    "classId": "hexblade",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "familiar"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html#school-mastery",
+    "choices": [
+      "Abjuration",
+      "Conjuration",
+      "Divination",
+      "Enchantment",
+      "Evocation",
+      "Illusion",
+      "Necromancy",
+      "Transmutation"
+    ],
+    "description": "Choose the School Mastery option for Hexblade.",
+    "review": true
+  },
+  {
+    "id": "samurai-dead-levels",
+    "name": "Dead Levels",
+    "classId": "samurai",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/samurai.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "swashbuckler-arcane-stunt",
+    "name": "Arcane Stunt",
+    "classId": "swashbuckler",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "grace"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html#arcane-stunt",
+    "skill": {
+      "name": "Knowledge (arcana)",
+      "ranks": 1
+    },
+    "description": "Choose the Arcane Stunt option for Swashbuckler.",
+    "review": true
+  },
+  {
+    "id": "swashbuckler-dead-levels",
+    "name": "Dead Levels",
+    "classId": "swashbuckler",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "swashbuckler-drow-swashbuckler",
+    "name": "Drow Swashbuckler",
+    "classId": "swashbuckler",
+    "level": 7,
+    "kind": "replacement",
+    "replaces": [
+      "acrobatic-charge"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html#drow-swashbuckler",
+    "description": "Choose the Drow Swashbuckler option for Swashbuckler.",
+    "review": true
+  },
+  {
+    "id": "swashbuckler-shield-of-blades",
+    "name": "Shield of Blades",
+    "classId": "swashbuckler",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "dodge-bonus"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html#shield-of-blades",
+    "description": "Choose the Shield of Blades option for Swashbuckler.",
+    "review": true
+  },
+  {
+    "id": "archivist-dead-levels",
+    "name": "Dead Levels",
+    "classId": "archivist",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/baseHoh/archivist.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "marshal-adrenaline-boost",
+    "name": "Adrenaline Boost",
+    "classId": "marshal",
+    "level": 4,
+    "kind": "replacement",
+    "replaces": [
+      "grant-move-action"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/baseMh/marshal.html#adrenaline-boost",
+    "description": "Choose the Adrenaline Boost option for Marshal.",
+    "review": true
+  },
+  {
+    "id": "beguiler-dead-levels",
+    "name": "Dead Levels",
+    "classId": "beguiler",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/beguiler.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "dragon-shaman-shamanic-invocation",
+    "name": "Shamanic Invocation",
+    "classId": "dragon-shaman",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "draconic-aura@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/dragonShaman.html#shamanic-invocation",
+    "description": "Choose the Shamanic Invocation option for Dragon Shaman.",
+    "review": true
+  },
+  {
+    "id": "duskblade-dead-levels",
+    "name": "Dead Levels",
+    "classId": "duskblade",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "knight-dead-levels",
+    "name": "Dead Levels",
+    "classId": "knight",
+    "level": 1,
+    "kind": "optional",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/knight.html#dead-levels",
+    "description": "Optional additions at otherwise empty class levels. Consult the source for their levels and conditions.",
+    "review": true
+  },
+  {
+    "id": "psion-change-shape",
+    "name": "Change Shape",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#change-shape",
+    "description": "Choose the Change Shape option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-energy-snap",
+    "name": "Energy Snap",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#energy-snap",
+    "description": "Choose the Energy Snap option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-fate-points",
+    "name": "Fate Points",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#fate-points",
+    "description": "Choose the Fate Points option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-great-animator",
+    "name": "Greater Animator",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#great-animator",
+    "description": "Choose the Greater Animator option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-harbinger",
+    "name": "Harbinger",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#harbinger",
+    "description": "Choose the Harbinger option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-personal-construct",
+    "name": "Personal Construct",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#personal-construct",
+    "description": "Choose the Personal Construct option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-personal-space",
+    "name": "Personal Space",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#personal-space",
+    "description": "Choose the Personal Space option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-psicrystal-enhancement",
+    "name": "Psicrystal Enhancement",
+    "classId": "psion",
+    "level": 1,
+    "kind": "reference",
+    "replaces": [],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#psicrystal-enhancement",
+    "description": "Reference collection; contains several rules or choices rather than a single class-feature replacement.",
+    "review": true
+  },
+  {
+    "id": "psion-psychic-knowledge",
+    "name": "Psychic Knowledge",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#psychic-knowledge",
+    "description": "Choose the Psychic Knowledge option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-telepathic-communication",
+    "name": "Telepathic Communication",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#telepathic-communication",
+    "description": "Choose the Telepathic Communication option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-temporal-grace",
+    "name": "Temporal Grace",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#temporal-grace",
+    "description": "Choose the Temporal Grace option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-trinkets",
+    "name": "Trinkets",
+    "classId": "psion",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@1"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#trinkets",
+    "description": "Choose the Trinkets option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psion-true-healer",
+    "name": "True Healer",
+    "classId": "psion",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@5"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html#true-healer",
+    "description": "Choose the True Healer option for Psion.",
+    "review": true
+  },
+  {
+    "id": "psychic-warrior-mantled-warrior",
+    "name": "Mantled Warrior",
+    "classId": "psychic-warrior",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsychicWarrior.html#mantled-warrior",
+    "description": "Choose the Mantled Warrior option for Psychic Warrior.",
+    "review": true
+  },
+  {
+    "id": "psychic-warrior-soulbound-weapon",
+    "name": "Soulbound Weapon",
+    "classId": "psychic-warrior",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "bonus-feat@2",
+      "powers-known@2"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsychicWarrior.html#soulbound-weapon",
+    "description": "Choose the Soulbound Weapon option for Psychic Warrior.",
+    "review": true
+  },
+  {
+    "id": "soulknife-bonus-feats",
+    "name": "Bonus Feats",
+    "classId": "soulknife",
+    "level": 3,
+    "kind": "replacement",
+    "replaces": [
+      "psychic-strike"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicSoulknife.html#bonus-feats",
+    "description": "Choose the Bonus Feats option for Soulknife.",
+    "review": true
+  },
+  {
+    "id": "soulknife-hidden-talent",
+    "name": "Hidden Talent",
+    "classId": "soulknife",
+    "level": 1,
+    "kind": "replacement",
+    "replaces": [
+      "wild-talent"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicSoulknife.html#hidden-talent",
+    "description": "Choose the Hidden Talent option for Soulknife.",
+    "review": true
+  },
+  {
+    "id": "wilder-educated-wilder",
+    "name": "Educated Wilder",
+    "classId": "wilder",
+    "level": 5,
+    "kind": "replacement",
+    "replaces": [
+      "volatile-mind"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicWilder.html#educated-wilder",
+    "description": "Choose the Educated Wilder option for Wilder.",
+    "review": true
+  },
+  {
+    "id": "wilder-mantled-wilder",
+    "name": "Mantled Wilder",
+    "classId": "wilder",
+    "level": 2,
+    "kind": "replacement",
+    "replaces": [
+      "elude-touch",
+      "powers-known"
+    ],
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicWilder.html#mantled-wilder",
+    "description": "Choose the Mantled Wilder option for Wilder.",
+    "review": true
+  }
+]

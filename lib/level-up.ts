@@ -16,7 +16,7 @@ export function levelUpClasses(c:Character,showAll=false){return classCatalog.fi
 export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  if(c.sheetKind==='monster')throw new Error('Advance monster Hit Dice and class levels manually.');
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
- if(!c.classLevels.length||classTotals(c.classLevels,c.ancestry).missing.length)throw new Error('Record supported class levels before using guided level-up.');
+ if(!c.classLevels.length||classTotals(c.classLevels,c.ancestry,c).missing.length)throw new Error('Record supported class levels before using guided level-up.');
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>def.hitDie))throw new Error('Record a valid roll for the new Hit Die.');

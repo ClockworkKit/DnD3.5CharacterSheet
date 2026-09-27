@@ -1,4 +1,4 @@
-import {hasTurningAbility} from './alternate-features.ts';
+import {hasTurningAbility,featureReplaced} from './alternate-features.ts';
 import {krauBonus} from './racial-abilities.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
@@ -34,14 +34,14 @@ function has(c:Character,name:string,choice?:string){
  if(name==='Martial Weapon Proficiency'&&choice)return proficient(c,choice);
  if(name==='Tower Shield Proficiency'){const e=equipmentCatalog.find(e=>e.kind==='shield'&&/tower/i.test(e.name));return !!e&&armorProficient(c,e);}
  if(name==='Improved Unarmed Strike'&&classLevel(c,'monk')>0)return true;
- if(name==='Scribe Scroll'&&classLevel(c,'wizard')>0)return true;
- if(name==='Endurance'&&classLevel(c,'ranger')>=3)return true;
- if(name==='Track'&&classLevel(c,'ranger')>0)return true;
- if(name==='Wild Talent'&&classLevel(c,'soulknife')>0)return true;
+ if(name==='Scribe Scroll'&&classLevel(c,'wizard')>0&&!featureReplaced(c,'wizard','scribe-scroll'))return true;
+ if(name==='Endurance'&&classLevel(c,'ranger')>=3&&!featureReplaced(c,'ranger','endurance'))return true;
+ if(name==='Track'&&classLevel(c,'ranger')>0&&!featureReplaced(c,'ranger','track'))return true;
+ if(name==='Wild Talent'&&classLevel(c,'soulknife')>0&&!featureReplaced(c,'soulknife','wild-talent'))return true;
  return false;
 }
 function casterLevel(c:Character){return Math.max(0,...c.casters.map(p=>p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).level:p.level),classLevel(c,'artificer')+ (classLevel(c,'artificer')?2:0),(classLevel(c,'warlock')?classLevel(c,'warlock')+krauBonus(c,classLevel(c,'warlock')):0),(classLevel(c,'dragonfire-adept')?classLevel(c,'dragonfire-adept')+krauBonus(c,classLevel(c,'dragonfire-adept')):0),(classLevel(c,'shadowcaster')?classLevel(c,'shadowcaster')+krauBonus(c,classLevel(c,'shadowcaster')):0),classLevel(c,'factotum')>=2?classLevel(c,'factotum')+krauBonus(c,classLevel(c,'factotum')):0);}
-function prerequisiteBab(c:Character){const totals=classTotals(c.classLevels,c.ancestry);return !c.automation.enabled||totals.missing.length?c.bab:c.automation.overrides.bab??totals.bab+(c.automation.adjustments.bab||0);}
+function prerequisiteBab(c:Character){const totals=classTotals(c.classLevels,c.ancestry,c);return !c.automation.enabled||totals.missing.length?c.bab:c.automation.overrides.bab??totals.bab+(c.automation.adjustments.bab||0);}
 export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  const q=checker(c,'feat:'+f.id+':'+choice),{check,manual}=q;
  const choices=featChoices(c,f);choice=choices.find(v=>featChoiceKey(v)===featChoiceKey(choice))||choice;if(choices.length)check('Select a weapon, skill or school',choices.includes(choice));
@@ -52,12 +52,12 @@ export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
   const s=raw.trim().replace(/\.$/,'');if(!s)continue;let m:RegExpMatchArray|null;
   if((m=s.match(/^(Str|Dex|Con|Int|Wis|Cha) (\d+)$/i)))check(s,effectiveScore(c,m[1].toUpperCase() as keyof Character['scores'],true)>=+m[2]);
   else if((m=s.match(/^base attack bonus \+(\d+)/i))){check('Base attack bonus +'+m[1],bab>=+m[1]);if(/plus Str 13/i.test(s)&&/bastard|dwarven waraxe|waraxe, dwarven/i.test(choice))check('Strength 13 for '+choice,effectiveScore(c,'STR',true)>=13);}
-  else if((m=s.match(/^(caster|character|fighter|wizard) level (\d+)/i))){const kind=m[1].toLowerCase(),n=kind==='caster'?casterLevel(c):kind==='character'?(classTotals(c.classLevels,c.ancestry).level||c.level):kind==='fighter'?classLevel(c,'fighter')+Math.max(0,classLevel(c,'warblade')-2):classLevel(c,kind);check(s,n>=+m[2]);}
+  else if((m=s.match(/^(caster|character|fighter|wizard) level (\d+)/i))){const kind=m[1].toLowerCase(),n=kind==='caster'?casterLevel(c):kind==='character'?(classTotals(c.classLevels,c.ancestry,c).level||c.level):kind==='fighter'?classLevel(c,'fighter')+Math.max(0,classLevel(c,'warblade')-2):classLevel(c,kind);check(s,n>=+m[2]);}
   else if((m=s.match(/^(.+?) (\d+) ranks?$/i)))check(s,rank(c,m[1])>=+m[2]);
   else if(/^(proficiency with selected weapon|proficient with weapon|weapon proficiency \(crossbow type chosen\))$/i.test(s))check('Proficiency with '+(choice||'selected weapon'),proficient(c,choice));
   else if((m=s.match(/^(.+?) with selected weapon$/i)))check(m[1]+' ('+(choice||'selected weapon')+')',has(c,m[1],choice));
   else if(/ability to turn or rebuke creatures/i.test(s))check(s,hasTurningAbility(c));
-  else if(/^wild shape ability$/i.test(s))check(s,classLevel(c,'druid')>=5||c.features.some(f=>/^wild shape\b/i.test(f.name)));
+  else if(/^wild shape ability$/i.test(s))check(s,classLevel(c,'druid')>=5&&!featureReplaced(c,'druid','wild-shape-animal')||c.features.some(f=>/^wild shape\b/i.test(f.name)));
   else if(f.id==='improved-familiar')manual(s);
   else {m=s.match(/^(.+?)\s*\((.+)\)$/);check(s,has(c,m?m[1]:s,m?.[2]));}
  }
@@ -130,7 +130,7 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
   else if(field==='special'){
    if(/proficient with at least one martial weapon/i.test(s))check(s,equipmentCatalog.some(e=>e.kind==='weapon'&&e.category==='martial'&&proficient(c,e.name)));
    else if(/sneak attack \+2d6/i.test(s)){const rogue=classLevel(c,'rogue'),assassin=classLevel(c,'assassin'),spellthief=classLevel(c,'spellthief');check(s,(classLevel(c,'psychic-rogue')?1+Math.floor((classLevel(c,'psychic-rogue')-1)/3):0)+Math.ceil(rogue/2)+Math.ceil(assassin/2)+(spellthief?1+Math.floor((spellthief-1)/4):0)+Math.floor(classLevel(c,'arcane-trickster')/2)>=2);}
-   else if(/Still mind class feature/i.test(s))check(s,classLevel(c,'monk')>=3||c.features.some(f=>norm(f.name)==='still mind'));
+   else if(/Still mind class feature/i.test(s))check(s,classLevel(c,'monk')>=3&&!featureReplaced(c,'monk','still-mind')||c.features.some(f=>norm(f.name)==='still mind'));
    else manual(s);
   }else manual(section);
  }

@@ -1,0 +1,464 @@
+[
+  {
+    "classId": "ninja",
+    "name": "Ninja",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/ninja.html",
+    "alternatives": 3,
+    "supported": true
+  },
+  {
+    "classId": "scout",
+    "name": "Scout",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/scout.html",
+    "alternatives": 9,
+    "supported": true
+  },
+  {
+    "classId": "spellthief",
+    "name": "Spellthief",
+    "source": "https://srd.dndtools.org/srd/classes/baseCad/spellthief.html",
+    "alternatives": 5,
+    "supported": true
+  },
+  {
+    "classId": "warlock",
+    "name": "Warlock",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warlock.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "warmage",
+    "name": "Warmage",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/warmage.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "wu-jen",
+    "name": "Wu Jen",
+    "source": "https://srd.dndtools.org/srd/classes/baseCarc/wujen.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "favored-soul",
+    "name": "Favored Soul",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html",
+    "alternatives": 5,
+    "supported": true
+  },
+  {
+    "classId": "shugenja",
+    "name": "Shugenja",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/shugenja.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "spirit-shaman",
+    "name": "Spirit Shaman",
+    "source": "https://srd.dndtools.org/srd/classes/baseCd/spiritShaman.html",
+    "alternatives": 3,
+    "supported": true
+  },
+  {
+    "classId": "barbarian",
+    "name": "Barbarian",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/barbarian.html",
+    "alternatives": 24,
+    "supported": true
+  },
+  {
+    "classId": "bard",
+    "name": "Bard",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/bard.html",
+    "alternatives": 15,
+    "supported": true
+  },
+  {
+    "classId": "cleric",
+    "name": "Cleric",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/cleric.html",
+    "alternatives": 20,
+    "supported": true
+  },
+  {
+    "classId": "druid",
+    "name": "Druid",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/druid.html",
+    "alternatives": 27,
+    "supported": true
+  },
+  {
+    "classId": "fighter",
+    "name": "Fighter",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/fighter.html",
+    "alternatives": 21,
+    "supported": true
+  },
+  {
+    "classId": "monk",
+    "name": "Monk",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/monk.html",
+    "alternatives": 19,
+    "supported": true
+  },
+  {
+    "classId": "paladin",
+    "name": "Paladin",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/paladin.html",
+    "alternatives": 25,
+    "supported": true
+  },
+  {
+    "classId": "ranger",
+    "name": "Ranger",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/ranger.html",
+    "alternatives": 25,
+    "supported": true
+  },
+  {
+    "classId": "rogue",
+    "name": "Rogue",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/rogue.html",
+    "alternatives": 19,
+    "supported": true
+  },
+  {
+    "classId": "sorcerer",
+    "name": "Sorcerer",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/sorcerer.html",
+    "alternatives": 25,
+    "supported": true
+  },
+  {
+    "classId": "wizard",
+    "name": "Wizard",
+    "source": "https://srd.dndtools.org/srd/classes/baseCore/wizard.html",
+    "alternatives": 20,
+    "supported": true
+  },
+  {
+    "classId": "ardent",
+    "name": "Ardent",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/ardent.html",
+    "alternatives": 3,
+    "supported": true
+  },
+  {
+    "classId": "divine-mind",
+    "name": "Divine Mind",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/divineMind.html",
+    "alternatives": 3,
+    "supported": true
+  },
+  {
+    "classId": "erudite",
+    "name": "Erudite",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/erudite.html",
+    "alternatives": 3,
+    "supported": true
+  },
+  {
+    "classId": "lurk",
+    "name": "Lurk",
+    "source": "https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "hexblade",
+    "name": "Hexblade",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/hexblade.html",
+    "alternatives": 10,
+    "supported": true
+  },
+  {
+    "classId": "samurai",
+    "name": "Samurai",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/samurai.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "swashbuckler",
+    "name": "Swashbuckler",
+    "source": "https://srd.dndtools.org/srd/classes/baseCwar/swashbuckler.html",
+    "alternatives": 4,
+    "supported": true
+  },
+  {
+    "classId": "battle-dancer",
+    "name": "Battle Dancer",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/battleDancer.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "death-master",
+    "name": "Death Master",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/deathMaster.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "jester",
+    "name": "Jester",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/jester.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "mountebank",
+    "name": "Mountebank",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/mountebank.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "savant",
+    "name": "savant",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/savant.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "shair",
+    "name": "Sha'ir",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/shair.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "urban-druid",
+    "name": "Urban Druid",
+    "source": "https://srd.dndtools.org/srd/classes/baseDc/urbanDruid.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "mariner",
+    "name": "mariner",
+    "source": "https://srd.dndtools.org/srd/classes/baseDragonlance/mariner.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "master",
+    "name": "master",
+    "source": "https://srd.dndtools.org/srd/classes/baseDragonlance/master.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "mystic",
+    "name": "mystic",
+    "source": "https://srd.dndtools.org/srd/classes/baseDragonlance/mystic.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "nightstalker",
+    "name": "nightstalker",
+    "source": "https://srd.dndtools.org/srd/classes/baseDragonlance/nightstalker.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "noble",
+    "name": "noble",
+    "source": "https://srd.dndtools.org/srd/classes/baseDragonlance/noble.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "dragonfire-adept",
+    "name": "Dragonfire Adept",
+    "source": "https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "factotum",
+    "name": "Factotum",
+    "source": "https://srd.dndtools.org/srd/classes/baseDungeon/factotum.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "artificer",
+    "name": "Artificer",
+    "source": "https://srd.dndtools.org/srd/classes/baseEcs/artificer.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "archivist",
+    "name": "Archivist",
+    "source": "https://srd.dndtools.org/srd/classes/baseHoh/archivist.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "dread-necromancer",
+    "name": "Dread Necromancer",
+    "source": "https://srd.dndtools.org/srd/classes/baseHoh/dreadNecromancer.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "healer",
+    "name": "Healer",
+    "source": "https://srd.dndtools.org/srd/classes/baseMh/healer.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "marshal",
+    "name": "Marshal",
+    "source": "https://srd.dndtools.org/srd/classes/baseMh/marshal.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "incarnate",
+    "name": "Incarnate",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/incarnate.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "soulborn",
+    "name": "Soulborn",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/soulborn.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "totemist",
+    "name": "Totemist",
+    "source": "https://srd.dndtools.org/srd/classes/baseMoi/totemist.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "shaman",
+    "name": "shaman",
+    "source": "https://srd.dndtools.org/srd/classes/baseOa/shaman.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "sohei",
+    "name": "sohei",
+    "source": "https://srd.dndtools.org/srd/classes/baseOa/sohei.html",
+    "alternatives": 0,
+    "supported": false
+  },
+  {
+    "classId": "psychic-rogue",
+    "name": "Psychic Rogue",
+    "source": "https://srd.dndtools.org/srd/classes/baseOther/psychicRogue.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "beguiler",
+    "name": "Beguiler",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/beguiler.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "dragon-shaman",
+    "name": "Dragon Shaman",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/dragonShaman.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "duskblade",
+    "name": "Duskblade",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "knight",
+    "name": "Knight",
+    "source": "https://srd.dndtools.org/srd/classes/basePhb2/knight.html",
+    "alternatives": 1,
+    "supported": true
+  },
+  {
+    "classId": "psion",
+    "name": "Psion",
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsion.html",
+    "alternatives": 13,
+    "supported": true
+  },
+  {
+    "classId": "psychic-warrior",
+    "name": "Psychic Warrior",
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicPsychicWarrior.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "soulknife",
+    "name": "Soulknife",
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicSoulknife.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "wilder",
+    "name": "Wilder",
+    "source": "https://srd.dndtools.org/srd/classes/basePsionic/psionicWilder.html",
+    "alternatives": 2,
+    "supported": true
+  },
+  {
+    "classId": "crusader",
+    "name": "Crusader",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/crusader.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "swordsage",
+    "name": "Swordsage",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/swordsage.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "warblade",
+    "name": "Warblade",
+    "source": "https://srd.dndtools.org/srd/classes/baseTob/warblade.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "binder",
+    "name": "Binder",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/binder.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "shadowcaster",
+    "name": "Shadowcaster",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/shadowcaster.html",
+    "alternatives": 0,
+    "supported": true
+  },
+  {
+    "classId": "truenamer",
+    "name": "Truenamer",
+    "source": "https://srd.dndtools.org/srd/classes/baseTom/truenamer.html",
+    "alternatives": 0,
+    "supported": true
+  }
+]
