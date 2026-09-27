@@ -1,3 +1,4 @@
+import {hasTurningAbility} from './alternate-features.ts';
 import {krauBonus} from './racial-abilities.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
@@ -55,7 +56,7 @@ export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
   else if((m=s.match(/^(.+?) (\d+) ranks?$/i)))check(s,rank(c,m[1])>=+m[2]);
   else if(/^(proficiency with selected weapon|proficient with weapon|weapon proficiency \(crossbow type chosen\))$/i.test(s))check('Proficiency with '+(choice||'selected weapon'),proficient(c,choice));
   else if((m=s.match(/^(.+?) with selected weapon$/i)))check(m[1]+' ('+(choice||'selected weapon')+')',has(c,m[1],choice));
-  else if(/ability to turn or rebuke creatures/i.test(s))check(s,classLevel(c,'cleric')>0||classLevel(c,'paladin')>=4||classLevel(c,'blackguard')>=3||classLevel(c,'dread-necromancer')>0||c.features.some(f=>/^(turn|rebuke)\b/i.test(f.name)));
+  else if(/ability to turn or rebuke creatures/i.test(s))check(s,hasTurningAbility(c));
   else if(/^wild shape ability$/i.test(s))check(s,classLevel(c,'druid')>=5||c.features.some(f=>/^wild shape\b/i.test(f.name)));
   else if(f.id==='improved-familiar')manual(s);
   else {m=s.match(/^(.+?)\s*\((.+)\)$/);check(s,has(c,m?m[1]:s,m?.[2]));}
