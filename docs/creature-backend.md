@@ -1,8 +1,8 @@
 # NPC and monster sheet foundation
 
 NPCs and monsters share `Character`, `/api/characters`, revision checks, ownership checks,
-browser storage, and the version 1 JSON export envelope. This is a backend foundation:
-the existing character creation dialog and PC layout do not yet expose creature fields.
+browser storage, and the version 1 JSON export envelope. The creation dialog now offers PC, NPC, and Monster sheets. Monsters have a Creature
+editor tab and natural-attack controls in Combat, with ordinary HP/AC/saves on Sheet.
 No new server or database migration is required. GitHub Pages continues using local browser
 storage; the authenticated deployment continues using its existing database routes.
 
@@ -42,9 +42,10 @@ supplied explicitly because it depends on anatomy; the fallback is 5 feet.
 
 The shared numeric ability fields use 10 as a neutral compatibility placeholder for absent
 abilities. `creatureAbilityScore` returns null, and `creatureAbilityModifier` returns zero.
-`effectiveScore` ignores temporary/other ability bonuses for absent abilities. Future
-monster UI must show an em dash and enforce nonability restrictions; legacy PC ability
-checks, skill availability and prerequisite screens do not implement all such restrictions.
+`effectiveScore` ignores temporary/other ability bonuses for absent abilities. The
+monster UI shows an em dash and disables absent-ability checks and associated skill rolls.
+Undead Concentration uses Charisma. Individual type immunities and special restrictions
+still require DM adjudication; these are not a comprehensive combat rules engine.
 
 `naturalAttackRoutine` returns one attack per listed natural weapon, with primary/secondary
 penalties, Multiattack, size, explicit attack adjustments, and Strength damage. It never
@@ -81,6 +82,12 @@ const attacks=naturalAttackRoutine(skeleton);
 
 Rules source: https://srd.dndtools.org/srd/monsters/monsterTypes.html
 
-Next: dedicated creation/editor/stat-block UI, the NPC-only classes, a source-linked
-monster catalog, classed-monster advancement, template application, and encounter instances.
-This change does not deploy a new network backend, import a bestiary, or add encounter sharing.
+The six starter presets are human warrior skeleton, wolf skeleton, owlbear skeleton,
+ghoul, wolf, and ogre. `lib/bestiary.ts` links each to its Ultimate SRD page. Presets
+include fixed printed bonuses and equipment; adjusting gear, feats, or Hit Dice does not
+recalculate those bonuses automatically. Conditional abilities are summarized in creature
+notes with links for the complete rules. Each creation is independent and editable.
+
+NPCs currently use the existing playable-class library. Remaining work: the NPC-only
+classes, a larger catalog, classed-monster advancement, template application, and encounter
+instances. This does not add encounter sharing or a new network backend.

@@ -1,4 +1,6 @@
 'use client';
+import {MonsterCreation} from './monster-creation';
+import {createNpcSheet} from '@/lib/creatures';
 import {useState} from 'react';
 import {Dices} from 'lucide-react';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
@@ -10,6 +12,7 @@ import {abilityMethods,blankScores,startingAssignment,rollAbilityScores,assigned
 import {F,N,Choice,Btn} from './sheet-ui';
 
 export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boolean,onOpenChange:(open:boolean)=>void,busy:boolean,onCreate:(character:Character)=>Promise<boolean>}){
+  const [sheetKind,setSheetKind]=useState<'pc'|'npc'|'monster'>('pc');
   const [name,setName]=useState(''),[kind,setKind]=useState('Fighter'),[raceId,setRaceId]=useState('human'),[level,setLevel]=useState(1);
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
   const [hpMethod,setHpMethod]=useState<'average'|'maximum'>('average'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
@@ -18,12 +21,12 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
   async function create(){if(creating||busy||!ready)return;setCreating(true);setError('');try{
-    const character=createPlayerCharacter({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:kind==='Cleric'?specialty:'none'});
+    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:kind==='Cleric'?specialty:'none'});
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
   }catch(e){setError(e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
-  return <Dialog open={open} onOpenChange={value=>{if(!creating)onOpenChange(value)}}><DialogContent className="ledger-modal creation-modal"><DialogHeader><DialogTitle>A new adventurer</DialogTitle><DialogDescription>Choose your character’s starting abilities, race, and class.</DialogDescription></DialogHeader>
-    <fieldset className="sheet-fieldset" disabled={busy||creating}>
+  return <Dialog open={open} onOpenChange={value=>{if(!creating)onOpenChange(value)}}><DialogContent className="ledger-modal creation-modal"><DialogHeader><DialogTitle>A new sheet</DialogTitle><DialogDescription>Create an adventurer, an NPC, or a monster.</DialogDescription></DialogHeader>
+    <Choice label="Sheet type" value={sheetKind} onChange={v=>setSheetKind(v as typeof sheetKind)} options={[['pc','Player character'],['npc','NPC'],['monster','Monster']]}/>{sheetKind==='monster'?<MonsterCreation busy={busy} onCreate={async c=>{const ok=await onCreate(c);if(ok)onOpenChange(false);return ok}}/>:<fieldset className="sheet-fieldset" disabled={busy||creating}>
       <F label="Character name" value={name} onChange={setName} placeholder="Your adventurer’s name"/>
       <div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.map(r=>[r.id,r.name])}/><Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/><N label="Starting class level" value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
       <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={[['average','Maximum first die, then average'],['maximum','Maximum every Hit Die']]}/>{kind==='Cleric'&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
@@ -37,7 +40,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
       </section>
       <p className="fine">HP, skill points, and spell slots use these abilities. Choose equipment, feats, skills, spells, and any level-based ability increases on the sheet.</p>
       {error&&<p className="error-box" role="alert">{error}</p>}
-      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating} onClick={()=>void create()}>{creating?'Creating…':'Create character'}</Btn></div>
-    </fieldset>
+      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating} onClick={()=>void create()}>{creating?'Creating…':sheetKind==='npc'?'Create NPC':'Create character'}</Btn></div>
+    </fieldset>}
   </DialogContent></Dialog>;
 }
