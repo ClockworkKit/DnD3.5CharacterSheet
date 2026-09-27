@@ -1,3 +1,4 @@
+import {monkStyleBonus} from './alternate-grants.ts';
 import {classFeatureLevel,featureReplaced,hasAlternateFeature,alternateSettings} from './alternate-features.ts';
 import raw from './equipment-data.json' with {type:'json'};
 import {findClass} from './classes.ts';
@@ -21,6 +22,7 @@ const regionalDruidWeapons:Record<string,string[]>={
 const monkCommon=['Club','Crossbow, heavy','Crossbow, light','Dagger','Handaxe','Javelin','Quarterstaff','Sling','Unarmed strike'];
 const alternateMonkWeapons:Record<string,string[]>={Ghurka:[...monkCommon,'Kukri','Sword, short','Shortbow'],Filipino:[...monkCommon,'Sword, short','Longsword','Whip'],'Krabi-Krabong':[...monkCommon,'Sword, short','Spear','Shortspear']};
 export function monkSpecialWeapon(c:Character,name:string){
+ if(name==='Longsword'&&monkStyleBonus(c,'Sacred Path of Heironeous')||name==='Flail'&&monkStyleBonus(c,'Sacred Path of Hextor'))return true;
  if(hasAlternateFeature(c,'monk-weapon-proficiencies')){const choice=alternateSettings(c,'monk-weapon-proficiencies').choice;const lists:Record<string,string[]>={Ghurka:['Kukri','Sword, short','Club'],Filipino:['Club','Dagger','Quarterstaff','Sword, short'],'Krabi-Krabong':['Sword, short','Spear','Shortspear','Club','Quarterstaff']};return name==='Unarmed strike'||!!lists[choice]?.includes(name);}
  return ['Unarmed strike','Kama','Nunchaku','Quarterstaff','Sai','Shuriken (5)','Siangham'].includes(name);
 }

@@ -1,4 +1,6 @@
 'use client';
+import {AlternateRuleControls} from './alternate-rule-controls';
+import {alternateActions} from '@/lib/alternate-actions';
 import {useState} from 'react';
 import {alternateFeatureCatalog,alternateClassLevel,alternateFeatureProblem,alternateFeatureWarnings,alternateResources,selectAlternateFeature,spendAlternateResource,alternateSettings,alternateReplacementLabels,configureAlternateFeature,alternateResourceUsed,setAlternateResourceUsed} from '@/lib/alternate-features';
 import type {AlternateSettings} from '@/lib/alternate-feature-schema';
@@ -24,11 +26,12 @@ export function AlternateClassFeatures({c,edit,roll,confirm}:SheetProps){
     {d.requirementsNote&&<p className="fine">{d.requirementsNote}</p>}
     <div className="fields three">
      {d.levels&&<Choice label={d.name+' replacement level'} value={String(settings.level??d.level)} onChange={v=>configure(d.id,{level:Number(v)})} options={d.levels.map(l=>[String(l),'Level '+l])}/>}
-     {d.choices&&<Choice label={d.name+' option'} value={settings.choice||'__choose__'} onChange={v=>configure(d.id,{choice:v==='__choose__'?'':v})} options={[["__choose__","Choose an option"],...d.choices]}/>}
+     {d.choices&&<Choice label={d.name+' option'} value={settings.choice||'__choose__'} onChange={v=>configure(d.id,{choice:v==='__choose__'?'':v})} options={[["__choose__","Choose an option"],...(!d.choices.includes(settings.choice)&&settings.choice?[[settings.choice,settings.choice+' (legacy; review option)'] as [string,string]]:[]),...d.choices]}/>}
      {d.choiceRequired&&!d.choices&&<F label={d.name+' option'} value={settings.choice} onChange={v=>configure(d.id,{choice:v})} placeholder="Domain, feat, fighting style, or other required choice"/>}
     </div>
     {d.review&&<Check label={'I checked the source prerequisites for '+d.name} checked={settings.reviewed} onChange={v=>configure(d.id,{reviewed:v})}/>}
     {d.activation&&<Check label={d.activation+' — '+d.name} checked={settings.active} onChange={v=>configure(d.id,{active:v})}/>}
+    {selected&&<AlternateRuleControls c={c} edit={edit} roll={roll} confirm={confirm} id={d.id}/>}
     <F area label={d.name+' rule notes'} value={settings.notes} onChange={v=>configure(d.id,{notes:v})} placeholder="Record benefits, prerequisites, limits, and choices resolved at the table."/>
     <p className="fine">Automatic calculations cover supported bonuses and lost features. Use Effects for other modifiers and record spell, feat, companion, or power choices in their sheet tabs.</p>
     {settings.counters.map(counter=><div className="subcard" key={counter.id}><div className="fields three"><F label="Tracker name" value={counter.name} onChange={v=>configure(d.id,{counters:settings.counters.map(r=>r.id===counter.id?{...r,name:v||'Ability'}:r)})}/><N label={counter.name+' maximum uses'} value={counter.max} min={0} max={10000} onChange={v=>configure(d.id,{counters:settings.counters.map(r=>r.id===counter.id?{...r,max:v}:r)})}/><Choice label={counter.name+' recovery'} value={counter.period} options={['day','week','encounter','manual']} onChange={v=>configure(d.id,{counters:settings.counters.map(r=>r.id===counter.id?{...r,period:v as typeof r.period}:r)})}/></div><Btn onClick={()=>confirm('Remove tracker?','Delete this tracker and its spent-use record.',()=>configure(d.id,{counters:settings.counters.filter(r=>r.id!==counter.id)}))}>Remove tracker</Btn></div>)}
@@ -41,7 +44,7 @@ export function AlternateClassFeatures({c,edit,roll,confirm}:SheetProps){
   {alternateResources(c).map(r=>{const used=alternateResourceUsed(c,r.key),remaining=Math.max(0,r.max-used);const use=(cost:number,title:string)=>attempt(()=>{if(roll({title,details:r.description,...(r.check===undefined?{}:{formula:withBonus('1d20',r.check)})}))edit(d=>spendAlternateResource(d,r.key,cost));});return <div className="subcard" key={r.key}>
    <h3>{r.name} uses</h3><p className="fine">{remaining} of {r.max} remaining · {r.period} recovery. {r.description}</p><div className="feature-controls">
     <N label={r.name+' used this '+r.period} value={used} min={0} max={10000} onChange={v=>attempt(()=>edit(d=>setAlternateResourceUsed(d,r.key,v)))}/>
-    <Btn disabled={remaining<1} onClick={()=>use(1,r.key==='weekly:curse-breaker'?'Remove curse':r.name)}>{r.key==='weekly:curse-breaker'?'Remove curse (1 use)':r.check!==undefined?'Counterspell check':r.key.startsWith('daily:spirit-')?'Summon spirit':'Use ability'}</Btn>
+    <Btn hidden={alternateActions(c).some(a=>a.pool===r.key)} disabled={remaining<1} onClick={()=>use(1,r.key==='weekly:curse-breaker'?'Remove curse':r.name)}>{r.key==='weekly:curse-breaker'?'Remove curse (1 use)':r.check!==undefined?'Counterspell check':r.key.startsWith('daily:spirit-')?'Summon spirit':'Use ability'}</Btn>
     {r.key==='weekly:curse-breaker'&&alternateClassLevel(c,'paladin')>=12&&<Btn disabled={remaining<2} onClick={()=>use(2,'Break enchantment')}>Break enchantment (2 uses)</Btn>}
     {r.period!=='day'&&<Btn disabled={!used} onClick={()=>confirm('Reset '+r.period+' uses?','Restore this pool after its '+r.period+' recovery. A daily rest does not restore it.',()=>attempt(()=>edit(d=>setAlternateResourceUsed(d,r.key,0))))}>Reset {r.period==='week'?'weekly':r.period} uses</Btn>}
    </div>

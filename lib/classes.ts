@@ -1,15 +1,13 @@
 import {alternateClassSkill} from './alternate-benefits.ts';
 import {effectiveClassMilestone,hasAlternateFeature} from './alternate-features.ts';
-import ultimate from './ultimate-class-data.json' with {type:'json'};
+import {classCatalog} from './class-catalog.ts';
+export {classCatalog} from './class-catalog.ts';
 import sourceAliases from './class-source-aliases.json' with {type:'json'};
-import supplemental from './supplemental-class-data.json' with {type:'json'};
-import raw from './class-data.json' with {type:'json'};
 import {racialHDProgression} from './ancestry.ts';
 import type {Character,ClassLevel,Caster,Psionic} from './model.ts';
 export type ClassRow={level:number,bab:number,fort:number,ref:number,will:number,special:string,extra:string[],slots?:Array<number|null>,powerPoints?:number,powersKnown?:number,powerLevel?:number,uniquePowers?:number,inspiration?:number,dilettanteLevel?:number};
 type Ability=Character['casters'][number]['ability'];
 export type ClassDefinition={id:string,name:string,kind:'Core'|'Psionic'|'Prestige'|'Supplemental',hitDie:number,skillPoints:number,skills:string,alignment:string,requirements:string,headers:string[],levels:ClassRow[],source:string,description?:string,book?:string,casting?:{ability:Ability,bonusAbility?:Ability,dcAbility?:Ability,mode:Caster['mode'],type:'arcane'|'divine',list?:string,halfLevel?:boolean},manifesting?:{ability:Ability,levelOffset:number,bonusPoints:number},proficiencies?:{simple:boolean,martial:boolean,simpleMeleeOnly?:boolean,martialMeleeOnly?:boolean,armor:string,armors?:string[],shields:string,weapons:string[],mediumAt?:number}};
-export const classCatalog=[...raw,...supplemental,...ultimate] as ClassDefinition[];
 export const baseClasses=classCatalog.filter(c=>c.kind!=='Prestige');
 export const findClass=(idOrName:string)=>classCatalog.find(c=>c.id===idOrName||c.name.toLowerCase()===idOrName.toLowerCase());
 export function classRow(def:ClassDefinition,level:number){const row=def.levels.find(r=>r.level===level);if(!row)throw new Error(def.name+' has no level '+level+' in this table.');return row;}
