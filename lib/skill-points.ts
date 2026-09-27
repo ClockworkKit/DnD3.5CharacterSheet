@@ -1,3 +1,4 @@
+import {alternateClassSkill} from './alternate-benefits.ts';
 import type {Character,Skill} from './model.ts';
 import {findClass,isClassSkill} from './classes.ts';
 import {hitDieSequence,skillPointGrant,skillIntelligence,type LevelRow} from './level-history.ts';
@@ -9,7 +10,7 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   if(c.ancestry.raceId==='illumian'&&skill.name==='Speak Language')return true;
   if(row.classId==='racial')return (c.ancestry.raceId==='lizardfolk'?['Balance','Jump','Swim']:c.ancestry.raceId==='gnoll'?['Climb','Listen','Spot']:[]).includes(skill.name);
   const definition=findClass(row.classId);
-  return definition?isClassSkill(skill.name,[definition]):skill.classSkill;
+  return definition?alternateClassSkill(c,row.classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;
 }
 
 export function skillRankLimit(c:Character,skill:Skill,index:number):number {

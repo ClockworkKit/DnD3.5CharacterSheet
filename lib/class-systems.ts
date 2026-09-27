@@ -1,3 +1,4 @@
+import {featureReplaced,classFeatureLevel} from './alternate-features.ts';
 import {z} from 'zod';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
@@ -53,13 +54,13 @@ export function supplementalTerms(c:Character,target:string,context:Record<strin
  if(target==='skill.Jump'&&ninja>=4&&armor.category===0&&lightLoad)add(4,'untyped','great-leap');
  if(target==='initiative'){if(ss)add(1+Math.floor(ss/5),'untyped','quick-to-act');if(sc>=2&&light)add(sc>=20?3:sc>=11?2:1,'competence','battle-fortitude');}
  if(target==='save.fort'&&sc>=2&&light)add(sc>=20?3:sc>=11?2:1,'competence','battle-fortitude');
- if(target==='save.ref'){if(wb&&!x.flatFooted)add(Math.min(wb,Math.max(0,mod(c,'INT'))),'insight','battle-clarity');if(sw>=2&&light)add(sw>=20?3:sw>=11?2:1,'competence','grace');}
- if(target==='save.will'){if(cr>=2&&lv(c,'paladin')<2)add(Math.max(0,mod(c,'CHA')),'untyped','indomitable-soul');if(ninja&&free&&(c.features.find(f=>f.ruleId==='supp:ninja:Ki power')?.used||0)<Math.max(1,Math.floor(ninja/2))+Math.max(0,mod(c,'WIS')))add(2,'untyped','ki-power');}
+ if(target==='save.ref'){if(wb&&!x.flatFooted)add(Math.min(wb,Math.max(0,mod(c,'INT'))),'insight','battle-clarity');if(sw>=2&&light&&!featureReplaced(c,'swashbuckler','grace'))add(sw>=20?3:sw>=11?2:1,'competence','grace');}
+ if(target==='save.will'){if(cr>=2&&classFeatureLevel(c,'paladin','divine-grace')<2)add(Math.max(0,mod(c,'CHA')),'untyped','indomitable-soul');if(ninja&&free&&(c.features.find(f=>f.ruleId==='supp:ninja:Ki power')?.used||0)<Math.max(1,Math.floor(ninja/2))+Math.max(0,mod(c,'WIS')))add(2,'untyped','ki-power');}
  if(target==='saves'&&lv(c,'hexblade')>=2&&['spell','spell-like'].includes(x.saveAgainst))add(Math.max(0,mod(c,'CHA')),'untyped','arcane-resistance');
  if(target==='ac.misc'&&!x.helpless){if(ninja&&free)add((lv(c,'monk')?0:Math.max(0,mod(c,'WIS')))+Math.floor(ninja/5),'untyped','ninja-ac');if(ss>=2&&armor.category===1&&!armor.hasShield&&lightLoad)add(Math.max(0,mod(c,'WIS')),'untyped','swordsage-ac');}
- if(target==='ac.dodge'&&sw>=5&&light&&x.dodgeTarget)add(Math.floor(sw/5),'dodge','swashbuckler-dodge');
- if(target==='ac.misc'&&sc>=3&&light&&x.skirmish)add(1+Math.floor((sc-3)/4),'competence','skirmish');
- if(target==='speed'&&sc>=3&&light)add(sc>=11?20:10,'enhancement','scout-speed');
+ if(target==='ac.dodge'&&sw>=5&&light&&!featureReplaced(c,'swashbuckler','dodge-bonus')&&x.dodgeTarget)add(Math.floor(sw/5),'dodge','swashbuckler-dodge');
+ if(target==='ac.misc'&&sc>=3&&light&&x.skirmish&&!featureReplaced(c,'scout','skirmish'))add(1+Math.floor((sc-3)/4),'competence','skirmish');
+ if(target==='speed'&&sc>=3&&light&&!featureReplaced(c,'scout','fast-movement'))add(sc>=11?20:10,'enhancement','scout-speed');
  if(target==='critical.confirm'&&wb>=3)add(Math.max(0,mod(c,'INT')),'insight','battle-ardor');
  if((target==='attack'||target==='damage')&&cr&&x.ownTurn&&c.classSystems.delayedDamage>0)add(Math.min(6,Math.max(1,Math.floor(Math.min(c.classSystems.delayedDamage,delayedCapacity(c))/5))),'untyped','furious-counterstrike');
  if((target==='attack'||target==='damage')&&context.weapon==='melee'&&wb>=15&&x.opportunity)add(Math.max(0,mod(c,'INT')),'insight','battle-mastery');
@@ -85,9 +86,9 @@ export function supplementalResources(c:Character){const out:ClassResource[]=[];
  add('truenamer',13,'Sending',3,'Truespeak DC 15 + twice target CR.');
  add('incarnate',20,'Perfect meldshaper',1,'Maximum soulmeld investments for 3 + Wisdom modifier rounds.');add('totemist',20,'Totem embodiment',1,'Totem capacity doubles temporarily; duration '+Math.max(1,mod(c,'CON'))+' minutes.');
  for(const [at,name] of [[3,'Cleanse paralysis'],[4,'Cleanse disease'],[5,'Cleanse fear'],[6,'Cleanse poison'],[8,'Call companion'],[9,'Cleanse blindness'],[10,'Cleanse spirit'],[13,'Cleanse petrification'],[15,'New limb']] as const)add('healer',at,name,1,'Resolve the corresponding healing ability from the class reference.');
- return out;
+ return out.filter(r=>!featureReplaced(c,r.classId,r.name.toLowerCase().replaceAll(' ','-')));
 }
-export function syncSupplementalResources(c:Character){const resources=supplementalResources(c),keep=new Set(resources.map(r=>'supp:'+r.classId+':'+r.name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('supp:')||keep.has(f.ruleId));for(const r of resources){const ruleId='supp:'+r.classId+':'+r.name;let f=c.features.find(f=>f.ruleId===ruleId);if(!f){if(c.features.length>=250)continue;f={id:crypto.randomUUID(),name:findClass(r.classId)!.name+' · '+r.name,kind:'Class feature',description:r.description,max:r.max,used:0,source:findClass(r.classId)!.source,ruleId};c.features.push(f)}f.max=r.max;f.description=r.description;f.source=findClass(r.classId)!.source;}}
+export function syncSupplementalResources(c:Character){const resources=supplementalResources(c),keep=new Set(resources.map(r=>'supp:'+r.classId+':'+r.name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('supp:')||keep.has(f.ruleId));for(const r of resources){const ruleId='supp:'+r.classId+':'+r.name;let f=c.features.find(f=>f.ruleId===ruleId);if(!f){if(c.features.length>=250)continue;f={id:crypto.randomUUID(),name:findClass(r.classId)!.name+' · '+r.name,kind:'Class feature',description:r.description,max:r.max,used:c.alternateFeatures.uses['retained:'+ruleId]||0,source:findClass(r.classId)!.source,ruleId};c.features.push(f)}f.max=r.max;f.description=r.description;f.source=findClass(r.classId)!.source;}}
 export function syncGrantedFeats(c:Character){
  const grants:Array<[string,number,string,string?]>=[['erudite',1,'Psicrystal Affinity'],['frenzied-berserker',1,'Diehard'],['master-specialist',1,'Skill Focus','Spellcraft'],['dervish',3,'Spring Attack'],['swashbuckler',1,'Weapon Finesse'],['samurai',8,'Improved Initiative'],['duskblade',2,'Combat Casting'],['archivist',1,'Scribe Scroll'],['beguiler',5,'Silent Spell'],['beguiler',10,'Still Spell'],['healer',2,'Skill Focus','Heal'],['marshal',1,'Skill Focus','Diplomacy'],['artificer',1,'Scribe Scroll'],['artificer',2,'Brew Potion'],['artificer',3,'Craft Wondrous Item'],['artificer',5,'Craft Magic Arms and Armor'],['artificer',6,'Craft Wand'],['artificer',9,'Craft Rod'],['artificer',12,'Craft Staff'],['artificer',14,'Forge Ring']];
  const earned=grants.filter(([id,at])=>lv(c,id)>=at),keys=new Set(earned.map(([id,at,name])=>'granted:'+id+':'+at+':'+name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('granted:')||keys.has(f.ruleId));

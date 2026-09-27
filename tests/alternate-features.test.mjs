@@ -16,7 +16,7 @@ const summary=c=>c.features.find(f=>f.name==='Paladin class features').descripti
 const pool=(c,key)=>alternateResources(c).find(r=>r.key===key);
 
 test('legacy sheets gain an empty selection and malformed replacement state is rejected',()=>{
- const c=create();delete c.alternateFeatures;assert.deepEqual(characterSchema.parse(c).alternateFeatures,{selected:[],uses:{}});
+ const c=create();delete c.alternateFeatures;assert.deepEqual(characterSchema.parse(c).alternateFeatures,{selected:[],uses:{},settings:{}});
  for(const selected of [['unknown'],['paladin-charging-smite','paladin-charging-smite'],['paladin-charging-smite','paladin-divine-spirit']])assert.equal(alternateFeaturesSchema.safeParse({selected}).success,false);
  assert.equal(alternateFeaturesSchema.safeParse({selected:['paladin-divine-counterspell','cleric-divine-counterspell']}).success,true);
  assert.equal(alternateFeaturesSchema.safeParse({uses:{x:-1}}).success,false);
