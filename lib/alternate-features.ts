@@ -1,9 +1,10 @@
+import {automatedAlternateResources} from './alternate-actions.ts';
 import type {Character} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
 import {alternateFeatureCatalog,alternateFeatureById,alternateFeaturesSchema,alternateSettingsSchema,replacementKeys,replacementOverlap,type AlternateFeatureId,type AlternateSettings,type AlternateFeatureDefinition} from './alternate-feature-schema.ts';
 export {alternateFeatureCatalog};
 export const alternateClassLevel=(c:Character,id:string)=>c.classLevels.filter(e=>e.classId===id).reduce((n,e)=>n+e.level,0);
-export function alternateSettings(c:Character,id:string):AlternateSettings{return c.alternateFeatures.settings[id]||{choice:'',notes:'',reviewed:false,active:false,counters:[]};}
+export function alternateSettings(c:Character,id:string):AlternateSettings{return c.alternateFeatures.settings[id]||{choice:'',notes:'',reviewed:false,active:false,counters:[],rules:{},actions:{},styleQualifiedAtSix:false};}
 export function alternateReplacementLabels(c:Character,d:AlternateFeatureDefinition){if(d.id.includes('-skilled-city-dweller-')||!d.replaces.some(k=>k.includes('@')))return d.replacementLabels;return replacementKeys(d,alternateSettings(c,d.id)).map(key=>{const [name,slot]=key.split('@');return name.replaceAll('-',' ')+(slot?(name.startsWith('domain')?' '+slot:' at level '+slot):'');});}
 export function alternateSelectionLevel(c:Character,d:AlternateFeatureDefinition){return d.levels?(alternateSettings(c,d.id).level??d.level):d.level;}
 export function activeAlternateFeatures(c:Character){return c.alternateFeatures.selected.map(id=>alternateFeatureById.get(id)!).filter(d=>d&&alternateClassLevel(c,d.classId)>=alternateSelectionLevel(c,d));}
@@ -30,7 +31,9 @@ export function alternateFeatureProblem(c:Character,id:AlternateFeatureId){
 }
 export function configureAlternateFeature(c:Character,id:string,patch:Partial<AlternateSettings>){
  if(!alternateFeatureById.has(id))throw new Error('Unknown alternate class feature.');
- const next=alternateSettingsSchema.parse({...alternateSettings(c,id),...patch});
+ const current=alternateSettings(c,id);
+ const changedChoice=patch.choice!==undefined&&patch.choice!==current.choice;
+ const next=alternateSettingsSchema.parse({...current,...patch,...(changedChoice?{actions:{},styleQualifiedAtSix:false}:{})});
  // Normalize optional properties to the same shape as JSON persistence.
  if(next.level===undefined)delete next.level;
  const before=c.alternateFeatures.settings[id];c.alternateFeatures.settings[id]=next;
@@ -40,11 +43,12 @@ export function configureAlternateFeature(c:Character,id:string,patch:Partial<Al
 }
 export function selectAlternateFeature(c:Character,id:AlternateFeatureId,selected:boolean){
  if(selected){const problem=alternateFeatureProblem(c,id);if(problem)throw new Error(problem);}
+ if(selected&&id==='cleric-destroy-undead'&&!('daily:acf:cleric-destroy-undead:destroy' in c.alternateFeatures.uses))c.alternateFeatures.uses['daily:acf:cleric-destroy-undead:destroy']=c.features.find(f=>f.ruleId==='daily:Turn or rebuke undead')?.used||c.alternateFeatures.uses['daily:original-turning']||0;
  c.alternateFeatures=alternateFeaturesSchema.parse({...c.alternateFeatures,selected:selected?[...new Set([...c.alternateFeatures.selected,id])]:c.alternateFeatures.selected.filter(x=>x!==id)});
 }
 export function turningClassLevel(c:Character){return (featureReplaced(c,'cleric','turn-undead')?0:alternateClassLevel(c,'cleric'))+(featureReplaced(c,'paladin','turn-undead')?0:Math.max(0,alternateClassLevel(c,'paladin')-3));}
 export function hasTurningAbility(c:Character){
- if(turningClassLevel(c)>0||alternateClassLevel(c,'blackguard')>=3||alternateClassLevel(c,'dread-necromancer')>0||alternateClassLevel(c,'death-master')>0)return true;
+ if(hasAlternateFeature(c,'cleric-destroy-undead')||turningClassLevel(c)>0||alternateClassLevel(c,'blackguard')>=3||alternateClassLevel(c,'dread-necromancer')>0||alternateClassLevel(c,'death-master')>0)return true;
  // A stale generated turning card must not re-grant a surrendered class feature.
  return c.features.some(f=>/^(turn|rebuke)\b/i.test(f.name)&&!f.ruleId?.startsWith('daily:')&&(!featureReplaced(c,'cleric','turn-undead')&&!featureReplaced(c,'paladin','turn-undead')||f.kind==='Racial trait'||f.kind==='Other'));
 }
@@ -69,9 +73,10 @@ export function alternateResources(c:Character):AlternateResource[]{
  const int=Math.floor((effectiveScore(c,'INT')-10)/2),barb=alternateClassLevel(c,'barbarian'),druid=alternateClassLevel(c,'druid');
  if(hasAlternateFeature(c,'barbarian-whirling-frenzy')||hasAlternateFeature(c,'barbarian-ferocity'))add('retained:daily:Rage',hasAlternateFeature(c,'barbarian-ferocity')?'Ferocity':'Whirling Frenzy',1+Math.floor(barb/4),'Activate the Rage effect while this ability is in use.');
  if(['druid-aspect-of-nature','druid-aspect-of-the-dragon','druid-city-shape','druid-drow-druid'].some(id=>hasAlternateFeature(c,id)))add('retained:daily:Wild shape','Alternate wild shape',druid>=18?6:druid>=14?5:druid>=10?4:druid>=7?3:druid>=6?2:1,'Resolve the selected form or aspect using the source.');
- if(hasAlternateFeature(c,'paladin-underdark-knight')){if(pal>=7)add('daily:underdark-spike','Spike stones',1,'Caster level equals paladin level.');if(pal>=15)add('daily:underdark-door','Dimension door',Math.floor(pal/5),'Caster level equals paladin level.');}
+ if(hasAlternateFeature(c,'paladin-underdark-knight')){if(pal>=7)add('daily:underdark-spike','Spike stones',1,'Caster level equals character level.');if(pal>=15)add('daily:underdark-door','Dimension door',Math.floor(pal/5),'Caster level equals character level.');}
  for(const [id,name,max] of [['sorcerer-metamagic-specialist','Metamagic Specialist',Math.max(1,3+int)],['wizard-immediate-magic','Immediate Magic',Math.max(1,int)]] as const)if(hasAlternateFeature(c,id))add('daily:'+id,name,max,'Resolve the chosen option using the linked source.');
  for(const d of activeAlternateFeatures(c))for(const counter of alternateSettings(c,d.id).counters)add('custom:'+d.id+':'+counter.id,counter.name,counter.max,'Custom tracker for '+d.name+'.',counter.period);
+ for(const r of automatedAlternateResources(c)){const i=resources.findIndex(x=>x.key===r.key);if(i<0)resources.push(r);else resources[i]=r;}
  return resources;
 }
 export function alternateResourceUsed(c:Character,key:string){if(key.startsWith('custom:')){const [,id,counter]=key.split(':');return alternateSettings(c,id).counters.find(r=>r.id===counter)?.used||0;}return c.alternateFeatures.uses[key]||0;}

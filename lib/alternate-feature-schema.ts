@@ -1,4 +1,5 @@
 import {z} from 'zod';
+import {monkStyles,rangerStyles,clericPaths} from './alternate-styles.ts';
 import data from './alternate-feature-data.json' with {type:'json'};
 export type AlternateFeatureId=string;
 export type AlternateFeatureDefinition={id:string,name:string,classId:string,level:number,replaces:string[],replacementLabels:string[],skill?:{name:string,ranks:number},description:string,source:string,kind?:'replacement'|'optional'|'reference',catalogId?:string,levels?:number[],choices?:string[],choiceRequired?:boolean,review?:boolean,requirementsNote?:string,activation?:string};
@@ -16,6 +17,9 @@ const label=(key:string)=>key.replaceAll('-',' ').replace('@',' at level ');
 export const alternateFeatureCatalog:AlternateFeatureDefinition[]=data.flatMap(row=>{
  const previous=original.find(d=>d.id===row.id);
  const d:AlternateFeatureDefinition={...row,kind:row.kind as AlternateFeatureDefinition['kind'],replacementLabels:row.replaces.map(label),...previous,source:row.source,review:previous?false:row.review,catalogId:row.id};
+ if(d.id==='monk-fighting-styles')d.choices=monkStyles.map(s=>s.name);
+ if(d.id==='ranger-combat-styles')d.choices=Object.keys(rangerStyles);
+ if(d.id==='cleric-no-turning')d.choices=clericPaths;
  if(['warmage-eclectic-learning','bard-music-of-creation'].includes(d.id))return d.levels!.map(level=>({...d,id:d.id+'-level-'+level,name:d.name+' (level '+level+')',level,levels:undefined,replaces:d.replaces.map(k=>k.replace('@choice','@'+level)),replacementLabels:d.replaces.map(k=>label(k.replace('@choice','@'+level)))}));
  if(d.id.endsWith('-skilled-city-dweller'))return d.choices!.map((choice,i)=>({...d,id:d.id+'-'+(i+1),name:d.name+': '+choice,choices:[choice],replaces:['skill@'+(i+1)],replacementLabels:[choice.split(' → ')[0]]}));
  return [d];
@@ -23,6 +27,9 @@ export const alternateFeatureCatalog:AlternateFeatureDefinition[]=data.flatMap(r
 export const alternateFeatureById=new Map(alternateFeatureCatalog.map(d=>[d.id,d]));
 export const alternateFeatureIds=alternateFeatureCatalog.map(d=>d.id) as [string,...string[]];
 export const alternateSettingsSchema=z.object({
+ rules:z.record(z.string().max(80),z.string().max(200)).default({}),
+ actions:z.record(z.string().max(80),z.object({rounds:z.number().int().min(0).max(10000).default(0),cooldown:z.number().int().min(0).max(10000).default(0)})).default({}),
+ styleQualifiedAtSix:z.boolean().default(false),
  level:z.number().int().min(1).max(20).optional(),choice:z.string().max(300).default(''),notes:z.string().max(4000).default(''),reviewed:z.boolean().default(false),active:z.boolean().default(false),
  counters:z.array(z.object({id:z.string().min(1).max(80).regex(/^[a-zA-Z0-9_-]+$/),name:z.string().min(1).max(120),max:z.number().int().min(0).max(10000),used:z.number().int().min(0).max(10000).default(0),period:z.enum(['day','week','encounter','manual'])})).max(12).default([]).superRefine((rows,ctx)=>{if(new Set(rows.map(r=>r.id)).size!==rows.length)ctx.addIssue({code:z.ZodIssueCode.custom,message:'Tracker IDs must be unique.'});}),
 });
@@ -47,7 +54,7 @@ export const alternateFeaturesSchema=z.object({
   if(d.kind==='reference')invalid('Reference collections are not single class features.');
   if(d.levels&&s?.level!==undefined&&!d.levels.includes(s.level))invalid('Invalid replacement level.');
   if((d.choices||d.choiceRequired)&&!s?.choice.trim())invalid('A required feature option is missing.');
-  if(d.choices&&s?.choice&&!d.choices.includes(s.choice))invalid('Invalid feature choice.');
+  if(d.choices&&s?.choice&&!['monk-fighting-styles','ranger-combat-styles'].includes(id)&&!d.choices.includes(s.choice))invalid('Invalid feature choice.');
   for(const key of replacementKeys(d,s)){if(spent.some(x=>x.classId===d.classId&&replacementOverlap(x.key,key)))invalid('An original class feature cannot be replaced twice.');spent.push({classId:d.classId,key});}
  }
 }).default({});
