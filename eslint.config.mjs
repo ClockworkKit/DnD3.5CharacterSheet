@@ -14,6 +14,8 @@ const eslintConfig = defineConfig([
     "next-env.d.ts",
     "dist/**",
     "dist-pages/**",
+    "work/**",
+    ".sites-runtime/**",
     // Wrangler-generated Cloudflare declarations are not application source.
     "worker-configuration.d.ts",
   ]),

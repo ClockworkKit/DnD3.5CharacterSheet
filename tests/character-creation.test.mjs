@@ -1,4 +1,5 @@
 import test from 'node:test';
+import {creatureAbilityScore} from '../lib/creatures.ts';
 import assert from 'node:assert/strict';
 import {abilityKeys,characterSchema} from '../lib/model.ts';
 import {rollAbilityScores,assignedScores,assignAbilityRoll,startingAssignment,startingAbilityScores,createPlayerCharacter} from '../lib/character-creation.ts';
@@ -61,7 +62,7 @@ test('every base class and race starts valid, with race previews matching its sa
   for(const kind of baseClasses)for(const race of raceCatalog){
     const c=create({kind:kind.name,raceId:race.id}),preview=startingAbilityScores(scores,race.id);
     assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c,kind.name+' / '+race.name);
-    for(const ability of abilityKeys)assert.equal(preview[ability],effectiveScore(c,ability),kind.name+' / '+race.name+' '+ability);
+    for(const ability of abilityKeys){if(race.nonabilities?.includes(ability))assert.equal(creatureAbilityScore(c,ability),null);else assert.equal(preview[ability],effectiveScore(c,ability),kind.name+' / '+race.name+' '+ability);}
     const before=structuredClone(c);recompute(c);assert.deepEqual(c,before);assert.equal(c.hp,c.maxHp);
   }
   assert.equal(startingAbilityScores({...scores,INT:3},'half-orc').INT,3);

@@ -1,3 +1,4 @@
+import {findRace,raceProgression} from './ancestry.ts';
 import {alternateClassSkill} from './alternate-benefits.ts';
 import type {Character,Skill} from './model.ts';
 import {findClass,isClassSkill} from './classes.ts';
@@ -8,7 +9,8 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   if(override!==undefined)return override;
   if(skill.classSkillOverride!==undefined)return skill.classSkillOverride;
   if(c.ancestry.raceId==='illumian'&&skill.name==='Speak Language')return true;
-  if(row.classId==='racial')return (c.ancestry.raceId==='lizardfolk'?['Balance','Jump','Swim']:c.ancestry.raceId==='gnoll'?['Climb','Listen','Spot']:[]).includes(skill.name);
+  if(findRace(c.ancestry.raceId)?.alwaysClassSkills?.includes(skill.name))return true;
+  if(row.classId==='racial')return (raceProgression(c.ancestry.raceId)?.classSkills||[]).some(name=>name===skill.name||name.replace(/ \(any\)$/,'')===skill.name.split(' (')[0]);
   const definition=findClass(row.classId);
   return definition?alternateClassSkill(c,row.classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;
 }

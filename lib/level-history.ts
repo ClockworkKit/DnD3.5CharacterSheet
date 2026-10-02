@@ -1,7 +1,7 @@
 import {hasAlternateFeature} from './alternate-features.ts';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
-import {effectiveScore,racialTraits} from './ancestry.ts';
+import {effectiveScore,raceProgression,racialBonusSkillPoints} from './ancestry.ts';
 
 export type LevelRow = {key:string;entryId:string;label:string;die:number;skillBase:number;classId:string;classLevel:number};
 
@@ -13,7 +13,8 @@ export function skillIntelligence(c:Character):number {
 
 export function hitDieSequence(c:Character):LevelRow[] {
   const racial:LevelRow[]=[];
-  for(let i=1;i<=c.ancestry.racialHitDice;i++)racial.push({key:'racial-'+i,entryId:'racial',label:'Racial HD '+i,die:8,skillBase:2,classId:'racial',classLevel:i});
+  const progression=raceProgression(c.ancestry.raceId);
+  for(let i=1;i<=c.ancestry.racialHitDice;i++)racial.push({key:'racial-'+i,entryId:'racial',label:'Racial HD '+i,die:progression?.die||8,skillBase:progression?.skillBase||2,classId:'racial',classLevel:i});
   const rows:LevelRow[]=[];
   const entries=[...c.classLevels].sort((a,b)=>a.id===c.automation.firstClassId?-1:b.id===c.automation.firstClassId?1:0);
   for(const e of entries){const d=findClass(e.classId);for(let i=1;i<=e.level;i++)rows.push({key:e.id+'-'+i,entryId:e.id,label:e.name+' '+i,die:e.classId==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric')?10:d?.hitDie||0,skillBase:e.classId==='fighter'&&hasAlternateFeature(c,'fighter-golarion-fighter')||e.classId==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?4:d?.skillPoints||2,classId:e.classId,classLevel:i})}
@@ -32,5 +33,5 @@ export function skillPointGrant(c:Character,row:LevelRow,index:number):number {
   const history=c.automation.history.find(h=>h.key===row.key);
   if(history?.skillPoints!==undefined)return history.skillPoints;
   const score=history?.intScore??skillIntelligence(c);
-  return (Math.max(1,row.skillBase+Math.floor((score-10)/2))+(racialTraits(c)?.id==='human'?1:0))*(index===0?4:1);
+  return (Math.max(1,row.skillBase+Math.floor((score-10)/2))+racialBonusSkillPoints(c))*(index===0?4:1);
 }

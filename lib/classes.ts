@@ -11,7 +11,7 @@ export type ClassDefinition={id:string,name:string,kind:'Core'|'Psionic'|'Presti
 export const baseClasses=classCatalog.filter(c=>c.kind!=='Prestige');
 export const findClass=(idOrName:string)=>classCatalog.find(c=>c.id===idOrName||c.name.toLowerCase()===idOrName.toLowerCase());
 export function classRow(def:ClassDefinition,level:number){const row=def.levels.find(r=>r.level===level);if(!row)throw new Error(def.name+' has no level '+level+' in this table.');return row;}
-export function classTotals(entries:ClassLevel[],ancestry?:Character['ancestry'],c?:Character){const racial=racialHDProgression(ancestry);let {level,bab,fort,ref,will}=racial;const dice:Record<number,number>=racial.level?{8:racial.level}:{};const missing:string[]=[...racial.missing];
+export function classTotals(entries:ClassLevel[],ancestry?:Character['ancestry'],c?:Character){const racial=racialHDProgression(ancestry);let {level,bab,fort,ref,will}=racial;const dice:Record<number,number>=racial.level?{[racial.die]:racial.level}:{};const missing:string[]=[...racial.missing];
  for(const e of entries){const d=findClass(e.classId);level+=e.level;if(!d){missing.push(e.name);continue}const r=d.levels.find(r=>r.level===e.level);if(!r){missing.push(e.name+' '+e.level);continue}const golarion=c&&d.id==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric'),die=golarion?10:d.hitDie;bab+=golarion?e.level:r.bab;fort+=r.fort;ref+=r.ref;will+=r.will;dice[die]=(dice[die]||0)+e.level;}
  return {level,bab,fort,ref,will,hitDice:Object.entries(dice).map(([die,n])=>`${n}d${die}`).join(' + '),missing};
 }

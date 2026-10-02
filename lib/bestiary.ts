@@ -1,9 +1,11 @@
+import {librisMortisBestiary,createLibrisMortisMonster} from './libris-mortis.ts';
 import {createMonsterSheet,creatureAbilityModifier} from './creatures.ts';
 import {characterSchema,newWeapon,uid,type Character} from './model.ts';
 import {skillBonus} from './rules.ts';
 const core='https://srd.dndtools.org/srd/monsters/monsters/core/';
 const skeletonSource=core+'monstersS.html';
 export const bestiary=[
+ ...librisMortisBestiary,
  {id:'human-skeleton',name:'Human warrior skeleton',type:'Undead',cr:1/3,source:skeletonSource},
  {id:'wolf-skeleton',name:'Wolf skeleton',type:'Undead',cr:1,source:skeletonSource},
  {id:'owlbear-skeleton',name:'Owlbear skeleton',type:'Undead',cr:2,source:skeletonSource},
@@ -13,6 +15,7 @@ export const bestiary=[
 ] as const;
 export function challengeRatingLabel(value:number|null){if(value===null)return '—';for(const denominator of [2,3,4,6,8])if(Math.abs(value-1/denominator)<1e-8)return '1/'+denominator;return String(value);}
 export function createBestiaryMonster(id:string,name?:string):Character {
+ if(id.startsWith('lm-'))return createLibrisMortisMonster(id,name);
  const entry=bestiary.find(e=>e.id===id);if(!entry)throw new Error('Choose a monster from the bestiary.');
  let c:Character;
  if(id.endsWith('skeleton')){

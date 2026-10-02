@@ -96,11 +96,11 @@ export function naturalAttackRoutine(c:Character,options:{withManufacturedWeapon
   if(!c.creature)return [];
   const multiattack=options.multiattack??hasFeat(c,'Multiattack');
   return c.creature.naturalAttacks.flatMap((raw:NaturalAttack)=>{
-    const a=naturalAttackSchema.parse(raw),secondary=options.withManufacturedWeapon||a.role==='secondary';
+    const a=naturalAttackSchema.parse(raw),secondary=a.attackRoll&&(options.withManufacturedWeapon||a.role==='secondary');
     const ability=creatureAbilityModifier(c,a.ability),strength=creatureAbilityModifier(c,'STR');
     const multiplier=secondary?Math.min(.5,a.strengthMultiplier):a.strengthMultiplier;
     const damageBonus=a.damageBonus+(multiplier===0?0:strength<0?strength:Math.floor(strength*multiplier));
     const bonus=c.bab+ability+sizeAttack[c.size]+a.attackBonus+c.situational-(secondary?(multiattack?2:5):0);
-    return Array.from({length:a.count},(_,i)=>({id:a.id+':'+i,name:a.name,role:secondary?'secondary':'primary',attackBonus:bonus,attackFormula:withBonus('1d20',bonus),damageFormula:withBonus(a.damage,damageBonus),criticalRange:a.criticalRange,criticalMultiplier:a.criticalMultiplier,damageTypes:a.damageTypes,notes:a.notes}));
+    return Array.from({length:a.count},(_,i)=>({id:a.id+':'+i,name:a.name,role:secondary?'secondary':'primary',attackRoll:a.attackRoll,damageKind:a.damageKind,damageAbility:a.damageAbility,attackBonus:bonus,attackFormula:withBonus('1d20',bonus),damageFormula:withBonus(a.damage,damageBonus),criticalRange:a.criticalRange,criticalMultiplier:a.criticalMultiplier,damageTypes:a.damageTypes,notes:a.notes}));
   });
 }
