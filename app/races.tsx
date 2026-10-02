@@ -1,4 +1,6 @@
 'use client';
+import {raceSourceDetail} from '@/lib/source-references';
+import {SourceReferenceDetails} from './source-reference';
 import {RacialAbilities} from './racial-abilities';
 import {clearRacialState} from '@/lib/racial-abilities';
 import {assetUrl} from '@/lib/deployment';
@@ -24,6 +26,7 @@ export function Races({c,edit,confirm,roll,spells}:SheetProps&{spells?:import('@
  const full=refs.find(r=>r.id===preview?.id);
  return <>
  <Section title="Race & racial traits" action={<Btn className="primary" onClick={()=>{setPreview(null);setOpen(true)}}>Browse races</Btn>}>
+ {c.sourceReferences.filter(r=>r.id.startsWith('race:')).map(reference=><SourceReferenceDetails key={reference.id} reference={reference}/>)}
  <F label="Race name on the sheet" value={c.race} onChange={v=>edit(d=>{d.race=v})}/>
  {!race?<div className="empty-note"><h3>Choose a race to attach its traits</h3><p>Your current scores and bonuses stay as entered until you choose which racial adjustments to apply.</p><Btn onClick={()=>setOpen(true)}>Open the race library</Btn></div>:<>
  <div className="race-heading"><div><h3>{race.name}</h3><p className="muted">{race.type} · {race.vision}</p></div><Btn onClick={()=>{review(race);setOpen(true)}}>Race reference</Btn></div>
@@ -52,6 +55,7 @@ export function Races({c,edit,confirm,roll,spells}:SheetProps&{spells?:import('@
  {preview.manualHandling?.map(note=><p className="fine" key={note}>{note}</p>)}{preview.parentSource&&<a className="source-link" href={preview.parentSource} target="_blank" rel="noreferrer">Parent race rules (apply variant replacements)</a>}<div className="race-traits">{preview.traits.map((t,i)=><p key={i}>{t}</p>)}</div>
  {(!preview.entryKind||preview.entryKind==='race')&&<details><summary>Bonuses this sheet can add</summary><p className="fine">{[...Object.entries(preview.skills).map(([k,n])=>k+' '+signed(n)),...Object.entries(preview.saves).map(([k,n])=>k+' save '+signed(n!)),...(preview.natural?['Natural armor +'+preview.natural]:[]),...(preview.dodge?['Dodge AC +'+preview.dodge]:[]),...(preview.grapple?['Powerful build grapple +'+preview.grapple]:[]),...(preview.powerPoints?['Racial PP +'+preview.powerPoints]:[])].join(' · ')||'No unconditional bonuses beyond abilities and size.'} Hide gains its size adjustment when trait bonuses are enabled.</p></details>}
  {preview.openGame?<details><summary>Full SRD reference</summary>{error?<p className="error-text">{error} <Btn onClick={()=>void loadReference()}>Retry</Btn></p>:<p className="reference-text">{full?.reference||'Loading reference…'}</p>}</details>:<p className="fine">Concise book summary. Consult the source for complete traits, restrictions, and optional feats.</p>}
+ {raceSourceDetail(preview.id)&&<SourceReferenceDetails reference={{id:'race:'+preview.id,title:preview.name+' rules & source',...raceSourceDetail(preview.id)!}}/>}
  <a className="source-link" href={preview.source} target="_blank" rel="noreferrer">Read race source</a>
  {preview.entryKind&&preview.entryKind!=='race'?<p className="empty-note">Reference only. Follow the source to apply this template or choose an individual race; it cannot replace your base race here.</p>:<div className="race-apply"><h3>Use this race on your sheet</h3><Check label="Add its ability adjustments (my score fields exclude them)" checked={abilities} onChange={setAbilities}/><Check label="Add its listed trait bonuses (my Misc. fields exclude them)" checked={traits} onChange={setTraits}/><Check label={'Set size to '+preview.size+' and base land speed to '+preview.speed+' ft.'} checked={body} onChange={setBody}/>{body&&<N label="Additional land speed from class or effects (ft.)" value={speedBonus} min={-100} max={1000} onChange={setSpeedBonus}/>}<Check label="Add automatic languages to my known languages" checked={languages} onChange={setLanguages}/><p className="fine">Applies one race at a time; repeated selection does not stack bonuses. Keep automatic adjustments off if they are already included in your entries. Review weapon damage dice after a size change.</p><Btn className="primary" onClick={()=>{edit(d=>selectRace(d,preview.id,{abilities,traits,body,languages,speedBonus}));setOpen(false);toast.success(preview.name+' attached. Racial traits are also in Feats.')}}>Use {preview.name}</Btn></div>}
  </>}
