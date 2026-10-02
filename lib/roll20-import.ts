@@ -1,6 +1,7 @@
 import {abilityKeys,abilityNames,baseSkills,characterSchema,newWeapon,uid,type Character,type Caster,type Skill,type Spell} from './model.ts';
 import {findClass,makeCaster,makePsionic,castingAbility,manifestingAbility,classTotals,syncFactotumClassSkills} from './classes.ts';
 import {raceCatalog} from './ancestry.ts';
+import {syncSourceReferences} from './source-references.ts';
 import {sheetTotals,skillBonus,weaponAttack} from './rules.ts';
 import {parseDiceFormula} from './dice.mjs';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
@@ -260,6 +261,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report};
+ syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
  if(new TextEncoder().encode(JSON.stringify({data:result.data})).length>980000)throw Error('This export and its mapped character exceed the 1 MB save limit. Keep the original export; no character has been imported.');
