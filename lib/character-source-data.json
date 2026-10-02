@@ -180,7 +180,7 @@
     "kenku": {
       "book": "Monster Manual III",
       "url": "https://srd.dndtools.org/srd/races/racesMm3.html#kenkus",
-      "text": "Great Ally (Ex): successful aid another on a skill check or attack grants +3 rather than +2 when the kenku aids or receives aid. Flanking attacks gain +4 rather than +2. These replace the ordinary bonuses; do not add both.\n\nMimicry (Ex): reproduce familiar sounds, voices and accents. This grants no new languages. Impersonating a particular voice uses Bluff opposed by a familiar listener’s Sense Motive.\n\nNatural weapons: two claws, 1d3 damage each for a Medium kenku. Add them in Creature/Combat if desired; this reference does not create attacks.\n\nRacial skills: +2 Hide and Move Silently. Low-light vision. Common and Kenku; bonus languages Auran, Dwarven, Gnome, Goblin and Halfling. Favored class: rogue. Monster Manual III."
+      "text": "Great Ally (Ex): successful aid another on a skill check or attack grants +3 rather than +2 when the kenku aids or receives aid. Flanking attacks gain +4 rather than +2. These replace the ordinary bonuses; do not add both.\n\nMimicry (Ex): reproduce familiar sounds, voices and accents. This grants no new languages. Impersonating a particular voice uses Bluff opposed by a familiar listener’s Sense Motive.\n\nNatural weapons: two claws, 1d3 damage each for a Medium kenku.\n\nRacial skills: +2 Hide and Move Silently. Low-light vision. Common and Kenku; bonus languages Auran, Dwarven, Gnome, Goblin and Halfling. Favored class: rogue. Monster Manual III."
     },
     "forestlord-half-elf": {
       "book": "Dragon Magic",

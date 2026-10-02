@@ -5,11 +5,14 @@ import references from './race-reference-data.json' with {type:'json'};
 import sourceUrls from './race-source-urls.json' with {type:'json'};
 import {creatureProfileSchema} from './creature-schema.ts';
 import data from './race-data.json' with {type:'json'};
+import {raceDetailNotes} from './source-detail-notes.ts';
 import type {Character,Skill} from './model.ts';
 type Ability='STR'|'DEX'|'CON'|'INT'|'WIS'|'CHA';
 export type RacialProgression={type:string,die:number,bab:number,goodSaves:Array<'fort'|'ref'|'will'>,skillBase:number,classSkills:string[]};
 export type RaceDefinition={entryKind?:'race'|'reference'|'template',imported?:boolean,manualHandling?:string[],parentSource?:string,bonusFeat?:boolean,bonusSkillPoints?:number,alwaysClassSkills?:string[],nonabilities?:Ability[],fly?:number,climb?:number,burrow?:number,racialProgression?:RacialProgression,baseRace?:string,element?:string,swim?:number,waterBreathing?:boolean,id:string,name:string,group:string,abilities:Partial<Record<Ability,number>>,size:Character['size'],speed:number,type:string,vision:string,languages:string[],bonusLanguages:string,favoredClass:string,la:number,rhd:number,hitDice:string,natural:number,dodge:number,skills:Record<string,number>,saves:Partial<Record<'fort'|'ref'|'will',number>>,powerPoints:number,grapple:number,traits:string[],source:string,book:string,openGame:boolean,reference?:string};
-export const raceCatalog:RaceDefinition[]=[...data.map(r=>({...r,source:(sourceUrls as Record<string,string>)[r.id]||r.source})),...extra] as RaceDefinition[];
+const originalRaces=[...data.map(r=>({...r,source:(sourceUrls as Record<string,string>)[r.id]||r.source})),...extra] as RaceDefinition[];
+// The same reviewed rules feed the visible trait list and saved feature cards.
+export const raceCatalog:RaceDefinition[]=originalRaces.map(r=>raceDetailNotes[r.id]?{...r,traits:raceDetailNotes[r.id].split('\n\n'),manualHandling:[]}:r);
 export const raceReferenceCatalog=references as RaceDefinition[];
 export const racialBonusFeat=(c:Character)=>!!(racialTraits(c)?.bonusFeat??(racialTraits(c)?.id==='human'));
 export const racialBonusSkillPoints=(c:Character)=>racialTraits(c)?.bonusSkillPoints??(racialTraits(c)?.id==='human'?1:0);
@@ -25,4 +28,17 @@ export function racialSkill(c:Character,s:Pick<Skill,'name'>){const r=racialTrai
 export function racialPowerPoints(c:Character){return racialTraits(c)?.powerPoints||0;}
 export function racialSummary(c:Character){const r=findRace(c.ancestry.raceId);if(!r)return '';return [r.type+'; '+r.size+'; base land speed '+r.speed+' ft.; '+r.vision,'Ability adjustments: '+(Object.entries(r.abilities).map(([k,v])=>k+' '+(v!>=0?'+':'')+v).join(', ')||'None'),'Racial HD: '+r.hitDice+'; level adjustment +'+r.la,'Automatic languages: '+r.languages.join(', '),'Unconditional racial bonuses: '+([...Object.entries(r.skills).map(([k,n])=>k+' +'+n),...Object.entries(r.saves).map(([k,n])=>k+' saves +'+n),...(r.natural?['Natural armor +'+r.natural]:[]),...(r.dodge?['Dodge AC +'+r.dodge]:[]),...(r.grapple?['Powerful build grapple +'+r.grapple]:[]),...(r.powerPoints?['Power points +'+r.powerPoints]:[])].join('; ')||'None'),...r.traits,...(r.manualHandling||[]),...(r.parentSource?['Parent rules: '+r.parentSource]:[]),'Source: '+r.book+' — '+r.source].join('\n\n');}
 export function copyRacialTraits(c:Character){const r=findRace(c.ancestry.raceId);if(!r)return;const id='race-reference';const f=c.features.find(x=>x.id===id);if(f){f.name=r.name+' racial traits';f.description=racialSummary(c);f.source=r.source;}else c.features.push({id,name:r.name+' racial traits',kind:'Racial trait',description:racialSummary(c),max:0,used:0,source:r.source});}
+/** Replace only the old generated trait block; keep player edits and spent uses. */
+export function syncRacialRuleText(c:Character){
+ const old=originalRaces.find(r=>r.id===c.ancestry.raceId),rules=raceDetailNotes[c.ancestry.raceId];
+ const f=c.features.find(f=>f.id==='race-reference');
+ if(!old||!rules||!f||f.source!==old.source||f.name!==old.name+' racial traits')return;
+ const block=old.traits.join('\n\n');
+ if(block&&f.description.includes(block)){
+  let description=f.description.replace(block,rules);
+  for(const note of old.manualHandling||[])description=description.replace('\n\n'+note,'');
+  // Keep long personal additions valid under the saved feature's text limit.
+  if(description.length<=20000)f.description=description;
+ }
+}
 export function selectRace(c:Character,id:string,options:{abilities:boolean,traits:boolean,body:boolean,languages:boolean,speedBonus?:number}){const r=findRace(id);if(!r)throw new Error('Choose a race from the library.');if(c.ancestry.raceId!==id)clearRacialState(c);c.race=r.name;c.ancestry={...c.ancestry,raceId:id,abilityAdjustments:options.abilities,traitBonuses:options.traits,racialHitDice:r.rhd,levelAdjustment:r.la};if(options.body){if(c.creature?.raceOrigin&&c.creature.raceOrigin!==id)c.creature=null;if(r.imported&&c.sheetKind!=='monster'&&!c.creature){const p=r.racialProgression;c.creature=creatureProfileSchema.parse({raceOrigin:id,type:p?.type||'Humanoid',racialHitDice:0,nonabilities:r.nonabilities||[],source:r.source,senses:r.vision,movement:{swim:r.swim||0,fly:r.fly||0,climb:r.climb||0,burrow:r.burrow||0},notes:'Race-derived profile. Racial progression uses Race → racial Hit Dice. Special traits require the linked source.'});}if(c.automation){c.automation.baseSize=r.size;c.automation.baseSpeed=r.speed;}c.size=r.size;c.speed=Math.max(0,r.speed+(options.speedBonus||0));}if(options.languages){const known=c.languages.split(/[,;\n]+/).map(x=>x.trim()).filter(Boolean);for(const language of r.languages)if(!known.some(x=>x.toLowerCase()===language.toLowerCase()))known.push(language);c.languages=known.join(', ');}copyRacialTraits(c);}
