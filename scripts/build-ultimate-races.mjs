@@ -1,5 +1,8 @@
 // Run import-ultimate-catalogs.py first. Only mechanical facts and feature names
-// enter the distributed catalog; source prose remains in the local review cache.
+// enter this legacy mechanical catalog; source prose stays in the local review cache.
+// ancestry.ts overlays reviewed race-rule-summaries.json for visible and saved rules.
+// Keep the original trait blocks here: existing character cards use them as exact
+// migration markers. After editing summaries, run build-character-sources.mjs.
 import fs from 'node:fs';
 const read=p=>JSON.parse(fs.readFileSync(p,'utf8'));
 const write=(p,d)=>fs.writeFileSync(p,JSON.stringify(d,null,2)+'\n');

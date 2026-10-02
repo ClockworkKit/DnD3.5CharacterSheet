@@ -1,0 +1,1249 @@
+{
+  "star-elf": [
+    "Otherworldly Touch (Su): From sunset until sunrise, held melee weapons and worn armor gain ghost touch. The benefit ends when the weapon leaves your hand, the armor is removed, or sunrise arrives.",
+    "Extraplanar humanoid: banishment and dismissal send you to Sildëyuir. Effects targeting extraplanar creatures apply; your type is humanoid.",
+    "Magic sleep immunity; +2 racial saves against enchantments.",
+    "Low-light vision: double human viewing distance in dim light, retaining color and detail.",
+    "Listen, Search and Spot +2; passing within 5 ft. of a secret or concealed door grants a Search check.",
+    "No racial weapon proficiencies. Languages: Common and Elven; regional bonus languages. Favored class: bard."
+  ],
+  "athasian-elf": [
+    "Elf-Running: Endurance bonus feat.",
+    "Inborn Power: 3 racial PP and conceal thoughts at level 1; manifester level equals character level. Use Charisma for DCs, or choose the manifesting ability of a psionic class you have. Add these PP and powers to class pools and known powers.",
+    "Replace ordinary elven weapon training with falchion, rapier, scimitar, longbow and shortbow proficiency, including composite bows.",
+    "Listen, Search and Spot racial bonuses are +2, rising to +4 at level 5 and +6 at level 15.",
+    "Elven Discernment: +2 saves against illusions. Lose the elven +2 enchantment-save bonus.",
+    "Retained elf traits: Immune to magical sleep. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "avariel": [
+    "Keen Sight: Spot racial bonus +4 replaces +2; Jump +4.",
+    "Replace elven weapon training with either longsword or rapier, plus lasso and bolas.",
+    "Flight: 50 ft. (average); at most medium load, no heavy armor, and neither fatigued nor exhausted. Wings need 12 ft. of space. May run in a straight line while flying. A diving charge descending at least 30 ft. deals double damage with a piercing weapon.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "celadrin": [
+    "Elven Blood: counts as elf for race-dependent effects and items. Darkvision 60 ft.; fire resistance 10; magic sleep immunity.",
+    "Proficient with longsword, rapier, longbow and shortbow, including composite bows.",
+    "Fiery Gaze: scorching ray 1/day; caster level equals class level.",
+    "Melodious Voice: racial bonus to attitude-changing Diplomacy and wild empathy checks, +1 at level 1, +2 at 5, +3 at 10, +4 at 15, +5 at 20."
+  ],
+  "dargonesti": [
+    "Elvensight: low-light vision plus darkvision 30 ft.",
+    "Alternate Form (Su): porpoise, standard action, 3/day, only in suitable water.",
+    "With Intelligence 10+: blur, dancing lights, darkness and obscuring mist each 1/day. Caster level equals character level; the source gives DC 10 + Intelligence modifier.",
+    "Seasense: +2 to notice water conditions, including contaminants, depth, temperature and pressure; intuit depth.",
+    "Surface Sensitivity: spend at least 1 hour underwater per 24 hours. More than 23 hours out of water imposes −2 attacks, saves and checks.",
+    "Replace elven weapon training with longspear, trident and net proficiency.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "dimernesti": [
+    "Elvensight: low-light vision plus darkvision 30 ft.",
+    "Alternate Form (Su): sea otter, standard action, 3/day, only in suitable water. Use dire weasel statistics with swim 40 ft. and without attach or blood drain.",
+    "Seasense: +2 to notice water conditions, including contaminants, depth, temperature and pressure; intuit depth.",
+    "Surface Sensitivity: spend at least 1 hour underwater per 24 hours. More than 23 hours out of water imposes −1 attacks, saves and checks.",
+    "Replace elven weapon training with longspear, trident and net proficiency.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "declining-elf": [
+    "Lose sleep immunity, enchantment-save bonuses and trance. Sleep 8 hours; use half-elf aging.",
+    "Bonus Weapon Focus in one melee and one ranged weapon chosen from longsword, rapier, longbow or shortbow.",
+    "Retained elf traits: Proficient with longsword, rapier, longbow, and shortbow, including composite bows. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "desert-elf": [
+    "Replace elven weapon training with scimitar, rapier and shortbow proficiency, including composite shortbow.",
+    "Handle Animal and Ride +2; lose the racial Listen bonus.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "draegloth": [
+    "Native outsider: requires food and sleep. Darkvision 60 ft.; immunity to poison and magic sleep; +2 saves against enchantments.",
+    "Acid, cold, electricity and fire resistance 10; natural armor +5.",
+    "Spell-like abilities, caster level 6: darkness 4/day; dancing lights, desecrate, faerie fire and unholy blight each 1/day.",
+    "Two claws deal 1d6 + Strength each; secondary bite deals 1d8 + half Strength, at −5 attack. With manufactured weapons, claws also become secondary.",
+    "Four arms allow Multiweapon Fighting instead of Two-Weapon Fighting; Multiattack is eligible. Neither feat is granted automatically."
+  ],
+  "umbragen": [
+    "Hide and Move Silently +2 replace the drow save bonus against spells and spell-like abilities.",
+    "Weapon training: longsword, rapier, longbow and shortbow replace normal drow proficiencies.",
+    "Retained drow traits: Immune to magical sleep. Enchantment saves +2. Automatic Search check for secret/concealed doors passed within 5 ft. Spell resistance 11 + class levels. Dancing lights once daily. Darkness once daily. Faerie fire once daily. Racial spell-like abilities use caster level equal to class levels; Charisma-based DCs. Abrupt bright light blinds for 1 round, then dazzles while exposed."
+  ],
+  "zar-ithra-rin": [
+    "Humanoid with dragonblood, elf and extraplanar subtypes. Darkvision 120 ft. and low-light vision; spell resistance 11 + class levels.",
+    "Magic sleep immunity; saves +2 against enchantments, +4 against paralysis, and Will +2 against spells/spell-like abilities. Cold resistance 5 + HD (maximum 15).",
+    "Light Blindness: sudden bright light blinds for 1 round; continued exposure dazzles.",
+    "Shadow Blend: total concealment outside full daylight. Ordinary and magical light do not end it, but daylight does.",
+    "Choose one benefit per 4 HD (minimum one): +2 luck to saves; cause fear 1/day (CL 5, Charisma DC); DR 5/magic; evasion; fast healing 2; mirror image 1/day (CL 5); or plane shift to/from Shadow 1/day (CL 15).",
+    "Listen, Search and Spot +2; automatic secret-door Search within 5 ft. Additional Intimidate and Spot +2; Move Silently +6. Natural armor +1; two claws 1d3."
+  ],
+  "zekylyn": [
+    "Dragon (elf): darkvision 120 ft., low-light vision, spell resistance 11 + class levels. Immune to energy drain, sleep and paralysis. Enchantment saves +2; Will against spells/spell-like abilities +2.",
+    "Breath weapon 1/day: 30-ft. cone inflicts one negative level; Reflex DC 10 + half HD + Constitution modifier negates.",
+    "Light Blindness: sudden bright light blinds for 1 round, then dazzles while exposure continues.",
+    "Listen, Search and Spot +2; automatic secret-door Search within 5 ft. Natural armor +4; two claws 1d4 and bite 1d6."
+  ],
+  "fey-ri": [
+    "Native outsider; darkvision 60 ft., low-light vision, magic sleep immunity, Will +2 against enchantments. Winged form flies 40 ft. (poor).",
+    "Change Shape: any humanoid form at will, with unlimited duration. Counts as elf for racial items and effects.",
+    "Bluff, Hide, Listen, Search and Spot +2.",
+    "Choose four demonic benefits: charm person, clairaudience/clairvoyance, darkness, detect thoughts, suggestion (each 1/day); fire resistance 10; +2 saves against electricity; +2 saves against poison; DR 5/magic; dimension door 1/day; or enervation 1/day. At most one of the last three choices; taking one increases LA. Spell-like abilities use character level and Charisma-based DCs."
+  ],
+  "forestlord-elf": [
+    "Dragonblood subtype. Hide is always a class skill. Lose enchantment-save bonuses and all ordinary elven racial weapon proficiencies.",
+    "Treewalk (Su): touch and enter a tree as a move action, teleport to another tree within 60 ft., and emerge beside it at the start of your next turn. Uses/day: 1 + one per 5 HD.",
+    "Forestlord Pact: attempting to harm a green dragon disables Treewalk for 24 hours and imposes −1 on attacks, saves, caster level and manifester level during that time.",
+    "Retained elf traits: Immune to magical sleep. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "forestlord-half-elf": [
+    "Dragonblood subtype. Hide is always a class skill. Lose enchantment-save bonuses and racial Diplomacy/Gather Information bonuses.",
+    "Treewalk (Su): touch and enter a tree as a move action, teleport to another tree within 60 ft., and emerge beside it at the start of your next turn. Uses/day: 1 + one per 5 HD.",
+    "Forestlord Pact: attempting to harm a green dragon disables Treewalk for 24 hours and imposes −1 on attacks, saves, caster level and manifester level during that time.",
+    "Retained half elf traits: Immune to magical sleep. Counts as an elf for race-related effects."
+  ],
+  "ghost-elf": [
+    "Low-light vision; magic sleep immunity. Proficient with short sword and scimitar, without racial bow proficiency. Listen, Search and Spot +2; automatic secret-door Search within 5 ft. Knowledge (the planes) is always a class skill.",
+    "Glow illuminates 5 ft. Suppress as a free action, maintaining suppression with a free-action DC 10 Concentration check each round.",
+    "Ethereal Power: one shared daily use, caster level equals character level. Choose an unlocked effect: level 1 Slip Binding (+10 enhancement Escape Artist, 1 minute/level; +20 at level 5, +30 at 9); level 4 see invisibility; level 6 blink; level 14 ethereal jaunt; level 18 travel to/from the Ethereal Plane with carried objects, remaining until another use or planar travel."
+  ],
+  "jungle-elf": [
+    "Replace elven weapon training with handaxe, rapier, short sword and shortbow proficiency, including composite shortbow. Knowledge (history) +2. Lose automatic secret-door Search checks.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2."
+  ],
+  "kagonesti": [
+    "Elvensight: low-light vision and darkvision 30 ft. Replace elven weapon training with short sword, longspear, longbow and shortbow, including composite bows. Knowledge (nature) and Survival +1.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "qualinesti": [
+    "Elvensight: low-light vision and darkvision 30 ft. Diplomacy and Sense Motive +1.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Proficient with longsword, rapier, longbow, and shortbow, including composite bows. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "silvanesti": [
+    "Elvensight: low-light vision and darkvision 30 ft. Knowledge (arcana) and Spellcraft +1.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Proficient with longsword, rapier, longbow, and shortbow, including composite bows. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "phaethon": [
+    "Humanoid with elf and fire subtypes: immune to fire, vulnerable to cold. Low-light vision.",
+    "Flaming Wings: supernatural free action, no opportunity attack; effective caster level equals character level. While manifested, add 1d6 fire to unarmed-strike or grapple damage. A round using wing damage cannot also use wing flight."
+  ],
+  "aquatic-half-elf": [
+    "Swim 15 ft.; +8 Swim, take 10 even under threat, and run when swimming straight. Lose racial Diplomacy and Gather Information bonuses.",
+    "Sea Longing: after more than a week without seeing the sea, Wisdom-based checks take −1 until reaching the shore.",
+    "Retained half elf traits: Immune to magical sleep. Enchantment saves +2. Counts as an elf for race-related effects."
+  ],
+  "arctic-half-elf": [
+    "Lose the racial Diplomacy bonus; gain Survival +2.",
+    "Retained half elf traits: Immune to magical sleep. Enchantment saves +2. Counts as an elf for race-related effects."
+  ],
+  "athasian-half-elf": [
+    "Magic sleep immunity; lose the +2 enchantment-save bonus and gain +2 illusion saves.",
+    "Inborn Power: level 1 grants 3 PP and psionic charm; level 5 adds 3 PP and detect hostile intent; level 10 adds 5 PP and danger sense; level 15 adds 7 PP and aura sight. Add these to class PP/known powers. Manifester level equals character level; use Charisma for DCs or choose the manifesting ability of your psionic class.",
+    "Retained half elf traits: Counts as an elf for race-related effects."
+  ],
+  "mongrelfolk": [
+    "Humanoid (human); low-light vision; magic sleep immunity. Emulate any humanoid race for racial magic items without a check; +4 Use Magic Device to emulate nonhumanoids.",
+    "Sound Imitation: mimic previously heard sounds/voices; Will DC 16 detects the imitation.",
+    "Diffuse Blood: +2 saves against race-specific magic involving human, halfling, dwarf, elf, gnome, goblin or orc ancestry. Enchantment and illusion saves +1; poison saves +1.",
+    "Appraise, Climb, Jump, Listen, Move Silently, Search and Spot +1; Hide and Sleight of Hand +4."
+  ],
+  "aquatic-human": [
+    "Swim 30 ft. Low-light vision extends to four times ordinary human distance in dim light, retaining color and detail.",
+    "Retained human traits: Bonus feat at first level. Four extra skill points at first level and one at every later level.",
+    "Aquatic subtype: breathe water, not air unless another ability grants amphibious breathing. Outside water, hold breath for twice Constitution score rounds before suffocation checks. Swim +8; always take 10, and run while swimming straight. Aquan is a bonus language. Unearthed Arcana suggests optional LA +1 for mixed aquatic/non-aquatic underwater or ship campaigns."
+  ],
+  "athasian-human": [
+    "Choose two different abilities for +2 each.",
+    "Inborn Powers: level 1 grants 3 PP and one chosen level-1 psion/wilder power. Levels 5, 10 and 15 add respectively 3/5/7 PP and one chosen psion power of level 2/3/4. Combine with class PP and powers. Manifester level equals character level; use Charisma DCs or choose the manifesting ability of a psionic class you have.",
+    "Retained human traits: Bonus feat at first level. Four extra skill points at first level and one at every later level."
+  ],
+  "mul": [
+    "Hardy: halve the rest needed to recover from fatigue or exhaustion. Natural healing restores 2 HP per level daily; gain fast healing 1 at level 10, increasing to 3 at 15.",
+    "Inborn Power: 3 PP and offensive prescience at level 1; combine with class PP/powers. Manifester level equals character level; use Charisma DCs or the manifesting ability of a psionic class you have."
+  ],
+  "aventi": [
+    "Aquatic humanoid with human subtype; counts as human for race-dependent effects and items. Amphibious: breathe air and water without limit.",
+    "Water Spell Power: +1 caster level for water-descriptor spells."
+  ],
+  "axani": [
+    "Native outsider; darkvision 60 ft.; cold and sonic resistance 5. Diplomacy and Spot +2.",
+    "Calm emotions 1/day, caster level equals character level."
+  ],
+  "azurin": [
+    "Humanoid with human and incarnum subtypes. Gain a bonus feat at level 1 and one permanent point of essentia, creating a pool if necessary."
+  ],
+  "buomman": [
+    "Astral-native humanoid; extraplanar elsewhere. Low-light vision; Listen and Perform (sing) +2.",
+    "Vow of silence: speaking inflicts 1 Wisdom damage and −2 to attacks, saves and checks for 24 hours. Repeating it inflicts another point and restarts the 24-hour penalty. Verbal spells require Silent Spell or Nonverbal Spell."
+  ],
+  "cansin": [
+    "Native outsider; darkvision 60 ft.; acid and fire resistance 5. Bluff and Search +2.",
+    "Entropic shield 1/day, caster level equals character level."
+  ],
+  "complacent-human": [
+    "Lose the human bonus feat and all racial extra skill points. Choose one ability for a +2 racial adjustment."
+  ],
+  "deep-imaskari": [
+    "Low-light vision; Hide +4 underground.",
+    "Spell Clutch (Su), 1/day: restore a prepared level-1 spell you have already cast, making it prepared again."
+  ],
+  "extaminaar": [
+    "Low-light vision; Fortitude +2 against poison, Swim +4, Escape Artist +2.",
+    "Speak with animals at will and charm animal 3/day, both restricted to snakes."
+  ],
+  "frost-folk": [
+    "Darkvision 60 ft.; natural armor +2. Proficient with simple weapons, battleaxe, composite longbow, light armor and shields.",
+    "Cold subtype: immune to cold; fire damage increases by 50%. Snowsight works through snowstorms.",
+    "Ice Blast (Su): 20-ft. cone, 2d6 cold, Reflex DC 13 half (Constitution-based); wait 1d4 rounds before reuse."
+  ],
+  "air-genasi": [
+    "Native outsider; darkvision 60 ft. Levitate 1/day, CL 5.",
+    "Breathless: no breathing; immune to drowning, suffocation and inhaled attacks. Saves against air effects gain +1, plus one per five class levels. A cleric must choose a deity offering Air and take that domain."
+  ],
+  "dust-para-genasi": [
+    "Native outsider; darkvision 60 ft.; no breathing, drowning, suffocation or inhaled attacks. Saves against dust effects gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Air or Earth.",
+    "Dust Cloud (Su), 1/day: centered 20-ft. radius lasting 5 minutes; 20% concealment beyond 5 ft. Others in it make Fortitude DC 10 + half level + Charisma modifier or cough, taking −2 attacks and skill checks until leaving."
+  ],
+  "earth-genasi": [
+    "Native outsider; darkvision 60 ft. Pass without trace 1/day, CL 5.",
+    "Saves against earth effects gain +1, plus one per five class levels. Clerics must choose a deity offering Earth and take that domain."
+  ],
+  "fire-genasi": [
+    "Native outsider; darkvision 60 ft. Saves against fire effects gain +1, plus one per five class levels. Clerics must choose a deity offering Fire and take that domain.",
+    "Control Flame (Sp), 1/day, CL 5: for 5 minutes, change a nonmagical fire within 10 ft. to glowing coals or daylight brightness with double illumination radius. Heat and fuel consumption stay unchanged."
+  ],
+  "ice-para-genasi": [
+    "Native outsider; darkvision 60 ft. Chill metal 1/day, CL equals character level.",
+    "Saves against cold gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Air, Cold or Water."
+  ],
+  "magma-para-genasi": [
+    "Native outsider; darkvision 60 ft. Heat metal 1/day, CL equals character level.",
+    "Saves against fire effects gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Earth or Fire."
+  ],
+  "ooze-para-genasi": [
+    "Native outsider; darkvision 60 ft. Grease 1/day, CL equals character level.",
+    "Saves against acid effects gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Earth, Slime or Water."
+  ],
+  "smoke-para-genasi": [
+    "Native outsider; darkvision 60 ft. Saves against smoke/cloud effects gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Air or Fire.",
+    "Smoke Cloud (Su), 1/day: the smoke effect of pyrotechnics, without needing a flame; CL equals character level."
+  ],
+  "steam-para-genasi": [
+    "Native outsider; darkvision 60 ft. Obscuring mist 1/day, CL equals character level. Saves against non-fire heat effects gain +1, plus one per five character levels. Clerics must choose a deity and domain offering Fire or Water.",
+    "Keen Eyed: reduce concealment miss chance from fog, smoke and similar atmospheric effects by 10 percentage points."
+  ],
+  "water-genasi": [
+    "Native outsider; darkvision 60 ft.; swim 30 ft.; water breathing. Create water 1/day, CL 5.",
+    "Saves against water effects gain +1, plus one per five class levels. Clerics must choose a deity offering Water and take that domain."
+  ],
+  "glimmerfolk": [
+    "Low-light vision; immune to pattern effects; Perform +2; saves against shadow-subschool/darkness spells +4.",
+    "Nimlis: three candle-bright lights, each active light imposes Hide −2. Standard action: spend one light for dancing lights, daze or flare; two for color spray or magic missile; three for mirror image. Spent lights return after 8 hours of rest; they do not interfere with invisibility or mirror image."
+  ],
+  "hagspawn": [
+    "Monstrous humanoid: immune to effects restricted to humanoids. Darkvision 60 ft.; natural armor +2; spell resistance 11 + character level."
+  ],
+  "half-black-dragon-human": [
+    "Dragon (human); darkvision 60 ft. and low-light vision. Immune to acid, sleep and paralysis; natural armor +4. Two claws 1d4; bite 1d6.",
+    "Breath 1/day: 60-ft. acid line, 6d8 damage; Reflex DC 10 + half HD + Constitution modifier halves. Bonus feat at level 1; 4 extra skill points initially and 1 per later level."
+  ],
+  "half-dwarf": [
+    "Humanoid (dwarf); darkvision 60 ft. Dwarven waraxe and urgrosh count as martial weapons. All Craft and Appraise checks +2.",
+    "Stability: +2 to resist bull rush/trip while grounded. Saves +1 against poison and +1 against spells/spell-like abilities."
+  ],
+  "half-gnome": [
+    "Will saves +2. Choose one exclusive aptitude.",
+    "Single-Minded: one chosen skill gains +2 and is always a class skill. Keep its ranks greater than character level or take −2 on all other skills.",
+    "Jack-of-All-Trades: all skills are class skills for costs, but each has maximum ranks (level + 3)/2. Synergy begins at 3 ranks. Replaces class skill lists; cannot combine with Single-Minded."
+  ],
+  "half-goblin": [
+    "Humanoid (goblinoid); darkvision 60 ft. Bluff and Move Silently +2. Will saves against charm, compulsion and fear +4."
+  ],
+  "half-kender": [
+    "Humanoid (kender); fear saves +4; Spot +1. Open Lock and Sleight of Hand +1 and usable without training.",
+    "Taunt: Bluff +2 when taunting. Kender exotic weapons count as simple."
+  ],
+  "half-ogre": [
+    "Giant type; darkvision 60 ft.; natural armor +4."
+  ],
+  "inspired": [
+    "Empty vessel: 1 racial PP per character level. Bonus feat at level 1; 4 extra skill points initially, then 1 each level. Knowledge (the planes) is always a class skill.",
+    "Bluff, Diplomacy and Intimidate +2; Disguise +2 specifically to impersonate humans."
+  ],
+  "tarmak": [
+    "Humanoid (human). Level-1 bonus feat must be a fighter bonus feat. Extra skill points: 4 initially and 1 each later level, spendable only on Strength-, Dexterity- or Constitution-based skills."
+  ],
+  "damjatt": [
+    "Humanoid (human). Level-1 bonus feat cannot be on the fighter bonus-feat list. Extra skill points: 4 initially and 1 each later level, spendable only on Strength-, Dexterity- or Constitution-based skills."
+  ],
+  "keena": [
+    "Humanoid (human). Level-1 bonus feat must be metamagic, item creation or a skill-bonus feat. Extra skill points: 4 initially and 1 each later level, only for Intelligence-, Wisdom- or Charisma-based skills."
+  ],
+  "kalashtar": [
+    "Mind-affecting saves (including possession) +2. Bluff, Diplomacy and Intimidate +2; Disguise +2 to impersonate humans. Sleeps without dreams; immune to dream-dependent effects.",
+    "Naturally Psionic: 1 PP per character level. Mindlink 1/day, manifester level half HD (minimum 1). Without psionics rules: willing Intelligence 3+ target within 30 ft.; language-independent telepathy for 1 round/character level, any distance on the same plane."
+  ],
+  "karsite": [
+    "Retain human traits. DR 5/magic; spell resistance 10 + class levels. Proficient with martial weapons and light/medium armor.",
+    "Magic Draining Attacks: after a melee hit, Will DC 10 + Charisma modifier prevents suppression of one enemy magic weapon, armor or shield for 1 round. Choose a visible item known to be magical, otherwise select randomly.",
+    "Spell Healing: when SR blocks a spell, heal 2 HP per spell level. Cannot cast arcane or divine spells; spell-like abilities, psionics and magic items still work.",
+    "Retained human traits: Bonus feat at first level. Four extra skill points at first level and one at every later level."
+  ],
+  "mortif": [
+    "Darkvision 60 ft.; cold and electricity resistance 5. Chill touch 1/day, caster level equal to character level (minimum 1)."
+  ],
+  "neanderthal": [
+    "Primitive Weapon Mastery: attacks +1 with bolas, club, dart, greatclub, goad, harpoon, iuak, javelin, longspear, quarterstaff, ritiik, shortbow, shortspear, sling, spear, sugliin, throwing axe and tiger skull club. Listen, Spot and Survival +2.",
+    "Climate Tolerant: no environmental Fortitude checks from −20°F through 140°F; no protection from actual fire/cold damage. Counts as Cold Endurance for prerequisites. Counts as human for race effects.",
+    "Illiterate: literacy costs 2 skill points; only wizard levels grant it automatically."
+  ],
+  "saurian-shifter": [
+    "Humanoid (reptilian, shapechanger); low-light vision; Balance, Climb and Jump +2.",
+    "Shifting (Su): free action, 1/day, duration 3 + modified Constitution modifier rounds. One chosen trait supplies its ability adjustment and benefit. Shifting is inherited, not a contagious or curable curse.",
+    "Choose one permanent trait at creation; these benefits apply while shifting.",
+    "Beasthide: Constitution +2, natural armor +2. Broadwing: Dexterity +2; treat falls as 40 ft. shorter for damage. Junglerunner: Dexterity +2, land speed +20 ft. Raptorleap: Strength +2, Jump +4, all jumps count as having a running start.",
+    "Longtooth: Strength +2; bite 1d6 + 1 per four character levels, once per round; may be secondary at −5 alongside a weapon.",
+    "Razorclaw: Strength +2; each claw deals 1d4 + 1 per four character levels. One claw as a standard action or two as a full attack; no iterative attacks per claw. One claw can act as a light off-hand weapon, imposing −2 on all attacks that round.",
+    "Widetail: Constitution +2; tail slap deals 1d6 bludgeoning + 1 per four character levels, once per round. May be a secondary attack at −5 alongside a weapon."
+  ],
+  "sea-kin": [
+    "Humanoid (human); low-light vision. Four extra skill points at level 1, then one per level. Escape Artist +2. Tridents and nets count as simple weapons.",
+    "Hold Breath: 8 × Constitution score rounds. Water Dependency: immerse completely at least weekly. Afterwards, daily Constitution check DC 10 + additional days or suffer 1 Constitution damage. Immersion restores 1d4 Constitution per hour."
+  ],
+  "shadowswyft": [
+    "Outsider native to Shadow, extraplanar elsewhere; unaffected by humanoid-only spells. Darkvision 120 ft. and low-light vision. Initiative +2; Hide and Move Silently +4.",
+    "Light Blindness: sudden bright light blinds for 1 round, then dazzles throughout exposure."
+  ],
+  "sharakim": [
+    "Humanoid (human); darkvision 60 ft.; natural armor +1.",
+    "Shadow Affinity: Hide, Move Silently, Search and Spot +2 in darkness or shadowy light. Bright sunlight/daylight imposes −1 attacks. Attacks against orcs, including half-orcs, gain +1."
+  ],
+  "shifter": [
+    "Humanoid (shapechanger); low-light vision; Balance, Climb and Jump +2.",
+    "Shifting (Su): free action, duration 3 + modified Constitution modifier rounds; 1/day. Choose one shifter trait for its ability adjustment and benefit. Each shifter feat adds 1 round; every two add another daily use. Not contagious or curable as lycanthropy.",
+    "Choose one permanent trait at creation. Its shifting benefits apply only while shifting unless stated otherwise.",
+    "Beasthide: Constitution +2 and natural armor +2. Cliffwalk: Dexterity +2 and climb 20 ft. Dreamsight: Wisdom +2 and speak with animals; Handle Animal and wild empathy +2 even outside shifting.",
+    "Gorebrute: Strength +2; charge-only horns deal 2d6 + 1 per four character levels. The horn charge cannot include any other attack, even with pounce. Longstride: Dexterity +2 and land speed +10 ft.",
+    "Longtooth: Strength +2; bite 1d6 + 1 per four character levels, once per round; may be secondary at −5 alongside a weapon.",
+    "Razorclaw: Strength +2; each claw deals 1d4 + 1 per four character levels. One claw as a standard action or two as a full attack; no iterative attacks per claw. One claw can act as a light off-hand weapon, imposing −2 on all attacks that round.",
+    "Swiftwing: Dexterity +2 and fly 20 ft. (average). Hands can hold objects but cannot do anything else while flying; no medium/heavy armor or load. Truedive: Constitution +2, swim 30 ft., Swim +8; breath-holding lasts five times Constitution score rounds even outside shifting.",
+    "Wildhunt: Constitution +2 and scent while shifting; Survival +2 outside shifting. Scent detects creatures at 30 ft. (60 upwind, 15 downwind), indicates direction with a move action, and pinpoints within 5 ft.; strong/overpowering scents multiply detection range by two/three. With Track, follow scent at typical fresh-trail DC 10, +2 per hour old, ignoring surface and visibility.",
+    "Winterhide: Constitution +2, natural armor +1, cold resistance 5 while shifting; racial Fortitude +2 against extreme environmental cold."
+  ],
+  "silverbrow-human": [
+    "Dragonblood subtype. Feather fall uses/day: 1 + one per 5 HD. Lose human extra skill points. Disguise +2 and always a class skill; retain the human bonus feat.",
+    "Retained human traits: Bonus feat at first level."
+  ],
+  "skulk": [
+    "Humanoid (human). In light/no armor: Move Silently +8 and Hide +15.",
+    "Innate Nondetection: divinations targeting you require a DC 20 caster-level check. Peerless Camouflage removes movement penalties on Hide, even when running. Trackless Path raises Survival tracking DC by 10."
+  ],
+  "underfolk": [
+    "Humanoid (human); darkvision 60 ft.; Listen +2. Four extra skill points at level 1, then one each level. Light/heavy picks count as simple weapons.",
+    "Camouflage: change coloration at will; Hide +4, or +10 in rocky terrain. Works against darkvision, not true seeing. Bright sunlight/daylight dazzles."
+  ],
+  "volodni": [
+    "Plant: immune to poison, sleep, paralysis, stunning, polymorph, critical hits and mind-affecting effects. Cold resistance 5; low-light vision; Hide +4 in woods.",
+    "Piercing damage is halved, minimum 1. Sustenance: 2 hours sleep, one-quarter human food/water; arcane preparation still requires 8 hours rest."
+  ],
+  "aarakocra": [
+    "Land 20 ft.; fly 90 ft. (average); natural armor +1; javelin proficiency. Craft (one choice), Knowledge (nature), Listen and Spot +2.",
+    "Flying: two talons 1d4 each or a weapon held in talons. Grounded: wing-claw weapons at normal BAB plus secondary bite 1d3 + half Strength at −5 attack.",
+    "Claustrophobia: −4 attacks and skill checks in enclosed areas."
+  ],
+  "athasian-aarakocra": [
+    "Monstrous humanoid; unaffected by humanoid-only spells. Natural armor +1; javelin proficiency. Craft (one), Knowledge (nature), Listen and Spot +2.",
+    "Flying: two talons 1d4 each, or a weapon held in them. Grounded: wing-claw weapons and secondary bite 1d3. Enclosed spaces impose −4 attacks and skills.",
+    "Inborn Power: 3 PP and elfsight; combine with class PP/powers. Manifester level equals character level; Charisma DCs or the manifesting ability of a psionic class you have."
+  ],
+  "adu-ja": [
+    "Plant traits: immune to mind-affecting effects, poison, sleep, paralysis, polymorph, stunning, critical hits and humanoid-only effects. No sleep, but spell recovery still needs 8 hours rest. Low-light vision; woodland stride.",
+    "Photosynthesis: at least 4 hours direct sunlight reduces food to one-quarter normal. With sunlight and a gallon of water, resting heals 2 HP/level/day; activity permits normal resting healing. Regrow a limb (not a head) with 1 month light activity or half that with bed rest.",
+    "Diplomacy, Perform and Survival +4; Survival always a class skill. Bluff and Sense Motive −4. Fire damage +50%. Speak with plants 1/day, CL 1."
+  ],
+  "hound-archon": [
+    "Natural armor +9; bite 1d8 and slam 1d4. Weapons overcome DR as good and lawful. Darkvision 60 ft., low-light vision, scent; DR 10/evil; SR 16 + class levels.",
+    "Archon traits: aura of menace (Will DC 15 + Charisma modifier), electricity/petrification immunity, poison saves +4, magic circle against evil, teleport and tongues.",
+    "At will, CL 6: aid, continual flame, detect evil and message.",
+    "Change Shape: Small–Large canine animal form; replace your bite/slam/greatsword attacks with that form’s bite."
+  ],
+  "armand": [
+    "Darkvision 60 ft.; natural armor +4; two claws 1d4.",
+    "Defensive Stance: move action; attacks +2, resistance +2 to saves, dodge AC +4 until you move. Stability: +4 to resist bull rush/trip when grounded or burrowing."
+  ],
+  "asherati": [
+    "Natural armor +1; needs one-quarter normal drinking water. Heat Endurance bonus feat; eagle’s claw counts as martial. Move Silently/Hide +2, with another Hide +2 in sand; cannot hide while glowing.",
+    "Sandswim: move and breathe through loose sand, ash or dust at land speed with light armor/load. Heavier armor or medium load reduces speed to 5 ft.; heavy load prevents movement. No passage through rock, packed dirt or slipsand; no water/gas breathing.",
+    "Body Lamp: at-will bright light 60 ft., dim 120 ft.; identify solid shapes through loose soil to 60 ft., without fine detail or bypassing concealment. Once daily, free-action flash dazzles within 30 ft. for 1 minute; Fortitude DC 10 + half level + Charisma modifier negates.",
+    "When soaked: attacks, ability checks and skills −1. Immersion immediately requires drowning checks; cannot hold breath."
+  ],
+  "azer": [
+    "Darkvision 60 ft.; natural armor +6; SR 13 + class levels. Heat adds 1 fire damage to unarmed attacks and conducted metallic-weapon attacks. Fire immunity; cold vulnerability."
+  ],
+  "bariaur": [
+    "Ysgard-native outsider, extraplanar elsewhere; darkvision 60 ft. SR 11 + class levels; Will +2 against spells/spell-like abilities; Listen/Spot +2.",
+    "Quadruped: bull rush/trip resistance +4; carrying capacity ×1.5. Uses barding, not humanoid armor or boots. Powerful Charge: one ram attack for 2d6 + 1½ Strength bludgeoning."
+  ],
+  "exalted-bariaur": [
+    "Outsider (chaotic, good, extraplanar), native to Ysgard; weapons count as chaotic/good for DR. Darkvision 60 ft.; space/reach 10 ft. SR 11 + class levels; Will +2 against magic; Listen/Spot +2.",
+    "Quadruped: bull rush/trip resistance +4; carrying capacity ×1.5; requires barding and cannot wear humanoid boots. Powerful Charge: one gore, 2d6 + Strength bludgeoning. Racial outsider HD provide two feats."
+  ],
+  "cactacae": [
+    "Plant type; low-light vision; immune to poison, sleep effects, polymorph, paralysis, stunning and critical hits. Unlike most plants, needs sleep and remains susceptible to mind-affecting effects. Natural armor +1; wood-related Craft +2.",
+    "Powerful Build: count one size larger for advantageous opposed-check size modifiers and weapon size; actual space/reach unchanged; stacks with actual size changes.",
+    "Spines deal 1d6 lethal when dealing grapple damage. Rivebow, chakri and greatcleaver count as martial."
+  ],
+  "catfolk": [
+    "Low-light vision: twice human distance in dim light, retaining color/detail. Natural armor +1."
+  ],
+  "centaur": [
+    "Large quadruped; space 10 ft., reach 5 ft. Darkvision 60 ft.; natural armor +3."
+  ],
+  "wendle-centaur": [
+    "Replace centaur space/reach with 5 ft./5 ft.; natural armor +5 replaces +3.",
+    "Retained centaur traits: Proficient with simple weapons and shields. Two hooves deal 1d6 each."
+  ],
+  "chitine": [
+    "Four arms grant grapple +4. Palm hooks grant +4 to resist disarm. Sunlight or daylight dazzles. Short swords count as simple weapons."
+  ],
+  "daelkyr-half-blood": [
+    "Aberration; darkvision 60 ft.; simple-weapon and weaponlike-symbiont proficiency; armor proficiency follows class. Eats, sleeps and breathes. Symbiont Mastery bonus feat.",
+    "One personal symbiont: initially breed leech, crawling gauntlet or throwing scarab; level 5 adds stormstalk/winter cyst; level 10 spellwurm/tentacle whip; level 15 tongue worm. Replacing a lost personal symbiont takes 2d4 days; cannot replace a living one or regrow other acquired symbionts. New choices replace the old personal symbiont.",
+    "Dependency: each 24 hours without symbiont contact inflicts 1 Constitution damage, unhealable until contact resumes.",
+    "Unbalanced Mind: mind readers must pass Will DC 10 + half level + Charisma modifier or be dazed 1 round."
+  ],
+  "darfellan": [
+    "Swim 40 ft.; Swim +8; may take 10 under threat and run in a straight line underwater. Hold breath for 8 × Constitution score rounds. Underwater blindsense 20 ft.",
+    "Bite 1d6: alone as primary, add 1½ Strength; with a manufactured-weapon full attack, secondary at −5. BAB extra attacks belong only to the primary attack. Attacks and damage against sahuagin +2."
+  ],
+  "cambion": [
+    "Darkvision 60 ft.; natural armor +2; immune to electricity/poison; acid, cold and fire resistance 10; DR 5/good or magic; telepathy 100 ft. Standard cambion SR 16 + class levels (the source separately lists marquis SR 17 + class levels).",
+    "Alternate Form: standard action 1/day, one fixed Medium humanoid form, polymorph at CL 6 without healing; lasts until voluntarily ended.",
+    "Silent Metal removes armor penalties from Hide/Move Silently. Weapons count as chaotic/evil for DR. Uncanny Dodge retains Dexterity to AC when flat-footed.",
+    "Spell-like abilities, CL 6: detect magic, fear, mirror image at will; invisibility and levitate 7/day. Marquis-only charm person is a separate variant."
+  ],
+  "diaboli": [
+    "Native outsider (chaotic); darkvision 60 ft.; saves against spells/spell-like effects +2. Intimidate +2 against animals/humanoids; Diplomacy, Handle Animal, Perform and Sense Motive −2. Trident counts as simple.",
+    "Secondary tail attack: −5 attack, 1d4 damage. Poison doses/day 3 + Constitution modifier; Fortitude DC 10 + half HD + Constitution modifier or sickened 2d4 rounds, no secondary damage."
+  ],
+  "diopsid": [
+    "Monstrous humanoid; darkvision 60 ft.; natural armor +4; sleep immunity and no sleep needed. Free-action light toggle: bright 10 ft., dim another 20 ft.",
+    "Wings: immediate action, descend 60 ft./round without falling damage; unavailable when unable to act, including paralysis/unconsciousness.",
+    "Extra arms: free secondary arms can support weapons one size larger; all four arms can wield two two-handed weapons with normal two-weapon penalties and 1½ Strength damage each. Using secondary arms separately while primary arms carry items gives half Strength damage and −4 to all attacks per light weapon, −8 per one-handed weapon; no two-handed weapon in secondary arms alone. Secondary-arm shields impose their armor check penalty on attacks and skills. An empty hand permits somatic casting.",
+    "Limb Symmetry waives Dexterity prerequisites for feats named “two-weapon,” not other prerequisites. Custom armor costs as one size larger; medium armor imposes Dexterity −2, heavy −4."
+  ],
+  "doppelganger": [
+    "Monstrous humanoid (shapechanger), retained in other forms. Darkvision 60 ft.; natural armor +4; immune to sleep and charm. Bluff/Disguise +4; changing shape adds Disguise +10 circumstance; reading the target’s mind adds another +4 circumstance to Bluff/Disguise.",
+    "Detect Thoughts: CL 18, Will DC 13; free-action suppress/resume. Change Shape: Small or Medium humanoid, no natural attacks, indefinite duration. Not dispellable; death restores natural form and true seeing reveals it."
+  ],
+  "baaz": [
+    "Dragon: immune to sleep/paralysis; darkvision 60 ft. and low-light vision. Natural armor +2; disease immunity; SR 8 + class level. Racial HD grant one feat; bonus simple weapons, longsword, light armor, shields and Run.",
+    "Two claws 1d4 + Strength and bite 1d4 + half Strength; manufactured weapon plus one secondary claw/bite at −5 and half Strength.",
+    "Death Throes: petrify at death; a slashing/piercing killing weapon becomes trapped unless Reflex DC 12 + Constitution modifier succeeds. Body crumbles after 1d4 minutes, freeing intact items. Return requires resurrection, true resurrection or wish.",
+    "Glide: no fall damage and travel up to four times descent horizontally. Under a dragon commander’s orders or sight, attacks/saves +1 morale. Needs one-tenth human food/water."
+  ],
+  "bozak": [
+    "Dragon traits: sleep/paralysis immunity, darkvision 60 ft., low-light vision. Natural armor +8; disease immunity; SR 14 + class level. Racial HD grant two feats; proficient with simple weapons, longsword, short sword, longbow, light armor and shields; bonus Run.",
+    "Two claws 1d4 + Strength and secondary bite 1d6 + half Strength; a manufactured-weapon full attack can include one secondary claw and bite.",
+    "Casts as sorcerer 4; sorcerer class levels add to this spellcasting. Death explosion: 10-ft. radius, 1d6 damage, Reflex DC 10 + half HD + Constitution modifier halves. Return requires resurrection, true resurrection, miracle or wish.",
+    "Glide without falling damage up to four times descent horizontally (clumsy). Under dragon command, attacks/saves +1 morale. Needs one-tenth normal food/water."
+  ],
+  "kapak": [
+    "Dragon: sleep/paralysis and disease immunity, darkvision 60 ft., low-light vision. Natural armor +2; SR 11 + class level. Racial HD grant one feat; proficient with simple weapons, short sword, shortbow and light armor; bonus Run.",
+    "Bite 1d4 + Strength, or secondary at −5 with half Strength alongside a weapon. Sneak attack +1d6, stacking with other sources: target denied Dexterity, vulnerable anatomy, no concealment, ranged within 30 ft.; not multiplied on a critical.",
+    "Death creates a 5-ft.-radius acid pool for 1d6 rounds, dealing 1d6 acid per round to creatures/unattended objects; return requires true resurrection or wish.",
+    "Female saliva heals 2d6 by licking (not biting), at most once per target per 4 hours. Male bite/blade poison: Fortitude DC 11 + Constitution modifier; initial/secondary 1d6 Dexterity. Coating a piercing weapon takes a full round, provokes, and lasts 3 rounds or one hit.",
+    "Glide safely up to four times descent horizontally; dragon commander grants +1 morale attacks/saves; one-tenth normal food/water."
+  ],
+  "dracotaur": [
+    "Space/reach 10/5 ft.; darkvision 60 ft., low-light vision; natural armor +5. Simple weapons/light armor proficiency; immune to sleep/paralysis. Bite 1d8; tail 1d8 + 1½ Strength.",
+    "Spit Fire: standard-action ranged touch, 20-ft. range increment, 2d6 fire on direct hit and 1d4 splash within 5 ft.; no ongoing burn. Wait 1 minute before reuse."
+  ],
+  "dragonkin": [
+    "Claws 1d6 each. With a weapon in the other hand, the source uses two-weapon penalties for the claw. Airborne full attacks add two rear-claw attacks at full BAB (−5 if also using a manufactured weapon).",
+    "Detect magic at will (supernatural), caster level equals HD. Natural armor +7."
+  ],
+  "dvati": [
+    "Darkvision 60 ft. One character occupies two bodies: shared level, XP, feats, skills, spell slots and daily resources. Both act/move independently except during casting; both must take the casting actions, or the other twin must take no actions at all (even free actions). Otherwise the spell is lost. Only one supplies components.",
+    "Split each Hit Die roll equally between bodies, then add each body’s full Constitution modifier. Track HP and ordinary saves separately. Personal spells affect both on the same plane; other targeted spells affect only their target. Mind-affecting effects and negative levels affect both, with one shared save when applicable. Resurrection level loss affects both.",
+    "Telepathy spans any distance/plane without shared senses. Full-round action reveals the other twin’s HP/mental state and, on the same plane, direction/distance. A survivor loses 1d4 Constitution and Wisdom per day plus cumulative −1 attacks/skills/saves, unhealable until reunion in life or death.",
+    "Echo Attack: while both flank and each spends a move action speaking, opponent makes Will against one Perform (sing) result; failure grants twins +1 attacks or AC against it for 1 round. Deaf/unflankable targets are immune.",
+    "Pair Link: mutual flanking grants +3 instead of +2; aiding the twin’s attacks or AC grants +4 instead of +2.",
+    "Spell Conductor: move a self-cast harmless touch spell to the other twin on the same plane as a move action, or during casting. Duration unchanged; cannot transfer others’ spells."
+  ],
+  "arctic-dwarf": [
+    "Icecunning extends stonecunning to ice structures/natural features. Appraise/Craft involving ice +2. Attack bonus +1 against kobolds replaces the bonus against orcs.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Poison saves +2. Saves against spells and spell-like abilities +2. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "athasian-dwarf": [
+    "Lose stonecunning, weapon familiarity, ordinary dwarf poison resistance, orc attack/giant dodge bonuses and racial Appraise/Craft bonuses.",
+    "Inborn Power: 3 PP and vigor; manifester level equals character level. Add to class PP/powers; use Charisma DCs or a psionic class’s manifesting ability.",
+    "Magic/psionic saves +2. Focus: define one task; Will +4 against charm/compulsion that diverts or delays it. Dwarven Blood grants Fortitude +4 against poison.",
+    "Retained dwarf traits: Stability: +4 to resist bull rush and trip while firmly grounded. Attacks against goblinoids +1. Armor and carried load do not reduce base land speed."
+  ],
+  "azerblood": [
+    "Counts as dwarf for racial effects. Darkvision 60 ft.; fire resistance 10. Waraxe/urgrosh count as martial. Grounded bull rush/trip resistance +4.",
+    "Poison and magic saves +2. Attacks +1 against fire/magma/steam mephits and salamanders; dodge AC +4 against giants.",
+    "Heat metal 1/day, CL equals character level, Charisma DC. Forged: heat/fire saves +1, increasing by one per five additional levels."
+  ],
+  "badland-dwarf": [
+    "Waterwise replaces stonecunning: Survival +2 to find water; Search +2 for water-related construction/hazards, automatic check within 10 ft., and rogue-style detection of water traps.",
+    "Thirst begins after 48 + Constitution score hours. Lose stone/metal Appraise/Craft bonuses. Heat Endurance bonus feat.",
+    "Retained dwarf traits: Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Poison saves +2. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Armor and carried load do not reduce base land speed."
+  ],
+  "dark-dwarf": [
+    "Darkvision 120 ft.; Hide, Listen and Move Silently +2. Bright sunlight/daylight imposes −2 circumstance to attacks, saves and checks.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Poison saves +2. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "dream-dwarf": [
+    "Darkvision 90 ft. Stonecunning: Search +2 for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection and intuitive underground depth.",
+    "Waraxe/urgrosh count as martial; grounded bull rush/trip resistance +4. Diplomacy +2 with earth-subtype creatures.",
+    "Dream Sight: see ethereal creatures distinctly from material creatures. While touching ground, divination and earth spells gain +1 caster level, including checks; stacks with other spell-power bonuses."
+  ],
+  "frost-dwarf": [
+    "Humanoid (dwarf), native to Abyss and extraplanar elsewhere. Darkvision 120 ft.; immune to paralysis, phantasms and poison; cold resistance 10.",
+    "Grounded bull rush/trip resistance +4; magic saves +2; against giants attacks +1 and dodge AC +4. Move Silently +4; stone/metal Appraise/Craft +2.",
+    "Chill touch and obscuring mist each 1/day, CL class level +2 (minimum 3). Bright sunlight/daylight dazzles."
+  ],
+  "lesser-duergar": [
+    "Lose dwarven weapon familiarity. Saves against poison, phantasms and paralysis +2; Hide/Move Silently +2.",
+    "Enlarge person 1/day, self and carried gear only, CL twice class levels (minimum 3). Bright sunlight/daylight dazzles.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Stability: +4 to resist bull rush and trip while firmly grounded. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "exiled-dwarf": [
+    "Lose darkvision, stonecunning, stability and racial poison/magic save bonuses. Gain a bonus feat at level 1.",
+    "Against orcs/goblinoids, attacks and damage +2 replace the ordinary +1 attack bonus. Giant dodge AC +6 replaces +4.",
+    "Retained dwarf traits: Dwarven waraxe and urgrosh count as martial weapons. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "fireblood-dwarf": [
+    "Dragonblood subtype; fire resistance 5. Dragon Dodge grants dodge AC +4 against dragons, lost when denied Dexterity to AC. Lose ordinary dwarf poison saves and giant dodge bonus.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "glacier-dwarf": [
+    "Icecunning replaces stonecunning: Search +2 for unusual snow/ice construction, traps and hazards; automatic check within 10 ft.; rogue-style ice/snow trap detection.",
+    "Cold Tolerant: cold saves +2; no environmental Fortitude checks between −20°F and 90°F; counts as Cold Endurance for prerequisites. Lose dwarf poison resistance. Snow/ice/frostfell-material Appraise/Craft +2 replaces stone/metal bonuses.",
+    "Retained dwarf traits: Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Armor and carried load do not reduce base land speed."
+  ],
+  "gully-dwarf": [
+    "Survival Instinct: Hide, Move Silently and Survival +2; may forage in cities. Hardy: Fortitude +2 against poison/disease.",
+    "Pitiable: Diplomacy +4 to persuade an enemy not to hurt you. Cowardly: fear saves and level checks resisting Intimidate −4."
+  ],
+  "jungle-dwarf": [
+    "Low-light vision replaces darkvision. Heal, Knowledge (nature), Survival and Spot +2. Lose stonecunning and stone/metal Craft bonuses.",
+    "Retained dwarf traits: Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Poison saves +2. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "seacliff-dwarf": [
+    "Strong Swimmers: Swim +2; double Constitution for breath-holding duration. Lose the dwarf attack bonus against orcs/goblinoids.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Poison saves +2. Saves against spells and spell-like abilities +2. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "urdunnir": [
+    "Poison saves +4 replace the usual dwarf bonus.",
+    "Stone Walk: move through earth/stone carrying up to twice your body weight; everyone inside must hold breath. Stone shape at will, CL 8. Shape metal at will, once/round as a full-round action, CL 8, maximum 5 cubic feet.",
+    "Retained dwarf traits: Stonecunning: +2 Search for unusual stonework, automatic check within 10 ft., rogue-style stone-trap detection, and intuitive underground depth. Dwarven waraxe and urgrosh count as martial weapons. Stability: +4 to resist bull rush and trip while firmly grounded. Saves against spells and spell-like abilities +2. Attacks against orcs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Appraise for stone/metal items +2. Craft for stone/metal items +2. Armor and carried load do not reduce base land speed."
+  ],
+  "deepwyrm-drow": [
+    "Dragonblood subtype. Detect magic 3/day and disguise self 1/day, CL equals character level. Bluff +2. Lose faerie fire and the racial +2 Will bonus against spells/spell-like abilities.",
+    "Retained drow traits: Immune to magical sleep. Enchantment saves +2. Automatic Search check for secret/concealed doors passed within 5 ft. Spell resistance 11 + class levels. Proficient with hand crossbow, rapier, and short sword. Dancing lights once daily. Darkness once daily. Racial spell-like abilities use caster level equal to class levels; Charisma-based DCs. Abrupt bright light blinds for 1 round, then dazzles while exposed."
+  ],
+  "deepwyrm-half-drow": [
+    "Dragonblood subtype. Detect magic 3/day and disguise self 1/day, CL equals character level. Bluff +2. Lose the standard Diplomacy bonus and any standard +2 Will bonus against spells/spell-like abilities.",
+    "Retained half drow traits: Immune to magical sleep. Enchantment saves +2. Counts as an elf for race-related effects. Darkvision 60 ft.; counts as drow for race-related effects."
+  ],
+  "lesser-drow": [
+    "Darkvision 60 ft. replaces low-light vision. Hand crossbow, rapier and short sword proficiency replace ordinary elven weapon training. Will against spells/spell-like effects +2.",
+    "With Charisma 10+: dancing lights, daze and touch of fatigue each 1/day; CL equals class levels. Sudden bright light blinds for 1 round, then dazzles while exposed.",
+    "Retained elf traits: Immune to magical sleep. Saves against enchantments +2. Automatic Search check for secret/concealed doors passed within 5 ft."
+  ],
+  "domovoi": [
+    "Low-light vision; simple-weapon proficiency; natural armor +2. Fire immunity; cold damage +50%. Slippery: Escape Artist/grapple +2.",
+    "CL 3, DC 10 + spell level + Charisma modifier: produce flame and smoke-only pyrotechnics at will; flaming sphere 3/day."
+  ],
+  "duskling": [
+    "Fey (incarnum), extraplanar away from its home Outer Plane; unaffected by humanoid-only effects. Low-light vision; +1 permanent essentia, creating a pool if needed.",
+    "Invested essentia grants +5 ft. enhancement to land speed per point, only in light/no armor with at most a light load."
+  ],
+  "gruwaar": [
+    "Fey; unaffected by humanoid-only effects. Darkvision 60 ft.; Hide, Move Silently and Sleight of Hand +2. Two claws 1d3 + Strength each. Disguise self 1/day, CL 1."
+  ],
+  "jaebrin": [
+    "Fey; low-light vision; luck AC +1; enchantment immunity. Bite 1d3; enchantment spell DCs +1; Appraise, Bluff, Perform and Diplomacy +2. Spellcraft is always class/trained; +4 for enchantments.",
+    "Feign Enchantment: recognize an incoming enchantment and display its aura while pretending to be affected, fooling magical detection. Opposed Sense Motive against your Bluff reveals the pretense. Lasts for the effect’s duration or until dismissed.",
+    "Will Sapper: damaging bite requires a Constitution-based Will save or imposes −4 Will for 1 minute; repeated bites do not stack."
+  ],
+  "killoren": [
+    "Fey; low-light vision; magic sleep immunity; enchantment saves +2. Cold-iron weapon attacks take −2, including cold-iron ammunition.",
+    "Nature’s Might: meditate 10 minutes at sunrise; choose one aspect until next sunrise. Ancient: Knowledge (nature) bonus equals HD and another +2 enchantment saves. Hunter: Hide, Listen, Move Silently, Spot and initiative +2. Destroyer: smite once/hour, daily maximum Charisma bonus (minimum 1); add Charisma bonus to attack and HD to damage against aberrations, constructs, humanoids, oozes, outsiders or undead. Wrong targets still consume the use."
+  ],
+  "pixy": [
+    "Low-light vision; natural armor +1; DR 10/cold iron; SR 15 + class levels. Greater Invisibility stays active while attacking; free-action suppress/resume.",
+    "CL 8, Charisma DCs, each 1/day: lesser confusion, dancing lights, detect chaos/good/evil/law, detect thoughts, dispel magic, entangle and permanent image (sight/sound only). The rare Otto’s irresistible dance variant also gains that spell 1/day; it is not universal."
+  ],
+  "satyr": [
+    "Low-light vision; natural armor +4; head butt 1d6; DR 5/cold iron.",
+    "Pipes: choose charm person, sleep or fear; affects non-satyrs in a 60-ft. spread, Will negates, Charisma-based DC, CL 10. Successful saves grant immunity to that set of pipes for 24 hours; non-satyrs cannot activate the magic."
+  ],
+  "uldra": [
+    "Fey; darkvision 120 ft., low-light vision. Knowledge (nature) +2 and always a class skill. Protected from environmental cold along with equipment; cold resistance 5 against attacks.",
+    "Frosty Touch: free action, add 1 cold damage to unarmed attacks and held melee weapons; does not stack with a weapon’s existing cold damage.",
+    "CL equals HD, Wisdom-based DCs: ray of frost 3/day; speak with animals and touch of fatigue each 1/day."
+  ],
+  "gargoyle": [
+    "Darkvision 60 ft.; natural armor +4; DR 10/magic. Freeze: remain motionless as a statue; Spot DC 20 notices you are alive."
+  ],
+  "wingwyrd": [
+    "Darkvision 60 ft.; natural armor +4; two claws 1d4, wing slam 1d6 and gore 1d6. Fiend Strike adds 1d6 against evil outsiders. DR 5/magic; natural attacks count as magic; SR 11 + HD.",
+    "Death Burst at −10 HP destroys the body and deals 1d6 fire/HD to adjacent evil creatures, Constitution-based Reflex halves. Possessions survive. Freeze resembles a statue; Spot DC 20 detects life."
+  ],
+  "garuda": [
+    "Natural armor +2; two claws 1d4. Vertical Strike: shooting straight down from at least 30 ft. doubles range increment and adds damage +2 on a hit.",
+    "Chaos Resistance grants +2 against chaos effects. Hunter’s Eyes: Spot +8 during daylight while flying."
+  ],
+  "jann": [
+    "Darkvision 60 ft.; natural armor +1; fire resistance 10; telepathy 100 ft.",
+    "Change Size 2/day: enlarge/reduce person, including self; Fortitude negates, Charisma DC, equivalent to a level-2 spell. CL 12: self-only invisibility and speak with animals 3/day; ethereal jaunt 1/day lasting 1 hour. Create food and water 1/day, CL 7.",
+    "Elemental Endurance: survive 48 hours on an elemental plane, then take 1 damage/hour until returning to Material. Plane shift, CL 13, reaches elemental, Astral or Material planes, carrying up to eight linked-hand companions."
+  ],
+  "cyclope": [
+    "Space/reach 10/10 ft.; low-light vision; simple-weapon proficiency; natural armor +10; two slams 1d4.",
+    "Rock Throwing: +1 racial attacks with 40–50 lb. rocks, range increment 120 ft., maximum five increments. Rock Catching: once/round as a free action when aware and ready, Reflex DC 15/20/25 for Small/Medium/Large rocks, plus any magical attack bonus, catches an otherwise hitting rock."
+  ],
+  "menta-cyclopean": [
+    "Darkvision 60 ft. Single Eye imposes −2 ranged attacks, Search and Spot.",
+    "Future Sight: 3/day, full-round touch, augury without components about another creature’s future; not self, and at most once per target daily."
+  ],
+  "feral-kind-cyclopean": [
+    "Darkvision 60 ft. Glimpse the Future: insight +1 initiative and Reflex. Single Eye imposes −2 ranged attacks, Search and Spot."
+  ],
+  "hill-giant": [
+    "Space/reach 10/10 ft.; low-light vision; natural armor +9. Proficient with simple/martial weapons, light/medium armor and shields.",
+    "Rock Throwing: +1 racial attacks with 40–50 lb. rocks, range increment 120 ft., maximum five increments. Rock Catching: once/round as a free action when aware and ready, Reflex DC 15/20/25 for Small/Medium/Large rocks, plus any magical attack bonus, catches an otherwise hitting rock."
+  ],
+  "jungle-giant": [
+    "Space/reach 10/10 ft.; low-light vision; natural armor +5; simple weapons/light armor proficiency.",
+    "CL 11, Charisma DCs: pass without trace and wood shape 3/day; entangle and snare 1/day. Woodland Stride crosses natural overgrowth at normal speed without damage."
+  ],
+  "sand-giant": [
+    "Low-light vision; natural armor +11; sand blaster counts as martial. Immune to fire, vulnerable to cold.",
+    "Meld into stone and statue each 1/day, CL 15. Heat Shimmer: free-action blur at will, CL 15."
+  ],
+  "stone-giant": [
+    "Space/reach 10/10 ft.; darkvision 60 ft., low-light vision; natural armor +11.",
+    "Rock Throwing: +1 racial attacks with 40–50 lb. rocks, range increment 180 ft., maximum five increments. Rock Catching: once/round as a free action when aware and ready, Reflex DC 15/20/25 for Small/Medium/Large rocks, plus any magical attack bonus, catches an otherwise hitting rock. Throwing uses both hands; catching gains Reflex +4 racial."
+  ],
+  "giff": [
+    "Powerful Build: count one size larger when advantageous for opposed-check size modifiers, size-limited special attacks and wielding weapons. Space/reach do not increase; stacks with actual size changes. Exotic Weapon Proficiency (firearms) bonus feat."
+  ],
+  "githyanki": [
+    "Darkvision 60 ft.; 3 racial PP at level 1, without granting ordinary power manifestation. Power resistance HD +5.",
+    "Cumulative psi-like abilities, ML half HD (minimum 1), Charisma DCs: level 1 far hand/psionic daze 3/day; level 3 concealing amorpha 3/day; level 6 psionic dimension door 3/day; level 9 telekinetic thrust 3/day and psionic plane shift 1/day."
+  ],
+  "duthka-gith": [
+    "Astral-native dragon, extraplanar elsewhere; counts as githyanki. Sleep/paralysis/fire immunity; cold resistance 5; darkvision 60 ft., low-light vision; natural armor +4; SR 5 + character level.",
+    "Psionics, CL character level, Charisma DCs: daze/mage hand 3/day; add blur 3/day at level 3, dimension door 3/day at 6, telekinesis 3/day and plane shift 1/day at 9.",
+    "Breath 1/day: 30-ft. cone, 6d8 fire; Reflex DC 10 + Constitution modifier halves. Two claws 1d4 + Strength; bite 1d6 + half Strength. Smite Good 1/day adds character level to damage against a good target."
+  ],
+  "githzerai": [
+    "Darkvision 60 ft.; 2 racial PP at level 1; power resistance HD +5.",
+    "Psi-like abilities: inertial armor, psionic daze, catfall and concussion each 3/day; plane shift 1/day from level 11. ML half HD (minimum 1); Charisma DCs."
+  ],
+  "gloaming": [
+    "Native outsider; low-light vision; bonus Portal Sensitive feat. Sudden bright light blinds 1 round, then imposes −1 circumstance attacks/saves/checks while exposed; eligible for Daylight Adaptation.",
+    "Illusion (shadow) spells gain CL +1; saves against shadow effects +2 and against psionics +4. Move Silently +4.",
+    "Luminescence: standard action sets any light level up to torchlight or none; lasts until changed, fading over 10 minutes after death."
+  ],
+  "flind": [
+    "Darkvision 60 ft.; natural armor +2. Flindbars count as martial weapons."
+  ],
+  "aquatic-gnome": [
+    "Swim 20 ft. Well-Traveled: Sense Motive/Gather Information +2. Lose the attack bonus against kobolds (retain goblinoids), and lose racial Craft (alchemy)/Listen bonuses.",
+    "Retained gnome traits: Gnome hooked hammer counts as martial. Saves against illusions +2. Illusion spell save DCs +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Speak with animals (burrowing mammals only) once daily for 1 minute. Charisma 10+ also grants dancing lights, ghost sound, and prestidigitation once each daily. Caster level 1; DC 10 + spell level + Charisma modifier.",
+    "Aquatic subtype: breathe water, not air unless another ability grants amphibious breathing. Outside water, hold breath for twice Constitution score rounds before suffocation checks. Swim +8; always take 10, and run while swimming straight. Aquan is a bonus language. Unearthed Arcana suggests optional LA +1 for mixed aquatic/non-aquatic underwater or ship campaigns."
+  ],
+  "chao-gnome": [
+    "Low-light vision; hooked hammer counts as martial. Chaos spells gain CL +1; giant dodge AC +4; Listen +2; confusion immunity.",
+    "Luck of Chaos 1/day: reroll immediately before success/failure is declared; keep the new result. Entropic shield 1/day; with Charisma 10+, daze, flare and prestidigitation each 1/day. CL 1, Charisma DCs."
+  ],
+  "fire-gnome": [
+    "Humanoid (fire, gnome), native to Bytopia and Fire, extraplanar elsewhere. Darkvision 60 ft.; fire immunity; cold damage +50%.",
+    "Stonecunning: Search +2 for stonework, automatic check within 10 ft., rogue-style stone-trap detection and intuitive depth. Fire spells/abilities gain CL +2. Attacks against kobolds/goblinoids +1; giant dodge AC +4.",
+    "Heat metal and produce flame each 1/day, CL character level +2 including the racial bonus."
+  ],
+  "ice-gnome": [
+    "Replace ordinary gnome spell-like abilities: speak with animals (arctic mammals only) 1/day, 1-minute duration. With Charisma 10+, dancing lights, prestidigitation and ray of frost each 1/day. CL 1, Charisma DCs.",
+    "Retained gnome traits: Gnome hooked hammer counts as martial. Saves against illusions +2. Illusion spell save DCs +1. Attacks against kobolds +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC."
+  ],
+  "tinker-gnome": [
+    "Craft (alchemy) +2; Will saves +2. Choose one lifelong Guild affiliation: Craft grants +2 all Craft; Technical +2 all Profession; Sage +2 all Knowledge."
+  ],
+  "stonehunter-gnome": [
+    "Dragonblood subtype. Hunter’s Insight: Climb and Survival +2. Lose racial illusion-save bonus and illusion spell DC increase.",
+    "Retained gnome traits: Gnome hooked hammer counts as martial. Attacks against kobolds +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC. Speak with animals (burrowing mammals only) once daily for 1 minute. Charisma 10+ also grants dancing lights, ghost sound, and prestidigitation once each daily. Caster level 1; DC 10 + spell level + Charisma modifier."
+  ],
+  "lesser-svirfneblin": [
+    "Darkvision 60 ft. Stonecunning: Search +2, automatic stonework check within 10 ft., rogue-style stone-trap detection and intuitive depth. Hooked hammer counts as martial.",
+    "Magic saves +2 replace illusion-only resistance. Dodge AC +1 against all creatures replaces giant-only +4. Illusion spell DCs +1. Hide +2, increasing to +4 underground.",
+    "Resistance, daze and lullaby each 1/day; CL half character level; DC 10 + spell level + Charisma modifier.",
+    "Retained gnome traits: Attacks against kobolds +1. Attacks against goblinoids +1."
+  ],
+  "techno-gnome": [
+    "Lose illusion-save bonus, illusion DC bonus and all racial spell-like abilities. Gain Alertness at level 1. Craft, Disable Device and Open Lock +2.",
+    "Retained gnome traits: Gnome hooked hammer counts as martial. Attacks against kobolds +1. Attacks against goblinoids +1. Dodge AC against giants +4; lost when denied Dexterity to AC."
+  ],
+  "wavecrest-gnome": [
+    "Attacks +1 against locathah/sahuagin replace kobold/goblinoid bonus. Replace gnome spell-like abilities with speak with animals (sea birds, 1 minute) 1/day; Charisma 10+ also grants dancing lights, know direction and prestidigitation each 1/day. CL 1, Charisma DCs.",
+    "Retained gnome traits: Gnome hooked hammer counts as martial. Saves against illusions +2. Illusion spell save DCs +1. Dodge AC against giants +4; lost when denied Dexterity to AC."
+  ],
+  "goatfolk": [
+    "Darkvision 60 ft.; natural armor +2; head butt 1d6; proficiency with greataxe and simple weapons.",
+    "Pack Fervor: within 30 ft. of another goatfolk, morale +2 attacks/damage and +4 saves against fear."
+  ],
+  "bhuka": [
+    "Sure Feet: shallow sand counts as normal terrain; deep sand as shallow. Bright sunlight never dazzles. Heat/dehydration Constitution checks and Fortitude saves +2; bonus Heat Endurance. Knowledge (nature) +2 and always a class skill.",
+    "Water Sense: detect drinkable water within 100 ft. with Survival; DC by depth: surface 10, up to 10 ft. 12, 11–20 ft. 15, 21–40 ft. 20, 41–70 ft. 25, 71–100 ft. 30."
+  ],
+  "aquatic-goblin": [
+    "Swim 30 ft. Thievery: Disable Device/Sleight of Hand +2. Move Silently and Ride racial bonuses decrease to +2.",
+    "Retained goblin traits: The ordinary single humanoid Hit Die is replaced by the first class level.",
+    "Aquatic subtype: breathe water, not air unless another ability grants amphibious breathing. Outside water, hold breath for twice Constitution score rounds before suffocation checks. Swim +8; always take 10, and run while swimming straight. Aquan is a bonus language. Unearthed Arcana suggests optional LA +1 for mixed aquatic/non-aquatic underwater or ship campaigns."
+  ],
+  "arctic-goblin": [
+    "Low-light vision replaces darkvision. Bluff and Sleight of Hand +2; lose racial Move Silently bonus.",
+    "Retained goblin traits: The ordinary single humanoid Hit Die is replaced by the first class level."
+  ],
+  "blue": [
+    "Darkvision 60 ft.; 1 racial power point at level 1."
+  ],
+  "dekanter-goblin": [
+    "Darkvision 60 ft.; natural armor +4; fast healing 3; cold resistance 5; simple-weapon proficiency. Racial HD: 2d8, BAB +2, Fort/Ref/Will +0/+3/+3, one feat; skill points 5 × (2 + Intelligence modifier, minimum 1) with Climb, Intimidate, Jump, Listen, Sense Motive and Spot as racial class skills. No second first-level ×4 skill multiplier.",
+    "Horn: 1d6 + Strength, critical ×3; two secondary claws 1d4 + half Strength at −5. With a manufactured weapon, add either horn or one claw as a secondary attack."
+  ],
+  "desert-goblin": [
+    "Low-light vision replaces darkvision. Gather Information +2.",
+    "Retained goblin traits: The ordinary single humanoid Hit Die is replaced by the first class level."
+  ],
+  "forestkith-goblin": [
+    "Darkvision 60 ft.; natural armor +1; nets count as martial. Bright sunlight/daylight dazzles.",
+    "Discordant Frenzy: at least three forestkith attacking in melee can shake creatures of 2 HD or fewer within 30 ft. for 1d4 rounds; Charisma-based Will negates and grants 24-hour immunity. Mind-affecting fear.",
+    "Tree Shape: CL 12, small tree/shrub/limb; cannot voluntarily dismiss, ends at sunset or on taking damage."
+  ],
+  "jungle-goblin": [
+    "Climb 20 ft., Climb +8 using Dexterity instead of Strength. May take 10 while threatened, retain Dexterity to AC, and accelerate to double climb speed at −5; cannot run while climbing.",
+    "Low-light vision replaces darkvision; Jump +4; lose racial Hide/Move Silently bonuses.",
+    "Retained goblin traits: The ordinary single humanoid Hit Die is replaced by the first class level."
+  ],
+  "snow-goblin": [
+    "Climb 20 ft.; Climb +8 and may take 10 under threat. Darkvision 60 ft.; Booming Voice grants Intimidate +4; Move Silently +4."
+  ],
+  "worghest": [
+    "Darkvision 60 ft., low-light vision, scent; bonus Track. Standard-action wolf form grants a bite; qualifies for wild-shape prerequisite feats.",
+    "Wolf bite allows a free trip attempt without touch attack or opportunity attack; failure cannot trigger a counter-trip.",
+    "Feed: full-round action on a humanoid you slew destroys its body and life force; grants death knell with the victim’s HD as CL. Resurrection requiring remains fails; wish/miracle/true resurrection has one 50% check per victim, with failure barring mortal restoration."
+  ],
+  "draconic-hobgoblin": [
+    "Humanoid (dragonblood, goblinoid); darkvision 60 ft., low-light vision; natural armor +1; two claws 1d3. Saves against magic sleep/paralysis +4; Move Silently +4; Intimidate/Spot +2."
+  ],
+  "half-blue-dragon-hobgoblin": [
+    "Dragon (goblinoid); darkvision 60 ft., low-light vision; electricity/sleep/paralysis immunity; natural armor +4; Move Silently +4. Two claws 1d4; bite 1d6.",
+    "Breath 1/day: 60-ft. lightning line, 6d8 damage; Reflex DC 10 + half HD + Constitution modifier halves."
+  ],
+  "sunscorch-hobgoblin": [
+    "Dragonblood subtype; Bluff +2; Fortitude +2 to avoid nonlethal heat damage.",
+    "Retained hobgoblin traits: The ordinary single humanoid Hit Die is replaced by the first class level."
+  ],
+  "norker": [
+    "Darkvision 60 ft.; Move Silently +4; natural armor +5; bite 1d4."
+  ],
+  "varag": [
+    "Humanoid (goblinoid); darkvision 60 ft.; natural armor +3; scent. Proficient with simple/martial weapons, light armor and shields."
+  ],
+  "vril": [
+    "Humanoid (goblinoid); darkvision 60 ft.; sonic resistance 5; Climb +4, Balance/Jump +2. Sudden bright light blinds 1 round; −1 attacks/saves/checks while exposed. Saves against drow sleep poison and spider venom −4.",
+    "Shriek 1/day: standard action, 15-ft. centered burst or 30-ft. cone; 1d6 sonic damage, Reflex DC 10 + half level + Constitution modifier halves; usable while raging. Source progression is contradictory (text says +1d6 at level 3, examples start at 6); agree the damage progression with the DM, maximum 4d6 at level 12.",
+    "Skinshift: move action for 3 + Constitution modifier rounds; DR 5 against one chosen physical damage type. Uses/day 1 + one per 4 levels."
+  ],
+  "feral-gargun": [
+    "Darkvision 60 ft.; cold resistance 5; natural armor +2; simple weapons only, no racial armor/shield proficiency. Two claws 1d6; a free claw may be secondary to a weapon. Counts as goliath.",
+    "Powerful Build: advantageous opposed-check and special-attack size limits, and weapon size, treat you as one size larger; space/reach unchanged; stacks with size changes.",
+    "Mountain Movement: standing jumps count as running starts; accelerated climb has no −5 penalty. Permanent high-altitude acclimation."
+  ],
+  "golmoid": [
+    "Natural armor +2; all Craft +2; enchantment saves +4. Endurance bonus feat at level 1."
+  ],
+  "grimlock": [
+    "Battleaxe proficiency; natural armor +4; scent. Immune to gaze, visual illusions and sight-dependent attacks.",
+    "Blindsight 40 ft.; beyond that, total concealment. Losing smell or hearing reduces this to Blind-Fight; losing both blinds you. Sonic effects and overpowering smells work normally."
+  ],
+  "grippli": [
+    "Low-light vision; bolas/nets count as martial. Attacks against vermin +1; dodge AC against animals/vermin +4; poison saves +2. Jump +4 and always a running start; Move Silently +2.",
+    "Illiterate even as wizard; spend 1 skill point per starting language to read/write it. Later languages follow class rules."
+  ],
+  "hadozee": [
+    "Glide at 40 ft. (average): no fall damage, travel 20 ft. horizontally per 5 ft. descent. Balance/Climb +4; retain Dexterity to AC while climbing and can climb with one hand occupied."
+  ],
+  "half-drow": [
+    "Darkvision 60 ft.; counts as drow for race-dependent effects and abilities.",
+    "Retained half elf traits: Immune to magical sleep. Enchantment saves +2. Counts as an elf for race-related effects."
+  ],
+  "aquatic-half-orc": [
+    "Swim 30 ft. Emissaries: Diplomacy and Gather Information +2.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3.",
+    "Aquatic subtype: breathe water, not air unless another ability grants amphibious breathing. Outside water, hold breath for twice Constitution score rounds before suffocation checks. Swim +8; always take 10, and run while swimming straight. Aquan is a bonus language. Unearthed Arcana suggests optional LA +1 for mixed aquatic/non-aquatic underwater or ship campaigns."
+  ],
+  "arctic-half-orc": [
+    "Low-light vision replaces darkvision; Diplomacy +2.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3."
+  ],
+  "desert-half-orc": [
+    "Low-light vision replaces darkvision; Run bonus feat.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3."
+  ],
+  "frostblood-half-orc": [
+    "Dragonblood subtype; cold resistance 10; vulnerability to fire. Endurance bonus feat; if a later source would grant Endurance again, choose another qualifying feat.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3."
+  ],
+  "jungle-half-orc": [
+    "Low-light vision replaces darkvision; Climb and Jump +2.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3."
+  ],
+  "scabland-half-orc": [
+    "Low-light vision replaces darkvision. Can go 48 + Constitution score hours without water before thirst effects. Heat Endurance bonus feat.",
+    "Retained half orc traits: Counts as an orc for race-related effects. Starting Intelligence after racial adjustment is at least 3."
+  ],
+  "aquatic-halfling": [
+    "Swim 20 ft. Low-light vision sees four times ordinary human distance in dim light, retaining color/detail.",
+    "Retained halfling traits: All saves +1. Fear saves gain an additional +2 morale bonus. Thrown-weapon attacks +1. Sling attacks +1.",
+    "Aquatic subtype: breathe water, not air unless another ability grants amphibious breathing. Outside water, hold breath for twice Constitution score rounds before suffocation checks. Swim +8; always take 10, and run while swimming straight. Aquan is a bonus language. Unearthed Arcana suggests optional LA +1 for mixed aquatic/non-aquatic underwater or ship campaigns."
+  ],
+  "athasian-halfling": [
+    "Inborn Power: 3 PP and missive, adding to class pools/known powers; ML equals character level; Charisma DCs or your psionic class’s manifesting ability.",
+    "Climb, Jump and Move Silently bonuses: +2 initially, +4 at level 5, +8 at level 15. At level 10, standing long jumps count as running and accelerated climbing loses its −5 penalty.",
+    "Retained halfling traits: All saves +1. Fear saves gain an additional +2 morale bonus. Thrown-weapon attacks +1. Sling attacks +1."
+  ],
+  "deep-halfling": [
+    "Darkvision 60 ft. Stonecunning: Search +2 for stonework, automatic check within 10 ft., rogue-style stone-trap detection and intuitive depth. Stone/metal Appraise/Craft +2. Lose Climb, Jump and Move Silently racial bonuses.",
+    "Retained halfling traits: All saves +1. Fear saves gain an additional +2 morale bonus. Thrown-weapon attacks +1. Sling attacks +1."
+  ],
+  "d-hin": [
+    "Counts as halfling; darkvision 60 ft.; all saves +1; thrown/sling attacks +2. Air Mastery: airborne attackers take −1 attack/damage against you.",
+    "Prestidigitation at will; one daily choice of gust of wind, whispering wind or wind wall. CL equals character level; Charisma DCs."
+  ],
+  "ghostwise-halfling": [
+    "Speak without Sound: telepathy to one creature at a time within 20 ft., requiring a shared language. Lose halfling +1 all-saves bonus.",
+    "Retained halfling traits: Fear saves gain an additional +2 morale bonus. Thrown-weapon attacks +1. Sling attacks +1."
+  ],
+  "glimmerskin-halfling": [
+    "Dragonblood subtype; Heal always a class skill; lose Move Silently racial bonus.",
+    "Touch of Luck 1/day: immediate action before a save, grant self or ally within 30 ft. +2 luck on that save.",
+    "Retained halfling traits: All saves +1. Fear saves gain an additional +2 morale bonus. Thrown-weapon attacks +1. Sling attacks +1."
+  ],
+  "jungle-halfling": [
+    "Proficient with throwing axe, handaxe and shortbow (including composite). Poison Use prevents self-poisoning during application or combat. Poison Fortitude saves +2. Lose halfling general-save, fear-save and sling-attack bonuses.",
+    "Retained halfling traits: Thrown-weapon attacks +1."
+  ],
+  "shoal-halfling": [
+    "Humanoid (aquatic, halfling); breathes air/water. Swim 20 ft.; Swim +8; take 10 under threat and run while swimming straight. Lose thrown/sling attack bonuses and racial Climb/Jump/Move Silently bonuses.",
+    "Retained halfling traits: All saves +1. Fear saves gain an additional +2 morale bonus."
+  ],
+  "unsheltered-halfling": [
+    "Lose halfling general-save and fear-save bonuses. Gain Dodge at level 1; at level 3 choose bonus Iron Will, Lightning Reflexes or Great Fortitude.",
+    "Retained halfling traits: Thrown-weapon attacks +1. Sling attacks +1."
+  ],
+  "harssaf": [
+    "Natural armor +3; blindsense 30 ft.; DR 5/bludgeoning; fast healing 3; SR 17 + class levels. Immune to blindness/fire, vulnerable to cold.",
+    "Flaming Aura: free action at will; 1d6 fire/round within 5 ft., plus 1d6 on melee hits (only metal weapons conduct it).",
+    "Sand Pulse 1/day, standard action: 30-ft. radius, 3d6 damage and blindness 5 rounds; Reflex DC 15 halves and prevents blindness. Eyeless creatures avoid blindness; harssafs are immune.",
+    "Sand Form at will, standard action: gaseous form as mobile sand, no flight; can pass gaps narrower than ¼ inch."
+  ],
+  "hengeyokai": [
+    "Humanoid (shapechanger). Human form: Medium, speed 30 ft. Choose an animal kind: badger, carp, cat, crab, crane, dog, fox, hare, monkey, raccoon dog, rat, sparrow or weasel.",
+    "Alternate Form: human, hybrid or chosen animal; full-round action provoking opportunity attacks; daily changes 1 + character level. Animal form melds equipment and disables magic items, grants low-light vision, communication with its animal kind and Disguise +10; use that animal’s form statistics. Hybrid retains low-light vision/animal communication, uses its hybrid adjustments and unmelded equipment; light/medium armor fits, heavy armor cannot be worn.",
+    "Hybrid choices (apply only your chosen kind): badger Constitution +2, land 20/burrow 10 ft.; carp Dexterity +2, land 10/swim 30 ft.; cat Dexterity +2, Balance +4; crab natural armor +1 and Swim +4; crane or sparrow Dexterity +2, land 20/fly 20 ft. (average); dog Constitution +2, scent-tracking Survival +4; fox Dexterity +2, Escape Artist +4; hare Dexterity +2, land 40 ft.; monkey Dexterity +2, Climb +4; raccoon dog Strength +2, scent-tracking Survival +4; rat Dexterity +2, Hide +4; weasel Constitution +2, Move Silently +4.",
+    "Animal forms below give size; movement in ft.; AC; attacks; Strength/Dexterity/Constitution. They replace physical form statistics, not mental abilities.",
+    "Badger: Tiny; land 30/burrow 10; AC 15; two claws 1d2−1 and bite 1d3−1; 8/17/15. Carp: Diminutive; swim 10; AC 19; no attack; 1/20/10. Cat: Tiny; land 30; AC 14; two claws 1d2−4 and bite 1d3−4; 3/15/10.",
+    "Crab: Diminutive; land 15; AC 18; two claws 1d2−5; 1/17/10. Crane: Small; land 5/fly 60 (average); AC 14; bite 1d4−2; 6/16/10. Dog: Small; land 40; AC 15; bite 1d4+1; 13/17/15.",
+    "Fox: Small; land 40; AC 15; bite 1d4; 11/19/11. Hare: Tiny; land 40; AC 16; bite 1d3−5; 1/19/10. Monkey: Tiny; land 30/climb 30; AC 14; bite 1d3−4; 3/15/10.",
+    "Raccoon dog: Small; land 30; AC 13; bite 1d4+1; 12/13/12. Rat: Tiny; land 15/climb 15; AC 14; bite 1d3−4; 2/15/10. Sparrow: Fine; land 1/fly 50 (average); AC 24; no attack; 1/23/10. Weasel: Tiny; land 20/climb 20; AC 14; bite 1d3−4; 3/15/10."
+  ],
+  "insectare": [
+    "Darkvision 60 ft.; natural armor +2; Bluff/Disguise +2; counts as elf.",
+    "Antenna Rake: two off-hand attacks with normal off-hand penalties, each 1d4 slashing + half Strength; alternatively one antenna as a normal attack action."
+  ],
+  "kender": [
+    "All saves +1; Spot +2; Open Lock/Sleight of Hand +2 and usable untrained. Concentration −4. Taunt grants Bluff +4 when provoking a target. Immune to all fear."
+  ],
+  "khepri": [
+    "Darkvision 60 ft.; enchantment (mind-affecting) saves +2; gaze saves +4; Intimidate/Spot +2."
+  ],
+  "kir-lanan": [
+    "Land 30 ft., fly 90 ft. (good); darkvision 60 ft.; natural armor +3; Hide +4; simple weapons/light armor proficiency. Four racial monstrous-humanoid HD grant BAB +4, saves +1/+4/+4, two feats and 7 × (2 + Intelligence modifier, minimum 1) skill points; no extra first-class ×4 multiplier.",
+    "Two claws 1d4, or one secondary claw at −5 and half Strength with a one-handed weapon. Negative Energy Touch 3/day: melee touch or successful claw hit adds 2d6 damage and 1 Strength damage (Fortitude DC 12 + Charisma modifier negates Strength); heal the energy damage dealt, not claw damage.",
+    "Ray of enfeeblement 3/day, CL 4; rebuke/command undead 3/day as evil cleric of HD. Positive energy harms and negative energy heals, but cannot be turned.",
+    "Soulless: no divine casting or positive-energy use; no cleric, druid or paladin; ranger never gains spells. Bard may replace cure with inflict. Revival requires wish or miracle."
+  ],
+  "desert-kobold": [
+    "Lose light sensitivity and Profession (miner) racial bonus; Survival +2."
+  ],
+  "jungle-kobold": [
+    "Permanently acclimated to high altitude, immune to altitude sickness. Climb +2 and uses Dexterity instead of Strength. Lose Craft (trapmaking) and Profession (miner) racial bonuses.",
+    "Retained kobold traits: Bright sunlight or daylight causes dazzled status."
+  ],
+  "korobokuru": [
+    "Darkvision 60 ft.; poison and magic saves +2; attacks against goblinoids +1; giant dodge AC +4 (lost without Dexterity to AC); Survival +2."
+  ],
+  "kuo-toa": [
+    "Amphibious; electricity resistance 10; poison/paralysis/web immunity; natural armor +6. Escape Artist +8; Search/Spot +4; pincer staff counts as martial. Moving invisible/ethereal creatures are visible to Keen Sight. Sudden bright light blinds 1 round; −1 attacks/saves/checks while exposed.",
+    "Lightning Bolt: at least two cleric whips join hands to fire, staying within 30 ft. during its 1d4-round buildup. Damage 1d6 per whip; Reflex DC 11 + highest Wisdom modifier + whip count halves.",
+    "Adhesive shield: 1 hour and 20 gp preparation, lasts 3 days or one catch. A missed melee attacker saves Reflex DC 11 + your Constitution modifier or its weapon sticks (natural weapon starts a grapple). Strength DC 20 frees it."
+  ],
+  "kyrie": [
+    "Darkvision 60 ft.; natural armor +2. Racial spellcasting and one domain as a level-3 mystic."
+  ],
+  "blackscale-lizardfolk": [
+    "Space/reach 10/10 ft.; darkvision 60 ft.; natural armor +7; acid resistance 5. Proficient with greatclub, javelin and simple weapons. Two claws and bite each 1d6. Hold breath for 4 × Constitution score rounds."
+  ],
+  "poison-dusk-lizardfolk": [
+    "Low-light vision; natural armor +3; two claws and bite each 1d3. Bolas/nets count as martial. Safely apply poison.",
+    "Chameleon Skin grants Hide +5 only without covering clothes, robes or armor. Hold breath for 4 × Constitution score rounds."
+  ],
+  "viletooth-lizardfolk": [
+    "Dragonblood subtype. Acid Bite adds 1d6 acid to bite damage. Water Breathing is unlimited, replacing extended Hold Breath. Move Silently always a class skill.",
+    "Retained lizardfolk traits: Two claws and one bite, 1d4 damage each."
+  ],
+  "loxo": [
+    "Monstrous humanoid; space/reach 10/10 ft.; darkvision 60 ft.; natural armor +4; simple weapons/light armor proficiency. One trunk slam 1d6, two with a full attack; a weapon full attack can add one secondary trunk at −5.",
+    "Seeing a clan member killed/incapacitated triggers Berserk Rage: Strength/Constitution +4, Will +2 morale, AC −2 for 3 + improved Constitution modifier rounds. Afterwards fatigued until encounter ends (source lists Strength/Constitution −2 and no running/charging).",
+    "Standard-action Trample over Medium or smaller foes: 1d8 + 1½ Strength; targets choose an opportunity attack at −4 or Reflex DC 12 + Strength modifier for half."
+  ],
+  "lumi": [
+    "Darkvision 60 ft. CL 3: disrupt undead/light at will; cure light wounds/glitterdust 3/day.",
+    "Body of Light: immune to death, energy drain and negative energy; gain positive-plane fast healing without explosive temporary HP. Permanent 5-ft. glow, concealable with magical darkness.",
+    "Clear Vision: immune to blindness/dazzling and direct light attacks, including color spray, rainbow pattern, searing light, sunbeam/sunburst; sun blades cause nonlethal damage. Fog/darkness still conceal.",
+    "Floating Head: flankers receive no +2 attack bonus; immune to vorpal decapitation, strangulation and suffocation."
+  ],
+  "lupin": [
+    "Monstrous humanoid; darkvision 60 ft.; Listen +2; Ride +2 and always a class skill; attacks/damage against werewolves +1.",
+    "Acute Smell: Wisdom DC 10 detects lycanthropes within 30 ft. (double upwind, half downwind). Within 5 ft., Spot +5 against familiar individuals’ disguises and a free Wisdom DC 10 check pinpoints hidden/invisible creatures. Survival tracking +2, but no scent-only tracking. Odor-based saves −2."
+  ],
+  "mind-flayer": [
+    "Darkvision 60 ft.; natural armor +3; four tentacles 1d4; SR 25 + class levels; telepathy 100 ft.",
+    "Mind Blast: 60-ft. cone stuns 3d4 rounds; Charisma-based Will negates, equivalent to level-4 spell. At will, CL 8 and Charisma DCs: charm monster, detect thoughts, levitate, plane shift, suggestion.",
+    "Improved Grab: tentacle hit on Small–Large foe permits free grapple without provoking; larger targets require reaching the head. Starting a turn with a tentacle attached permits one grapple check to attach all others. Victim escapes with grapple/Escape Artist, opposed with +2 per attached tentacle.",
+    "Extract: begin turn with all four attached and win a grapple check to kill by brain extraction; ineffective on constructs, elementals, oozes, plants or undead, and not instantly lethal to multiple-headed foes."
+  ],
+  "minotaur": [
+    "Darkvision 60 ft.; scent; natural armor +5. Space and reach 10 ft. Proficient with simple weapons and the greataxe.",
+    "Gore: 1d8 damage. A charge uses a powerful gore for 4d6 + 1½ Strength modifier damage.",
+    "Natural Cunning: immune to maze; never becomes lost; can track enemies; never caught flat-footed."
+  ],
+  "krynnish-minotaur": [
+    "Natural armor +2; +2 racial bonus on Intimidate, Swim, and Use Rope.",
+    "Gore: 1d6 + Strength modifier, or 2d6 + 1½ Strength modifier when charging. Alongside a manufactured weapon, gore is secondary at −5 and adds half Strength.",
+    "May select Scent as a feat; scent is not automatically granted."
+  ],
+  "thoradorian-minotaur": [
+    "Darkvision 60 ft.; natural armor +5; space and reach 10 ft. Proficient with simple weapons and one selected martial weapon, usually a greataxe. Search, Spot, and Listen gain +4 racial bonuses.",
+    "Gore: 1d8 + Strength modifier; charging deals 4d6 + 1½ Strength modifier. As a secondary attack alongside a weapon, gore takes −5 and adds half Strength.",
+    "Natural Cunning: immune to maze; never becomes lost; can track enemies; never caught flat-footed. Scent may be selected as a feat, but is not automatic."
+  ],
+  "rilkan": [
+    "Humanoid (reptilian). All Knowledge skills can be used as trained, including with no ranks. Knowledge checks and bardic knowledge gain a +1 competence bonus, increased by +1 per two soulmelds currently shaped.",
+    "Bluff and Diplomacy gain +2 racial bonuses. A successful aid another action from another rilkan grants +3 instead of +2."
+  ],
+  "skarn": [
+    "Humanoid (reptilian); +2 racial bonus on Climb and Intimidate.",
+    "Arm Spines: one spine attack per round deals 1d6 piercing damage. It may be primary or an off-hand attack with normal off-hand penalties and half Strength damage. An arm cannot both wield a weapon and attack with spines in the same round. Using the shield arm loses its shield AC bonus until the next turn.",
+    "A soulmeld bound to the arms chakra makes spine attacks lawful for overcoming damage reduction."
+  ],
+  "exiled-modron": [
+    "Living construct. Natural armor +2; acid, cold, and fire resistance 2; +2 on saves against illusions and mind-affecting effects; +2 racial bonus on Listen and Spot.",
+    "In combat it did not initiate, an exiled modron remains flat-footed until its second turn, even though it can act on its first.",
+    "Charisma-based skills take −2 against chaotic creatures. Armor and clothing must be made for its unusual body.",
+    "Living Construct: has Constitution and is subject to mind-affecting effects, critical hits, nonlethal damage, stunning, ability damage/drain, death effects, and necromancy. Immune to poison, sleep, paralysis, disease, nausea, fatigue, exhaustion, sickening, and energy drain. No eating, breathing, or sleeping; spell preparation still requires rest. Lethal damage does not heal naturally. Healing-subschool spells and supernatural HP/ability healing have half effect; repair magic works normally. Can be raised or resurrected. At 0 HP, disabled without losing HP from exertion; from −1 to −9, inert but stable. Heat/chill metal and repel metal/stone treat the body as metal armor; repel wood also works. Rusting grasp deals 2d6, Reflex DC 14 + caster ability modifier halves; rust-monster touch uses Reflex DC 17. Object-only stone/wood shaping spells do not affect it."
+  ],
+  "neraphim": [
+    "Outsider from Limbo; extraplanar on other planes. Humanoid-only spells do not affect it. Darkvision 60 ft.; natural armor +2; +5 racial bonus on Jump and +2 on Search and Spot. Treat the annulat as a martial weapon.",
+    "Camouflage: when charging or making a thrown-weapon attack, deny the target its Dexterity bonus to AC for that attack. This can enable sneak attack and other consequences of losing Dexterity to AC. Usable once against each enemy per encounter."
+  ],
+  "nezumi": [
+    "Low-light vision; scent; +2 racial bonus on Hide and Move Silently and on saves against poison and disease.",
+    "Claws or Bite: one unarmed natural attack per round deals 1d4 lethal damage.",
+    "Shadowlands Taint: does not acquire Taint from exposure. This immunity does not prevent damage from Taint-related spells or monsters."
+  ],
+  "nycter": [
+    "Darkvision and blindsense 60 ft.; natural armor +3. Blindsense locates creatures but does not remove concealment. Vulnerable to sonic damage.",
+    "Hunting Cry: a 30-ft. cone deals 2d4 sonic damage and paralyzes for 1d4 + 1 rounds. A Constitution-based Fortitude save halves damage and prevents paralysis. This sonic, mind-affecting ability recharges after 2d4 rounds; a successful save grants immunity to that nycter’s cry for 24 hours."
+  ],
+  "ogre": [
+    "Darkvision 60 ft.; low-light vision; natural armor +5. Space and reach 10 ft. Proficient with simple and martial weapons, light and medium armor, and shields."
+  ],
+  "eneko": [
+    "Giant; darkvision 60 ft.; low-light vision; +2 racial bonus on saves against poison. Longbow proficiency is a bonus feat.",
+    "Powerful Build: count as one size larger for opposed size checks and size-based special attacks when beneficial, and may wield weapons one size larger without penalty. Actual space and reach remain unchanged; this stacks with effects that actually change size.",
+    "Spell-like abilities: endure elements and pass without trace once each per day. Caster level is half Hit Dice, minimum 1; save DCs use Charisma."
+  ],
+  "irda": [
+    "Humanoid (shapechanger); low-light vision.",
+    "Change Shape: three times daily, assume a Small, Medium, or Large humanoid form indefinitely. Gain that form’s natural attacks, natural armor, movement, and extraordinary special attacks, but not its special qualities. Gear stays unchanged; retain own ability scores, hit points, saves, spellcasting, and other special abilities except breath weapons and gaze attacks. Speech is required for verbal spells, and humanlike hands for somatic spells. Gain +10 on Disguise to impersonate that form. Returning to the natural form does not spend a use; death restores it.",
+    "Spell-like abilities: dancing lights, detect magic, flare, ghost sound, light, and mage hand once each daily. Caster level equals character level; the source gives save DC 10 + Charisma modifier."
+  ],
+  "ogre-mage": [
+    "Darkvision 60 ft.; low-light vision; natural armor +5; space and reach 10 ft. Spell resistance 19 + class levels.",
+    "Change Shape: assume a Small, Medium, or Large humanoid or giant form.",
+    "Spell-like abilities at caster level 9, Charisma-based DCs: darkness and invisibility at will; charm person, cone of cold, gaseous form, and sleep once each daily. In gaseous form, use the normal flying speed with perfect maneuverability; starting or stopping flight is a free action.",
+    "Regeneration 5: fire and acid deal normal damage. Severed parts can be reattached by holding them in place for 1 minute, but cannot be regrown. A missing vital organ must be reattached within 10 minutes or the ogre mage dies."
+  ],
+  "skullcrusher-ogre": [
+    "Darkvision 60 ft.; low-light vision; natural armor +2; space and reach 10 ft. Proficient with simple and martial weapons, all armor, and shields.",
+    "Rock Throwing: +1 racial bonus on attacks with rocks weighing 40–50 lb.; range increment 100 ft., maximum five increments."
+  ],
+  "arctic-orc": [
+    "Low-light vision replaces the standard orc’s darkvision. No light sensitivity. Gain +2 racial bonus on Handle Animal; other inherited orc traits apply unless replaced."
+  ],
+  "deep-orc": [
+    "Darkvision 120 ft.; natural armor +2; fire and cold resistance 5. Proficient with greatswords and throwing axes; +2 racial bonus on Craft (armorsmithing) and Craft (weaponsmithing). Counts as an orc for race-related effects.",
+    "Light Blindness: sudden bright light blinds for 1 round. While in bright light, take −1 on attacks, saves, and checks."
+  ],
+  "desert-orc": [
+    "Low-light vision replaces standard orc darkvision. Endurance is a bonus feat; other inherited orc traits apply unless replaced.",
+    "Retained orc traits: Bright sunlight or daylight causes dazzled status."
+  ],
+  "gray-orc": [
+    "Proficient with the greataxe and longbow; scent. Attacks take −1 in bright sunlight. Counts as an orc for race-related effects."
+  ],
+  "jungle-orc": [
+    "Low-light vision replaces standard orc darkvision. Gain +2 racial bonuses on Heal and Survival; other inherited orc traits apply unless replaced.",
+    "Retained orc traits: Bright sunlight or daylight causes dazzled status."
+  ],
+  "mountain-orc": [
+    "Darkvision 60 ft.; proficiency with greataxes and javelins. Attacks take −1 in bright sunlight. Counts as an orc for race-related effects."
+  ],
+  "scro": [
+    "Darkvision 60 ft.; counts as an orc for race-related effects. Gain +1 racial bonus on attacks against elves, including drow."
+  ],
+  "tanarukk": [
+    "Native outsider; darkvision 60 ft.; natural armor +4; fire resistance 10; spell resistance 14 + class levels. Proficient with martial weapons; counts as an orc for race-related effects.",
+    "Bite: 1d6 damage. When used alongside a manufactured weapon it is secondary at −5 and adds half Strength damage.",
+    "Control Flame: once daily at caster level 5, affect nonmagical fire within 10 ft. for 5 minutes. Brighten coals to daylight brightness or double an existing flame’s illumination without changing heat or fuel use.",
+    "Five racial outsider Hit Dice grant base attack +5, base saves +4/+4/+4, two feats, and 8 × (8 + Intelligence modifier) skill points. Racial class skills are Hide, Intimidate, Listen, Search, and Spot. The first class level does not multiply skill points by four."
+  ],
+  "phanaton": [
+    "Low-light vision; bite deals 1d4 damage. Gain +1 racial bonus on all saves while in a forest. Move Silently gains +4, increasing to +8 in forests; Climb, Jump, Listen, and Spot gain +2.",
+    "Glide: speed 20 ft., average maneuverability, traveling 4 ft. horizontally per 1 ft. descended. Cannot hover or glide with a medium or heavy load, while helpless, or while unconscious."
+  ],
+  "athasian-pterran": [
+    "Reptilian subtype; natural armor +5; +4 racial bonus on Balance and Jump. Two talons deal 1d4 each; a talon holding a weapon cannot also make its natural attack. Secondary bite deals 1d3.",
+    "Inborn Power: gain 3 power points at first level and burst as a known power; manifester level equals character level. Use Charisma for DCs, or choose the relevant ability of a psionic class. These points join any class power-point pool."
+  ],
+  "quaraphon": [
+    "Darkvision 60 ft.; natural armor +7; space 10 ft., reach 5 ft. Bite and two hooves each deal 1d6.",
+    "Deafening Bellow: once daily, all creatures within 60 ft. take 2d6 sonic damage and make a Constitution-based Fortitude save or become deaf for 1d6 rounds."
+  ],
+  "rakshasa": [
+    "Darkvision 60 ft.; natural armor +9; bite 1d6 and two claws 1d4 each. Damage reduction 15/good and piercing; spell resistance 27 + class levels.",
+    "Detect Thoughts: continuous, caster level 18, Will DC 13 + Charisma modifier; suppress or resume as a free action.",
+    "Spellcasting: as a 7th-level sorcerer. Sorcerer class levels stack for spells known, spells per day, caster-level effects, and familiar abilities.",
+    "Change Shape: a standard action assumes any humanoid form or restores the natural form. Humanoid form loses bite and claws. Duration is unlimited, cannot be dispelled, and ends on death; true seeing reveals the natural form."
+  ],
+  "naztharune-rakshasa": [
+    "Darkvision 60 ft.; natural armor +5; two claws, 1d4 each. Damage reduction 15/good and piercing; spell resistance 21 + class levels.",
+    "Detect Thoughts: continuous at caster level 18, Will DC 15 + Charisma modifier; suppress or resume as a free action.",
+    "Sneak Attack: use rogue progression with Hit Dice as rogue level. Applies when flanking or the target is denied Dexterity to AC; extra dice are not multiplied on critical hits.",
+    "Change Shape: standard action to assume any humanoid form or return. Lose claws in humanoid form; unlimited duration, not dispellable, ends on death, and true seeing reveals the natural form.",
+    "Improved Evasion: no damage on a successful Reflex save for half damage, half on failure. Uncanny Dodge retains Dexterity to AC while flat-footed; Improved Uncanny Dodge prevents flanking except by a rogue of level 15 or higher.",
+    "Hide in Plain Sight: may Hide while observed if within 10 ft. of a shadow other than its own. Shadow Jump: dimension door between shadows, totaling 20 ft. daily in one 20-ft. jump or two 10-ft. jumps."
+  ],
+  "raptoran": [
+    "Low-light vision; +10 racial bonus on Jump, +2 on Climb and Spot. Treat the footbow as martial. Air-descriptor spells gain +1 caster level. Always know north on the Material Plane.",
+    "Glide: speed 40 ft., average maneuverability, 20 ft. forward per 5 ft. descent; no falling damage, hovering, or medium/heavy load. If unconscious or helpless in midair, descending wings limit falling damage to 1d6.",
+    "Flight: from 5 Hit Dice, speed 40 ft., average maneuverability. No flight with medium/heavy load, fatigue, or exhaustion. Fly for Constitution modifier rounds (minimum 1) safely, or twice that with fatigue afterward. More than 10 total minutes of flight daily also causes fatigue; gliding between flight rounds is allowed. From 10 Hit Dice, flying requires only normal walking/running exertion.",
+    "While able to fly, run in a straight line or dive with a piercing weapon: charge at least 30 ft., descend at least 10 ft., and deal double damage on a hit."
+  ],
+  "bladeback": [
+    "Natural armor +4. Two claws deal 1d4 + Strength each; tail deals 1d3 + half Strength bonus (or full Strength penalty).",
+    "Cold Torpor: −5 on Fortitude saves against environmental cold; failed saves deal twice the usual nonlethal damage. Gain +4 circumstance bonus on saves against sonic effects, but −4 against gas-based attacks and effects. Scent."
+  ],
+  "finhead": [
+    "Natural armor +4. Two claws deal 1d4 + Strength each; tail deals 1d3 + half Strength bonus (or full Strength penalty).",
+    "Cold Torpor: −5 on Fortitude saves against environmental cold; failed saves deal twice the usual nonlethal damage. Gain +4 circumstance bonus on saves against sonic effects, but −4 against gas-based attacks and effects. Scent."
+  ],
+  "flyer": [
+    "Fly speed 50 ft., average maneuverability; natural armor +4. Two claws deal 1d3 + Strength each; tail deals 1d2 + half Strength bonus (or full Strength penalty).",
+    "Cold Torpor: −5 on Fortitude saves against environmental cold; failed saves deal twice the usual nonlethal damage. Gain +4 circumstance bonus on saves against sonic effects, but −4 against gas-based attacks and effects. Scent."
+  ],
+  "hornhead": [
+    "Natural armor +5. Two claws deal 1d4 + Strength each; tail deals 1d3 + half Strength bonus (or full Strength penalty) and has 10-ft. reach.",
+    "Cold Torpor: −5 on Fortitude saves against environmental cold; failed saves deal twice the usual nonlethal damage. Gain +4 circumstance bonus on saves against sonic effects, but −4 against gas-based attacks and effects. Scent."
+  ],
+  "slyth": [
+    "Water breathing; immunity to poison and polymorphing; sonic resistance 5; +4 racial bonus on Disguise, Escape Artist, and Survival. Treat flutter blades as martial weapons.",
+    "Alternate Form: standard action to become amorphous for up to 10 minutes per class level. Gear merges and magic items stop functioning. Lose physical armor and natural armor, but retain Dexterity, deflection, and force armor bonuses. Immune to critical hits, flanking, and stunning; fit through 2-inch openings. Cannot attack or cast spells requiring verbal, somatic, material, or focus components; lose other supernatural abilities. Appropriate metamagic can remove spell components. Returning takes a full-round action without provoking; wait as long as the time spent transformed before using this ability again."
+  ],
+  "spellscale": [
+    "Humanoid (dragonblood); counts as a dragon for race-related effects. Low-light vision.",
+    "Blood Quickening: meditate for 1 hour and choose one benefit for the next 24 hours. No second meditation benefit until the next day. Listed skill bonuses are racial and equal half character level. Temporary feats cannot satisfy prerequisites.",
+    "Aasterinian: Disguise bonus and Improved Counterspell three times. Astilabor: Appraise bonus and Eschew Materials throughout the day. Chronepsis: Listen bonus and Silent Spell. Lendys: Concentration bonus and Still Spell.",
+    "Bahamut: three times, when casting a spell, select one target or creature in its area; if evil, it takes an extra 2d6 damage. Tiamat: the same option against good creatures instead.",
+    "Falazure: inflict spells count as on your list for scrolls and spell-trigger items. Tamara: the same for cure spells. Garyx: Widen Spell twice. Hlal: Perform (storytelling) bonus and Heighten Spell three times. Io: Spellcraft bonus and Empower Spell three times."
+  ],
+  "spiker": [
+    "Humanoid native to Acheron, with the extraplanar subtype elsewhere. Darkvision 60 ft.; natural armor +1; damage reduction 2/piercing or slashing; acid resistance 5. The hide is not metal and has no special vulnerability to rust.",
+    "Natural Spikes: attack or deal extra piercing damage in a grapple as with armor spikes; armor-spike proficiency is a bonus feat. Worn armor has its maximum Dexterity bonus reduced by 1 and armor check penalty worsened by 2. Shields and arcane spell failure are unaffected."
+  ],
+  "bamboo-spirit-folk": [
+    "Humanoid (spirit); affected by both humanoid-targeting and spirit-targeting magic. Low-light vision; +2 racial bonus on Survival and +4 on Hide in woods or forest.",
+    "Trackless Step: leaves no trail in natural surroundings and cannot be tracked.",
+    "Gain +2 racial bonus on saves against effects with earth, rock, stone, or wood in their name, shugenja earth spells, and wu jen earth or wood spells.",
+    "Speak with Animals: once daily for 1 minute at caster level 1. The river and sea abilities printed in the same source section belong to those separate variants."
+  ],
+  "mountain-spirit-folk": [
+    "Low-light vision; +2 racial bonus on Balance, Jump, and Tumble.",
+    "Climb speed 30 ft.; +8 racial bonus on Climb, may always take 10, and retain Dexterity to AC while climbing. Climb checks are still required for DCs above 0. An accelerated climb doubles speed at −5 on the check; cannot run while climbing.",
+    "Speak with Animals: once daily, birds only, for 1 minute at caster level 1. River spirit folk abilities in the same source section are a separate variant."
+  ],
+  "stonechildren": [
+    "Darkvision 60 ft.; natural armor +4; immunity to acid and poison. Proficient with simple and martial weapons, light and medium armor, and shields except tower shields.",
+    "Magic Stone: three times daily at caster level 3."
+  ],
+  "synad": [
+    "Aberration; humanoid-only effects do not apply. Darkvision 60 ft.; 3 bonus power points at first level, which alone grant no powers.",
+    "Threefold Mind: +2 on Will saves. Oracle: once daily, add a +2 insight bonus to initiative, an attack, or a save. An attack or save can receive the bonus after learning the unmodified result failed.",
+    "Collective: spend 1 power point as a free action for +2 on a Knowledge or Psicraft check.",
+    "Multitask: once daily, spend 1 power point to gain a swift action usable for a purely mental action. It can manifest a power only if the round’s normal actions do not also manifest a power."
+  ],
+  "taer": [
+    "Giant; darkvision 60 ft.; natural armor +2. Immune to cold; fire damage increases by 50%, regardless of save outcome. Treat greatclubs and longspears as simple weapons.",
+    "Natural attacks: two slams at normal attack bonus, 1d3 each; secondary bite at −5, 1d4.",
+    "Climb speed 30 ft.; +8 racial bonus on Climb and may always take 10. Retain Dexterity to AC while climbing. Check DCs above 0; accelerated climbing doubles speed at −5; cannot run while climbing."
+  ],
+  "tasloi": [
+    "Low-light vision. Bright sunlight or daylight spells cause dazzled status.",
+    "Hide and Move Silently gain +4 racial bonuses; Hide increases to +8 in thick forest. Climb uses Dexterity, gains +8 racial bonus, and may always take 10, even when rushed or threatened."
+  ],
+  "thanoi": [
+    "Monstrous humanoid (cold); darkvision 60 ft.; natural armor +4. Immune to cold and vulnerable to fire. Gain +8 racial bonus on Swim and Balance on ice.",
+    "Tusks: primary natural attack deals 2d4 + Strength; may instead accompany a manufactured weapon as a secondary attack at −5.",
+    "Great Breath: hold breath underwater for 30 minutes before needing Constitution checks."
+  ],
+  "thri-kreen": [
+    "Monstrous humanoid; darkvision 60 ft.; magic sleep immunity; natural armor +3. +30 racial bonus on Jump and +4 on Hide in sandy or arid terrain. Treat gythkas and chatkchas as martial weapons.",
+    "Four Arms: eligible for Multiweapon Fighting instead of Two-Weapon Fighting, and for Multiattack; neither is a bonus feat. Four claws deal 1d4 each, with a secondary 1d4 bite. Weapon attacks may be combined with a secondary bite or unused claw at −5.",
+    "Poison: one poisonous bite daily; Fortitude DC 11 + Constitution modifier. Initial damage 1d6 Dexterity; secondary effect paralysis.",
+    "Gain 1 bonus power point at first level; this alone grants no manifesting ability. Psi-like abilities: chameleon and know direction and location three times daily; greater concealing amorpha and metaphysical claw once daily. Manifester level half Hit Dice, minimum 1; Charisma-based DCs."
+  ],
+  "tibbit": [
+    "Monstrous humanoid (shapechanger); darkvision 60 ft.; +2 racial bonus on Spot, Jump, and Escape Artist.",
+    "Feline Transformation: standard action to become a Tiny house cat; returning takes a full-round action, followed by a 1-hour wait before transforming again. Cat form grants size bonuses +2 AC/attacks and +8 Hide, +10 ft. land speed, −8 Strength (minimum 3), +2 Dexterity, and scent. Full attack: two 1d2 claws at full bonus and one 1d3 bite at −5; no iterative attacks from high base attack. Other statistics remain unchanged.",
+    "Cat-form gear: weapons, armor, shields, and robes merge and cease granting benefits; suitable items such as rings or boots reshape and keep their benefits. Cannot speak, manipulate fine objects, cast verbal/somatic spells, use scrolls, or activate magic items. Death restores humanoid form after 1 round. Magic that penetrates polymorph reveals the disguise; merely detecting magic does not."
+  ],
+  "t-kel": [
+    "Monstrous humanoid; unaffected by humanoid-only effects. Darkvision 60 ft.; two claws each deal 1d4 + Strength modifier."
+  ],
+  "troglodyte": [
+    "Darkvision 90 ft.; natural armor +6; two claws and one bite each deal 1d4.",
+    "Stench: when angry or frightened, living creatures other than troglodytes within 30 ft. must make a Constitution-based Fortitude save or be sickened for 10 rounds. The source’s standard creature has DC 13. A successful save grants 24-hour immunity to that troglodyte. Poison immunity prevents the effect and poison-save bonuses apply; delay poison or neutralize poison removes it."
+  ],
+  "troll": [
+    "Darkvision 60 ft.; low-light vision; scent; natural armor +5; space and reach 10 ft. Two claws and one bite each deal 1d6.",
+    "Rend: hitting with both claws adds 2d6 + 1½ Strength modifier damage automatically.",
+    "Regeneration 5: fire and acid deal normal damage. Severed parts regrow in 3d6 minutes or can be reattached instantly by holding them against the stump."
+  ],
+  "crystalline-troll": [
+    "Darkvision 60 ft.; low-light vision; scent; natural armor +7; space and reach 10 ft. Two claws and one bite each deal 1d6. Acid immunity and sonic vulnerability.",
+    "Rend: hitting with both claws adds 2d6 + 1½ Strength modifier damage automatically.",
+    "Regeneration 5: sonic attacks deal normal damage. Severed parts regrow in 3d6 minutes or reattach instantly when held against the stump."
+  ],
+  "unbodied": [
+    "Fly 30 ft. with good maneuverability; darkvision 60 ft.; deflection AC bonus equal to Charisma modifier, minimum +1. Melee touch attack deals 1d6. Telepathy with creatures that have a language within 100 ft.",
+    "Manifesting: as a 4th-level psion (telepath), with Intelligence-based DCs. Telepath class levels stack for power points, manifester level, and powers known.",
+    "Telekinetic Force: standard action, no attack of opportunity, manifester level 4, Charisma-based DC. Assume Likeness: standard action without provoking to look like any Small, Medium, or Large creature; no ability changes, and Bluff/Disguise still handle suspicion. Hide Mind prevents divination and clairsentience from identifying it as psionic.",
+    "Incorporeal: ordinary nonmagical corporeal attacks cannot harm it. Ignore 50% of damage from corporeal sources except force and ghost touch. Pass through solid objects, but not force barriers. Attacks ignore armor, shields, and natural armor, but not force or deflection bonuses. Can move silently without being heard by Listen."
+  ],
+  "ursoi": [
+    "Darkvision 60 ft.; natural armor +4; cold resistance 10; scent; +4 racial bonus on Survival and Swim.",
+    "Natural attacks: two primary claws for 1d6 + Strength each; secondary bite at −5 for 1d8 + half Strength. Unused claws may be secondary attacks alongside a manufactured weapon.",
+    "Improved Grab: a claw hit can begin a grapple without a separate touch attack against a target at least one size smaller. Holding something in the other hand imposes −20 to maintain the hold, but leaves the ursoi ungrappled and able to defend or attack others.",
+    "Natural Spell: Wisdom 13 or higher allows verbal spell components despite unusual speech; Wisdom 12 or lower cannot cast spells requiring verbal components."
+  ],
+  "vanara": [
+    "Low-light vision; climb speed 20 ft. Climb gains +8 racial bonus, uses the higher of Strength or Dexterity, and may always take 10. Balance and Jump gain +4 racial bonuses; Hide and Move Silently gain +2."
+  ],
+  "vodyanoi": [
+    "Low-light vision; +2 racial bonus on saves against illusions and on Concentration, Jump, and Spellcraft. Passing within 5 ft. of a water source or permanent spell effect grants a Search check to notice it, without identifying details.",
+    "Watercraeft: uses per day equal to Charisma modifier, caster level equal to class level. Choose control water or stone shape affecting water instead of stone; duration becomes concentration + 3 rounds.",
+    "At creation choose divination, illusion, conjuration (summoning), or enchantment (charm); spells in that category gain +1 save DC.",
+    "Spell-like abilities at caster level 1: speak with animals for aquatic animals only, 1 minute, once daily. Charisma 10 or higher also grants jump, longstrider, and mending once each daily; DC 10 + spell level + Charisma modifier."
+  ],
+  "warforged-charger": [
+    "Living construct; space and reach 10 ft.; two slam attacks deal 1d8 each. Adamantine fists overcome applicable damage reduction and object hardness as adamantine weapons.",
+    "Adamantine Plating: +8 armor bonus, damage reduction 2/adamantine, maximum Dexterity +1, armor check penalty −5, and 35% arcane spell failure; counts as heavy armor. Does not stack with other armor bonuses. Occupies the armor/robe slot and prevents wearing armor or magic robes; can be enchanted as armor while the charger remains present.",
+    "Moderate Fortification: 75% chance to negate a critical hit or sneak attack, rolling ordinary damage instead.",
+    "Living Construct: has Constitution and is subject to mind-affecting effects, critical hits, nonlethal damage, stunning, ability damage/drain, death effects, and necromancy. Immune to poison, sleep, paralysis, disease, nausea, fatigue, exhaustion, sickening, and energy drain. No eating, breathing, or sleeping; spell preparation still requires rest. Lethal damage does not heal naturally. Healing-subschool spells and supernatural HP/ability healing have half effect; repair magic works normally. Can be raised or resurrected. At 0 HP, disabled without losing HP from exertion; from −1 to −9, inert but stable. Heat/chill metal and repel metal/stone treat the body as metal armor; repel wood also works. Rusting grasp deals 2d6, Reflex DC 14 + caster ability modifier halves; rust-monster touch uses Reflex DC 17. Object-only stone/wood shaping spells do not affect it.",
+    "Adamantine Body and Powerful Charge are bonus feats. Plating reduces the listed 30-ft. base speed to 20 ft."
+  ],
+  "warforged-scout": [
+    "Living construct.",
+    "Composite Plating: +2 armor bonus that does not stack with other armor bonuses; occupies the armor/robe slot and prevents wearing armor or magic robes. Can be enchanted as armor while the scout remains present. Arcane spell failure 5%; abilities that ignore light-armor spell failure also ignore this penalty.",
+    "Light Fortification: 25% chance to negate a critical hit or sneak attack, rolling ordinary damage instead.",
+    "Living Construct: has Constitution and is subject to mind-affecting effects, critical hits, nonlethal damage, stunning, ability damage/drain, death effects, and necromancy. Immune to poison, sleep, paralysis, disease, nausea, fatigue, exhaustion, sickening, and energy drain. No eating, breathing, or sleeping; spell preparation still requires rest. Lethal damage does not heal naturally. Healing-subschool spells and supernatural HP/ability healing have half effect; repair magic works normally. Can be raised or resurrected. At 0 HP, disabled without losing HP from exertion; from −1 to −9, inert but stable. Heat/chill metal and repel metal/stone treat the body as metal armor; repel wood also works. Rusting grasp deals 2d6, Reflex DC 14 + caster ability modifier halves; rust-monster touch uses Reflex DC 17. Object-only stone/wood shaping spells do not affect it."
+  ],
+  "wemic": [
+    "Darkvision 60 ft.; natural armor +4; space 10 ft., reach 5 ft.; +8 racial bonus on Jump. Proficient with simple weapons and shields.",
+    "Two claws deal 1d6 each. A one-handed weapon can be combined with a secondary claw at −5, adding half Strength to claw damage.",
+    "Five racial monstrous humanoid Hit Dice grant base attack +5, base saves +1/+4/+4, two feats, and 8 × (2 + Intelligence modifier, minimum 1) skill points. Racial class skills: Hide, Jump, Listen, Move Silently, Spot, Survival. Only the first racial Hit Die receives maximum hit points; the first class level gains neither automatic maximum hit points nor quadrupled skill points."
+  ],
+  "wildren": [
+    "Outsider native to the Beastlands, extraplanar elsewhere; humanoid-only effects do not apply. Darkvision 60 ft.; scent; burrow 10 ft.; two primary claws for 1d4 + Strength each. Dig a one-Medium-creature warren in soil or loose dirt in 1 hour.",
+    "Fury: once daily after taking at least 1 damage, enter fury at the start of the next turn. Gain +4 Strength and −2 AC for 1 round; cannot end it early. Stacks with similar effects such as rage.",
+    "Stability: +4 on ability checks to resist bull rush or trip while firmly standing on the ground."
+  ],
+  "windrazor": [
+    "Darkvision 60 ft.; see four times human distance in shadowy illumination. Two claws deal 1d4 each; bite deals 1d6.",
+    "Fearsome Critical: a critical hit forces every creature within 10 ft. to make a Charisma-based Will save or become shaken; mind-affecting fear effect.",
+    "Rend: hitting with both claws adds 2d4 + 1½ Strength bonus damage automatically."
+  ],
+  "windscythe": [
+    "Darkvision 60 ft.; see four times human distance in shadowy illumination; natural armor +4. Two claws deal 1d6 each; bite deals 1d8.",
+    "Augmented Critical: claws threaten on 18–20 and deal ×3 critical damage; effects such as keen edge cannot further increase their threat range.",
+    "Fearsome Critical: a critical hit forces every creature within 10 ft. to make a Charisma-based Will save or become shaken; mind-affecting fear effect.",
+    "Rend: hitting with both claws adds 2d6 + 1½ Strength bonus damage automatically."
+  ],
+  "witchknive": [
+    "Low-light vision; natural armor +1; fire resistance 5; sonic vulnerability. Proficient with simple weapons, light armor, and shields except tower shields.",
+    "Psionics (spell-like): caster level 9, Charisma-based DCs. At will: command, message, and silence on self (dismiss as a free action). Greater command once daily.",
+    "Sneak Attack: +2d6 damage when flanking or the target is denied Dexterity to AC, subject to rogue sneak-attack rules."
+  ],
+  "xvart": [
+    "Darkvision 60 ft.; +2 racial bonus on Move Silently.",
+    "Speak with Animals: once daily for 1 minute, communicating only with bats and rats, including dire versions."
+  ],
+  "pureblood": [
+    "Darkvision 60 ft.; natural armor +1; spell resistance 14 + class levels.",
+    "Spell-like abilities once each daily at caster level 4, Charisma-based DCs: animal trance, cause fear, charm person, darkness, and entangle. Detect poison operates at caster level 6.",
+    "Alternate Form: polymorph at caster level 19, restricted to Tiny–Large vipers. Changing grants no healing; replace natural weapons with the viper’s. If already poisonous, use whichever poison is more potent."
+  ],
+  "tainted-one": [
+    "Alertness as a bonus feat; immune to snake venom, including its own. Spell resistance 12 + 1 per two levels.",
+    "Poison Bite: no natural bite attack is granted. First succeed on a grapple check, then a melee attack to inject; a kiss can poison an unresisting target. Fortitude DC 10 + Constitution modifier negates; initial and secondary damage each 1d4 Constitution.",
+    "Psionics (spell-like): caster level equals character level. Poison once daily, Fortitude DC 13 + Constitution modifier; polymorph into viper forms only, three times daily."
+  ],
+  "hellbred-body": [
+    "Humanoid (hellbred); +2 racial bonus on Intimidate. Evil Exception permits evil-descriptor spells despite alignment/class restrictions and prevents negative levels from evil items, but does not excuse violating a class code. Hellbound: resurrection or stronger magic is required to restore life. Devil’s Favor is a bonus feat without its normal prerequisite.",
+    "Body Aspect is permanent: +4 on poison saves; gain a bonus devil-touched feat at 4 Hit Dice and another at 14 Hit Dice. The Spirit aspect’s senses and telepathy are not included."
+  ],
+  "hellbred-spirit": [
+    "Humanoid (hellbred); +2 racial bonus on Intimidate. Evil Exception permits evil-descriptor spells despite alignment/class restrictions and prevents negative levels from evil items, but does not excuse violating a class code. Hellbound: resurrection or stronger magic is required to restore life. Devil’s Favor is a bonus feat without its normal prerequisite.",
+    "Spirit Aspect is permanent: +2 racial bonus on Sense Motive; darkvision 30 ft., increasing to 60 ft. at 6 Hit Dice and 120 ft. at 9 Hit Dice. At 12 Hit Dice see in all darkness, including deeper darkness; at 15 Hit Dice gain telepathy 100 ft. The Body aspect’s poison bonus and additional feats are not included."
+  ],
+  "mephling-air": [
+    "Humanoid native to the Elemental Plane of air; extraplanar on other planes, without an elemental subtype. Spells with the air descriptor gain +1 caster level.",
+    "Breath Weapon: a 15-ft. cone deals 1d8 piercing damage; Reflex DC 10 + half Hit Dice + Constitution modifier halves damage. One use daily at first level, plus one per four levels attained. If multiple uses are available, wait 1d4 rounds between uses."
+  ],
+  "mephling-earth": [
+    "Humanoid native to the Elemental Plane of earth; extraplanar on other planes, without an elemental subtype. Spells with the earth descriptor gain +1 caster level.",
+    "Breath Weapon: a 15-ft. cone deals 1d8 bludgeoning damage; Reflex DC 10 + half Hit Dice + Constitution modifier halves damage. One use daily at first level, plus one per four levels attained. If multiple uses are available, wait 1d4 rounds between uses."
+  ],
+  "mephling-fire": [
+    "Humanoid native to the Elemental Plane of fire; extraplanar on other planes, without an elemental subtype. Spells with the fire descriptor gain +1 caster level.",
+    "Breath Weapon: a 15-ft. cone deals 1d8 fire damage; Reflex DC 10 + half Hit Dice + Constitution modifier halves damage. One use daily at first level, plus one per four levels attained. If multiple uses are available, wait 1d4 rounds between uses."
+  ],
+  "mephling-water": [
+    "Humanoid native to the Elemental Plane of water; extraplanar on other planes, without an elemental subtype. Spells with the water descriptor gain +1 caster level.",
+    "Breath Weapon: a 15-ft. cone deals 1d8 acid damage; Reflex DC 10 + half Hit Dice + Constitution modifier halves damage. One use daily at first level, plus one per four levels attained. If multiple uses are available, wait 1d4 rounds between uses."
+  ]
+}

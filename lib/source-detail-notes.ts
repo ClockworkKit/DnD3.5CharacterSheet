@@ -1,3 +1,5 @@
+import raceRuleSummaries from './race-rule-summaries.json' with {type:'json'};
+
 // Mechanical summaries checked against the linked Ultimate SRD entries.
 // These are reference text, never additional grants or calculation inputs.
 export const classDetailNotes:Record<string,string>={
@@ -22,6 +24,7 @@ Source discrepancy: Ultimate SRD prints d6 in its introductory Hit Die line. Thi
 };
 
 export const raceDetailNotes:Record<string,string>={
+ ...Object.fromEntries(Object.entries(raceRuleSummaries).map(([id,paragraphs])=>[id,paragraphs.join('\n\n')])),
  kenku:`Great Ally (Ex): successful aid another on a skill check or attack grants +3 rather than +2 when the kenku aids or receives aid. Flanking attacks gain +4 rather than +2. These replace the ordinary bonuses; do not add both.
 
 Mimicry (Ex): reproduce familiar sounds, voices and accents. This grants no new languages. Impersonating a particular voice uses Bluff opposed by a familiar listener’s Sense Motive.
