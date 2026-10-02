@@ -1,15 +1,15 @@
 import {abilityKeys,type Character} from './model.ts';
 import {findClass} from './classes.ts';
 import {advancementNumbers} from './advancement.ts';
-import {racialTraits} from './ancestry.ts';
+import {racialBonusFeat} from './ancestry.ts';
 export type AdvancementChoice={key:string,label:string,kind:'ability'|'feat',choice:string};
 export function advancementChoices(c:Character):AdvancementChoice[]{
  const n=advancementNumbers(c),rows:AdvancementChoice[]=[];
  const add=(key:string,label:string,kind:AdvancementChoice['kind'])=>{const recorded=c.advancementChoices[key]||'';const choice=kind==='ability'?abilityKeys.includes(recorded as typeof abilityKeys[number])?recorded:'':c.features.some(f=>f.id===recorded&&f.kind==='Feat'&&!f.ruleId?.startsWith('granted:'))?recorded:'';rows.push({key,label,kind,choice})};
  for(let i=1;i<=n.abilityIncreases;i++)add('ability-'+i,'Level '+i*4+' ability increase','ability');
- const human=racialTraits(c)?.id==='human';
+ const human=racialBonusFeat(c);
  for(let i=0;i<n.feats-(human?1:0);i++)add('general-'+i,'Level '+(i===0?1:i*3)+' general feat','feat');
- if(human)add('human','Human bonus feat','feat');
+ if(human)add('human','Racial bonus feat','feat');
  for(const [key,label,count] of [['fighter','Fighter bonus feat',n.fighterFeats],['wizard','Wizard bonus feat',n.wizardFeats],['psionic','Psionic bonus feat',n.psionicFeats]] as const)for(let i=1;i<=count;i++)add(key+'-'+i,label+' '+i,'feat');
  for(const e of c.classLevels){const d=findClass(e.classId);if(d?.kind==='Supplemental')for(const r of d.levels)if(r.level<=e.level&&/bonus feat/i.test(r.special))add('class-'+e.id+'-'+r.level,d.name+' level '+r.level+' bonus feat','feat');}
  return rows;

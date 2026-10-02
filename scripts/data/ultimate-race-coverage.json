@@ -1,0 +1,2180 @@
+[
+  {
+    "name": "Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#humans",
+    "id": "human"
+  },
+  {
+    "name": "Aasimars",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#aasimars",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#aasimars",
+    "id": "aasimar"
+  },
+  {
+    "name": "Aquatic Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-humans",
+    "id": "aquatic-human"
+  },
+  {
+    "name": "Athasian Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-humans",
+    "id": "athasian-human"
+  },
+  {
+    "name": "Half-Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#half-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#half-giants",
+    "id": "athasian-half-giant"
+  },
+  {
+    "name": "Muls",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#muls",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#muls",
+    "id": "mul"
+  },
+  {
+    "name": "Aventi",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#aventi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#aventi",
+    "id": "aventi"
+  },
+  {
+    "name": "Axani",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#axani",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#axani",
+    "id": "axani"
+  },
+  {
+    "name": "Azurins",
+    "source": "https://srd.dndtools.org/srd/races/racesMoi.html#azurins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoi.html#azurins",
+    "id": "azurin"
+  },
+  {
+    "name": "Buommans",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#buommans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#buommans",
+    "id": "buomman"
+  },
+  {
+    "name": "Cansin",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#cansin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#cansin",
+    "id": "cansin"
+  },
+  {
+    "name": "Changelings",
+    "source": "https://srd.dndtools.org/srd/races/racesEberron.html#changelings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEberron.html#changelings",
+    "id": "changeling"
+  },
+  {
+    "name": "Complacent Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#complacent-humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#complacent-humans",
+    "id": "complacent-human"
+  },
+  {
+    "name": "Deep Imaskari",
+    "source": "https://srd.dndtools.org/srd/races/racesUnd.html#deep-imaskari",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUnd.html#deep-imaskari",
+    "id": "deep-imaskari"
+  },
+  {
+    "name": "Elans",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#elans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#elans",
+    "id": "elan"
+  },
+  {
+    "name": "Athasian Elans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-elans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-elans",
+    "id": "athasian-elan"
+  },
+  {
+    "name": "Extaminaars",
+    "source": "https://srd.dndtools.org/srd/races/racesCor.html#extaminaars",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCor.html#extaminaars",
+    "id": "extaminaar"
+  },
+  {
+    "name": "Frost Folk",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#frost-folk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#frost-folk",
+    "id": "frost-folk"
+  },
+  {
+    "name": "Air Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#air-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#air-genasi",
+    "id": "air-genasi"
+  },
+  {
+    "name": "Dust Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#dust-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#dust-para-genasi",
+    "id": "dust-para-genasi"
+  },
+  {
+    "name": "Earth Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#earth-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#earth-genasi",
+    "id": "earth-genasi"
+  },
+  {
+    "name": "Fire Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#fire-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#fire-genasi",
+    "id": "fire-genasi"
+  },
+  {
+    "name": "Ice Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#ice-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#ice-para-genasi",
+    "id": "ice-para-genasi"
+  },
+  {
+    "name": "Magma Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#magma-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#magma-para-genasi",
+    "id": "magma-para-genasi"
+  },
+  {
+    "name": "Ooze Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#ooze-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#ooze-para-genasi",
+    "id": "ooze-para-genasi"
+  },
+  {
+    "name": "Smoke Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#smoke-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#smoke-para-genasi",
+    "id": "smoke-para-genasi"
+  },
+  {
+    "name": "Steam Para-Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#steam-para-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#steam-para-genasi",
+    "id": "steam-para-genasi"
+  },
+  {
+    "name": "Water Genasi",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#water-genasi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#water-genasi",
+    "id": "water-genasi"
+  },
+  {
+    "name": "Glimmerfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#glimmerfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#glimmerfolk",
+    "id": "glimmerfolk"
+  },
+  {
+    "name": "Hagspawn",
+    "source": "https://srd.dndtools.org/srd/races/racesUeast.html#hagspawn",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUeast.html#hagspawn",
+    "id": "hagspawn"
+  },
+  {
+    "name": "Half-Black Dragon Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesDof.html#half-black-dragon-humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDof.html#half-black-dragon-humans",
+    "id": "half-black-dragon-human"
+  },
+  {
+    "name": "Half-Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#half-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#half-dwarves",
+    "id": "half-dwarf"
+  },
+  {
+    "name": "Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/races.html#half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#half-elves",
+    "id": "half-elf"
+  },
+  {
+    "name": "Half-Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#half-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#half-giants",
+    "id": "athasian-half-giant"
+  },
+  {
+    "name": "Half-Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#half-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#half-gnomes",
+    "id": "half-gnome"
+  },
+  {
+    "name": "Half-Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#half-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#half-goblins",
+    "id": "half-goblin"
+  },
+  {
+    "name": "Half-Kender",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#WHY",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#WHY",
+    "id": "half-kender"
+  },
+  {
+    "name": "Half-Ogres",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#half-ogres",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#half-ogres",
+    "id": "half-ogre"
+  },
+  {
+    "name": "Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/races.html#half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#half-orcs",
+    "id": "half-orc"
+  },
+  {
+    "name": "Illumians",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#illumians",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#illumians",
+    "id": "illumian"
+  },
+  {
+    "name": "Inspired",
+    "source": "https://srd.dndtools.org/srd/races/racesEberron.html#inspired",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEberron.html#inspired",
+    "id": "inspired"
+  },
+  {
+    "name": "Ithin'Carthians",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#ithincarthians",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#ithincarthians",
+    "id": "ithin-carthian"
+  },
+  {
+    "name": "Tarmak",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#tarmak",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#tarmak",
+    "id": "tarmak"
+  },
+  {
+    "name": "Damjatt",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#damjatt",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#damjatt",
+    "id": "damjatt"
+  },
+  {
+    "name": "Keena",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#keena",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#keena",
+    "id": "keena"
+  },
+  {
+    "name": "Kalashtar",
+    "source": "https://srd.dndtools.org/srd/races/racesEberron.html#kalashtar",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEberron.html#kalashtar",
+    "id": "kalashtar"
+  },
+  {
+    "name": "Karsites",
+    "source": "https://srd.dndtools.org/srd/races/racesTom.html#karsites",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesTom.html#karsites",
+    "id": "karsite"
+  },
+  {
+    "name": "Mongrelfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#mongrelfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#mongrelfolk",
+    "id": "mongrelfolk"
+  },
+  {
+    "name": "Mortif",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#mortif",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#mortif",
+    "id": "mortif"
+  },
+  {
+    "name": "Neanderthals",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#neanderthals",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#neanderthals",
+    "id": "neanderthal"
+  },
+  {
+    "name": "Saurian Shifters",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#saurian-shifters",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#saurian-shifters",
+    "id": "saurian-shifter"
+  },
+  {
+    "name": "Sea Kin",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#seamen",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#seamen",
+    "id": "sea-kin"
+  },
+  {
+    "name": "Shades",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#shades",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#shades",
+    "id": "shade"
+  },
+  {
+    "name": "Shadowswyfts",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#shadowswyfts",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#shadowswyfts",
+    "id": "shadowswyft"
+  },
+  {
+    "name": "Sharakim",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#sharakim",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#sharakim",
+    "id": "sharakim"
+  },
+  {
+    "name": "Shifters",
+    "source": "https://srd.dndtools.org/srd/races/racesEberron.html#shifters",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEberron.html#shifters",
+    "id": "shifter"
+  },
+  {
+    "name": "Silverbrow Humans",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#silverbrow-humans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#silverbrow-humans",
+    "id": "silverbrow-human"
+  },
+  {
+    "name": "Skulks",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#skulks",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#skulks",
+    "id": "skulk"
+  },
+  {
+    "name": "Tieflings",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#tieflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#tieflings",
+    "id": "tiefling"
+  },
+  {
+    "name": "Underfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#underfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#underfolk",
+    "id": "underfolk"
+  },
+  {
+    "name": "Vasharans",
+    "source": "https://srd.dndtools.org/srd/races/racesBovd.html#vasharans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesBovd.html#vasharans",
+    "id": "vasharan"
+  },
+  {
+    "name": "Volodnis",
+    "source": "https://srd.dndtools.org/srd/races/racesUeast.html#volodnis",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUeast.html#volodnis",
+    "id": "volodni"
+  },
+  {
+    "name": "Aarakocras",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#aarakocras",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#aarakocras",
+    "id": "aarakocra"
+  },
+  {
+    "name": "Athasian Aarakocras",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-aarakocras",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-aarakocras",
+    "id": "athasian-aarakocra"
+  },
+  {
+    "name": "Adu'jas",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#adujas",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#adujas",
+    "id": "adu-ja"
+  },
+  {
+    "name": "Hound Archons",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#hound-archons",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#hound-archons",
+    "id": "hound-archon"
+  },
+  {
+    "name": "Armands",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#armands",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#armands",
+    "id": "armand"
+  },
+  {
+    "name": "Asheratis",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#asheratis",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#asheratis",
+    "id": "asherati"
+  },
+  {
+    "name": "Azers",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#azers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#azers",
+    "id": "azer"
+  },
+  {
+    "name": "Bariaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#bariaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#bariaurs",
+    "id": "bariaur"
+  },
+  {
+    "name": "Exalted Bariaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesBoed.html#exalted-bariaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesBoed.html#exalted-bariaurs",
+    "id": "exalted-bariaur"
+  },
+  {
+    "name": "Cactacae",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#cactacae",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#cactacae",
+    "id": "cactacae"
+  },
+  {
+    "name": "Catfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesRotw.html#catfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotw.html#catfolk",
+    "id": "catfolk"
+  },
+  {
+    "name": "Centaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesRotw.html#centaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotw.html#centaurs",
+    "id": "centaur"
+  },
+  {
+    "name": "Wendle Centaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#wendle-centaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#wendle-centaurs",
+    "id": "wendle-centaur"
+  },
+  {
+    "name": "Chitines",
+    "source": "https://srd.dndtools.org/srd/races/racesUnd.html#chitines",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUnd.html#chitines",
+    "id": "chitine"
+  },
+  {
+    "name": "Crucians",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#crucians",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#crucians",
+    "id": "crucian"
+  },
+  {
+    "name": "Daelkyr Half-Bloods",
+    "source": "https://srd.dndtools.org/srd/races/racesMoe.html#daelkyr-half-bloods",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoe.html#daelkyr-half-bloods",
+    "id": "daelkyr-half-blood"
+  },
+  {
+    "name": "Darfellans",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#darfellans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#darfellans",
+    "id": "darfellan"
+  },
+  {
+    "name": "Cambions",
+    "source": "https://srd.dndtools.org/srd/races/racesEttdp.html#cambions",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEttdp.html#cambions",
+    "id": "cambion"
+  },
+  {
+    "name": "Diaboli",
+    "source": "https://srd.dndtools.org/srd/races/racesDc.html#diaboli",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDc.html#diaboli",
+    "id": "diaboli"
+  },
+  {
+    "name": "Diopsids",
+    "source": "https://srd.dndtools.org/srd/races/racesDc.html#diopsids",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDc.html#diopsids",
+    "id": "diopsid"
+  },
+  {
+    "name": "Doppelgangers",
+    "source": "https://srd.dndtools.org/srd/races/racesRod.html#doppelgangers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRod.html#doppelgangers",
+    "id": "doppelganger"
+  },
+  {
+    "name": "Baaz",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#baaz",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#baaz",
+    "id": "baaz"
+  },
+  {
+    "name": "Bozak",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#bozak",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#bozak",
+    "id": "bozak"
+  },
+  {
+    "name": "Kapak",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#kapak",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#kapak",
+    "id": "kapak"
+  },
+  {
+    "name": "Dracotaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#dracotaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#dracotaurs",
+    "id": "dracotaur"
+  },
+  {
+    "name": "Dragonborn of Bahamut",
+    "source": "https://srd.dndtools.org/srd/races/racesRotd.html#dragonborn",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotd.html#dragonborn",
+    "id": "dragonborn-of-bahamut"
+  },
+  {
+    "name": "Dragonkin",
+    "source": "https://srd.dndtools.org/srd/races/racesDrac.html#dragonkin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrac.html#dragonkin",
+    "id": "dragonkin"
+  },
+  {
+    "name": "Dromites",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#dromites",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#dromites",
+    "id": "dromite"
+  },
+  {
+    "name": "Dvati",
+    "source": "https://srd.dndtools.org/srd/races/racesDc.html#dvati",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDc.html#dvati",
+    "id": "dvati"
+  },
+  {
+    "name": "Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#dwarves",
+    "id": "dwarf"
+  },
+  {
+    "name": "Aquatic Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-dwarves",
+    "id": "aquatic-dwarf"
+  },
+  {
+    "name": "Arctic Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-dwarves",
+    "id": "arctic-dwarf"
+  },
+  {
+    "name": "Athasian Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-dwarves",
+    "id": "athasian-dwarf"
+  },
+  {
+    "name": "Azerbloods",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#azebloods",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#azerbloods",
+    "id": "azerblood"
+  },
+  {
+    "name": "Badlands Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#badlands-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#badlands-dwarves",
+    "id": "badland-dwarf"
+  },
+  {
+    "name": "Dark Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#dark-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#dark-dwarves",
+    "id": "dark-dwarf"
+  },
+  {
+    "name": "Deep Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#deep-dwarf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#deep-dwarf",
+    "id": "deep-dwarf"
+  },
+  {
+    "name": "Desert Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-dwarves",
+    "id": "desert-dwarf"
+  },
+  {
+    "name": "Dream Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#dream-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#dream-dwarves",
+    "id": "dream-dwarf"
+  },
+  {
+    "name": "Duergar",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#duergar",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#duergar",
+    "id": "duergar"
+  },
+  {
+    "name": "Frost Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#frost-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#frost-dwarves",
+    "id": "frost-dwarf"
+  },
+  {
+    "name": "Lesser Duergar",
+    "source": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-gray-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-gray-dwarves",
+    "id": "lesser-duergar"
+  },
+  {
+    "name": "Earth Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#earth-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#earth-dwarves",
+    "id": "earth-dwarf"
+  },
+  {
+    "name": "Exiled Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#exiled-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#exiled-dwarves",
+    "id": "exiled-dwarf"
+  },
+  {
+    "name": "Fireblood Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#fireblood-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#fireblood-dwarves",
+    "id": "fireblood-dwarf"
+  },
+  {
+    "name": "Glacier Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#glacier-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#glacier-dwarves",
+    "id": "glacier-dwarf"
+  },
+  {
+    "name": "Gold Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#gold-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#gold-dwarves",
+    "id": "gold-dwarf"
+  },
+  {
+    "name": "Gully Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#gully-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#gully-dwarves",
+    "id": "gully-dwarf"
+  },
+  {
+    "name": "Hill Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#hill-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#hill-dwarves",
+    "id": "hill-dwarf"
+  },
+  {
+    "name": "Jungle Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-dwarves",
+    "id": "jungle-dwarf"
+  },
+  {
+    "name": "Mountain Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#mountain-dwarf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#mountain-dwarf",
+    "id": "mountain-dwarf"
+  },
+  {
+    "name": "Seacliff Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#seacliff-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#seacliff-dwarves",
+    "id": "seacliff-dwarf"
+  },
+  {
+    "name": "Shield Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#shield-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#shield-dwarves",
+    "id": "shield-dwarf"
+  },
+  {
+    "name": "Urdunnirs",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#urdunnirs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#urdunnirs",
+    "id": "urdunnir"
+  },
+  {
+    "name": "Wild Dwarves",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#wild-dwarves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#wild-dwarves",
+    "id": "wild-dwarf"
+  },
+  {
+    "name": "Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#elves",
+    "id": "elf"
+  },
+  {
+    "name": "Aquatic Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#aquatic-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#aquatic-elves",
+    "id": "aquatic-elf"
+  },
+  {
+    "name": "Arctic Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-elves",
+    "id": "arctic-elf"
+  },
+  {
+    "name": "Athasian Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-elves",
+    "id": "athasian-elf"
+  },
+  {
+    "name": "Avariels",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#avariels",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#avariels",
+    "id": "avariel"
+  },
+  {
+    "name": "Celadrins",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#celadrins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#celadrins",
+    "id": "celadrin"
+  },
+  {
+    "name": "Dargonesti",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#dargonesti",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#dargonesti",
+    "id": "dargonesti"
+  },
+  {
+    "name": "Declining Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#declining-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#declining-elves",
+    "id": "declining-elf"
+  },
+  {
+    "name": "Desert Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-elves",
+    "id": "desert-elf"
+  },
+  {
+    "name": "Dimernesti",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#dimernesti",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#dimernesti",
+    "id": "dimernesti"
+  },
+  {
+    "name": "Drow",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#drow-elf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#drow-elf",
+    "id": "drow"
+  },
+  {
+    "name": "Deepwyrm Drow",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#deepwyrm-drow",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#deepwyrm-drow",
+    "id": "deepwyrm-drow"
+  },
+  {
+    "name": "Draegloths",
+    "source": "https://srd.dndtools.org/srd/races/racesCor.html#draegloths",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCor.html#draegloths",
+    "id": "draegloth"
+  },
+  {
+    "name": "Lesser Drow",
+    "source": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-drow",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-drow",
+    "id": "lesser-drow"
+  },
+  {
+    "name": "Umbragen",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#umbragen",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#umbragen",
+    "id": "umbragen"
+  },
+  {
+    "name": "Zar'ithra'rin",
+    "source": "https://srd.dndtools.org/srd/races/racesDof.html#zarithrarin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDof.html#zarithrarin",
+    "id": "zar-ithra-rin"
+  },
+  {
+    "name": "Zekylyn",
+    "source": "https://srd.dndtools.org/srd/races/racesDof.html#zekylyn",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDof.html#zekylyn",
+    "id": "zekylyn"
+  },
+  {
+    "name": "Fey'ri",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#feyri",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#feyri",
+    "id": "fey-ri"
+  },
+  {
+    "name": "Fire Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-elves",
+    "id": "fire-elf"
+  },
+  {
+    "name": "Forestlord Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#forestlord-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#forestlord-elves",
+    "id": "forestlord-elf"
+  },
+  {
+    "name": "Ghost Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#ghost-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#ghost-elves",
+    "id": "ghost-elf"
+  },
+  {
+    "name": "Gray Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#gray-elf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#gray-elf",
+    "id": "gray-elf"
+  },
+  {
+    "name": "Jungle Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-elves",
+    "id": "jungle-elf"
+  },
+  {
+    "name": "Kagonesti",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#kagonesti",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#kagonesti",
+    "id": "kagonesti"
+  },
+  {
+    "name": "Moon Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#moon-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#moon-elves",
+    "id": "moon-elf"
+  },
+  {
+    "name": "Painted Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#painted-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#painted-elves",
+    "id": "painted-elf"
+  },
+  {
+    "name": "Phaethons",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#phaethons",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#phaethons",
+    "id": "phaethon"
+  },
+  {
+    "name": "Qualinesti",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#qualinesti",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#qualinesti",
+    "id": "qualinesti"
+  },
+  {
+    "name": "Silvanesti",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#silvanesti",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#silvanesti",
+    "id": "silvanesti"
+  },
+  {
+    "name": "Snow Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#snow-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#snow-elves",
+    "id": "snow-elf"
+  },
+  {
+    "name": "Star Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesUeast.html#star-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUeast.html#star-elves",
+    "id": "star-elf"
+  },
+  {
+    "name": "Sun Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#sun-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#sun-elves",
+    "id": "sun-elf"
+  },
+  {
+    "name": "Wild Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#wild-elf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#wild-elf",
+    "id": "wild-elf"
+  },
+  {
+    "name": "Wood Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#wood-elf",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#wood-elf",
+    "id": "wood-elf"
+  },
+  {
+    "name": "Domovoi",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#domovoi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#domovoi",
+    "id": "domovoi"
+  },
+  {
+    "name": "Dusklings",
+    "source": "https://srd.dndtools.org/srd/races/racesMoi.html#dusklings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoi.html#dusklings",
+    "id": "duskling"
+  },
+  {
+    "name": "Gruwaars",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#gruwaars",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#gruwaars",
+    "id": "gruwaar"
+  },
+  {
+    "name": "Jaebrins",
+    "source": "https://srd.dndtools.org/srd/races/racesMm5.html#jaebrins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm5.html#jaebrins",
+    "id": "jaebrin"
+  },
+  {
+    "name": "Killoren",
+    "source": "https://srd.dndtools.org/srd/races/racesRotw.html#killoren",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotw.html#killoren",
+    "id": "killoren"
+  },
+  {
+    "name": "Pixies",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#pixies",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#pixies",
+    "id": "pixy"
+  },
+  {
+    "name": "Satyrs",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#satyrs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#satyrs",
+    "id": "satyr"
+  },
+  {
+    "name": "Uldras",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#uldras",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#uldras",
+    "id": "uldra"
+  },
+  {
+    "name": "Gargoyles",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#gargoyles",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#gargoyles",
+    "id": "gargoyle"
+  },
+  {
+    "name": "Wingwyrds",
+    "source": "https://srd.dndtools.org/srd/races/races5n.html#wingwyrds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/races5n.html#wingwyrds",
+    "id": "wingwyrd"
+  },
+  {
+    "name": "Garuda",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#garuda",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#garuda",
+    "id": "garuda"
+  },
+  {
+    "name": "Jann",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#jann",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#jann",
+    "id": "jann"
+  },
+  {
+    "name": "Cyclopes",
+    "source": "https://srd.dndtools.org/srd/races/racesSsouth.html#cyclopes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSsouth.html#cyclopes",
+    "id": "cyclope"
+  },
+  {
+    "name": "Menta Cyclopeans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#menta-cyclopeans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#menta-cyclopeans",
+    "id": "menta-cyclopean"
+  },
+  {
+    "name": "Feral-Kind Cyclopeans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#feral-kind-cyclopeans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#feral-kind-cyclopeans",
+    "id": "feral-kind-cyclopean"
+  },
+  {
+    "name": "Hill Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#hill-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#hill-giants",
+    "id": "hill-giant"
+  },
+  {
+    "name": "Jungle Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesSox.html#jungle-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSox.html#jungle-giants",
+    "id": "jungle-giant"
+  },
+  {
+    "name": "Sand Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#sand-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#sand-giants",
+    "id": "sand-giant"
+  },
+  {
+    "name": "Stone Giants",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#stone-giants",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#stone-giants",
+    "id": "stone-giant"
+  },
+  {
+    "name": "Giff",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#giff",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#giff",
+    "id": "giff"
+  },
+  {
+    "name": "Githyanki",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#githyanki",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#githyanki",
+    "id": "githyanki"
+  },
+  {
+    "name": "Duthka'gith",
+    "source": "https://srd.dndtools.org/srd/races/racesDunmag.html#duthkagith",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDunmag.html#duthkagith",
+    "id": "duthka-gith"
+  },
+  {
+    "name": "Githzerai",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#githzerai",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#githzerai",
+    "id": "githzerai"
+  },
+  {
+    "name": "Gloamings",
+    "source": "https://srd.dndtools.org/srd/races/racesUnd.html#gloamings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUnd.html#gloamings",
+    "id": "gloaming"
+  },
+  {
+    "name": "Gnolls",
+    "source": "https://srd.dndtools.org/srd/races/racesRotw.html#gnolls",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotw.html#gnolls",
+    "id": "gnoll"
+  },
+  {
+    "name": "Flinds",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#flinds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#flinds",
+    "id": "flind"
+  },
+  {
+    "name": "Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#gnomes",
+    "id": "gnome"
+  },
+  {
+    "name": "Air Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#air-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#air-gnomes",
+    "id": "air-gnome"
+  },
+  {
+    "name": "Aquatic Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-gnomes",
+    "id": "aquatic-gnome"
+  },
+  {
+    "name": "Arctic Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-gnomes",
+    "id": "arctic-gnome"
+  },
+  {
+    "name": "Chaos Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#chaos-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#chaos-gnomes",
+    "id": "chao-gnome"
+  },
+  {
+    "name": "Desert Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-gnomes",
+    "id": "desert-gnome"
+  },
+  {
+    "name": "Fire Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#fire-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#fire-gnomes",
+    "id": "fire-gnome"
+  },
+  {
+    "name": "Forest Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#forest-gnome",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#forest-gnome",
+    "id": "forest-gnome"
+  },
+  {
+    "name": "Ice Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#ice-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#ice-gnomes",
+    "id": "ice-gnome"
+  },
+  {
+    "name": "Jungle Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-gnomes",
+    "id": "jungle-gnome"
+  },
+  {
+    "name": "Mad Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#mad-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#mad-gnomes",
+    "id": "mad-gnome"
+  },
+  {
+    "name": "Rock Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#rock-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#rock-gnomes",
+    "id": "rock-gnome"
+  },
+  {
+    "name": "Stonehunter Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#stonehunter-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#stonehunter-gnomes",
+    "id": "stonehunter-gnome"
+  },
+  {
+    "name": "Svirfneblin",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#svirfneblin-gnome",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#svirfneblin-gnome",
+    "id": "deep-gnome"
+  },
+  {
+    "name": "Lesser Svirfneblin",
+    "source": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-deep-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-deep-gnomes",
+    "id": "lesser-svirfneblin"
+  },
+  {
+    "name": "Techno Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#techno-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#techno-gnomes",
+    "id": "techno-gnome"
+  },
+  {
+    "name": "Tinker Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#gnomes",
+    "id": "tinker-gnome"
+  },
+  {
+    "name": "Wavecrest Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#wavecrest-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#wavecrest-gnomes",
+    "id": "wavecrest-gnome"
+  },
+  {
+    "name": "Whisper Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#whisper-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#whisper-gnomes",
+    "id": "whisper-gnome"
+  },
+  {
+    "name": "Wild Gnomes",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#wild-gnomes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#wild-gnomes",
+    "id": "wild-gnome"
+  },
+  {
+    "name": "Goatfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#goatfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#goatfolk",
+    "id": "goatfolk"
+  },
+  {
+    "name": "Bhukas",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#bhukas",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#bhukas",
+    "id": "bhuka"
+  },
+  {
+    "name": "Bugbears",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#bugbears",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#bugbears",
+    "id": "bugbear"
+  },
+  {
+    "name": "Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#goblins",
+    "id": "goblin"
+  },
+  {
+    "name": "Air Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#air-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#air-goblins",
+    "id": "air-goblin"
+  },
+  {
+    "name": "Aquatic Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-goblins",
+    "id": "aquatic-goblin"
+  },
+  {
+    "name": "Arctic Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-goblins",
+    "id": "arctic-goblin"
+  },
+  {
+    "name": "Blues",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#blues",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#blues",
+    "id": "blue"
+  },
+  {
+    "name": "Dekanter Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#dekanter-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#dekanter-goblins",
+    "id": "dekanter-goblin"
+  },
+  {
+    "name": "Desert Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-goblins",
+    "id": "desert-goblin"
+  },
+  {
+    "name": "Forestkith Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#forestkith-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#forestkith-goblins",
+    "id": "forestkith-goblin"
+  },
+  {
+    "name": "Jungle Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-goblins",
+    "id": "jungle-goblin"
+  },
+  {
+    "name": "Snow Goblins",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#snow-goblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#snow-goblins",
+    "id": "snow-goblin"
+  },
+  {
+    "name": "Worghests",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#worghests",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#worghests",
+    "id": "worghest"
+  },
+  {
+    "name": "Hobgoblins",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#hobgoblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#hobgoblins",
+    "id": "hobgoblin"
+  },
+  {
+    "name": "Draconic Hobgoblins",
+    "source": "https://srd.dndtools.org/srd/races/racesDof.html#draconic-hobgoblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDof.html#draconic-hobgoblins",
+    "id": "draconic-hobgoblin"
+  },
+  {
+    "name": "Fire Hobgoblins",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-hobgoblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-hobgoblins",
+    "id": "fire-hobgoblin"
+  },
+  {
+    "name": "Half-Blue Dragon Hobgoblins",
+    "source": "https://srd.dndtools.org/srd/races/racesDof.html#half-blue-dragon-hobgoblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDof.html#half-blue-dragon-hobgoblins",
+    "id": "half-blue-dragon-hobgoblin"
+  },
+  {
+    "name": "Sunscorch Hobgoblins",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#sunscorch-hobgoblins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#sunscorch-hobgoblins",
+    "id": "sunscorch-hobgoblin"
+  },
+  {
+    "name": "Norkers",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#norkers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#norkers",
+    "id": "norker"
+  },
+  {
+    "name": "Varags",
+    "source": "https://srd.dndtools.org/srd/races/racesMm4.html#varags",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm4.html#varags",
+    "id": "varag"
+  },
+  {
+    "name": "Vril",
+    "source": "https://srd.dndtools.org/srd/races/racesDotu.html#vril",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDotu.html#vril",
+    "id": "vril"
+  },
+  {
+    "name": "Goliaths",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#goliaths",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#goliaths",
+    "id": "goliath"
+  },
+  {
+    "name": "Feral Garguns",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#feral-garguns",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#feral-garguns",
+    "id": "feral-gargun"
+  },
+  {
+    "name": "Golmoids",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#golmoids",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#golmoids",
+    "id": "golmoid"
+  },
+  {
+    "name": "Grimlocks",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#grimlocks",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#grimlocks",
+    "id": "grimlock"
+  },
+  {
+    "name": "Grippli",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#grippli",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#grippli",
+    "id": "grippli"
+  },
+  {
+    "name": "Hadozee",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#hadozee",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#hadozee",
+    "id": "hadozee"
+  },
+  {
+    "name": "Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#half-elves",
+    "id": "half-elf"
+  },
+  {
+    "name": "Aquatic Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#aquatic-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#aquatic-half-elves",
+    "id": "aquatic-half-elf"
+  },
+  {
+    "name": "Arctic Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-half-elves",
+    "id": "arctic-half-elf"
+  },
+  {
+    "name": "Athasian Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-half-elves",
+    "id": "athasian-half-elf"
+  },
+  {
+    "name": "Desert Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-half-elves",
+    "id": "desert-half-elf"
+  },
+  {
+    "name": "Fire Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#fire-half-elves",
+    "id": "fire-half-elf"
+  },
+  {
+    "name": "Half-Drow",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#half-drow",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#half-drow",
+    "id": "half-drow"
+  },
+  {
+    "name": "Half-Human Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#half-human-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#half-human-elves",
+    "id": "half-human-elf"
+  },
+  {
+    "name": "Jungle Half-Elves",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-half-elves",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-half-elves",
+    "id": "jungle-half-elf"
+  },
+  {
+    "name": "Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#half-orcs",
+    "id": "half-orc"
+  },
+  {
+    "name": "Aquatic Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-half-orcs",
+    "id": "aquatic-half-orc"
+  },
+  {
+    "name": "Arctic Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-half-orcs",
+    "id": "arctic-half-orc"
+  },
+  {
+    "name": "Desert Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-half-orcs",
+    "id": "desert-half-orc"
+  },
+  {
+    "name": "Frostblood Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#frostblood-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#frostblood-orcs",
+    "id": "frostblood-half-orc"
+  },
+  {
+    "name": "Jungle Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-half-orcs",
+    "id": "jungle-half-orc"
+  },
+  {
+    "name": "Scablands Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesSand.html#scablands-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSand.html#scablands-half-orcs",
+    "id": "scabland-half-orc"
+  },
+  {
+    "name": "Water Half-Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#water-half-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#water-half-orcs",
+    "id": "water-half-orc"
+  },
+  {
+    "name": "Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#halflings",
+    "id": "halfling"
+  },
+  {
+    "name": "Aquatic Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-halflings",
+    "id": "aquatic-halfling"
+  },
+  {
+    "name": "Arctic Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-halflings",
+    "id": "arctic-halfling"
+  },
+  {
+    "name": "Athasian Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-halflings",
+    "id": "athasian-halfling"
+  },
+  {
+    "name": "Deep Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#deep-halfling",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#deep-halfling",
+    "id": "deep-halfling"
+  },
+  {
+    "name": "Desert Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-halflings",
+    "id": "desert-halfling"
+  },
+  {
+    "name": "D'hin",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#dhin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#dhin",
+    "id": "d-hin"
+  },
+  {
+    "name": "Ghostwise Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#ghostwise-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#ghostwise-halflings",
+    "id": "ghostwise-halfling"
+  },
+  {
+    "name": "Glimmerskin Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#glimmerskin-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#glimmerskin-halflings",
+    "id": "glimmerskin-halfling"
+  },
+  {
+    "name": "Jerren",
+    "source": "https://srd.dndtools.org/srd/races/racesBovd.html#jerren",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesBovd.html#jerren",
+    "id": "jerren"
+  },
+  {
+    "name": "Jungle Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-halflings",
+    "id": "jungle-halfling"
+  },
+  {
+    "name": "Lightfoot Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#lightfoot-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#lightfoot-halflings",
+    "id": "lightfoot-halfling"
+  },
+  {
+    "name": "Shoal Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesStorm.html#shoal-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesStorm.html#shoal-halflings",
+    "id": "shoal-halfling"
+  },
+  {
+    "name": "Strongheart Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#strongheart-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#strongheart-halflings",
+    "id": "strongheart-halfling"
+  },
+  {
+    "name": "Tallfellows",
+    "source": "https://srd.dndtools.org/srd/races/racesCore.html#tallfellow-halfling",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCore.html#tallfellow-halfling",
+    "id": "tallfellow"
+  },
+  {
+    "name": "Tundra Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesFrost.html#tundra-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFrost.html#tundra-halflings",
+    "id": "tundra-halfling"
+  },
+  {
+    "name": "Unsheltered Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#unsheltered-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#unsheltered-halflings",
+    "id": "unsheltered-halfling"
+  },
+  {
+    "name": "Water Halflings",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#water-halflings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#water-halflings",
+    "id": "water-halfling"
+  },
+  {
+    "name": "Harssafs",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#harssafs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#harssafs",
+    "id": "harssaf"
+  },
+  {
+    "name": "Hellbred",
+    "source": "https://srd.dndtools.org/srd/races/racesFc2.html#hellbred",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesFc2.html#hellbred",
+    "id": "hellbred"
+  },
+  {
+    "name": "Hengeyokai",
+    "source": "https://srd.dndtools.org/srd/races/racesOa.html#hengeyokai",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesOa.html#hengeyokai",
+    "id": "hengeyokai"
+  },
+  {
+    "name": "Insectare",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#insectare",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#insectare",
+    "id": "insectare"
+  },
+  {
+    "name": "Kender",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#vermin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#vermin",
+    "id": "kender"
+  },
+  {
+    "name": "Afflicted Kender",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#emo-vermin",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#emo-vermin",
+    "id": "afflicted-kender"
+  },
+  {
+    "name": "Kenkus",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#kenkus",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#kenkus",
+    "id": "kenku"
+  },
+  {
+    "name": "Khepri",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#khepri",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#khepri",
+    "id": "khepri"
+  },
+  {
+    "name": "Kir-Lanans",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#kir-lanans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#kir-lanans",
+    "id": "kir-lanan"
+  },
+  {
+    "name": "Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesRotd.html#kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotd.html#kobolds",
+    "id": "kobold"
+  },
+  {
+    "name": "Aquatic Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-kobolds",
+    "id": "aquatic-kobold"
+  },
+  {
+    "name": "Arctic Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-kobolds",
+    "id": "arctic-kobold"
+  },
+  {
+    "name": "Desert Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-kobolds",
+    "id": "desert-kobold"
+  },
+  {
+    "name": "Earth Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#earth-kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#earth-kobolds",
+    "id": "earth-kobold"
+  },
+  {
+    "name": "Jungle Kobolds",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-kobolds",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-kobolds",
+    "id": "jungle-kobold"
+  },
+  {
+    "name": "Korobokurus",
+    "source": "https://srd.dndtools.org/srd/races/racesOa.html#korobokurus",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesOa.html#korobokurus",
+    "id": "korobokuru"
+  },
+  {
+    "name": "Krinth",
+    "source": "https://srd.dndtools.org/srd/races/racesCor.html#krinth",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesCor.html#krinth",
+    "id": "krinth"
+  },
+  {
+    "name": "Kuo-Toas",
+    "source": "https://srd.dndtools.org/srd/races/racesUnd.html#kuo-toas",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUnd.html#kuo-toas",
+    "id": "kuo-toa"
+  },
+  {
+    "name": "Kyrie",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#kyrie",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#kyrie",
+    "id": "kyrie"
+  },
+  {
+    "name": "Lizardfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#lizardfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#lizardfolk",
+    "id": "lizardfolk"
+  },
+  {
+    "name": "Blackscale Lizardfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#blackscale-lizardfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#blackscale-lizardfolk",
+    "id": "blackscale-lizardfolk"
+  },
+  {
+    "name": "Poison Dusk Lizardfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#poison-dusk-lizardfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#poison-dusk-lizardfolk",
+    "id": "poison-dusk-lizardfolk"
+  },
+  {
+    "name": "Viletooth Lizardfolk",
+    "source": "https://srd.dndtools.org/srd/races/racesDrm.html#viletooth-lizardfolk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDrm.html#viletooth-lizardfolk",
+    "id": "viletooth-lizardfolk"
+  },
+  {
+    "name": "Loxos",
+    "source": "https://srd.dndtools.org/srd/races/racesSsouth.html#loxos",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSsouth.html#loxos",
+    "id": "loxo"
+  },
+  {
+    "name": "Lumi",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#lumi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#lumi",
+    "id": "lumi"
+  },
+  {
+    "name": "Lupins",
+    "source": "https://srd.dndtools.org/srd/races/racesDc.html#lupins",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDc.html#lupins",
+    "id": "lupin"
+  },
+  {
+    "name": "Lycanthropes",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#lycanthropes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#lycanthropes",
+    "id": "lycanthrope"
+  },
+  {
+    "name": "Maenads",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#maenads",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#maenads",
+    "id": "maenad"
+  },
+  {
+    "name": "Athasian Maenads",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-maenads",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-maenads",
+    "id": "athasian-maenad"
+  },
+  {
+    "name": "Mephlings",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#mephlings",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#mephlings",
+    "id": "mephling"
+  },
+  {
+    "name": "Mind Flayers",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#mind-flayers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#mind-flayers",
+    "id": "mind-flayer"
+  },
+  {
+    "name": "Minotaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#minotaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#minotaurs",
+    "id": "minotaur"
+  },
+  {
+    "name": "Krynnish Minotaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#minotaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#minotaurs",
+    "id": "krynnish-minotaur"
+  },
+  {
+    "name": "Thoradorian Minotaurs",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#thoradorian-minotaurs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#thoradorian-minotaurs",
+    "id": "thoradorian-minotaur"
+  },
+  {
+    "name": "Rilkans",
+    "source": "https://srd.dndtools.org/srd/races/racesMoi.html#rilkans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoi.html#rilkans",
+    "id": "rilkan"
+  },
+  {
+    "name": "Skarns",
+    "source": "https://srd.dndtools.org/srd/races/racesMoi.html#skarns",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoi.html#skarns",
+    "id": "skarn"
+  },
+  {
+    "name": "Exiled Modrons",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#exiled-modrons",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#exiled-modrons",
+    "id": "exiled-modron"
+  },
+  {
+    "name": "Neraphim",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#neraphim",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#neraphim",
+    "id": "neraphim"
+  },
+  {
+    "name": "Nezumi",
+    "source": "https://srd.dndtools.org/srd/races/racesOa.html#nezumi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesOa.html#nezumi",
+    "id": "nezumi"
+  },
+  {
+    "name": "Nycters",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#nycters",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#nycters",
+    "id": "nycter"
+  },
+  {
+    "name": "Ogres",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#ogres",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#ogres",
+    "id": "ogre"
+  },
+  {
+    "name": "Eneko",
+    "source": "https://srd.dndtools.org/srd/races/racesSos.html#eneko",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSos.html#eneko",
+    "id": "eneko"
+  },
+  {
+    "name": "Irda",
+    "source": "https://srd.dndtools.org/srd/races/racesDlance.html#irda",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDlance.html#irda",
+    "id": "irda"
+  },
+  {
+    "name": "Ogre Mages",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#ogre-mages",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#ogre-mages",
+    "id": "ogre-mage"
+  },
+  {
+    "name": "Skullcrusher Ogres",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#skullcrusher-ogres",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#skullcrusher-ogres",
+    "id": "skullcrusher-ogre"
+  },
+  {
+    "name": "Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#orcs",
+    "id": "orc"
+  },
+  {
+    "name": "Aquatic Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#aquatic-orcs",
+    "id": "aquatic-orc"
+  },
+  {
+    "name": "Arctic Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#arctic-orcs",
+    "id": "arctic-orc"
+  },
+  {
+    "name": "Deep Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#deep-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#deep-orcs",
+    "id": "deep-orc"
+  },
+  {
+    "name": "Desert Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#desert-orcs",
+    "id": "desert-orc"
+  },
+  {
+    "name": "Gray Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#gray-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#gray-orcs",
+    "id": "gray-orc"
+  },
+  {
+    "name": "Jungle Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEnvironment.html#jungle-orcs",
+    "id": "jungle-orc"
+  },
+  {
+    "name": "Mountain Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#mountain-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#mountain-orcs",
+    "id": "mountain-orc"
+  },
+  {
+    "name": "Scro",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#scro",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#scro",
+    "id": "scro"
+  },
+  {
+    "name": "Tanarukks",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#tanarukks",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#tanarukks",
+    "id": "tanarukk"
+  },
+  {
+    "name": "Water Orcs",
+    "source": "https://srd.dndtools.org/srd/races/racesElemental.html#water-orcs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesElemental.html#water-orcs",
+    "id": "water-orc"
+  },
+  {
+    "name": "Phanatons",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#phanatons",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#phanatons",
+    "id": "phanaton"
+  },
+  {
+    "name": "Azerbloods",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#azerbloods",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#azerbloods",
+    "id": "azerblood"
+  },
+  {
+    "name": "Lesser Planetouched",
+    "source": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-planetouched",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-planetouched",
+    "id": "lesser-planetouched"
+  },
+  {
+    "name": "Athasian Pterrans",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-pterrans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#athasian-pterrans",
+    "id": "athasian-pterran"
+  },
+  {
+    "name": "Quaraphons",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#quaraphons",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#quaraphons",
+    "id": "quaraphon"
+  },
+  {
+    "name": "Rakshasas",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#rakshasas",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#rakshasas",
+    "id": "rakshasa"
+  },
+  {
+    "name": "Naztharune Rakshasas",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#naztharune-rakshasas",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#naztharune-rakshasas",
+    "id": "naztharune-rakshasa"
+  },
+  {
+    "name": "Raptorans",
+    "source": "https://srd.dndtools.org/srd/races/racesRotw.html#raptorans",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotw.html#raptorans",
+    "id": "raptoran"
+  },
+  {
+    "name": "Remade",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#remade",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#remade",
+    "id": "remade"
+  },
+  {
+    "name": "Bladebacks",
+    "source": "https://srd.dndtools.org/srd/races/racesSk.html#bladebacks",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSk.html#bladebacks",
+    "id": "bladeback"
+  },
+  {
+    "name": "Finheads",
+    "source": "https://srd.dndtools.org/srd/races/racesSk.html#finheads",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSk.html#finheads",
+    "id": "finhead"
+  },
+  {
+    "name": "Flyers",
+    "source": "https://srd.dndtools.org/srd/races/racesSk.html#flyers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSk.html#flyers",
+    "id": "flyer"
+  },
+  {
+    "name": "Hornheads",
+    "source": "https://srd.dndtools.org/srd/races/racesSk.html#hornheads",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSk.html#hornheads",
+    "id": "hornhead"
+  },
+  {
+    "name": "Slyths",
+    "source": "https://srd.dndtools.org/srd/races/racesUnd.html#slyths",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUnd.html#slyths",
+    "id": "slyth"
+  },
+  {
+    "name": "Spellscales",
+    "source": "https://srd.dndtools.org/srd/races/racesRotd.html#spellscales",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRotd.html#spellscales",
+    "id": "spellscale"
+  },
+  {
+    "name": "Spikers",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#spikers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#spikers",
+    "id": "spiker"
+  },
+  {
+    "name": "Bamboo Spirit Folk",
+    "source": "https://srd.dndtools.org/srd/races/racesOa.html#spirit-folk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesOa.html#spirit-folk",
+    "id": "bamboo-spirit-folk"
+  },
+  {
+    "name": "Mountain Spirit Folk",
+    "source": "https://srd.dndtools.org/srd/races/racesUeast.html#spirit-folk",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUeast.html#spirit-folk",
+    "id": "mountain-spirit-folk"
+  },
+  {
+    "name": "Stonechildren",
+    "source": "https://srd.dndtools.org/srd/races/racesRos.html#stonechildren",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRos.html#stonechildren",
+    "id": "stonechildren"
+  },
+  {
+    "name": "Synads",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#synads",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#synads",
+    "id": "synad"
+  },
+  {
+    "name": "Taers",
+    "source": "https://srd.dndtools.org/srd/races/racesUeast.html#taers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesUeast.html#taers",
+    "id": "taer"
+  },
+  {
+    "name": "Tasloi",
+    "source": "https://srd.dndtools.org/srd/races/racesSsouth.html#tasloi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesSsouth.html#tasloi",
+    "id": "tasloi"
+  },
+  {
+    "name": "Thanoi",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#thanoi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#thanoi",
+    "id": "thanoi"
+  },
+  {
+    "name": "Thri-Kreen",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#thri-kreen",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#thri-kreen",
+    "id": "thri-kreen"
+  },
+  {
+    "name": "Tibbits",
+    "source": "https://srd.dndtools.org/srd/races/racesDc.html#tibbits",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDc.html#tibbits",
+    "id": "tibbit"
+  },
+  {
+    "name": "T'kels",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#tkels",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#tkels",
+    "id": "t-kel"
+  },
+  {
+    "name": "Tortles",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#tortles",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#tortles",
+    "id": "tortle"
+  },
+  {
+    "name": "Troglodytes",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#troglodytes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#troglodytes",
+    "id": "troglodyte"
+  },
+  {
+    "name": "Trolls",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#trolls",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#trolls",
+    "id": "troll"
+  },
+  {
+    "name": "Crystalline Trolls",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#crystalline-trolls",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#crystalline-trolls",
+    "id": "crystalline-troll"
+  },
+  {
+    "name": "Unbodied",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#unbodied",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#unbodied",
+    "id": "unbodied"
+  },
+  {
+    "name": "Ursoi",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#ursoi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRoa.html#ursoi",
+    "id": "ursoi"
+  },
+  {
+    "name": "Vanaras",
+    "source": "https://srd.dndtools.org/srd/races/racesOa.html#vanaras",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesOa.html#vanaras",
+    "id": "vanara"
+  },
+  {
+    "name": "Vodyanoi",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#vodyanoi",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#vodyanoi",
+    "id": "vodyanoi"
+  },
+  {
+    "name": "Warforged",
+    "source": "https://srd.dndtools.org/srd/races/racesEberron.html#warforged",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesEberron.html#warforged",
+    "id": "warforged"
+  },
+  {
+    "name": "Psiforged",
+    "source": "https://srd.dndtools.org/srd/races/racesMoe.html#psiforged",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMoe.html#psiforged",
+    "id": "psiforged"
+  },
+  {
+    "name": "Warforged Chargers",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#warforged-chargers",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#warforged-chargers",
+    "id": "warforged-charger"
+  },
+  {
+    "name": "Warforged Scouts",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#warforged-scouts",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#warforged-scouts",
+    "id": "warforged-scout"
+  },
+  {
+    "name": "Wemics",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#wemics",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#wemics",
+    "id": "wemic"
+  },
+  {
+    "name": "Wildren",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#wildren",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPlanar.html#wildren",
+    "id": "wildren"
+  },
+  {
+    "name": "Windrazors",
+    "source": "https://srd.dndtools.org/srd/races/racesMm4.html#windrazors",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm4.html#windrazors",
+    "id": "windrazor"
+  },
+  {
+    "name": "Windscythes",
+    "source": "https://srd.dndtools.org/srd/races/racesMm4.html#windscythes",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm4.html#windscythes",
+    "id": "windscythe"
+  },
+  {
+    "name": "Witchknives",
+    "source": "https://srd.dndtools.org/srd/races/racesMm3.html#witchknives",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm3.html#witchknives",
+    "id": "witchknive"
+  },
+  {
+    "name": "Xephs",
+    "source": "https://srd.dndtools.org/srd/races/racesPsionic.html#xephs",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesPsionic.html#xephs",
+    "id": "xeph"
+  },
+  {
+    "name": "Xvarts",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#xvarts",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesDramag.html#xvarts",
+    "id": "xvart"
+  },
+  {
+    "name": "Purebloods",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#yuan-ti-purebloods",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesMm1.html#yuan-ti-purebloods",
+    "id": "pureblood"
+  },
+  {
+    "name": "Tainted Ones",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#tainted-ones",
+    "resolvedSource": "https://srd.dndtools.org/srd/races/racesRof.html#tainted-ones",
+    "id": "tainted-one"
+  }
+]

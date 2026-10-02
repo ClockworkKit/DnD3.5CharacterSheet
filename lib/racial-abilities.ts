@@ -31,6 +31,7 @@ export function racialTerms(c:Character,target:string,context:Record<string,stri
  if(a&&active.some(s=>map[s]?.includes(a)))add(sigilBonus(c),'untyped','Illumian sigil');
  if(target==='initiative'&&active.includes('uur'))add(sigilBonus(c),'untyped','Uur');
  if(target==='skill.Swim'&&swimSpeed(c))add(8);
+ if(r?.imported)return rows;
  if(target==='saves'&&isIllumian(c)){if(env.shadow)add(2);if(glyphStatus(c)==='penalty')add(-4,'racial','Glyphic resonance');}
  const opposed:Record<string,string>={air:'earth',earth:'air',fire:'water',water:'fire','fire-half':'water','water-half':'fire'};
  const element=r?.element||'',enemy=opposed[element];

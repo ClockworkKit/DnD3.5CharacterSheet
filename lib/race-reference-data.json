@@ -1,0 +1,450 @@
+[
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Common"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Any",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "ithin-carthian",
+    "name": "Ithin'Carthians",
+    "group": "Races of Ansalon",
+    "source": "https://srd.dndtools.org/srd/races/racesRoa.html#ithincarthians",
+    "book": "Races of Ansalon",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: review the source for individual choices."
+    ],
+    "entryKind": "reference",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Common"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Any",
+    "la": 4,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "shade",
+    "name": "Shades",
+    "group": "Races of Faerûn",
+    "source": "https://srd.dndtools.org/srd/races/racesRof.html#shades",
+    "book": "Races of Faerûn",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: apply to an existing base creature using the source instructions."
+    ],
+    "entryKind": "template",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {
+      "DEX": -2,
+      "CON": 2
+    },
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "darkvision out to 30 feet; low-light vision; darkvision extends to 60 feet; darkvision extends to 90 feet; darkvision extends to 120 feet",
+    "languages": [
+      "Draconic"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Fighter",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "dragonborn-of-bahamut",
+    "name": "Dragonborn of Bahamut",
+    "group": "Races of the Dragon",
+    "source": "https://srd.dndtools.org/srd/races/racesRotd.html#dragonborn",
+    "book": "Races of the Dragon",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: apply to an existing base creature using the source instructions."
+    ],
+    "entryKind": "template",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {
+      "WIS": 2
+    },
+    "size": "Medium",
+    "speed": 30,
+    "type": "Animal",
+    "vision": "Low-light vision",
+    "languages": [
+      "As base creature"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Same as the base creature",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 2,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "lycanthrope",
+    "name": "Lycanthropes",
+    "group": "Monster Manual",
+    "source": "https://srd.dndtools.org/srd/races/racesMm1.html#lycanthropes",
+    "book": "Monster Manual",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: apply to an existing base creature using the source instructions."
+    ],
+    "entryKind": "template",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Animal",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "fort",
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Common"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Any",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "lesser-planetouched",
+    "name": "Lesser Planetouched",
+    "group": "Player’s Guide to Faerûn",
+    "source": "https://srd.dndtools.org/srd/races/racesPgtf.html#lesser-planetouched",
+    "book": "Player’s Guide to Faerûn",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: apply to an existing base creature using the source instructions."
+    ],
+    "entryKind": "template",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Common"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Any",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "remade",
+    "name": "Remade",
+    "group": "Dragon Magazine",
+    "source": "https://srd.dndtools.org/srd/races/racesDramag.html#remade",
+    "book": "Dragon Magazine",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: apply to an existing base creature using the source instructions."
+    ],
+    "entryKind": "template",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Common"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Any",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "psiforged",
+    "name": "Psiforged",
+    "group": "Magic of Eberron",
+    "source": "https://srd.dndtools.org/srd/races/racesMoe.html#psiforged",
+    "book": "Magic of Eberron",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Reference only: review the source for individual choices."
+    ],
+    "entryKind": "reference",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {},
+    "size": "Medium",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "darkvision out to 30 feet; darkvision extends to 60 feet; darkvision extends to 120 feet",
+    "languages": [
+      "Infernal"
+    ],
+    "bonusLanguages": "See source",
+    "favoredClass": "Paladin",
+    "la": 0,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "hellbred",
+    "name": "Hellbred",
+    "group": "Fiendish Codex II",
+    "source": "https://srd.dndtools.org/srd/races/racesFc2.html#hellbred",
+    "book": "Fiendish Codex II",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Choose one of the individual Hellbred options."
+    ],
+    "entryKind": "reference",
+    "nonabilities": [],
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  },
+  {
+    "abilities": {
+      "INT": -2,
+      "CHA": 2
+    },
+    "size": "Small",
+    "speed": 30,
+    "type": "Humanoid",
+    "vision": "Normal vision",
+    "languages": [
+      "Mephlings speak Common",
+      "one elemental language appropriate to their kind (Aquan",
+      "Auran",
+      "Ignan",
+      "or Terran)"
+    ],
+    "bonusLanguages": "Aquan, Auran, Ignan, Terran",
+    "favoredClass": "Each kind of mephling has its own favored class, reflecting its racial tendencies",
+    "la": 1,
+    "rhd": 0,
+    "hitDice": "None",
+    "natural": 0,
+    "dodge": 0,
+    "skills": {},
+    "saves": {},
+    "powerPoints": 0,
+    "grapple": 0,
+    "id": "mephling",
+    "name": "Mephlings",
+    "group": "Planar Handbook",
+    "source": "https://srd.dndtools.org/srd/races/racesPlanar.html#mephlings",
+    "book": "Planar Handbook",
+    "openGame": false,
+    "imported": true,
+    "traits": [
+      "Choose one of the individual Mephlings options."
+    ],
+    "entryKind": "reference",
+    "nonabilities": [],
+    "swim": 30,
+    "fly": 10,
+    "burrow": 10,
+    "racialProgression": {
+      "type": "Humanoid",
+      "die": 8,
+      "bab": 0.75,
+      "goodSaves": [
+        "ref"
+      ],
+      "skillBase": 2,
+      "classSkills": []
+    },
+    "bonusFeat": false,
+    "bonusSkillPoints": 0,
+    "manualHandling": [
+      "Reference only: no rules are automatically applied from this entry. Use the linked source with your existing base race."
+    ]
+  }
+]
