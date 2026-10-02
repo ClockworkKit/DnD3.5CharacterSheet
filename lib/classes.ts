@@ -1,3 +1,4 @@
+import {classRuleText,classRuleHeading} from './class-rule-text.ts';
 import {alternateClassSkill} from './alternate-benefits.ts';
 import {effectiveClassMilestone,hasAlternateFeature} from './alternate-features.ts';
 import {classCatalog} from './class-catalog.ts';
@@ -43,7 +44,7 @@ export const manifestingLevel=(d:ClassDefinition,level:number)=>d.id==='soulknif
 export function spellSlots(def:ClassDefinition,level:number,score:number,bonusScore=score){const r=classRow(def,level),mod=Math.floor((bonusScore-10)/2);return Array.from({length:10},(_,i)=>{const base=r.slots?.[i];return {max:base==null||score<10+i?0:base+(i>0&&mod>=i?1+Math.floor((mod-i)/4):0),used:0}});}
 export function makeCaster(def:ClassDefinition,level=3,score=16,bonusScore=score):Caster {return {id:crypto.randomUUID(),name:def.name,list:def.casting?.list||(def.id==='wizard'||def.id==='sorcerer'?'Sorcerer / Wizard':def.name),ability:castingAbility(def),level:castingLevel(def,level),mode:def.casting?.mode||(['sorcerer','bard','assassin'].includes(def.id)?'spontaneous':'prepared'),dcExtra:0,penetration:0,slots:spellSlots(def,level,score,bonusScore),spells:[],casting:{classId:def.id,domain:false,progression:null,levelAdjustment:0,slotAdjustments:Array(10).fill(0),automatic:true},notes:def.id==='cleric'?'Daily slots exclude domain slots. Add a separate Domain tradition for those restricted slots.':def.casting?def.description||'':''};}
 export function makePsionic(def:ClassDefinition,level=3,score=16):Psionic{const row=classRow(def,level),bonus=Math.max(0,Math.floor(Math.floor((score-10)/2)*manifestingLevel(def,level)/2));return {id:crypto.randomUUID(),name:def.name,ability:manifestingAbility(def),level:manifestingLevel(def,level),max:def.id==='soulknife'?2:(row.powerPoints||0)+bonus+(def.manifesting?.bonusPoints||0),spent:0,focused:false,dcExtra:0,notes:def.id==='soulknife'?'Wild Talent supplies 2 power points but no powers or manifester level.':def.manifesting&&def.description?def.description:'Choose powers from your class list and discipline. The class table gives powers known and maximum power level.',powers:[],manifesting:{classId:def.id,progression:null,levelAdjustment:0,pointsAdjustment:0,automatic:true}};}
-export function copyClassFeatures(c:Character,existingOnly=false){for(const e of c.classLevels){const d=findClass(e.classId);if(!d||existingOnly&&!c.features.some(f=>f.id==='class-summary-'+e.id))continue;const description=d.levels.filter(r=>r.level<=e.level&&r.special&&r.special!=='—').map(r=>`Level ${r.level}: ${effectiveClassMilestone(c,e.classId,r.special,r.level)}`).join('\n');const id='class-summary-'+e.id;const feature={id,name:d.name+' class features',kind:'Class feature' as const,description:description+(d.description?'\n\n'+d.description:'')+'\n\nUse the latest improved version of a feature. Bonuses are entered in the relevant sheet fields.\nFull class reference: '+d.source,max:0,used:0,source:d.source};const previous=c.features.find(f=>f.id===id);if(previous){previous.description=feature.description;previous.name=feature.name;previous.source=feature.source;}else c.features.push(feature);}}
+export function copyClassFeatures(c:Character,existingOnly=false){for(const e of c.classLevels){const d=findClass(e.classId);if(!d||existingOnly&&!c.features.some(f=>f.id==='class-summary-'+e.id))continue;const description=d.levels.filter(r=>r.level<=e.level&&r.special&&r.special!=='—').map(r=>`Level ${r.level}: ${effectiveClassMilestone(c,e.classId,r.special,r.level)}`).join('\n');const id='class-summary-'+e.id;const feature={id,name:d.name+' class features',kind:'Class feature' as const,description:description+(classRuleText(d.id)||((d.description?'\n\n'+d.description:'')+'\n\nUse the latest improved version of a feature. Bonuses are entered in the relevant sheet fields.\nFull class reference: '+d.source)),max:0,used:0,source:d.source};const previous=c.features.find(f=>f.id===id);if(previous){previous.description=feature.description;previous.name=feature.name;previous.source=feature.source;}else c.features.push(feature);}}
 export function applyStartingClass(c:Character,kind:string,level:number){const def=findClass(kind);if(!def||def.kind==='Prestige')throw new Error('Choose a base class; add prestige classes in Classes.');classRow(def,level);
  c.classLevels=[{id:crypto.randomUUID(),classId:def.id,name:def.name,level,notes:''}];c.psionics=[];c.casters=[];c.features=[];
  if(def.id!=='fighter'){
@@ -73,5 +74,13 @@ export function syncClassSources(c:Character){
   if(f.kind!=='Class feature'&&!f.ruleId?.startsWith('granted:'))continue;
   if(!Object.hasOwn(aliases,f.source))continue;const source=aliases[f.source];
   f.description=f.description.replaceAll(f.source,source);f.source=source;
+ }
+}
+
+/** Enrich existing generated cards without replacing personal notes or counters. */
+export function syncClassRuleText(c:Character){
+ for(const e of c.classLevels){
+  const f=c.features.find(f=>f.id==='class-summary-'+e.id),rules=classRuleText(e.classId);
+  if(f&&rules&&!f.description.includes(classRuleHeading)&&f.description.includes('Full class reference: ')&&f.description.length+rules.length<=20000)f.description+=rules;
  }
 }

@@ -26,7 +26,7 @@ export const raceDetailNotes:Record<string,string>={
 
 Mimicry (Ex): reproduce familiar sounds, voices and accents. This grants no new languages. Impersonating a particular voice uses Bluff opposed by a familiar listener’s Sense Motive.
 
-Natural weapons: two claws, 1d3 damage each for a Medium kenku. Add them in Creature/Combat if desired; this reference does not create attacks.
+Natural weapons: two claws, 1d3 damage each for a Medium kenku.
 
 Racial skills: +2 Hide and Move Silently. Low-light vision. Common and Kenku; bonus languages Auran, Dwarven, Gnome, Goblin and Halfling. Favored class: rogue. Monster Manual III.`,
  illumian:`Luminous Sigils (Su): candlelight; suppress as a standard action, restore as a free action. Suppression removes sigil and word benefits. Sigils survive form changes that retain supernatural abilities.
