@@ -5,6 +5,7 @@ import {syncSourceReferences} from './source-references.ts';
 import {sheetTotals,skillBonus,weaponAttack} from './rules.ts';
 import {matchEquipment} from './equipment.ts';
 import {importRoll20Armor} from './roll20-equipment.ts';
+import {roll20SpellFailure} from './roll20-spell-failure.ts';
 import {parseDiceFormula} from './dice.mjs';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -115,7 +116,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  const totalCheckPenalty=core.n('armorcheckpenalty','armor_check_penalty');
  c.defense.checkPenalty=totalCheckPenalty!==undefined?checkPenalty(totalCheckPenalty):
   (core.b('armorworn')===false?0:checkPenalty(core.n('acitemcheckpenalty')))+(core.b('shieldworn')===false?0:checkPenalty(core.n('shieldcheckpenalty')));
- c.defense.spellFailure=core.n('arcane_spell_failure')??sum(core,['arcanespellfailure',...(core.b('armorworn')===false?[]:['acitemspellfailure']),...(core.b('shieldworn')===false?[]:['shieldspellfailure'])]);
+ c.defense.spellFailure=roll20SpellFailure(reader);
  c.defense.sr=core.n('spellresistance','sr','spell_resistance')??0;c.defense.dr=core.t('damagereduction','dr','damage_reduction')||'';
  c.defense.resistances=['resistances','energy_resistance','immunities'].map(k=>core.t(k)).filter(Boolean).join('\n');
  for(const [save,prefix] of [['fort','fortitude'],['ref','reflex'],['will','will']] as const){
@@ -269,7 +270,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');

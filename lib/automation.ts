@@ -10,6 +10,7 @@ import {effectiveScore,racialTraits,syncRacialRuleText} from './ancestry.ts';
 import {effectBonus,effectActive,classLevel,featCount,hasFeat,baseVariables} from './effects.ts';
 import {equippedArmor,carrying,movement,matchEquipment,gearWeight,allSizes} from './equipment.ts';
 import {restoreRoll20Armor} from './roll20-equipment.ts';
+import {repairRoll20SpellFailure} from './roll20-spell-failure.ts';
 import {castingDefinition,castingNumbers,manifestDefinition,psionicProgression,hitDieSequence,hitPoints,advanceTargets} from './advancement.ts';
 import {skillIntelligence} from './level-history.ts';
 import {initializeSkillTraining,preserveRemovedSkillLevels,syncSkillRanks,adoptManualSkillChanges} from './skill-points.ts';
@@ -55,6 +56,7 @@ export function migrateRoll20Automation(c:Character){
    for(const [path,value] of Object.entries(before)){const delta=value-after[path];if(delta){c.automation.adjustments[path]=(c.automation.adjustments[path]||0)+delta;if(!c.automation.adjustments[path])delete c.automation.adjustments[path];}}
   }
  }
+ repairRoll20SpellFailure(c);
  if(c.roll20Import&&!c.automation.enabled)c.automation={...c.automation,version:0};return c;
 }
 export function activateAutomation(c:Character,preserve=true){if(c.sheetKind==='monster'){c.automation.enabled=false;return c;}if(c.automation.version===1)return recompute(c);const before=structuredClone(c);c.automation={...defaultAutomation(),version:1,enabled:true,baseSize:c.size,baseSpeed:c.speed,firstClassId:c.classLevels[0]?.id||''};if(!c.classLevels.length)c.classLevels=inferClassEntries(c.classes);const barb=classLevel(c,'barbarian'),monk=classLevel(c,'monk');c.automation.baseSpeed=Math.max(0,c.speed-(barb?10:0)-Math.floor(monk/3)*10);
