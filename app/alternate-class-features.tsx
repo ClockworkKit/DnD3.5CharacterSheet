@@ -3,27 +3,37 @@ import {AlternateRuleControls} from './alternate-rule-controls';
 import {alternateActions} from '@/lib/alternate-actions';
 import {useState} from 'react';
 import {alternateFeatureCatalog,alternateClassLevel,alternateFeatureProblem,alternateFeatureWarnings,alternateResources,selectAlternateFeature,spendAlternateResource,alternateSettings,alternateReplacementLabels,configureAlternateFeature,alternateResourceUsed,setAlternateResourceUsed} from '@/lib/alternate-features';
-import type {AlternateSettings} from '@/lib/alternate-feature-schema';
+import type {AlternateFeatureDefinition,AlternateSettings} from '@/lib/alternate-feature-schema';
 import {findClass} from '@/lib/classes';
 import {withBonus} from '@/lib/rules';
-import {Btn,N,F,Check,Choice,Section,type SheetProps} from './sheet-ui';
+import {Btn,N,F,Check,Choice,type SheetProps} from './sheet-ui';
+
+function onSheetSummary(d:AlternateFeatureDefinition,className:string,settings:AlternateSettings){
+ const placeholder=/^Choose the .+ option for .+\.$/.test(d.description);
+ const opening=d.kind==='reference'?`This is a reference collection for ${className}, not one ability to activate.`:`This is a ${className} alternate feature available at class level ${d.level}.`;
+ const replacement=d.replaces.length?`It replaces ${d.replacementLabels.join(', ')} when gained.`:'It does not replace a normal class feature.';
+ const option=d.choices?.length?`Available choices: ${d.choices.join(', ')}.`:settings.choice?`Recorded choice: ${settings.choice}.`:'';
+ const detail=placeholder?'The sheet records the trade, checks the modeled prerequisites, and applies supported bonuses, resources, actions, and granted feats below. Record any remaining table-specific effect in Rule notes.':d.description;
+ return [opening,replacement,option,detail].filter(Boolean).join(' ');
+}
 
 export function AlternateClassFeatures({c,edit,roll,confirm}:SheetProps){
  const [search,setSearch]=useState(''),[scope,setScope]=useState('mine'),[view,setView]=useState('all'),[limit,setLimit]=useState(30),[error,setError]=useState('');
  const attempt=(action:()=>void)=>{try{action();setError('');}catch(e){setError(e instanceof Error?e.message:'Unable to update this choice.');}};
  const configure=(id:string,patch:Partial<AlternateSettings>)=>attempt(()=>edit(d=>configureAlternateFeature(d,id,patch)));
  const choices=alternateFeatureCatalog.filter(d=>(scope==='all'||alternateClassLevel(c,d.classId)>0||c.alternateFeatures.selected.includes(d.id))&&(view==='all'||view==='selected'&&c.alternateFeatures.selected.includes(d.id)||view==='references'&&d.kind==='reference')&&[d.name,d.classId,d.description,...d.replacementLabels,...(d.choices||[])].join(' ').toLowerCase().includes(search.toLowerCase()));
- return <Section title="Alternate class features" note="Search the Ultimate SRD class-feature catalog and record your character’s trades.">
-  <p className="fine">Choose a replacement when the original feature is gained; later changes require your DM’s agreement. Check the linked source for prerequisites and effects. Rule notes and custom trackers cover abilities that need table resolution. Removing a choice preserves its notes and spent uses.</p>
+ return <details className="sheet-section alternate-feature-panel">
+  <summary className="section-heading"><div><h2>Alternate class features</h2><p className="muted">Open to search, review, and record class-feature trades. Selected choices remain visible in Feats & features.</p></div><span className="fine">{c.alternateFeatures.selected.length} selected · Open panel</span></summary>
+  <div className="alternate-feature-panel-body">
+  <p className="fine">Choose a replacement when the original feature is gained; later changes require your DM's agreement. Each card explains the trade and any supported rules here. Rule notes and custom trackers cover abilities that need table resolution. The source link is optional for deeper reference. Removing a choice preserves its notes and spent uses.</p>
   <div className="fields three"><F label="Search alternate features" value={search} onChange={v=>{setSearch(v);setLimit(30)}}/><Choice label="Catalog scope" value={scope} onChange={v=>{setScope(v);setLimit(30)}} options={[["mine","My classes"],["all","All classes"]]}/><Choice label="Show features" value={view} onChange={v=>{setView(v);setLimit(30)}} options={[["all","All features"],["selected","Selected"],["references","Reference collections"]]}/></div>
   <p className="fine">{choices.length} matching options · {c.alternateFeatures.selected.length} selected</p>
   {error&&<p className="error-text" role="alert">{error}</p>}
   {alternateFeatureWarnings(c).map(w=><p className="error-text" key={w}>{w}</p>)}
-  {choices.slice(0,limit).map(d=>{const selected=c.alternateFeatures.selected.includes(d.id),settings=alternateSettings(c,d.id),problem=alternateFeatureProblem(c,d.id),reference=d.kind==='reference';return <div className="subcard" key={d.id}>
+  {choices.slice(0,limit).map(d=>{const selected=c.alternateFeatures.selected.includes(d.id),settings=alternateSettings(c,d.id),problem=alternateFeatureProblem(c,d.id),reference=d.kind==='reference',supported=selected?alternateActions(c).filter(a=>a.featureId===d.id):[];return <div className="subcard" key={d.id}>
    <div className="row-head"><div><h3>{d.name}</h3><p className="fine">{findClass(d.classId)?.name||d.classId} {d.levels?(settings.level??d.level):d.level} · {reference?'Reference collection':d.replaces.length?'Replaces '+alternateReplacementLabels(c,d).join(', '):'Optional rule'}</p></div>{!reference&&<Btn aria-label={(selected?'Remove ':'Choose ')+d.classId+' '+d.name} disabled={!selected&&!!problem} onClick={()=>confirm((selected?'Remove ':'Choose ')+d.name+'?',selected?'Restore the original class feature. Spent uses remain recorded.':'Confirm this source option is allowed for your character.',()=>attempt(()=>edit(c=>selectAlternateFeature(c,d.id,!selected))))}>{selected?'Remove choice':'Choose'}</Btn>}</div>
-   <p>{d.description}</p><a className="source-link" href={d.source} target="_blank" rel="noreferrer">Read on Ultimate SRD</a>
+   <div className="alternate-explanation"><strong>On-sheet explanation</strong><p>{onSheetSummary(d,findClass(d.classId)?.name||d.classId,settings)}</p>{d.requirementsNote&&<p className="fine"><b>Prerequisites:</b> {d.requirementsNote}</p>}{supported.length>0&&<><p className="fine"><b>Supported actions on this sheet:</b></p><ul className="fine">{supported.map(a=><li key={a.id}><b>{a.name}:</b> {a.description}</li>)}</ul></>}</div><a className="source-link" href={d.source} target="_blank" rel="noreferrer">Optional source reference ↗</a>
    {reference?<p className="fine">This section contains several choices. Use the source to record the individual companion, familiar, racial variant, or other rule on the appropriate sheet tab.</p>:<details open={selected||undefined}><summary>Requirements, options and trackers</summary>
-    {d.requirementsNote&&<p className="fine">{d.requirementsNote}</p>}
     <div className="fields three">
      {d.levels&&<Choice label={d.name+' replacement level'} value={String(settings.level??d.level)} onChange={v=>configure(d.id,{level:Number(v)})} options={d.levels.map(l=>[String(l),'Level '+l])}/>}
      {d.choices&&<Choice label={d.name+' option'} value={settings.choice||'__choose__'} onChange={v=>configure(d.id,{choice:v==='__choose__'?'':v})} options={[["__choose__","Choose an option"],...(!d.choices.includes(settings.choice)&&settings.choice?[[settings.choice,settings.choice+' (legacy; review option)'] as [string,string]]:[]),...d.choices]}/>}
@@ -49,5 +59,6 @@ export function AlternateClassFeatures({c,edit,roll,confirm}:SheetProps){
     {r.period!=='day'&&<Btn disabled={!used} onClick={()=>confirm('Reset '+r.period+' uses?','Restore this pool after its '+r.period+' recovery. A daily rest does not restore it.',()=>attempt(()=>edit(d=>setAlternateResourceUsed(d,r.key,0))))}>Reset {r.period==='week'?'weekly':r.period} uses</Btn>}
    </div>
   </div>})}
- </Section>;
+  </div>
+ </details>;
 }
