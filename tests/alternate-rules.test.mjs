@@ -71,6 +71,21 @@ test('Decisive Strike doubles eligible damage, combines critical multipliers and
  useAlternateAction(c,'monk-decisive-strike','decisive');assert.equal(weaponDamage(c,w),'2d10+4+1d6');assert.equal(weaponDamage(c,w,true),'3d10+6+1d6');assert.equal(attackRoutine(c,w).length,2);assert.match(attackRoutine(c,w)[1].label,/different target/);
  c.automation.context.ownTurn=false;assert.equal(attackRoutine(c,w).length,2);advanceEffects(c);assert.equal(weaponDamage(c,w),'1d10+2+1d6');
 });
+test("Death's Ruin enables half sneak attack dice against undead only when selected",()=>{
+ const c=make('Rogue',5),w=weapon();c.automation.context.sneakAttack=true;c.automation.context.precisionImmune=true;c.automation.context.targetType='undead';
+ assert.equal(weaponDamage(c,w),'1d3');
+ choose(c,'rogue-deaths-ruin');assert.equal(weaponDamage(c,w),'1d3');
+ c.automation.context.deathsRuin=true;assert.equal(weaponDamage(c,w),'1d3+1d6');
+ c.automation.context.targetType='evil';assert.equal(weaponDamage(c,w),'1d3');
+ c.automation.context.targetType='undead';c.automation.context.precisionImmune=false;assert.equal(weaponDamage(c,w),'1d3+1d6');
+});
+test('conditional alternate combat toggles apply only to their qualifying targets',()=>{
+ const rogue=make('Rogue',5),rw=weapon();rogue.automation.context.precisionImmune=true;rogue.automation.context.flanking=true;
+ choose(rogue,'rogue-lightbringer-strike');rogue.automation.context.lightbringerStrike=true;assert.equal(weaponDamage(rogue,rw),'1d3+1d6');rogue.automation.context.targetFlatFooted=true;assert.equal(weaponDamage(rogue,rw),'1d3');
+ const penetrating=make('Rogue',5),pw=weapon();penetrating.automation.context.precisionImmune=true;penetrating.automation.context.flanking=true;choose(penetrating,'rogue-penetrating-strike');penetrating.automation.context.penetratingStrike=true;assert.equal(weaponDamage(penetrating,pw),'1d3+1d6');
+ const disruptive=make('Rogue',5),dw=weapon();disruptive.automation.context.sneakAttack=true;disruptive.automation.context.targetFlatFooted=true;choose(disruptive,'rogue-disruptive-attack');disruptive.automation.context.disruptiveAttack=true;assert.equal(weaponDamage(disruptive,dw),'1d3');
+ const monk=make('Monk',5),mw=weapon();monk.automation.context.targetType='evil';choose(monk,'monk-holy-strike');monk.automation.context.holyStrike=true;assert.equal(weaponDamage(monk,mw),'1d8+2+1d6');monk.automation.context.targetType='good';assert.equal(weaponDamage(monk,mw),'1d8+2');
+});
 test('variable healing spends exact points, rejects overdraw atomically and survives removal',()=>{
  const c=make('Monk',8);choose(c,'monk-wholeness-of-others');useAlternateAction(c,'monk-wholeness-of-others','heal',10);assert.equal(alternateActionRemaining(c,action(c,'heal')),6);
  const before=JSON.stringify(c);assert.throws(()=>useAlternateAction(c,'monk-wholeness-of-others','heal',7),/No uses/);assert.equal(JSON.stringify(c),before);
