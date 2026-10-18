@@ -69,7 +69,7 @@ Daily rest resets daily ACF pools and daily custom trackers. Weekly, encounter, 
 
 ## Catalog maintenance
 
-`scripts/data/alternate-feature-rules.json` contains reviewed mechanical metadata. `scripts/data/alternate-feature-coverage.json` records all 66 source pages, including pages with zero ACFs. `lib/alternate-feature-data.json` is generated from the curated records. Source prose is not copied into the distributed catalog.
+`scripts/data/alternate-feature-rules.json` contains reviewed mechanical metadata. `scripts/data/alternate-feature-coverage.json` records all 66 source pages, including pages with zero ACFs. `lib/alternate-feature-data.json` is generated from the curated records, while `lib/alternate-feature-effects.json` contains compact source-derived effect summaries shown inline on the sheet. Rebuild those summaries with `node scripts/build-alternate-feature-effects.mjs` after a source update.
 
 Cache the source pages using filenames with URL slashes replaced by underscores, then run:
 

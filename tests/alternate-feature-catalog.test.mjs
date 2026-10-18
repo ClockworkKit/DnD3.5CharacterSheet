@@ -20,7 +20,7 @@ const remove=(c,id)=>{selectAlternateFeature(c,id,false);recompute(c);};
 test('all 322 indexed entries on 66 base-class pages have explicit source coverage',()=>{
  assert.equal(data.length,322);assert.equal(coverage.length,66);assert.equal(coverage.reduce((sum,p)=>sum+p.alternatives,0),322);
  assert.equal(new Set(alternateFeatureCatalog.map(d=>d.id)).size,alternateFeatureCatalog.length);
- for(const d of data){assert.ok(findClass(d.classId),d.id);assert.match(d.source,/^https:\/\/srd\.dndtools\.org\/srd\/classes\/.*#/);assert.ok(d.level>=1&&d.level<=20,d.id);assert.ok(alternateFeatureCatalog.some(option=>option.catalogId===d.id),d.id);}
+ for(const d of data){assert.ok(findClass(d.classId),d.id);assert.match(d.source,/^https:\/\/srd\.dndtools\.org\/srd\/classes\/.*#/);assert.ok(d.level>=1&&d.level<=20,d.id);const option=alternateFeatureCatalog.find(option=>option.catalogId===d.id);assert.ok(option,d.id);assert.ok(option.effectSummary&&option.effectSummary.length>10,d.id);}
 });
 test('every selectable feature survives selection, recomputation and JSON persistence',()=>{
  for(const d of alternateFeatureCatalog.filter(d=>d.kind!=='reference')){

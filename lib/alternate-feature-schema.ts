@@ -1,8 +1,9 @@
 import {z} from 'zod';
 import {monkStyles,rangerStyles,clericPaths} from './alternate-styles.ts';
 import data from './alternate-feature-data.json' with {type:'json'};
+import effects from './alternate-feature-effects.json' with {type:'json'};
 export type AlternateFeatureId=string;
-export type AlternateFeatureDefinition={id:string,name:string,classId:string,level:number,replaces:string[],replacementLabels:string[],skill?:{name:string,ranks:number},description:string,source:string,kind?:'replacement'|'optional'|'reference',catalogId?:string,levels?:number[],choices?:string[],choiceRequired?:boolean,review?:boolean,requirementsNote?:string,activation?:string};
+export type AlternateFeatureDefinition={id:string,name:string,classId:string,level:number,replaces:string[],replacementLabels:string[],skill?:{name:string,ranks:number},description:string,effectSummary?:string,source:string,kind?:'replacement'|'optional'|'reference',catalogId?:string,levels?:number[],choices?:string[],choiceRequired?:boolean,review?:boolean,requirementsNote?:string,activation?:string};
 const source='https://srd.dndtools.org/srd/classes/baseCore/paladin.html';
 const original:AlternateFeatureDefinition[]=[
  {id:'paladin-charging-smite',name:'Charging Smite',classId:'paladin',level:5,replaces:['special-mount'],replacementLabels:['Special mount'],description:'On a charging melee smite against evil, add twice your paladin level to normal smite damage. A missed charging smite does not spend the smite use. Uses the ordinary smite pool; mark it spent only after a hit.',source},
@@ -14,9 +15,10 @@ const original:AlternateFeatureDefinition[]=[
 ];
 
 const label=(key:string)=>key.replaceAll('-',' ').replace('@',' at level ');
+const effectById=effects as Record<string,string>;
 export const alternateFeatureCatalog:AlternateFeatureDefinition[]=data.flatMap(row=>{
  const previous=original.find(d=>d.id===row.id);
- const d:AlternateFeatureDefinition={...row,kind:row.kind as AlternateFeatureDefinition['kind'],replacementLabels:row.replaces.map(label),...previous,source:row.source,review:previous?false:row.review,catalogId:row.id};
+ const d:AlternateFeatureDefinition={...row,kind:row.kind as AlternateFeatureDefinition['kind'],replacementLabels:row.replaces.map(label),...previous,effectSummary:effectById[row.id],source:row.source,review:previous?false:row.review,catalogId:row.id};
  if(d.id==='monk-fighting-styles')d.choices=monkStyles.map(s=>s.name);
  if(d.id==='ranger-combat-styles')d.choices=Object.keys(rangerStyles);
  if(d.id==='cleric-no-turning')d.choices=clericPaths;

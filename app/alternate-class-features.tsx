@@ -9,11 +9,10 @@ import {withBonus} from '@/lib/rules';
 import {Btn,N,F,Check,Choice,type SheetProps} from './sheet-ui';
 
 function onSheetSummary(d:AlternateFeatureDefinition,className:string,settings:AlternateSettings){
- const placeholder=/^Choose the .+ option for .+\.$/.test(d.description);
  const opening=d.kind==='reference'?`This is a reference collection for ${className}, not one ability to activate.`:`This is a ${className} alternate feature available at class level ${d.level}.`;
  const replacement=d.replaces.length?`It replaces ${d.replacementLabels.join(', ')} when gained.`:'It does not replace a normal class feature.';
  const option=d.choices?.length?`Available choices: ${d.choices.join(', ')}.`:settings.choice?`Recorded choice: ${settings.choice}.`:'';
- const detail=placeholder?'The sheet records the trade, checks the modeled prerequisites, and applies supported bonuses, resources, actions, and granted feats below. Record any remaining table-specific effect in Rule notes.':d.description;
+ const detail=d.effectSummary||d.description;
  return [opening,replacement,option,detail].filter(Boolean).join(' ');
 }
 
