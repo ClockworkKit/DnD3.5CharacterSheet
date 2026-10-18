@@ -9,6 +9,7 @@ import {classTotals,applyClassTotals,inferClassEntries,syncFactotumClassSkills,s
 import {effectiveScore,racialTraits,syncRacialRuleText} from './ancestry.ts';
 import {effectBonus,effectActive,classLevel,featCount,hasFeat,baseVariables} from './effects.ts';
 import {equippedArmor,carrying,movement,matchEquipment,gearWeight,allSizes} from './equipment.ts';
+import {restoreRoll20Armor} from './roll20-equipment.ts';
 import {castingDefinition,castingNumbers,manifestDefinition,psionicProgression,hitDieSequence,hitPoints,advanceTargets} from './advancement.ts';
 import {skillIntelligence} from './level-history.ts';
 import {initializeSkillTraining,preserveRemovedSkillLevels,syncSkillRanks,adoptManualSkillChanges} from './skill-points.ts';
@@ -43,7 +44,19 @@ export function recompute(c:Character,previous?:Character){if(c.sheetKind==='mon
  const limitedBonus=c.psionics.some(p=>['psionic-fist','war-mind'].includes(manifestDefinition(p)?.id||''));const highest=[...c.psionics].sort((a,b)=>psionicProgression(c,b).level-psionicProgression(c,a).level)[0]?.id;
  for(const p of c.psionics){if(!p.manifesting){const d=manifestDefinition(p);if(d)p.manifesting={classId:d.id,progression:null,levelAdjustment:0,pointsAdjustment:0,automatic:true};}if(p.manifesting?.automatic){const d=manifestDefinition(p),r=psionicProgression(c,p);if(d){p.level=Math.max(0,Math.min(100,r.level));const row=d.levels.find(v=>v.level===Math.min(r.progression,d.levels.length));const bonus=limitedBonus&&p.id!==highest?0:Math.max(0,Math.floor(Math.floor((effectiveScore(c,p.ability,true)-10)/2)*p.level/2));p.max=Math.max(0,Math.min(10000,Math.floor((d.id==='soulknife'?(r.progression>0?2:0):(r.progression>0?(row?.powerPoints||0)+(d.manifesting?.bonusPoints||0):0)+bonus)+p.manifesting.pointsAdjustment)));}}}
  syncSkillRanks(c);dailyResources(c);syncSupplementalResources(c);syncAlternateFeatureCards(c);return c;}
-export function migrateRoll20Automation(c:Character){if(c.roll20Import&&!c.automation.enabled)c.automation={...c.automation,version:0};return c;}
+function equipmentCalculations(c:Character):Record<string,number>{const armor=equippedArmor(c),load=carrying(c);return {'defense.armor':armor.armor,'defense.shield':armor.shield,'defense.dexCap':Math.min(armor.dexCap,c.automation.encumbrance?load.dexCap:100),'defense.checkPenalty':Math.min(armor.checkPenalty,c.automation.encumbrance?load.checkPenalty:0),'defense.spellFailure':armor.spellFailure,speed:movement(c).speed};}
+export function migrateRoll20Automation(c:Character){
+ if(c.roll20Import&&c.roll20Import.equipmentMigration!==1){
+  const before=c.automation.enabled?equipmentCalculations(c):null;
+  if(restoreRoll20Armor(c)&&before){
+   const after=equipmentCalculations(c);
+   // Move the old equipment contribution out of persistent adjustments and
+   // onto the restored item without changing today's totals or user overrides.
+   for(const [path,value] of Object.entries(before)){const delta=value-after[path];if(delta){c.automation.adjustments[path]=(c.automation.adjustments[path]||0)+delta;if(!c.automation.adjustments[path])delete c.automation.adjustments[path];}}
+  }
+ }
+ if(c.roll20Import&&!c.automation.enabled)c.automation={...c.automation,version:0};return c;
+}
 export function activateAutomation(c:Character,preserve=true){if(c.sheetKind==='monster'){c.automation.enabled=false;return c;}if(c.automation.version===1)return recompute(c);const before=structuredClone(c);c.automation={...defaultAutomation(),version:1,enabled:true,baseSize:c.size,baseSpeed:c.speed,firstClassId:c.classLevels[0]?.id||''};if(!c.classLevels.length)c.classLevels=inferClassEntries(c.classes);const barb=classLevel(c,'barbarian'),monk=classLevel(c,'monk');c.automation.baseSpeed=Math.max(0,c.speed-(barb?10:0)-Math.floor(monk/3)*10);
  for(const g of c.gear){const e=matchEquipment(g.name);if(e&&!g.importedManual)g.catalogId=e.id;}for(const w of c.weapons){const e=matchEquipment(w.name,'weapon');if(e){w.catalogId=e.id;w.diceSize=c.size;}const g=c.gear.find(g=>g.name.toLowerCase()===w.name.toLowerCase());if(g)g.weaponId=w.id;}
  if(!preserve){if(monk)c.defense.misc=0;if(classLevel(c,'paladin')>=2)c.saves.fort.misc=c.saves.ref.misc=c.saves.will.misc=0;}

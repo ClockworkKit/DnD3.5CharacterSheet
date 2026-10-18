@@ -16,6 +16,7 @@ const count = z.number().int().min(0).max(10000);
 const short = z.string().max(160);
 const note = z.string().max(20000);
 const ident = z.string().min(1).max(100);
+export const importedArmorSchema=z.object({kind:z.enum(['armor','shield']),category:z.enum(['light','medium','heavy','shields']),armor:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100)});
 export const maxDamageReductionSources = 50;
 const damageReductionSourceSchema = z.object({
   id:ident,source:short,amount:count,bypass:short,active:z.boolean().default(true),
@@ -41,7 +42,7 @@ export const characterSchema = z.object({
   defense:z.object({armor:num,shield:num,natural:num,deflection:num,dodge:num,misc:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100),sr:count,dr:short,drSources:z.array(damageReductionSourceSchema).max(maxDamageReductionSources).refine(rows=>new Set(rows.map(row=>row.id)).size===rows.length,'DR source IDs must be unique.').default([]),resistances:z.string().max(2000)}),
   saves:z.object({fort:z.object({base:num,misc:num}),ref:z.object({base:num,misc:num}),will:z.object({base:num,misc:num})}),
   skills:z.array(skillSchema).max(120),weapons:z.array(weaponSchema).max(50),casters:z.array(casterSchema).max(15),
-  gear:z.array(z.object({id:ident,name:short,qty:count,weight:z.number().min(0).max(100000),carried:z.boolean(),equipped:z.boolean(),notes:z.string().max(2000),catalogId:short.optional(),enhancement:count.optional(),masterwork:z.boolean().optional(),material:z.enum(['standard','mithral','adamantine']).optional(),proficient:z.boolean().optional(),weaponId:short.optional(),importedManual:z.boolean().optional()})).max(500),
+  gear:z.array(z.object({id:ident,name:short,qty:count,weight:z.number().min(0).max(100000),carried:z.boolean(),equipped:z.boolean(),notes:z.string().max(2000),catalogId:short.optional(),enhancement:count.optional(),masterwork:z.boolean().optional(),material:z.enum(['standard','mithral','adamantine']).optional(),proficient:z.boolean().optional(),weaponId:short.optional(),importedManual:z.boolean().optional(),armorStats:importedArmorSchema.optional()})).max(500),
   coins:z.object({cp:count,sp:count,gp:count,pp:count}),coinWeight:z.boolean(),
   sourceReferences:z.array(z.object({id:ident,title:short,book:short,url:z.string().max(500),text:z.string().max(50000)})).max(100).default([]),
   features:z.array(z.object({id:ident,name:short,kind:z.enum(['Feat','Class feature','Racial trait','Other']),description:note,max:count,used:count,source:z.string().max(500),magic:z.boolean().optional(),choice:short.optional(),ruleId:short.optional(),formula:z.string().max(200).optional()})).max(250),

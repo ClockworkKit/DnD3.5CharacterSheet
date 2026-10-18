@@ -29,7 +29,7 @@ test('legacy top-level armor summary becomes visible equipment without rewriting
  const {character:c,report}=importRoll20(input);
  const armor=c.gear.find(g=>g.name.toLowerCase()==='studded leather');
  assert.ok(armor);assert.equal(armor.equipped,true);assert.equal(armor.carried,true);assert.equal(armor.catalogId,undefined);assert.equal(armor.importedManual,true);
- assert.match(armor.notes,/Armor bonus 2/);assert.match(armor.notes,/max Dex 20/);assert.ok(report.warnings.some(w=>w.includes('uses values that differ from the equipment catalog')));
+ assert.equal(armor.armorStats.armor,2);assert.equal(armor.armorStats.dexCap,20);assert.ok(report.warnings.some(w=>w.includes('uses custom armor values')));
  assert.equal(c.defense.armor,2);assert.equal(c.defense.dexCap,20);assert.equal(c.defense.checkPenalty,-1);assert.equal(c.defense.spellFailure,15);
  const loaded=activateAutomation(migrateRoll20Automation(characterSchema.parse(JSON.parse(JSON.stringify(c)))));
  assert.equal(loaded.gear.find(g=>g.name.toLowerCase()==='studded leather').equipped,true);assert.equal(loaded.defense.armor,2);assert.equal(loaded.defense.dexCap,20);assert.equal(loaded.defense.checkPenalty,-1);assert.equal(loaded.defense.spellFailure,15);

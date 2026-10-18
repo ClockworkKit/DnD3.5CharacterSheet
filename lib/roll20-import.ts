@@ -4,6 +4,7 @@ import {raceCatalog} from './ancestry.ts';
 import {syncSourceReferences} from './source-references.ts';
 import {sheetTotals,skillBonus,weaponAttack} from './rules.ts';
 import {matchEquipment} from './equipment.ts';
+import {importRoll20Armor} from './roll20-equipment.ts';
 import {parseDiceFormula} from './dice.mjs';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -210,47 +211,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   c.gear.push({id:uid(),name,qty:r.n('equipmentquantity','quantity','qty')??1,weight:r.n('equipmentweight','weight')??0,carried:r.b('carried')??true,equipped:r.b('equipped')??false,notes:[r.t('equipmentnotes','notes','description'),r.t('equipmentlocation','location')].filter(Boolean).join('\n')});
  }
 
- // The legacy Roll20 sheet stores the worn armor and shield in top-level
- // summary fields rather than in repeating equipment rows. Bring those
- // summaries into Gear so the imported equipment is visible and can be
- // reviewed. Keep non-standard numeric summaries as manual equipment instead
- // of silently changing the character's recorded AC to catalog defaults.
- const noEquipmentName=(name:string)=>/^(?:-|none|no\s+(?:armor|armour|shield)|unarmou?red)$/i.test(name.trim());
- const sourcePenalty=(value:number|undefined)=>value===undefined?undefined:value>0?-value:value;
- function importWornSummary(kind:'armor'|'shield',name:string|undefined,worn:boolean|undefined,values:{bonus?:number,dexCap?:number,checkPenalty?:number,spellFailure?:number,weight?:number}){
-  if(!name||!name.trim()||worn===false||noEquipmentName(name))return;
-  const item=matchEquipment(name,kind);
-  const existing=c.gear.find(g=>{
-   const catalog=matchEquipment(g.name,kind);
-   return (item&&g.catalogId===item.id)||(catalog&&item&&catalog.id===item.id);
-  });
-  const catalogValues=item&&{
-   bonus:item.armor,dexCap:item.dexCap,checkPenalty:item.checkPenalty,spellFailure:item.spellFailure,weight:item.weight,
-  };
-  const standard=!!item&&Object.entries(values).every(([key,value])=>value===undefined||value===catalogValues![key as keyof typeof catalogValues]);
-  const sourceDetails=[
-   values.bonus===undefined?'':`${kind==='armor'?'Armor':'Shield'} bonus ${values.bonus}`,
-   values.dexCap===undefined?'':`max Dex ${values.dexCap}`,
-   values.checkPenalty===undefined?'':`check penalty ${values.checkPenalty}`,
-   values.spellFailure===undefined?'':`arcane failure ${values.spellFailure}%`,
-  ].filter(Boolean).join('; ');
-  const notes=standard?'':`Imported Roll20 ${kind} summary${sourceDetails?`: ${sourceDetails}`:''}. Values are kept as manual fields because they do not match the equipment catalog.`;
-  if(existing){
-   existing.carried=true;existing.equipped=true;
-   if(!standard){existing.catalogId=undefined;existing.importedManual=true;}
-   if(notes)existing.notes=[existing.notes,notes].filter(Boolean).join('\n');
-   return;
-  }
-  c.gear.push({id:uid(),name:item?.name||name.trim(),qty:1,weight:item?.weight??values.weight??0,carried:true,equipped:true,notes,catalogId:standard?item?.id:undefined,importedManual:standard?undefined:true});
-  if(!item)warn(`Imported ${kind} "${name.trim()}" was not found in the equipment catalog; its recorded defense values were kept as manual fields.`);
-  else if(!standard)warn(`Imported ${kind} "${name.trim()}" uses values that differ from the equipment catalog; its recorded defense values were kept as manual fields.`);
- }
- importWornSummary('armor',core.t('acitem','armor','armor_name'),core.b('armorworn'),{
-  bonus:core.n('acitembonus'),dexCap:core.n('acitemdex'),checkPenalty:sourcePenalty(core.n('acitemcheckpenalty')),spellFailure:core.n('acitemspellfailure'),weight:core.n('acitemweight'),
- });
- importWornSummary('shield',core.t('shieldname','shield','shield_name'),core.b('shieldworn'),{
-  bonus:core.n('shieldbonus'),dexCap:core.n('shielddex'),checkPenalty:sourcePenalty(core.n('shieldcheckpenalty')),spellFailure:core.n('shieldspellfailure'),weight:core.n('shieldweight'),
- });
+ importRoll20Armor(c,reader,warn);
 
  const castingKinds=new Map<string,string>();
  const tradition=(p:Caster)=>castingKinds.get(p.id)||findClass(p.casting?.classId||p.name)?.casting?.type||(['wizard','sorcerer','bard','assassin'].includes(p.casting?.classId||'')?'arcane':'divine');
@@ -308,7 +269,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
