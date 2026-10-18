@@ -7,7 +7,7 @@ import {raceCatalog} from '../lib/ancestry.ts';
 import {castingNumbers,advancementNumbers,hitDieSequence,hitPoints} from '../lib/advancement.ts';
 import {addEffect,setEffectActive,advanceEffects,stackBonuses} from '../lib/effects.ts';
 import {addEquipment,matchEquipment,carrying,movement} from '../lib/equipment.ts';
-import {sheetTotals,weaponAttack,weaponDamage,weaponRange,weaponCritical,attackRoutine,spellDC,canCast,spendSpell,resetDaily} from '../lib/rules.ts';
+import {sheetTotals,weaponAttack,weaponDamage,weaponRange,weaponCritical,attackRoutine,fullAttackWeapons,fullAttackRoutine,spellDC,canCast,spendSpell,resetDaily} from '../lib/rules.ts';
 import {powerReserve,canManifest,spendPower} from '../lib/psionics.ts';
 import {expression} from '../lib/formulas.ts';
 
@@ -106,6 +106,13 @@ test('iteratives, Rapid Shot, haste, ranger off-hand attacks, and flurry use cor
  assert.deepEqual(attackRoutine(monk,monk.weapons[0]).map(a=>a.iteration),[0,1,0,0]);
  assert.equal(weaponDamage(monk,monk.weapons[0]),'1d10+2');
  effect(monk,'slow');assert.equal(attackRoutine(monk,monk.weapons[0]).length,1);
+});
+
+test('full attack selects the smart weapon set and preserves each weapon routine',()=>{
+ const c=automatic('Ranger',11);const main=c.weapons[0];main.name='Longsword';main.strength='one';const off={...main,id:uid(),name:'Short sword',strength:'off'};c.weapons.push(off);c.automation.context.twoWeapon=true;
+ assert.deepEqual(fullAttackWeapons(c).map(w=>w.name),['Longsword','Short sword']);
+ assert.equal(fullAttackRoutine(c).length,4);
+ c.automation.context.twoWeapon=false;assert.deepEqual(fullAttackWeapons(c).map(w=>w.name),['Longsword']);
 });
 
 test('critical multipliers omit extra and sneak dice, while threat overrides and thrown ranges work',()=>{

@@ -128,10 +128,14 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
 
  const knowledge:Record<string,string>={arcana:'knowarcana','architecture and engineering':'knowengineer',dungeoneering:'knowdungeon',geography:'knowgeography',history:'knowhistory',local:'knowlocal',nature:'knownature','nobility and royalty':'knownobility',religion:'knowreligion','the planes':'knowplanes',psionics:'knowpsionic'};
  const skillTotals:Array<[Skill,number]>=[];
+ const skillAliases:Record<string,string[]>={movesilently:['movesilent']};
  function fillSkill(skill:Skill,r:Scope,prefix:string){
-  skill.ranks=r.n(prefix+'ranks',prefix+'_ranks')??skill.ranks;skill.misc=sum(r,[prefix+'miscmod',prefix+'tempmod',prefix+'actionmod']);
-  const trained=r.b(prefix+'classskill');if(trained!==undefined)skill.classSkill=trained;
-  const total=r.n(prefix);if(total!==undefined)skillTotals.push([skill,total]);
+  const prefixes=[prefix,...(skillAliases[prefix]||[])];
+  const field=(suffix:string)=>prefixes.map(name=>name+suffix);
+  skill.ranks=r.n(...field('ranks'),...field('_ranks'))??skill.ranks;
+  skill.misc=sum(r,[...field('miscmod'),...field('tempmod'),...field('actionmod')]);
+  const trained=r.b(...field('classskill'));if(trained!==undefined)skill.classSkill=trained;
+  const total=r.n(...prefixes);if(total!==undefined)skillTotals.push([skill,total]);
  }
  for(const s of c.skills){const specialty=s.name.match(/^Knowledge \((.+)\)$/)?.[1],prefix=specialty?knowledge[specialty]:normalized(s.name);if(prefix)fillSkill(s,core,prefix);}
  for(const kind of ['Craft','Perform','Profession'])for(let i=1;i<=3;i++){const prefix=kind.toLowerCase()+i,name=core.t(prefix+'name');if(!name)continue;const base=c.skills.find(s=>s.name===kind)!;const s={...base,id:uid(),name:kind+' ('+name+')',ranks:0,misc:0};fillSkill(s,core,prefix);c.skills.push(s);}
@@ -158,7 +162,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const name=r.t('weaponname','npcattackname','name','attackname');if(!name)return;
   const w=newWeapon(),attackStat=r.t('weaponstat','npcattackstat','ability');w.name=name;w.ability=ability(attackStat)||'STR';
   if(attackStat&&!ability(attackStat))warn(name+': unrecognized attack ability; review the placeholder Strength selection.');
-  w.range=r.t('weaponrange','npcattackrange','range','reach')||'Melee';w.attackMode=w.ability==='DEX'&&w.range!=='Melee'?'ranged':'melee';
+  const sourceRange=r.t('weaponrange','npcattackrange','range','reach');w.range=sourceRange||'Melee';if(w.range==='-')w.range='Melee';w.attackMode=w.ability==='DEX'&&(w.range!=='Melee'||sourceRange==='-')?'ranged':'melee';
   const damageStat=r.t('weapondamagestat','npcattackdamagestat','damageability');
   const selector=damageStat?.toLowerCase().replace(/\s+/g,''),mods=sheetTotals(c).mods;
   let damageOffset=0;
@@ -185,7 +189,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
    else if(selector!=='none')warn(name+': unrecognized damage ability formula; no ability bonus was guessed. Review it before rolling.');
   }
   w.ammo=r.n('weaponammunition','npcattackammunition','ammo')??0;
-  const dice=r.n('weapondicenumber','npcattackdicenumber'),sides=r.n('weapondicetype','npcattackdicetype');
+  const legacyDice=r.t('weaponstatdamage','statdamage')?.match(/^(\d+)?d(\d+)$/i),dice=r.n('weapondicenumber','npcattackdicenumber')??(legacyDice?Number(legacyDice[1]||1):undefined),sides=r.n('weapondicetype','npcattackdicetype')??(legacyDice?Number(legacyDice[2]):undefined);
   const fullDamage=r.t('damage','dmg','weapondamage','npcattackdamage');
   if(dice!==undefined&&sides!==undefined){
    try{w.damage=parseDiceFormula(dice+'d'+sides).formula;w.damageExtra=damageOffset+sum(r,['weaponbonusdamage','weaponspecialize','weaponenh','npcattackbonusdamage','npcattackspecialize','npcattackenh']);}

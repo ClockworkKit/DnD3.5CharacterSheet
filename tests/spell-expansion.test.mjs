@@ -23,6 +23,9 @@ test('Fire Bolt is usable by Duskblade and Wizard, scales to 5d6, and retains SR
  const k={id:'bolt',spellId:s.id,level:1,slotLevel:1,prepared:1,spent:0,notes:'',formula:'',custom:null};
  const card=makeSpellRoll(c,p,k,s);
  assert.ok(card.fields.some(([key,value])=>key==='Spell resistance'&&value.includes('1d6')));
+ const cast=makeSpellRoll(c,p,k,s,true);
+ assert.equal(cast.formula,'5d6');
+ assert.ok(cast.fields.some(([key,value])=>key==='Effect roll'&&value==='5d6'));
  assert.match(s.save,/Reflex half/);assert.match(s.description,/ashes/);
 });
 test('unverified compendium entries never automatically expand known class lists',()=>{
@@ -31,4 +34,9 @@ test('unverified compendium entries never automatically expand known class lists
  assert.deepEqual(unrecordedClassSpells(c,p,[candidate]),[]);
  assert.ok(expanded.filter(s=>s.catalogOrigin==='compendium').every(s=>s.referenceOnly));
  const fireball=expanded.find(s=>s.id==='fireball');assert.ok(unrecordedClassSpells(c,p,[fireball]).length===1);
+});
+test('compendium entries retain structured reference details from Spells v6.01',()=>{
+ const s=expanded.find(s=>s.id==='supp-abyssal-might');
+ assert.equal(s.catalogOrigin,'compendium');assert.equal(s.components,'V, S, M, Demon');assert.equal(s.duration,'10 minutes / level');
+ assert.match(s.description,/summons evil energy from the Abyss/i);assert.doesNotMatch(s.description,/Full effect text is not bundled/i);
 });

@@ -55,7 +55,12 @@ export function attributeReader(data:Roll20Export,warn:(message:string)=>void){
  function read<T>(names:string[],convert:(value:unknown)=>T|undefined,slot:'current'|'max'='current'):T|undefined {
   for(const name of names){
    const indices=byName.get(key(name))||[],values=indices.map(i=>data.attributes[i][slot]);
-   if(new Set(values.map(v=>JSON.stringify(v))).size>1){warn('Conflicting attributes named '+name+' were preserved without choosing a value.');return undefined;}
+   if(new Set(values.map(v=>JSON.stringify(v))).size>1){
+    warn('Conflicting attributes named '+name+' were preserved without choosing a value.');
+    const resolved=convert(queried.get(key(name)+(slot==='max'?'_max':'')));
+    if(resolved!==undefined)return resolved;
+    return undefined;
+   }
    if(indices.length){const result=convert(values[0]);if(result!==undefined){indices.forEach(i=>used.add(i));return result;}}
    const result=convert(queried.get(key(name)+(slot==='max'?'_max':'')));if(result!==undefined)return result;
   }

@@ -101,6 +101,24 @@ test('official weapon selectors preserve handedness and modifiers without doubli
  assert.equal(weaponDamage(weak,weak.weapons[0]),'1d6-4');assert.equal(weaponDamage(weak,weak.weapons[1]),'1d6-1');
 });
 
+test('legacy fixed weapon fields from the 3.5 sheet import their dice and range',()=>{
+ const source=raw(attrs({str:10,dex:18,weapon1name:'Short Sword',weapon1statdamage:'d6',weapon1range:'-',weapon1critmin:'19',weapon1critmult:'2',weapon2name:'Hand Crossbow',weapon2stat:'@{dex-mod}',weapon2damagestat:'0',weapon2statdamage:'d4',weapon2range:'-'}));
+ const c=importRoll20(source).character;
+ assert.deepEqual(c.weapons.map(w=>[w.name,w.damage,w.range,w.ability,w.attackMode]),[['Short Sword','1d6','Melee','STR','melee'],['Hand Crossbow','1d4','Melee','DEX','ranged']]);
+});
+
+test('legacy skill aliases keep imported Move Silently training and modifiers',()=>{
+ const source=raw(attrs({movesilentclassskill:'1',movesilentmiscmod:'4'}));
+ const c=importRoll20(source).character,s=c.skills.find(s=>s.name==='Move Silently');
+ assert.equal(s.classSkill,true);assert.equal(s.misc,4);
+});
+
+test('conflicting duplicate attributes prefer the exporter resolved core value',()=>{
+ const source=raw([{name:'str',current:'@{str-base}',max:''},{name:'str',current:8,max:''}],{resolvedCoreValues:{str:14}});
+ const {character:c,report}=importRoll20(source);
+ assert.equal(c.scores.STR,14);assert.equal(report.unmapped.filter(name=>name==='str').length,2);
+});
+
 test('raw values and future metadata survive schema, native export, browser save/load, and repeated imports',async()=>{
  const source=structuredClone(fixture),before=structuredClone(source),c=importRoll20(source).character;
  assert.deepEqual(source,before);source.extension.value.push('mutated');assert.deepEqual(c.roll20Import.raw,before);

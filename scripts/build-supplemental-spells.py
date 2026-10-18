@@ -32,7 +32,10 @@ for p in pages:
   r['levels'][label]=p['level']
   if p['source'] not in r['sources']:r['sources'].append(p['source'])
 
-# Add the supplied mixed-edition compendium as an explicitly unverified index.
+# Add the supplied mixed-edition compendium as an explicitly unverified reference
+# catalog. The index carries structured fields and a compact effect description
+# extracted from the supplied compilation, so these entries are useful in play
+# without pretending to replace the source book or edition review.
 # Never replace an SRD spell or a previously checked supplemental identity.
 index=json.loads((root/'lib/compendium-spell-index.json').read_text(encoding='utf8'))
 known={key(s['name']) for s in base}|{key(r['spell']['name']) for r in result.values() if 'spell' in r}
@@ -52,9 +55,12 @@ for entries in groups.values():
  if not levels:continue
  references=sorted({entry['book']+' (compilation p. '+str(entry['page'])+')' for entry in entries})
  conflicts=[label for label,values in memberships.items() if len(values)>1]
- description='Compendium index only. Sources: '+'; '.join(references)+'. This compilation includes 3.0, 3.5, magazine and third-party material. Confirm the spell level, edition and full rules with your DM before using it. Full effect text is not bundled.'
+ details=e.get('details',{})
+ description=details.get('description') or 'The compilation does not include an effect description for this entry.'
+ description+=' Source: '+e['book']+'; Spells v6.01 compilation page '+str(e['page'])+'. This compilation includes 3.0, 3.5, magazine and third-party material; confirm the edition and full rules with your DM before using it.'
  if conflicts:description+=' Conflicting levels omitted for: '+', '.join(conflicts)+'.'
- result[ident]={'id':ident,'levels':levels,'sources':references,'spell':{'id':ident,'name':name,'school':e['school'],'levels':{},'levelText':'','components':'See source','castingTime':'See source','range':'See source','target':'See source','duration':'See source','save':'See source','resistance':'See source','description':description,'source':'Spells v6.01, compiled by Zook1shoe (2013)','referenceOnly':True,'catalogOrigin':'compendium'}}
+ fallback='Not listed in the compilation.'
+ result[ident]={'id':ident,'levels':levels,'sources':references,'spell':{'id':ident,'name':name,'school':e['school'],'levels':{},'levelText':'','components':details.get('components',fallback),'castingTime':details.get('castingTime',fallback),'range':details.get('range',fallback),'target':details.get('target',fallback),'duration':details.get('duration',fallback),'save':details.get('save',fallback),'resistance':details.get('resistance',fallback),'description':description,'source':'Spells v6.01, compiled by Zook1shoe (2013), p. '+str(e['page'])+'; '+e['book'],'referenceOnly':True,'catalogOrigin':'compendium'}}
 # Verified against the user's preferred SRD site's Player's Handbook II entry.
 # Retain the pre-existing supplemental ID so saved spellbooks continue to resolve.
 ident='supp-kelgore-s-fire-bolt'
