@@ -6,7 +6,7 @@ import {roll20Number} from '../lib/roll20-attributes.ts';
 import {characterSchema} from '../lib/model.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
-import {activateAutomation,recompute} from '../lib/automation.ts';
+import {activateAutomation,migrateRoll20Automation,recompute} from '../lib/automation.ts';
 import {sheetTotals,skillBonus,weaponAttack,weaponDamage} from '../lib/rules.ts';
 const fixture=JSON.parse(readFileSync(new URL('./fixtures/roll20/multiclass.json',import.meta.url)));
 const raw=(attributes=[],extra={})=>({format:'roll20-dnd35-export',version:1,exportedAt:'2026-09-19',character:{id:'source-id',name:'Import'},attributes,...extra});
@@ -34,7 +34,7 @@ test('official 3.5 field names import multiclass, current/max HP, ranks, totals,
 });
 
 test('Roll20 imports can be adopted into the current automated skills workflow without losing recorded ranks',()=>{
- const c=importRoll20(fixture).character,moveMisc=c.skills.find(s=>s.name==='Move Silently').misc;c.automation.version=0;const adopted=activateAutomation(c);
+ const c=importRoll20(fixture).character,moveMisc=c.skills.find(s=>s.name==='Move Silently').misc;const adopted=activateAutomation(migrateRoll20Automation(c));
  assert.equal(adopted.automation.enabled,true);assert.equal(adopted.automation.skillTraining.version,1);assert.equal(adopted.skills.find(s=>s.name==='Move Silently').misc,moveMisc);assert.equal(adopted.skills.find(s=>s.name==='Spot').ranks,4.5);
 });
 
