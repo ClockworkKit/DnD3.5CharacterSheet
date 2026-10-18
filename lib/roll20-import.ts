@@ -261,7 +261,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  // Spontaneous sheets commonly record uses on individual spell rows.
  for(const p of c.casters)if(p.mode==='spontaneous')for(let level=0;level<=9;level++)p.slots[level].used=Math.max(p.slots[level].used,p.spells.filter(s=>s.slotLevel===level).reduce((n,s)=>n+s.spent,0));
  report.mapped=reader.used.size;report.unmapped=data.attributes.filter((_,i)=>!reader.used.has(i)).map(a=>a.name);
- warn('Automatic calculations are off to preserve imported totals. Review the sheet before enabling them.');
+ warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report};

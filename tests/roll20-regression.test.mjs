@@ -33,6 +33,11 @@ test('official 3.5 field names import multiclass, current/max HP, ranks, totals,
  assert.equal(c.automation.enabled,false);assert.deepEqual(activateAutomation(structuredClone(c)),c);assert.deepEqual(recompute(structuredClone(c)),c);
 });
 
+test('Roll20 imports can be adopted into the current automated skills workflow without losing recorded ranks',()=>{
+ const c=importRoll20(fixture).character,moveMisc=c.skills.find(s=>s.name==='Move Silently').misc;c.automation.version=0;const adopted=activateAutomation(c);
+ assert.equal(adopted.automation.enabled,true);assert.equal(adopted.automation.skillTraining.version,1);assert.equal(adopted.skills.find(s=>s.name==='Move Silently').misc,moveMisc);assert.equal(adopted.skills.find(s=>s.name==='Spot').ranks,4.5);
+});
+
 test('empty and custom-class imports never gain demo data or a fabricated Fighter class',()=>{
  const c=importRoll20(raw()).character;
  assert.deepEqual(c.classLevels,[]);assert.equal(c.classes,'');assert.deepEqual(c.weapons,[]);assert.deepEqual(c.features,[]);assert.deepEqual(c.gear,[]);
