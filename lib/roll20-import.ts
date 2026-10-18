@@ -6,7 +6,7 @@ import {sheetTotals,skillBonus,weaponAttack} from './rules.ts';
 import {matchEquipment} from './equipment.ts';
 import {importRoll20Armor} from './roll20-equipment.ts';
 import {roll20SpellFailure} from './roll20-spell-failure.ts';
-import {parseDiceFormula} from './dice.mjs';
+import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
 import {attributeReader,parseRepeating,roll20Number,type RepeatingRow} from './roll20-attributes.ts';
@@ -193,13 +193,10 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
    else if(selector!=='none')warn(name+': unrecognized damage ability formula; no ability bonus was guessed. Review it before rolling.');
   }
   w.ammo=r.n('weaponammunition','npcattackammunition','ammo')??0;
-  const legacyDice=r.t('weaponstatdamage','statdamage')?.match(/^(\d+)?d(\d+)$/i),dice=r.n('weapondicenumber','npcattackdicenumber')??(legacyDice?Number(legacyDice[1]||1):undefined),sides=r.n('weapondicetype','npcattackdicetype')??(legacyDice?Number(legacyDice[2]):undefined);
-  const fullDamage=r.t('damage','dmg','weapondamage','npcattackdamage');
-  if(dice!==undefined&&sides!==undefined){
-   try{w.damage=parseDiceFormula(dice+'d'+sides).formula;w.damageExtra=damageOffset+sum(r,['weaponbonusdamage','weaponspecialize','weaponenh','npcattackbonusdamage','npcattackspecialize','npcattackenh']);}
-   catch{w.damage='0';w.damageAbility='none';warn(name+': recorded damage dice are unsupported; review them before rolling.');}
-  }else if(fullDamage){try{w.damage=parseDiceFormula(fullDamage).formula;w.damageAbility='none';}catch{w.damage='0';w.damageAbility='none';warn(name+': damage is a Roll20 formula; review it before rolling.');}}
-  else {w.damage='0';w.damageAbility='none';warn(name+': no damage dice were recorded; enter them before rolling.');}
+  const damage=readRoll20WeaponDice(r);w.damage=damage.formula;
+  if(damage.complete)w.damageAbility='none';else w.damageExtra=damageOffset+sum(r,['weaponbonusdamage','weaponspecialize','weaponenh','npcattackbonusdamage','npcattackspecialize','npcattackenh']);
+  if(damage.problem)warn(name+': '+damage.problem);
+  if(preserveRoll20WeaponDice(c,w))warn(name+': recorded damage differs from library/class dice and will remain editable in Combat. Review included bonuses before adding other damage modifiers.');
   w.attack=sum(r,['weaponenh','weaponfocus','npcattackenh','npcattackfocus','attackmisc']);
   const total=r.n('weaponattackcalc','npcattackattackcalc','attack','attackbonus');if(total!==undefined)w.attack+=total-weaponAttack(c,w);
   w.crit=r.t('crit','critical')||`${r.n('weaponcritmin','npcattackcritmin')??20} / ×${r.n('weaponcritmult','npcattackcritmult')??2}`;
@@ -270,7 +267,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');

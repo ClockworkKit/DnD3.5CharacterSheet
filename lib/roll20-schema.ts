@@ -10,6 +10,7 @@ export const roll20ExportSchema=z.object({
 });
 export type Roll20Export=z.infer<typeof roll20ExportSchema>;
 export const roll20ImportDataSchema=z.object({
+ weaponDiceMigration:z.number().int().min(0).max(1).optional(),
  spellFailureMigration:z.number().int().min(0).max(1).optional(),
  equipmentMigration:z.number().int().min(0).max(1).optional(),
  format:z.literal('roll20-dnd35-export'),version:z.number().int().positive(),exportedAt:z.string().max(100),sourceCharacterId:z.string().max(100),
