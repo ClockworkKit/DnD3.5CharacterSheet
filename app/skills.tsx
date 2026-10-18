@@ -1,4 +1,5 @@
 'use client';
+import {ArmorBreakdown} from './combat-explanations';
 import {useState} from 'react';
 import {Table,TableHeader,TableBody,TableHead,TableRow,TableCell} from '@/components/ui/table';
 import {F,N,Choice,Check,Btn,Section,Stat,type SheetProps} from './sheet-ui';
@@ -16,6 +17,7 @@ export function SkillsView({c,edit,roll,confirm}:SheetProps){
   const skills=c.skills.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())&&(!trainedOnly||s.ranks>0)&&(!classOnly||!row||classSkillAt(c,s,row)));
   function points(id:string,value:number){if(!row)return;edit(d=>{const skill=d.skills.find(s=>s.id===id),h=d.automation.history.find(h=>h.key===row.key);if(!skill||!h)return;const old=(h.skillRanks[id]||0)*(classSkillAt(d,skill,row)?1:2);setSkillPoints(d,row.key,id,Math.max(0,Math.min(Math.floor(value),old+availableSkillPoints(d,row.key,id))))})}
   return <>
+    <ArmorBreakdown c={c}/>
     {c.sheetKind!=='monster'&&<Section title="Skill training" note="Choose the level where you bought a skill. Points, ranks, and check bonuses update together.">
       <div className="stats skill-budget"><Stat label="Points earned" value={ledger.granted}/><Stat label="Points spent" value={automatic?ledger.spent:totals.skillSpent}/><Stat label="Still to allocate" value={automatic?ledger.remaining:totals.skillRemaining}/></div>
       {!automatic&&<p className="fine">Enable automatic calculations under Calculations to buy ranks by level. Manual rank entry is currently active.</p>}
