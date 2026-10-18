@@ -46,3 +46,12 @@ test('standard top-level armor summary links to the equipment catalog',()=>{
  assert.equal(armor.catalogId,'armor-leather');assert.equal(armor.equipped,true);
  assert.equal(activateAutomation(migrateRoll20Automation(characterSchema.parse(JSON.parse(JSON.stringify(c))))).defense.armor,2);
 });
+test('known ranged weapons use catalog range data when Roll20 omits their range field',()=>{
+ const input={...raw,attributes:[...attrs,
+  {id:'weapon',name:'weapon1name',current:'Hand Crossbow',max:''},
+  {id:'weaponstat',name:'weapon1stat',current:'@{dex-mod}',max:''},
+  {id:'weapondamage',name:'weapon1statdamage',current:'d4',max:''},
+ ]};
+ const weapon=importRoll20(input).character.weapons[0];
+ assert.equal(weapon.range,'30 ft.');assert.equal(weapon.attackMode,'ranged');
+});

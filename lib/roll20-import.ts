@@ -161,9 +161,10 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  }
  function addWeapon(r:Scope){
   const name=r.t('weaponname','npcattackname','name','attackname');if(!name)return;
+  const catalog=matchEquipment(name,'weapon');
   const w=newWeapon(),attackStat=r.t('weaponstat','npcattackstat','ability');w.name=name;w.ability=ability(attackStat)||'STR';
   if(attackStat&&!ability(attackStat))warn(name+': unrecognized attack ability; review the placeholder Strength selection.');
-  const sourceRange=r.t('weaponrange','npcattackrange','range','reach');w.range=sourceRange||'Melee';if(w.range==='-')w.range='Melee';w.attackMode=w.ability==='DEX'&&(w.range!=='Melee'||sourceRange==='-')?'ranged':'melee';
+  const sourceRange=r.t('weaponrange','npcattackrange','range','reach');w.range=sourceRange||(!sourceRange&&catalog?.range?catalog.range+' ft.':'Melee');if(w.range==='-')w.range='Melee';w.attackMode=sourceRange==='-'?(w.ability==='DEX'?'ranged':'melee'):((!sourceRange&&catalog?.ranged===true)||w.range!=='Melee'?'ranged':'melee');
   const damageStat=r.t('weapondamagestat','npcattackdamagestat','damageability');
   const selector=damageStat?.toLowerCase().replace(/\s+/g,''),mods=sheetTotals(c).mods;
   let damageOffset=0;
