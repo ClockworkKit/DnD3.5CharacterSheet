@@ -1,6 +1,7 @@
 import type {Character,Skill} from './model.ts';
 import {activateAutomation,migrateRoll20Automation} from './automation.ts';
 import {skillBonus} from './rules.ts';
+import {repairRoll20WeaponBonuses} from './roll20-weapon-bonuses.ts';
 import {skillFeatBonus} from './advancement.ts';
 
 // Only subtract bonuses recorded at import time, never today's level/feat gains.
@@ -50,5 +51,6 @@ export async function repairRoll20SkillBonuses(c:Character){
 // All UI load/import entry points use the same awaited migration.
 export async function prepareCharacter(c:Character){
  await repairRoll20SkillBonuses(c);
+ await repairRoll20WeaponBonuses(c);
  return activateAutomation(migrateRoll20Automation(c));
 }
