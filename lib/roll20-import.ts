@@ -149,8 +149,9 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const total=r.n('otherskill','total');if(total!==undefined)skillTotals.push([s,total]);
  }
  syncFactotumClassSkills(c);
- // Apply total offsets after all ranks are known, so synergy is not added twice.
- for(const [s,total] of skillTotals)s.misc+=total-skillBonus(c,s);
+ // Retain numeric source totals for the later automatic-bonus reconciliation,
+ // which runs after feats and all source ranks have been imported.
+ for(const [s,total] of skillTotals){s.misc+=total-skillBonus(c,s);s.roll20Bonus={sourceMisc:s.misc,sourceTotal:total,automatic:0,adjustment:0,status:'pending'};}
 
  function addFeature(name:string,description:string,kind:Character['features'][number]['kind'],magic=false,max=0,used=0){
   const known=kind==='Feat'?named(name,feats):undefined;
