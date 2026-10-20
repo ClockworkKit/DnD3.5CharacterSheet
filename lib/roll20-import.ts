@@ -7,6 +7,7 @@ import {matchEquipment} from './equipment.ts';
 import {importRoll20Armor} from './roll20-equipment.ts';
 import {roll20SpellFailure} from './roll20-spell-failure.ts';
 import {recordRoll20WeaponFeatBonuses} from './roll20-weapon-bonuses.ts';
+import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -202,6 +203,9 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   w.attack=sum(r,['weaponenh','weaponfocus','npcattackenh','npcattackfocus','attackmisc']);
   const total=r.n('weaponattackcalc','npcattackattackcalc','attack','attackbonus');if(total!==undefined)w.attack+=total-weaponAttack(c,w);
   recordRoll20WeaponFeatBonuses(c,w,sum(r,['weaponfocus','npcattackfocus']),sum(r,['weaponspecialize','npcattackspecialize']),damage.complete);
+  const enhancement=sum(r,['weaponenh','npcattackenh']);
+  recordRoll20WeaponEnhancement(w,enhancement,damage.complete);
+  if(enhancement&&!w.roll20Enhancement)warn(name+': enhancement bonus could not be separated from complete or unsupported damage components. Original values were kept; review enhancement stacking in Combat.');
   if(damage.complete&&(r.n('weaponspecialize','npcattackspecialize')||0))warn(name+': complete damage formula and specialization fields overlap ambiguously; review included bonuses in Combat.');
   w.crit=r.t('crit','critical')||`${r.n('weaponcritmin','npcattackcritmin')??20} / ×${r.n('weaponcritmult','npcattackcritmult')??2}`;
   w.notes=r.t('weaponspecialproperties','npcattackspecialproperties','notes','description')||'';c.weapons.push(w);
@@ -271,7 +275,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1,weaponEnhancementMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
