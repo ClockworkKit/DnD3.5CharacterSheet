@@ -74,7 +74,7 @@ Use the GM exporter in [roll20/README.md](roll20/README.md), then choose **Impor
 
 Enable the sheet's URL in Beyond20's custom-site settings and keep Roll20 open in the same desktop browser. Use **Roll20 setup → Send test roll** to verify your game connection.
 
-The sheet sends generic chat macros through [Beyond20's custom-site API](https://beyond20.here-for-more.info/api#integrating-with-beyond20). That API provides no delivery acknowledgement, so the app labels a successful handoff accordingly. Initiative posts to chat; token HP, turn-tracker entries, inventory, and character attributes are not synchronized. No live Roll20 delivery test was performed for this update.
+The sheet sends generic chat macros through [Beyond20's custom-site API](https://beyond20.here-for-more.info/api#integrating-with-beyond20). That API provides no delivery acknowledgement, so the app labels a successful handoff accordingly. Both initiative buttons include Roll20's `&{tracker}` directive inside the initiative roll: the chat result also adds or updates the selected token's turn-tracker entry. Select only your character's token in Roll20 before rolling, and ask the GM to open the tracker if hidden ([Roll20's tracker guide](https://bloghub.roll20.net/posts/tome-of-tips-turn-tracker/)). The sheet cannot verify token selection or tracker delivery. Practice rolls stay local; pasting a copied initiative macro into Roll20 rolls fresh dice and updates the selected token, rather than reusing the practice result. Token HP, inventory, and character attributes are not synchronized. This needs no re-import or saved-character changes. Automated tests cover macro generation and bridge dispatch; no live Roll20 delivery test was performed for this update.
 
 ## GitHub Pages edition
 

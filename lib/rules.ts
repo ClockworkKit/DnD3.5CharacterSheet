@@ -14,7 +14,7 @@ import {findClass} from './classes.ts';
 import {skillExtras} from './advancement.ts';
 import {diceFormula,resourceNumbers} from './automation.ts';
 export {modifier,signed,withBonus};
-export type Roll={title:string,formula?:string,details:string,fields?:Array<[string,string]>,rolls?:Array<{label:string,formula:string}>};
+export type Roll={title:string,formula?:string,details:string,initiative?:boolean,fields?:Array<[string,string]>,rolls?:Array<{label:string,formula:string}>};
 const sizes={Fine:[8,-16],Diminutive:[4,-12],Tiny:[2,-8],Small:[1,-4],Medium:[0,0],Large:[-1,4],Huge:[-2,8],Gargantuan:[-4,12],Colossal:[-8,16]};
 function combined(c:Character,targets:string[],context:Record<string,string|number|boolean>={}){return stackBonuses(targets.flatMap(t=>effectTerms(c,t,context)));}
 export function effectiveBab(c:Character){return c.bab-(alternateActionActive(c,'fighter-resolute','resolute')?Math.floor(c.bab/2):0);}
@@ -144,10 +144,15 @@ export function makeSpellRoll(c:Character,p:Caster,k:KnownSpell,s:Spell,includeE
  const formula=includeEffect?(effectFormula||k.formula||spellFormula(s,p.level)):'';
  return {title:s.name,details:[k.notes,illumianSpellNotes(c,p,k)].filter(Boolean).join(' · '),...(formula?{formula}:{}),fields:[['Tradition',p.name],['Spell level',String(k.level)],['Caster level',String(p.level)],['Casting time',s.castingTime],['Components',s.components],['Range',scaledSpellText(s.range,p.level)],['Target / area',s.target],['Duration',scaledSpellText(s.duration,p.level)],['Save',dc],['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]};
 }
+export function makeInitiativeRoll(c:Character):Roll{
+ return {title:'Initiative',formula:withBonus('1d20',sheetTotals(c).initiative),initiative:true,details:'Roll20: select your character token before rolling to add or update its turn-tracker initiative. Practice rolls stay local.'};
+}
 export function makeMacro(roll:Roll,name:string,whisper=false){
  const fields:Array<[string,string]>=[['name',roll.title],['Character',name],...(roll.fields||[])];
  let m=`${whisper?'/w gm ':''}&{template:default} `+fields.map(([k,v])=>`{{${macroLabel(k)}=${macroLabel(v)}}}`).join(' ');
- if(roll.formula)m+=` {{Roll=[[${parseDiceFormula(roll.formula).formula}]]}}`;
+ // Keep the tracker directive inside the same roll so chat and turn order agree.
+ // Only application-created initiative rolls opt in; formulas remain dice-only.
+ if(roll.formula)m+=` {{Roll=[[${parseDiceFormula(roll.formula).formula}${roll.initiative===true?' &{tracker}':''}]]}}`;
  for(const r of roll.rolls||[])m+=` {{${macroLabel(r.label)}=[[${parseDiceFormula(r.formula).formula}]]}}`;
  if(roll.details)m+=` {{Details=${macroLabel(roll.details)}}}`;
  return m;
