@@ -10,6 +10,7 @@ import {recordRoll20WeaponFeatBonuses} from './roll20-weapon-bonuses.ts';
 import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
 import {legacyDivineSpell} from './roll20-legacy-spells.ts';
+import {roll20PowerNotes} from './roll20-power-details.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -270,7 +271,9 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
     if(!p){warn(name+': no unique manifesting class; the power remains in the original export.');continue;}
     const known=named(name,powers),level=r.n('level','powerlevel')??Number(suffix.slice(0,-1));
     if(!Number.isInteger(level)||level<1||level>9){warn(name+': review its power level in the original export.');continue;}
-    p.powers.push({id:uid(),name,powerId:known?.id||'',level,cost:r.n('cost','powercost')??2*level-1,formula:'',notes:r.t('notes','description')||''});
+    const detail=roll20PowerNotes(r,suffix);
+    if(detail.truncated)warn(name+': power details exceed the notes limit; complete text remains in the original export.');
+    p.powers.push({id:uid(),name,powerId:known?.id||'',level,cost:r.n('cost','powercost')??2*level-1,formula:'',notes:detail.notes});
    }else if(/^spells\d+[46]$/.test(section)){
     const suffix=section.slice(6),name=r.t('invocationname'+suffix,'spellname'+suffix);if(name)addFeature(name,r.t('description','notes')||'Imported magic; consult the original Roll20 fields for its full details.','Class feature',true,r.n('spellprep'+suffix)??0,r.n('spellused'+suffix)??0);
    }else if(/^notes[12]$/.test(section)){const n=section.slice(-1),body=r.t('note'+n+'body');if(body)c.notes+=[c.notes?'\n\n':'',r.t('note'+n+'date'),body].filter(Boolean).join('\n');}
@@ -286,7 +289,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
