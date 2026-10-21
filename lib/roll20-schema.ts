@@ -10,6 +10,7 @@ export const roll20ExportSchema=z.object({
 });
 export type Roll20Export=z.infer<typeof roll20ExportSchema>;
 export const roll20ImportDataSchema=z.object({
+ castingProgressionMigration:z.number().int().min(0).max(1).optional(),
  legacySpellsMigration:z.number().int().min(0).max(1).optional(),
  globalCombatMigration:z.number().int().min(0).max(1).optional(),
  weaponEnhancementMigration:z.number().int().min(0).max(1).optional(),

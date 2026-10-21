@@ -48,9 +48,12 @@ test('old saves recover missing spells without resetting advancement, preparatio
  assert.equal(s.spellId,'bless');assert.equal(s.prepared,0);assert.equal(s.spent,0);assert.equal(canCast(restored,s,fixed),false);
  assert.match(s.notes,/Original prepared: 2; used: 1/);
  assert.deepEqual(restored.spells.filter(s=>!s.roll20LegacyRow),before.casters.find(q=>q.id===p.id).spells);
- for(const key of ['slots','level','casting','notes'])assert.deepEqual(saved(restored[key]),saved(p[key]),key);
+ assert.deepEqual(restored.slots.map(s=>s.used),p.slots.map(s=>s.used));
+ assert.equal(restored.level,5);assert.equal(restored.casting.automatic,true);assert.equal(restored.notes,p.notes);
+ assert.deepEqual(restored.slots.map(s=>s.max),[5,4,3,2,0,0,0,0,0,0]);
  for(const key of ['classLevels','scores','skills','automation','features','hp','maxHp','notes','gear','weapons'])assert.deepEqual(saved(fixed[key]),before[key],key);
- assert.deepEqual(fixed.casters.find(q=>q.name==='Wizard'),before.casters.find(q=>q.name==='Wizard'));
+ const wizard=fixed.casters.find(q=>q.name==='Wizard'),oldWizard=before.casters.find(q=>q.name==='Wizard');
+ assert.deepEqual({...wizard,casting:oldWizard.casting},oldWizard);
  assert.deepEqual(fixed.roll20Import.raw,before.roll20Import.raw);assert.deepEqual(saved(await load(fixed)),saved(fixed));
 });
 
@@ -58,12 +61,12 @@ test('manual re-additions and source-tagged edits are not duplicated or overwrit
  const original=importRoll20(raw({})).character.casters[0].spells[0];
  for(const change of [s=>{delete s.roll20LegacyRow;s.slotLevel=2;},s=>{s.roll20LegacyRow='row';s.spellId='shield-of-faith';}]){
   const c=legacy(),s={...original,id:'manual',prepared:5,spent:4,notes:'Player changes'};change(s);c.casters[0].spells.push(s);
-  const before=saved(c.casters);assert.deepEqual((await load(c)).casters,before);
+  const before=saved(c.casters[0].spells);assert.deepEqual((await load(c)).casters[0].spells,before);
  }
  const c=await load(legacy());c.casters[0].spells=[];
  assert.equal((await load(c)).casters[0].spells.length,0,'deliberate deletion after repair must not resurrect the spell');
  const custom=legacy();custom.casters[0].spells.push({...original,id:'custom',roll20LegacyRow:undefined,custom:{id:'manual-bless',name:'Bless',school:'',levels:{},levelText:'1',components:'',castingTime:'',range:'',target:'',duration:'',save:'',resistance:'',description:'Player wording',source:''}});
- const before=saved(custom.casters);assert.deepEqual(saved((await load(custom)).casters),before);
+ const before=saved(custom.casters[0].spells);assert.deepEqual(saved((await load(custom)).casters[0].spells),before);
 });
 
 test('distinct legacy rows remain distinct and unknown spells survive native backup and browser storage',async()=>{

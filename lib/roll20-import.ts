@@ -235,7 +235,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const p:Caster={id:uid(),name:'Imported '+label+' casting',list:'',ability:ability(core.t(kind+'castingstat'))||(kind==='divine'?'WIS':'INT'),level:core.n(kind+'casterlevel')??0,mode:'prepared',dcExtra:0,penetration:0,slots:Array.from({length:10},()=>({max:0,used:0})),spells:[],casting:{classId:'',domain:false,progression:null,levelAdjustment:0,slotAdjustments:Array(10).fill(0),automatic:false},notes:'Select a spell list and verify slots and casting ability.'};
   generic.set(label,p);castingKinds.set(p.id,kind);c.casters.push(p);warn('Could not uniquely match '+label+' casting to a class; a separate manual tradition preserves these spells.');return p;
  }
- for(const kind of ['arcane','divine'])if(core.n(kind+'casterlevel')!==undefined||Array.from({length:10},(_,i)=>core.n(kind+'spells'+i)).some(n=>n!==undefined)){
+ for(const kind of ['arcane','divine'])if(core.n(kind+'casterlevel')!==undefined||Array.from({length:10},(_,i)=>core.n(kind+'spells'+i)??core.n(kind+'spells'+i+'_used')).some(n=>n!==undefined)){
   const p=casterFor(kind);p.level=core.n(kind+'casterlevel')??p.level;p.ability=ability(core.t(kind+'castingstat'))||p.ability;p.penetration=core.n('spellpen')??0;
   for(let i=0;i<=9;i++){p.slots[i].max=core.n(kind+'spells'+i)??p.slots[i].max;p.slots[i].used=core.n(kind+'spells'+i+'_used')??0;}
  }

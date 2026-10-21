@@ -81,7 +81,10 @@ test('later multiclass advancement and spent magic survive migration and subsequ
  const before=saved(c),loaded=await load(c);
  chooseImportedSkillBonus(skill(loaded,'Hide'),true);
  const again=await load(loaded);
- for(const key of ['classLevels','automation','advancementChoices','features','casters','psionics','hp','maxHp','tempHp','experience'])assert.deepEqual(saved(again[key]),before[key],key);
+ for(const key of ['classLevels','automation','advancementChoices','features','psionics','hp','maxHp','tempHp','experience'])assert.deepEqual(saved(again[key]),before[key],key);
+ const advanced=again.casters[0];assert.equal(advanced.level,3);assert.equal(advanced.casting.automatic,true);
+ assert.deepEqual(advanced.spells,before.casters[0].spells);assert.deepEqual(advanced.slots.map(s=>s.used),before.casters[0].slots.map(s=>s.used));
+ assert.deepEqual(advanced.slots.map(s=>s.max),[4,3,2,0,0,0,0,0,0,0]);
  assert.deepEqual(again.roll20Import.raw,before.roll20Import.raw);
  assert.deepEqual(saved(await load(again)),saved(again));
 });
