@@ -3,6 +3,7 @@ import {activateAutomation,migrateRoll20Automation} from './automation.ts';
 import {skillBonus} from './rules.ts';
 import {repairRoll20WeaponBonuses} from './roll20-weapon-bonuses.ts';
 import {repairRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
+import {repairRoll20GlobalCombat} from './roll20-global-combat.ts';
 import {skillFeatBonus} from './advancement.ts';
 
 // Only subtract bonuses recorded at import time, never today's level/feat gains.
@@ -54,5 +55,6 @@ export async function prepareCharacter(c:Character){
  await repairRoll20SkillBonuses(c);
  await repairRoll20WeaponBonuses(c);
  await repairRoll20WeaponEnhancement(c);
+ await repairRoll20GlobalCombat(c);
  return activateAutomation(migrateRoll20Automation(c));
 }

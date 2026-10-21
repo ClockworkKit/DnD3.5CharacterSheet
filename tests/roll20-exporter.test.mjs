@@ -58,3 +58,10 @@ test('each export creates a GM-only snapshot and cannot reuse or modify a shared
  for(const {message} of h.messages){assert.match(message,/^\/w gm /);assert.doesNotMatch(message,/\[\[1d20\]\]|<b>name<\/b>/);}
  assert.ok(h.exported().limitations.some(s=>s.includes('Could not query race')));
 });
+
+test('global combat fields and their enabled flag are included among resolved export values',()=>{
+ const values={globalAttackBonus:2,globalDamageBonus:-1,globalVariableDamageBonus:'1d6',globalBonusEnabled:0};
+ const h=harness({attributes:Object.entries(values).map(([name,current])=>({name,current,max:''}))});
+ h.run('!export35 --selected');
+ for(const [name,current] of Object.entries(values))assert.equal(h.exported().resolvedCoreValues[name],current);
+});

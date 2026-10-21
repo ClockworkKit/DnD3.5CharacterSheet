@@ -8,6 +8,7 @@ import {importRoll20Armor} from './roll20-equipment.ts';
 import {roll20SpellFailure} from './roll20-spell-failure.ts';
 import {recordRoll20WeaponFeatBonuses} from './roll20-weapon-bonuses.ts';
 import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
+import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -164,6 +165,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  for(const section of ['feat','feats','ability','abilities','specialability','specialabilities'])for(const row of Object.values(groups[section]?.rows||{})){
   const r=rowScope(row),name=r.t('name','featname','abilityname');if(name)addFeature(name,r.t('description','desc','notes')||'',/^feats?$/.test(section)?'Feat':'Class feature',r.b('magic','spelllike')||false,r.n('max','uses')??0,r.n('used')??0);
  }
+ const globalCombat=readRoll20GlobalCombat(reader,warn);
  function addWeapon(r:Scope){
   const name=r.t('weaponname','npcattackname','name','attackname');if(!name)return;
   const catalog=matchEquipment(name,'weapon');
@@ -207,11 +209,14 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   recordRoll20WeaponEnhancement(w,enhancement,damage.complete);
   if(enhancement&&!w.roll20Enhancement)warn(name+': enhancement bonus could not be separated from complete or unsupported damage components. Original values were kept; review enhancement stacking in Combat.');
   if(damage.complete&&(r.n('weaponspecialize','npcattackspecialize')||0))warn(name+': complete damage formula and specialization fields overlap ambiguously; review included bonuses in Combat.');
+  recordRoll20GlobalWeapon(w,globalCombat,total!==undefined,damage.complete);
+  if(w.globalDamageIncluded)warn(name+': complete damage formula may already include global damage. Global damage is not added again; review the weapon’s included-global setting in Combat.');
   w.crit=r.t('crit','critical')||`${r.n('weaponcritmin','npcattackcritmin')??20} / ×${r.n('weaponcritmult','npcattackcritmult')??2}`;
   w.notes=r.t('weaponspecialproperties','npcattackspecialproperties','notes','description')||'';c.weapons.push(w);
  }
  for(let i=1;i<=10;i++)addWeapon(scope('',s=>s.startsWith('weapon')?s.replace(/^weapon/,'weapon'+i):'__fixed_weapon_'+i+'_'+s));
  for(const section of ['weapon','weapons','attack','attacks'])for(const row of Object.values(groups[section]?.rows||{}))addWeapon(rowScope(row));
+ if(globalCombat)c.globalCombat=globalCombat;
  for(const section of ['equipment','inventory','gear'])for(const row of Object.values(groups[section]?.rows||{})){
   const r=rowScope(row),name=r.t('equipmentname','itemname','name');if(!name)continue;
   c.gear.push({id:uid(),name,qty:r.n('equipmentquantity','quantity','qty')??1,weight:r.n('equipmentweight','weight')??0,carried:r.b('carried')??true,equipped:r.b('equipped')??false,notes:[r.t('equipmentnotes','notes','description'),r.t('equipmentlocation','location')].filter(Boolean).join('\n')});
@@ -275,7 +280,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1,weaponEnhancementMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1,weaponEnhancementMigration:1,globalCombatMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
