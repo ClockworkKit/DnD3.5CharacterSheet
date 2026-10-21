@@ -9,6 +9,7 @@ import {roll20SpellFailure} from './roll20-spell-failure.ts';
 import {recordRoll20WeaponFeatBonuses} from './roll20-weapon-bonuses.ts';
 import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
+import {legacyDivineSpell} from './roll20-legacy-spells.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -238,7 +239,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const p=casterFor(kind);p.level=core.n(kind+'casterlevel')??p.level;p.ability=ability(core.t(kind+'castingstat'))||p.ability;p.penetration=core.n('spellpen')??0;
   for(let i=0;i<=9;i++){p.slots[i].max=core.n(kind+'spells'+i)??p.slots[i].max;p.slots[i].used=core.n(kind+'spells'+i+'_used')??0;}
  }
- function addSpell(r:Scope,section:string){
+ function addSpell(r:Scope,section:string,legacyRow?:string){
   const match=section.match(/^spells(\d+)([12])$/),suffix=match?match[1]+match[2]:'';
   const name=r.t('spellname'+suffix,'spellname','name');if(!name)return;
   const level=r.n('spelllevel'+suffix,'spelllevel','level')??(match?Number(match[1]):undefined);
@@ -252,12 +253,17 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   let target=p;
   if(domain){const key=p.id+':domain';target=generic.get(key)!;if(!target){target={...structuredClone(p),id:uid(),name:p.name+' — imported domain spells',list:'',spells:[],slots:Array.from({length:10},()=>({max:0,used:0})),casting:p.casting?{...p.casting,domain:true}:undefined};generic.set(key,target);c.casters.push(target);warn('Domain spells use a separate manual tradition; select their domain list and review its slots.');}}
   const details=[r.t('notes','description','desc'),...Object.entries(custom).filter(([k,v])=>!['id','name','source','description','levels','levelText'].includes(k)&&v).map(([k,v])=>k+': '+v)].filter(Boolean).join('\n');
-  target.spells.push({id:uid(),spellId:s?.id||custom.id,level:spellLevel,slotLevel:r.n('slotlevel','preparedlevel')??spellLevel,prepared,spent,formula:'',notes:details,custom:s?null:custom});
+  target.spells.push({id:uid(),spellId:s?.id||custom.id,level:spellLevel,slotLevel:r.n('slotlevel','preparedlevel')??spellLevel,prepared,spent,formula:'',notes:details,custom:s?null:custom,...(legacyRow?{roll20LegacyRow:legacyRow}:{})});
  }
+ const migratedDivineRows=new Set(Object.keys(groups.spells11?.rows||{}).map(id=>id.toLowerCase()));
  for(const [section,group] of Object.entries(groups)){
   for(const row of Object.values(group.rows)){
    const r=rowScope(row);
-   if(/^(spell|spells|spellbook)$|^spells\d+[12]$/.test(section))addSpell(r,section);
+   if(legacyDivineSpell(section,row)){
+    // Roll20 copies these rows without deleting the originals. The modern row wins.
+    if(migratedDivineRows.has(row.rowId.toLowerCase()))warn('A legacy divine spell row already has a migrated spells11 entry; only the modern entry was imported.');
+    else addSpell(r,'spells11',row.rowId);
+   }else if(/^(spell|spells|spellbook)$|^spells\d+[12]$/.test(section))addSpell(r,section);
    else if(/^spells\d+3$/.test(section)||section==='powers'){
     const suffix=section.replace(/^spells/,''),name=r.t('powername'+suffix,'powername','name');if(!name)continue;
     const p=c.psionics.length===1?c.psionics[0]:undefined;
@@ -280,7 +286,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  warn('Imported totals are preserved as manual adjustments when calculations are enabled; review them before play.');
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
- c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1,weaponEnhancementMigration:1,globalCombatMigration:1};
+ c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:1,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1};
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
