@@ -14,7 +14,7 @@ export const roll20ImportDataSchema=z.object({
  legacySpellsMigration:z.number().int().min(0).max(1).optional(),
  globalCombatMigration:z.number().int().min(0).max(1).optional(),
  weaponEnhancementMigration:z.number().int().min(0).max(1).optional(),
- weaponBonusMigration:z.number().int().min(0).max(1).optional(),
+ weaponBonusMigration:z.number().int().min(0).max(2).optional(),
  skillBonusMigration:z.number().int().min(0).max(1).optional(),
  weaponDiceMigration:z.number().int().min(0).max(1).optional(),
  spellFailureMigration:z.number().int().min(0).max(1).optional(),
