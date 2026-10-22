@@ -1,7 +1,9 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
-import {applyClericSpecialty} from '../lib/cleric-specialty.ts';
+import {applyClericSpecialty,activateSilverbeardForSpell} from '../lib/cleric-specialty.ts';
+import {sheetTotals,skillBonus,spendSpell} from '../lib/rules.ts';
+import {advanceEffects} from '../lib/effects.ts';
 import {characterSchema} from '../lib/model.ts';
 import {importRoll20} from '../lib/roll20-import.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
@@ -45,4 +47,34 @@ test('an imported cleric keeps later progress, domain resources and spent Silver
  applyClericSpecialty(c,'axe-brother');const p=c.casters.find(p=>!p.casting?.domain),s=p.spells.find(s=>s.spellId==='silverbeard');s.prepared=2;s.spent=1;
  const domain=structuredClone(p);domain.id='domain';domain.casting.domain=true;domain.spells=[];domain.slots[1].used=1;c.casters.push(domain);
  const before=snapshot(c);applyClericSpecialty(c,'none');applyClericSpecialty(c,'axe-brother');assert.deepEqual(snapshot(c),before);assert.deepEqual(c.roll20Import.raw,raw);
+});
+
+test('selecting Axe Brother preserves an imported catalog Silverbeard instead of adding a second entry',async()=>{
+ const raw={format:'roll20-dnd35-export',version:1,exportedAt:'2026-10-22',character:{id:'silverbeard-test',name:'Specialty import'},attributes:Object.entries({class1:'Cleric',level1:5,wis:18,divinespells1:4,repeating_spells11_BEARD_spellname11:'Silverbeard',repeating_spells11_BEARD_spellprep11:2,repeating_spells11_BEARD_spellused11:1}).map(([name,current])=>({name,current,max:''}))};
+ const c=await prepareCharacter(importRoll20(raw).character),p=c.casters[0];
+ assert.equal(p.spells[0].spellId,'supp-silverbeard');p.spells[0].notes='Player notes';p.spells[0].formula='1d4';
+ const before=snapshot(p);applyClericSpecialty(c,'axe-brother');assert.deepEqual(snapshot(p),before);
+ applyClericSpecialty(c,'none');applyClericSpecialty(c,'axe-brother');assert.deepEqual(snapshot(p),before);
+ assert.deepEqual(c.roll20Import.raw,raw);
+});
+
+test('both Silverbeard spell IDs activate the same timed AC and conditional Diplomacy effect after casting',()=>{
+ for(const id of ['silverbeard','supp-silverbeard']){
+  const c=create();applyClericSpecialty(c,'axe-brother');const p=c.casters[0],s=p.spells[0];s.spellId=id;s.prepared=2;
+  const ac=sheetTotals(c).ac,dip=c.skills.find(s=>s.name==='Diplomacy'),bonus=skillBonus(c,dip);
+  Object.assign(p,spendSpell(p,s,c));activateSilverbeardForSpell(c,id,p.level);
+  assert.equal(p.spells[0].spent,1);assert.equal(sheetTotals(c).ac,ac+2);assert.equal(skillBonus(c,dip),bonus);
+  c.automation.context.targetRace='dwarf';assert.equal(skillBonus(c,dip),bonus+2);
+  const effect=c.effects.find(e=>e.preset==='silverbeard');assert.equal(effect.rounds,50);
+  advanceEffects(c);activateSilverbeardForSpell(c,id,6);assert.equal(effect.rounds,60);assert.equal(c.effects.length,1);assert.equal(sheetTotals(c).ac,ac+2);
+  for(let i=0;i<60;i++)advanceEffects(c);assert.equal(effect.active,false);assert.equal(sheetTotals(c).ac,ac);assert.equal(skillBonus(c,dip),bonus);
+ }
+});
+
+test('unrecognized spell IDs do not activate effects, and loading spent or duplicate books does not cast or merge them',async()=>{
+ const c=create();applyClericSpecialty(c,'axe-brother');const p=c.casters[0],s=p.spells[0];s.prepared=2;s.spent=1;
+ p.spells.push({...structuredClone(s),id:'catalog-copy',spellId:'supp-silverbeard',prepared:1,spent:1,custom:null});
+ const before=snapshot(c);activateSilverbeardForSpell(c,'custom-silverbeard',5);activateSilverbeardForSpell(c,'bless',5);assert.deepEqual(snapshot(c),before);
+ const loaded=await prepareCharacter(characterSchema.parse(snapshot(c)));assert.deepEqual(snapshot(loaded),before);
+ applyClericSpecialty(loaded,'axe-brother');assert.deepEqual(snapshot(loaded),before);
 });

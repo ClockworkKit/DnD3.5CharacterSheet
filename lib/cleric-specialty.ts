@@ -10,6 +10,9 @@ export const silverbeard:Spell={
   description:'Your beard becomes magically hardened silver, growing one if necessary. Gain +2 sacred AC and +2 circumstance on Diplomacy checks involving dwarves. Axe Brother access at cleric spell level 1 is a campaign rule; normal cleric progression and domain choices remain unchanged.',
   source:'https://dndtools.net/spells/spell-compendium--86/silverbeard--4170/'
 };
+// The campaign card and Spells v6.01 catalog refer to the same spell.
+// Do not infer identity from arbitrary custom/imported spell names.
+export const isSilverbeardSpell=(id:string)=>id==='silverbeard'||id==='supp-silverbeard';
 export function applyClericSpecialty(c:Character,specialty:Character['clericSpecialty']) {
   if(specialty==='none'){c.clericSpecialty=specialty;return;} // Keep recorded spells and spent uses.
   const level=c.classLevels.filter(x=>x.classId==='cleric').reduce((n,x)=>n+x.level,0);
@@ -21,10 +24,14 @@ export function applyClericSpecialty(c:Character,specialty:Character['clericSpec
   const caster=candidates[0]||makeCaster(findClass('cleric')!,level,effectiveScore(c,'WIS'));
   c.clericSpecialty=specialty;c.deity='Clangeddin Silverbeard';
   if(!candidates.length)c.casters.push(caster);
-  if(!caster.spells.some(s=>s.spellId==='silverbeard'))caster.spells.push({id:crypto.randomUUID(),spellId:'silverbeard',level:1,slotLevel:1,prepared:0,spent:0,formula:'',notes:'Axe Brother specialty spell. Prepare using an ordinary cleric slot.',custom:structuredClone(silverbeard)});
+  if(!caster.spells.some(s=>isSilverbeardSpell(s.spellId)))caster.spells.push({id:crypto.randomUUID(),spellId:'silverbeard',level:1,slotLevel:1,prepared:0,spent:0,formula:'',notes:'Axe Brother specialty spell. Prepare using an ordinary cleric slot.',custom:structuredClone(silverbeard)});
 }
 export function activateSilverbeard(c:Character,casterLevel:number) {
   let effect=c.effects.find(e=>e.preset==='silverbeard');
   if(!effect){addEffect(c,'silverbeard');effect=c.effects.find(e=>e.preset==='silverbeard');}
   if(effect){effect.active=true;effect.casterLevel=casterLevel;effect.rounds=10*casterLevel;}
+}
+/** Called only after a successful Cast, never on load or when posting a card. */
+export function activateSilverbeardForSpell(c:Character,spellId:string,casterLevel:number){
+  if(isSilverbeardSpell(spellId))activateSilverbeard(c,casterLevel);
 }
