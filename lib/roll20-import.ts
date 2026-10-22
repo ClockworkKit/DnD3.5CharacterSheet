@@ -251,7 +251,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const spellLevel=level??(s?.levels[p.list]);
   if(spellLevel===undefined){warn(name+': spell level is ambiguous; the row remains in the original export.');return;}
   const custom:Spell={id:'roll20-'+uid(),name,school:r.t('spellschool'+suffix,'school')||'',levels:{},levelText:String(spellLevel),components:r.t('spellcomponents'+suffix,'components')||'',castingTime:r.t('spellcastingtime'+suffix,'castingtime')||'',range:r.t('spellrange'+suffix,'range')||'',target:r.t('spelltea'+suffix,'target')||'',duration:r.t('spellduration'+suffix,'duration')||'',save:r.t('spellst'+suffix,'save')||'',resistance:r.t('spellsr'+suffix,'resistance')||'',description:r.t('description','desc')||'',source:'Roll20 import'};
-  const prepared=r.n('spellprep'+suffix,'prepared','memorized')??(r.b('prepared','memorized')?1:0),spent=r.n('spellused'+suffix,'spent','used')??0;
+  const prepared=r.n('spellprep'+suffix,'prepared','memorized')??(r.b('spellprep'+suffix,'prepared','memorized')?1:0),spent=r.n('spellused'+suffix,'spent','used')??(r.b('spellused'+suffix,'spent','used')?1:0);
   const domain=r.b('domain'+suffix,'domain')===true;
   let target=p;
   if(domain){const key=p.id+':domain';target=generic.get(key)!;if(!target){target={...structuredClone(p),id:uid(),name:p.name+' — imported domain spells',list:'',spells:[],slots:Array.from({length:10},()=>({max:0,used:0})),casting:p.casting?{...p.casting,domain:true}:undefined};generic.set(key,target);c.casters.push(target);warn('Domain spells use a separate manual tradition; select their domain list and review its slots.');}}
@@ -293,6 +293,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1,monkDefenseMigration:1};
  c.roll20Import.skillAliasesMigration=1;
+ c.roll20Import.spellPreparationReview=1;
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');
