@@ -11,6 +11,7 @@ import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
 import {legacyDivineSpell} from './roll20-legacy-spells.ts';
 import {roll20PowerNotes} from './roll20-power-details.ts';
+import {roll20SkillModifiers} from './roll20-skill-aliases.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
 import {expandSpellCatalog,type SpellExtension} from './spell-catalog.ts';
 import {roll20ExportSchema,type Roll20Report} from './roll20-schema.ts';
@@ -141,7 +142,8 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   const prefixes=[prefix,...(skillAliases[prefix]||[])];
   const field=(suffix:string)=>prefixes.map(name=>name+suffix);
   skill.ranks=r.n(...field('ranks'),...field('_ranks'))??skill.ranks;
-  skill.misc=sum(r,[...field('miscmod'),...field('tempmod'),...field('actionmod')]);
+  const modifiers=roll20SkillModifiers(r,prefixes);skill.misc=modifiers.value;
+  if(modifiers.value!==modifiers.legacy)warn(skill.name+': modern and legacy modifier aliases overlap; the first numeric alias was used once. Review the retained source fields if they disagree.');
   const trained=r.b(...field('classskill'));if(trained!==undefined)skill.classSkill=trained;
   const total=r.n(...prefixes);if(total!==undefined)skillTotals.push([skill,total]);
  }
@@ -290,6 +292,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1,monkDefenseMigration:1};
+ c.roll20Import.skillAliasesMigration=1;
  syncSourceReferences(c);
  const result=characterSchema.safeParse(c);
  if(!result.success)throw Error('The imported values exceed the character schema: '+result.error.issues.slice(0,3).map(i=>i.path.join('.')+' '+i.message).join('; ')+'. The source export has not been changed.');

@@ -11,13 +11,16 @@ export const silverbeard:Spell={
   source:'https://dndtools.net/spells/spell-compendium--86/silverbeard--4170/'
 };
 export function applyClericSpecialty(c:Character,specialty:Character['clericSpecialty']) {
-  c.clericSpecialty=specialty;
-  if(specialty==='none')return; // Keep recorded spells and spent uses when changing a specialty.
+  if(specialty==='none'){c.clericSpecialty=specialty;return;} // Keep recorded spells and spent uses.
   const level=c.classLevels.filter(x=>x.classId==='cleric').reduce((n,x)=>n+x.level,0);
   if(!level)throw new Error('Add a Cleric level before choosing this specialty.');
-  c.deity='Clangeddin Silverbeard';
-  let caster=c.casters.find(p=>p.casting?.classId==='cleric'&&!p.casting.domain);
-  if(!caster){caster=makeCaster(findClass('cleric')!,level,effectiveScore(c,'WIS'));c.casters.push(caster);}
+  // Old native/manual books may identify their class only by name or list.
+  // An explicit different class link or a domain book must never be repurposed.
+  const candidates=c.casters.filter(p=>!p.casting?.domain&&(p.casting?.classId?p.casting.classId==='cleric':(findClass(p.name)||findClass(p.list))?.id==='cleric'));
+  if(candidates.length>1)throw new Error('More than one ordinary Cleric spellbook is recorded. Review the casting traditions in Magic before choosing this specialty.');
+  const caster=candidates[0]||makeCaster(findClass('cleric')!,level,effectiveScore(c,'WIS'));
+  c.clericSpecialty=specialty;c.deity='Clangeddin Silverbeard';
+  if(!candidates.length)c.casters.push(caster);
   if(!caster.spells.some(s=>s.spellId==='silverbeard'))caster.spells.push({id:crypto.randomUUID(),spellId:'silverbeard',level:1,slotLevel:1,prepared:0,spent:0,formula:'',notes:'Axe Brother specialty spell. Prepare using an ordinary cleric slot.',custom:structuredClone(silverbeard)});
 }
 export function activateSilverbeard(c:Character,casterLevel:number) {
