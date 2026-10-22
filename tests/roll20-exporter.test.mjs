@@ -2,10 +2,10 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
 import vm from 'node:vm';
-import {parseRepeating} from '../lib/roll20-import.ts';
+import {importRoll20,parseRepeating} from '../lib/roll20-import.ts';
 const script=readFileSync(new URL('../roll20/export35.js',import.meta.url),'utf8');
 const plain=value=>JSON.parse(JSON.stringify(value));
-function harness({attributes=[],duplicateName=false,name='Example',queryError=false}={}){
+function harness({attributes=[],duplicateName=false,name='Example',queryError=false,defaults={}}={}){
  const objects=[],created=[],messages=[];let handler;
  function object(type,id,properties){const o={type,id,properties:{...properties},get(k){return this.properties[k]},set(k,v){this.properties[k]=v}};objects.push(o);return o;}
  const character=object('character','C1',{name}),token=object('graphic','T1',{represents:'C1'});
@@ -17,7 +17,7 @@ function harness({attributes=[],duplicateName=false,name='Example',queryError=fa
   on:(event,fn)=>{if(event==='chat:message')handler=fn;},playerIsGM:id=>id==='GM',
   getObj:(type,id)=>objects.find(o=>o.type===type&&o.id===id),
   findObjs:query=>objects.filter(o=>Object.entries(query).every(([k,v])=>k==='type'?o.type===v:o.get(k)===v)),
-  getAttrByName:(id,n,slot)=>{if(queryError&&n==='race')throw Error('test query failure');return objects.find(o=>o.type==='attribute'&&o.get('characterid')===id&&o.get('name')===n)?.get(slot)},
+  getAttrByName:(id,n,slot)=>{if(queryError&&n==='race')throw Error('test query failure');const found=objects.find(o=>o.type==='attribute'&&o.get('characterid')===id&&o.get('name')===n);return found?found.get(slot):slot==='current'?defaults[n]:undefined},
   createObj:(type,properties)=>{const o=object(type,'new'+created.length,properties);created.push(o);return o;},
   sendChat:(who,message)=>messages.push({who,message}),
  });
@@ -64,4 +64,29 @@ test('global combat fields and their enabled flag are included among resolved ex
  const h=harness({attributes:Object.entries(values).map(([name,current])=>({name,current,max:''}))});
  h.run('!export35 --selected');
  for(const [name,current] of Object.entries(values))assert.equal(h.exported().resolvedCoreValues[name],current);
+});
+
+test('named fixed weapons export critical defaults without fabricating weapons or mixing dice generations',()=>{
+ const h=harness({attributes:[{name:'weapon1name',current:'Battleaxe',max:''},{name:'weapon1statdamage',current:'1d8',max:''}],defaults:{weapon1dicenumber:1,weapon1dicetype:6,weapon1critmult:3,weapon1critmin:20,weapon2name:'Phantom weapon',weapon2critmult:4}});
+ h.run('!export35 --selected');const data=h.exported(),c=importRoll20(data).character;
+ assert.equal(data.resolvedCoreValues.weapon1critmult,3);assert.equal(data.resolvedCoreValues.weapon1statdamage,'1d8');
+ assert.equal(data.resolvedCoreValues.weapon2name,undefined);assert.equal(data.resolvedCoreValues.weapon2critmult,undefined);
+ assert.equal(c.weapons.length,1);assert.equal(c.weapons[0].damage,'1d8');assert.match(c.weapons[0].crit,/3$/);
+ assert.equal(data.attributes.length,2);assert.equal(data.resolvedCoreValues.weapon1dicetype,undefined);
+});
+
+test('resolved weapon components handle conflicting duplicates while retaining both originals for review',()=>{
+ const attributes=[{name:'weapon1name',current:'Battleaxe',max:''},{name:'weapon1critmult',current:'3',max:''},{name:'weapon1critmult',current:'',max:''}];
+ assert.match(importRoll20({format:'roll20-dnd35-export',version:1,exportedAt:'test',character:{id:'before',name:'Before'},attributes}).character.weapons[0].crit,/2$/);
+ const h=harness({attributes});h.run('!export35 --selected');const data=h.exported(),{character:c,report}=importRoll20(data);
+ assert.match(c.weapons[0].crit,/3$/);assert.deepEqual(data.attributes.map(({id,...a})=>a),attributes);
+ assert.ok(report.warnings.some(s=>s.includes('Conflicting attributes named weapon1critmult')));
+});
+
+test('named weapon defaults preserve zero values and formulas without evaluating export code',()=>{
+ const formula='globalThis.weaponExportExecuted=true',h=harness({attributes:Object.entries({weapon10name:'Test weapon',weapon10enh:0,weapon10ammunition:0,weapon10attackcalc:formula,weapon10statdamage:'@{customdice}'}).map(([name,current])=>({name,current,max:''}))});
+ h.run('!export35 --selected');const data=h.exported(),{character:c,report}=importRoll20(data);
+ assert.equal(data.resolvedCoreValues.weapon10enh,0);assert.equal(data.resolvedCoreValues.weapon10ammunition,0);assert.equal(data.resolvedCoreValues.weapon10attackcalc,formula);
+ assert.equal(globalThis.weaponExportExecuted,undefined);assert.equal(c.weapons[0].damage,'0');assert.ok(report.warnings.some(s=>s.includes('no damage dice were recorded')));
+ h.run('!export35 --selected');assert.deepEqual(h.exported().resolvedCoreValues,data.resolvedCoreValues);
 });

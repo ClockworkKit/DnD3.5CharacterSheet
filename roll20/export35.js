@@ -54,7 +54,17 @@
   function exportCharacter(ch){
     var raw=findObjs({type:'attribute',characterid:ch.id}).map(function(a){return {id:a.id,name:a.get('name'),current:a.get('current'),max:a.get('max')};});
     var resolved=Object.create(null),limitations=['Sheet defaults without instantiated Attribute objects are included only for the known core names. getAttrByName may return formulas; these are preserved without execution.'];
-    CORE.forEach(function(name){try{var value=getAttrByName(ch.id,name,'current'),max=getAttrByName(ch.id,name,'max');if(value!==undefined)resolved[name]=value;if(max!==undefined)resolved[name+'_max']=max;}catch(e){limitations.push('Could not query '+name+': '+e.message);}});
+    // Query critical defaults only for fixed weapon slots the player actually named.
+    // Never query default weapon names: blank slots must not become extra weapons.
+    var queryNames=CORE.slice(),namedWeapons=Object.create(null);
+    raw.forEach(function(a){var match=/^(weapon(?:[1-9]|10))name$/i.exec(a.name);if(match&&typeof a.current==='string'&&a.current.trim())namedWeapons[match[1].toLowerCase()]=true;});
+    Object.keys(namedWeapons).forEach(function(prefix){
+      queryNames.push(prefix+'critmin',prefix+'critmult');
+      // Resolve instantiated components, but do not mix absent modern dice
+      // defaults into legacy statdamage fields (or vice versa).
+      ['stat','damagestat','statdamage','dicenumber','dicetype','range','enh','focus','specialize','attackcalc','bonusdamage','ammunition','hand','specialproperties'].forEach(function(field){var name=prefix+field;if(raw.some(function(a){return a.name.toLowerCase()===name;}))queryNames.push(name);});
+    });
+    queryNames.forEach(function(name){try{var value=getAttrByName(ch.id,name,'current'),max=getAttrByName(ch.id,name,'max');if(value!==undefined)resolved[name]=value;if(max!==undefined)resolved[name+'_max']=max;}catch(e){limitations.push('Could not query '+name+': '+e.message);}});
     var abilities=findObjs({type:'ability',characterid:ch.id}).map(function(a){return {id:a.id,name:a.get('name'),action:a.get('action'),description:a.get('description'),istokenaction:a.get('istokenaction')};});
     return {format:'roll20-dnd35-export',version:1,exportedAt:new Date().toISOString(),character:{id:ch.id,name:ch.get('name')},attributes:raw,abilities:abilities,repeating:groupAttributes(raw),resolvedCoreValues:resolved,limitations:limitations};
   }
