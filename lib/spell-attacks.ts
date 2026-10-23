@@ -1,6 +1,7 @@
 import type {Character,Spell,Weapon} from './model.ts';
 import type {SpellAttackSettings} from './spell-attack-schema.ts';
 import {spellAttackSchema} from './spell-attack-schema.ts';
+import {spellEffectTargetNote} from './spell-effect-targets.ts';
 import {weaponAttack,sheetTotals,withBonus,type Roll} from './rules.ts';
 import {hasFeat} from './effects.ts';
 import {armorProficient,equippedArmor,gearEquipment} from './equipment.ts';
@@ -29,6 +30,7 @@ export function spellAttackProfile(s:Spell,cl:number,settings=s.attack){
   if(mode!=='none')note='Apply effects only on a hit, then resolve saves, resistance and critical threats. Multi-projectile or special delivery rules may require adjustments below.';
  }
  const chosen=settings?spellAttackSchema.parse(settings):undefined;
+ const targetNote=spellEffectTargetNote(s,chosen);if(targetNote)note+=' '+targetNote;
  if(chosen?.mode&&chosen.mode!=='auto')mode=chosen.mode;
  count=mode==='spiritual-weapon'?1:chosen?.count??count;
  const fixedPenalty=name==='blinding spittle'?-4:0;

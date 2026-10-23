@@ -1,5 +1,7 @@
 import {alternateActionActive} from './alternate-actions.ts';
 import {withSpellAttacks} from './spell-attacks.ts';
+import type {SpellAttackSettings} from './spell-attack-schema.ts';
+import {searingLightFormula} from './spell-effect-targets.ts';
 import {monkSpecialWeapon} from './equipment.ts';
 import {hasAlternateFeature,featureReplaced,classFeatureLevel,alternateSettings} from './alternate-features.ts';
 import {reservedSlots,illumianDC,illumianExtraDice,illumianSpellNotes,resetRacialDaily} from './racial-abilities.ts';
@@ -100,7 +102,7 @@ export function spendSpell(p:Caster,s:KnownSpell,c?:Character):Caster {
  return {...p,slots:p.slots.map((x,i)=>i===s.slotLevel?{...x,used:x.used+1}:x)};
 }
 export function resetDaily(c:Character):Character{return {...c,alternateFeatures:{...c.alternateFeatures,settings:Object.fromEntries(Object.entries(c.alternateFeatures.settings).map(([id,s])=>[id,{...s,actions:{},counters:s.counters.map(r=>({...r,used:r.period==='day'?0:r.used}))}])),uses:Object.fromEntries(Object.entries(c.alternateFeatures.uses).filter(([key])=>key.startsWith('weekly:')||key==='daily:original-turning').map(([key,value])=>[key,key.startsWith('daily:')?0:value]))},racialState:resetRacialDaily(c),classSystems:{...classSystemsSchema.parse(c.classSystems),choices:c.classSystems.choices.map(s=>({...s,spent:0,granted:false})),pools:Object.fromEntries(Object.entries(c.classSystems.pools).filter(([key])=>key.startsWith('craft:')||key.startsWith('weekly:')))},factotum:{...c.factotum,spent:0,knowledgeUsed:[],pietyUsed:0,dodgeUsed:false,spells:[]},ancestry:{...c.ancestry,powerPointsSpent:0},psionics:c.psionics.map(p=>({...p,spent:0,focused:false})),casters:c.casters.map(p=>({...p,slots:p.slots.map((x,i)=>({...x,max:Math.min(10000,x.max+reservedSlots(c,p,i)),used:0})),spells:p.spells.map(s=>({...s,spent:0}))})),features:c.features.map(f=>({...f,used:0}))};}
-export function spellFormula(s:Spell,cl:number):string {
+export function spellFormula(s:Spell,cl:number,settings:SpellAttackSettings|undefined=s.attack):string {
  const cure:Record<string,[number,number]>={'cure-light-wounds':[1,5],'cure-moderate-wounds':[2,10],'cure-serious-wounds':[3,15],'cure-critical-wounds':[4,20],'inflict-light-wounds':[1,5],'inflict-moderate-wounds':[2,10],'inflict-serious-wounds':[3,15],'inflict-critical-wounds':[4,20]};
  if(cure[s.id])return `${cure[s.id][0]}d8+${Math.min(cl,cure[s.id][1])}`;
  // Catalog/import IDs put "mass" last; retain the older prefix aliases too.
@@ -116,7 +118,7 @@ export function spellFormula(s:Spell,cl:number):string {
  if(['heal','harm'].includes(s.id))return String(Math.min(150,cl*10));
  const caps:Record<string,[number,number]>={'shocking-grasp':[6,5],'snowball-swarm':[6,5],'vampiric-touch':[6,10],'searing-light':[8,5],'sound-burst':[8,1],'delayed-blast-fireball':[6,20],'chain-lightning':[6,20],'prismatic-spray':[6,0],'horrid-wilting':[6,20],'polar-ray':[6,25],'flame-strike':[6,15],'sunbeam':[6,4],'sunburst':[6,6],'fire-storm':[6,20],'cone-of-cold':[6,15],'burning-hands':[4,5],'chill-touch':[6,1]};
  if(s.id==='vampiric-touch')return `${Math.max(1,Math.min(10,Math.floor(cl/2)))}d6`;
- if(s.id==='searing-light')return `${Math.max(1,Math.min(5,Math.floor(cl/2)))}d8`;
+ if(s.id==='searing-light')return searingLightFormula(cl,settings?.effectTarget);
  if(s.id==='disintegrate')return `${Math.min(40,cl*2)}d6`;
  if(s.id==='scorching-ray')return '4d6';
  if(s.id==='supp-splinterbolt')return '4d6';
@@ -147,7 +149,7 @@ export function spellFormula(s:Spell,cl:number):string {
 export function scaledSpellText(value:string,cl:number){if(/^Close\b/i.test(value))return `${25+5*Math.floor(cl/2)} ft. (close)`;if(/^Medium\b/i.test(value))return `${100+10*cl} ft. (medium)`;if(/^Long\b/i.test(value))return `${400+40*cl} ft. (long)`;return value.replace(/(\d+)\s*(rounds?|minutes?|min\.?|hours?|days?|ft\.?)\s*\/\s*level\b/gi,(_,n:string,unit:string)=>`${Number(n)*cl} ${unit}`);}
 export function makeSpellRoll(c:Character,p:Caster,k:KnownSpell,s:Spell,includeEffect=false,effectFormula=''):Roll {
  const dc=/^none\b/i.test(s.save)?s.save:`${s.save} (DC ${spellDC(c,p,k,s)})`;
- const formula=includeEffect?(effectFormula||k.formula||spellFormula(s,p.level)):'';
+ const formula=includeEffect?(effectFormula||k.formula||spellFormula(s,p.level,k.attack)):'';
  const result:Roll={title:s.name,details:[k.notes,illumianSpellNotes(c,p,k)].filter(Boolean).join(' · '),...(formula?{formula}:{}),fields:[['Tradition',p.name],['Spell level',String(k.level)],['Caster level',String(p.level)],['Casting time',s.castingTime],['Components',s.components],['Range',scaledSpellText(s.range,p.level)],['Target / area',s.target],['Duration',scaledSpellText(s.duration,p.level)],['Save',dc],['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]};
  return includeEffect?withSpellAttacks(c,s,p.level,result,k.attack):result;
 }
