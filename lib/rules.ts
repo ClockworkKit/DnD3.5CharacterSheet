@@ -106,14 +106,15 @@ export function spellFormula(s:Spell,cl:number):string {
  // Catalog/import IDs put "mass" last; retain the older prefix aliases too.
  const massBase=s.id.startsWith('mass-')?s.id.slice(5):s.id.endsWith('-mass')?s.id.slice(0,-5):'';
  if(cure[massBase])return `${cure[massBase][0]}d8+${Math.min(cl,cure[massBase][1]+20)}`;
- const fixed:Record<string,string>={'acid-splash':'1d3','ray-of-frost':'1d3','acid-arrow':'2d4','acid-fog':'2d6','cure-minor-wounds':'1','inflict-minor-wounds':'1'};
+ // Ordinary targets take fixed sonic damage; crystalline-target damage can use the effect override.
+ const fixed:Record<string,string>={'shout':'5d6','shout-greater':'10d6','greater-shout':'10d6','acid-splash':'1d3','ray-of-frost':'1d3','acid-arrow':'2d4','acid-fog':'2d6','cure-minor-wounds':'1','inflict-minor-wounds':'1'};
  if(fixed[s.id])return fixed[s.id];
  if(s.id==='magic-missile'){const n=Math.min(5,1+Math.floor((cl-1)/2));return `${n}d4+${n}`;}
  if(s.id==='supp-kelgore-s-fire-bolt')return `${Math.max(1,Math.min(5,cl))}d6`;
  if(s.id==='burning-hands')return `${Math.min(5,cl)}d4`;
  if(['fireball','lightning-bolt','cone-of-cold'].includes(s.id))return `${Math.min(s.id==='cone-of-cold'?15:10,cl)}d6`;
  if(['heal','harm'].includes(s.id))return String(Math.min(150,cl*10));
- const caps:Record<string,[number,number]>={'shocking-grasp':[6,5],'snowball-swarm':[6,5],'vampiric-touch':[6,10],'searing-light':[8,5],'sound-burst':[8,1],'shout':[6,5],'greater-shout':[6,10],'delayed-blast-fireball':[6,20],'chain-lightning':[6,20],'prismatic-spray':[6,0],'horrid-wilting':[6,20],'polar-ray':[6,25],'flame-strike':[6,15],'sunbeam':[6,4],'sunburst':[6,6],'fire-storm':[6,20],'cone-of-cold':[6,15],'burning-hands':[4,5],'chill-touch':[6,1]};
+ const caps:Record<string,[number,number]>={'shocking-grasp':[6,5],'snowball-swarm':[6,5],'vampiric-touch':[6,10],'searing-light':[8,5],'sound-burst':[8,1],'delayed-blast-fireball':[6,20],'chain-lightning':[6,20],'prismatic-spray':[6,0],'horrid-wilting':[6,20],'polar-ray':[6,25],'flame-strike':[6,15],'sunbeam':[6,4],'sunburst':[6,6],'fire-storm':[6,20],'cone-of-cold':[6,15],'burning-hands':[4,5],'chill-touch':[6,1]};
  if(s.id==='vampiric-touch')return `${Math.max(1,Math.min(10,Math.floor(cl/2)))}d6`;
  if(s.id==='searing-light')return `${Math.max(1,Math.min(5,Math.floor(cl/2)))}d8`;
  if(s.id==='disintegrate')return `${Math.min(40,cl*2)}d6`;
