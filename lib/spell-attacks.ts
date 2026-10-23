@@ -44,7 +44,9 @@ export function spellAttackBonus(c:Character,s:Spell,cl:number,settings?:SpellAt
  const ranged=profile.mode.startsWith('ranged'),touch=profile.mode==='melee-touch';
  // Casting is not a weapon full attack: never inherit TWF, Rapid Shot, flurry, charge or smite.
  const context={...c.automation.context,twoWeapon:false,rapidShot:false,flurry:false,charge:false,smite:false};
- const attackCharacter={...c,automation:{...c.automation,context}};
+ // Reuse general attack rules without inheriting weapon-only global adjustments.
+ // This is a calculation view, not an edit to the player's saved weapon settings.
+ const attackCharacter={...c,globalCombat:undefined,automation:{...c.automation,context}};
  let ability:Weapon['ability']=ranged?'DEX':'STR',finessePenalty=0;
  if(touch&&c.automation.enabled&&hasFeat(c,'Weapon Finesse')){
   for(const g of equippedArmor(c).selected){const e=gearEquipment(g)!;if(e.kind==='shield'&&(g.proficient??armorProficient(c,e)))finessePenalty+=Math.min(0,e.checkPenalty!+(g.material==='mithral'?3:g.masterwork||g.enhancement||g.material==='adamantine'?1:0));}
