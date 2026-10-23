@@ -38,15 +38,20 @@ export function spellAttackProfile(s:Spell,cl:number,settings=s.attack){
  return {mode,count,bonus:(chosen?.bonus??0)+fixedPenalty,note,ray:/\brays?\b/i.test(s.target)||name==='scorching ray'};
 }
 
-export function spellAttackBonus(c:Character,s:Spell,cl:number,settings?:SpellAttackSettings){
- const profile=spellAttackProfile(s,cl,settings),t=sheetTotals(c);
- if(profile.mode==='spiritual-weapon')return c.bab+t.mods.WIS+profile.bonus;
- const ranged=profile.mode.startsWith('ranged'),touch=profile.mode==='melee-touch';
+/** A read-only calculation view shared by spells and weaponlike spell-like abilities. */
+export function spellAttackCharacter(c:Character):Character{
  // Casting is not a weapon full attack: never inherit TWF, Rapid Shot, flurry, charge or smite.
  const context={...c.automation.context,twoWeapon:false,rapidShot:false,flurry:false,charge:false,smite:false};
  // Reuse general attack rules without inheriting weapon-only global adjustments.
  // This is a calculation view, not an edit to the player's saved weapon settings.
- const attackCharacter={...c,globalCombat:undefined,automation:{...c.automation,context}};
+ return {...c,globalCombat:undefined,automation:{...c.automation,context}};
+}
+
+export function spellAttackBonus(c:Character,s:Spell,cl:number,settings?:SpellAttackSettings){
+ const profile=spellAttackProfile(s,cl,settings),t=sheetTotals(c);
+ if(profile.mode==='spiritual-weapon')return c.bab+t.mods.WIS+profile.bonus;
+ const ranged=profile.mode.startsWith('ranged'),touch=profile.mode==='melee-touch';
+ const attackCharacter=spellAttackCharacter(c);
  let ability:Weapon['ability']=ranged?'DEX':'STR',finessePenalty=0;
  if(touch&&c.automation.enabled&&hasFeat(c,'Weapon Finesse')){
   for(const g of equippedArmor(c).selected){const e=gearEquipment(g)!;if(e.kind==='shield'&&(g.proficient??armorProficient(c,e)))finessePenalty+=Math.min(0,e.checkPenalty!+(g.material==='mithral'?3:g.masterwork||g.enhancement||g.material==='adamantine'?1:0));}
