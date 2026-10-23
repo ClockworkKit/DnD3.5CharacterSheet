@@ -1,6 +1,12 @@
 import type {Character,Spell} from './model.ts';
-import {factotumNumbers} from './factotum.ts';
-import {spellFormula,scaledSpellText,type Roll} from './rules.ts';
+import {factotumNumbers,cunningKnowledgeProblem} from './factotum.ts';
+import {spellFormula,scaledSpellText,skillBonus,withBonus,type Roll} from './rules.ts';
+
+export function makeCunningKnowledgeRoll(c:Character,skillId:string):Roll {
+ const problem=cunningKnowledgeProblem(c,skillId);if(problem)throw new Error(problem);
+ const skill=c.skills.find(s=>s.id===skillId)!,level=factotumNumbers(c).level;
+ return {title:skill.name+' — Cunning Knowledge',formula:withBonus('1d20',skillBonus(c,skill)+level),details:`Includes +${level} Cunning Knowledge. Costs 1 inspiration; once per day for this skill.`};
+}
 
 /** A Dilettante use is a spell-like ability, not a spend from a wizard slot pool. */
 export function makeDilettanteRoll(c:Character,s:Spell):Roll {

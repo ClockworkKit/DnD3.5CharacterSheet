@@ -16,6 +16,20 @@ export function spendInspiration(c:Character,cost:number) {
   if(!Number.isInteger(cost)||cost<1||cost>factotumNumbers(c).remaining)throw new Error('Not enough inspiration points.');
   c.factotum.spent+=cost;
 }
+const skillKey=(name:string)=>name.trim().toLowerCase().replace(/\s+/g,' ');
+export function cunningKnowledgeProblem(c:Character,skillId:string):string {
+  if(factotumLevel(c)<1)return 'Cunning Knowledge requires a Factotum level.';
+  const skill=c.skills.find(s=>s.id===skillId);
+  if(!skill||skill.ranks<1)return 'Choose a skill with at least 1 rank.';
+  const sameSkill=c.skills.filter(s=>skillKey(s.name)===skillKey(skill.name));
+  if(c.factotum.knowledgeUsed.includes(skillId)||sameSkill.some(s=>c.factotum.knowledgeUsed.includes(s.id)))return 'Cunning Knowledge has already been used for this skill today.';
+  if(factotumNumbers(c).remaining<1)return 'Not enough inspiration points.';
+  return '';
+}
+export function useCunningKnowledge(c:Character,skillId:string){
+  const problem=cunningKnowledgeProblem(c,skillId);if(problem)throw new Error(problem);
+  spendInspiration(c,1);c.factotum.knowledgeUsed.push(skillId);
+}
 export function brainsOverBrawn(c:Character,ability:string) {
   return c.automation.enabled&&factotumLevel(c)>=3&&['STR','DEX'].includes(ability)?Math.max(0,factotumNumbers(c).intelligence):0;
 }
