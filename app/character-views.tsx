@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useState,type ReactNode} from 'react';
 import {SourceReferenceDetails} from './source-reference';
 import {NaturalAttacks} from './creature-editor';
 import {DamageReduction,DamageReductionSummary} from './damage-reduction';
@@ -53,8 +53,9 @@ function FullAttackPanel({c,edit,roll}:Pick<SheetProps,'c'|'edit'|'roll'>){
  </Section>;
 }
 
-export function Combat({c,edit,roll,confirm}:SheetProps){const t=sheetTotals(c);return <>
+export function Combat({c,edit,roll,confirm,children}:SheetProps&{children?:ReactNode}){const t=sheetTotals(c);return <>
  <CombatVitals c={c} edit={edit} roll={roll} confirm={confirm}/>
+ {children}
  {c.sheetKind==='monster'&&<NaturalAttacks c={c} edit={edit} roll={roll} confirm={confirm}/>}
  <Section title="Attack & defenses"><div className="fields four"><N label="Base attack bonus" calculated={c.automation.enabled} value={c.bab} onChange={v=>edit(d=>{d.bab=v})}/><N label="Grapple misc." value={c.grapple} onChange={v=>edit(d=>{d.grapple=v})}/><div className="field"><span>Grapple</span><Btn onClick={()=>roll({title:'Grapple check',formula:withBonus('1d20',t.grapple),details:'BAB + Strength + grapple size + miscellaneous.'})}>Roll {signed(t.grapple)}</Btn></div><N label="Spell resistance" calculated={c.automation.enabled} value={c.defense.sr} onChange={v=>edit(d=>{d.defense.sr=v})} min={0}/><N label="Arcane spell failure %" calculated={c.automation.enabled} value={c.defense.spellFailure} onChange={v=>edit(d=>{d.defense.spellFailure=v})} min={0} max={100}/><div className="field"><span>Arcane failure check</span><Btn onClick={()=>roll({title:'Arcane spell failure',formula:'1d100',details:`Failure on ${c.defense.spellFailure} or lower; apply only when relevant.`})}>Roll d100</Btn></div></div><F label="Resistances, immunities & special defenses" value={c.defense.resistances} onChange={v=>edit(d=>{d.defense.resistances=v})} area/></Section>
  <DamageReduction c={c} edit={edit} confirm={confirm}/>
