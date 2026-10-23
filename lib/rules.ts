@@ -1,4 +1,5 @@
 import {alternateActionActive} from './alternate-actions.ts';
+import {withSpellAttacks} from './spell-attacks.ts';
 import {monkSpecialWeapon} from './equipment.ts';
 import {hasAlternateFeature,featureReplaced,classFeatureLevel,alternateSettings} from './alternate-features.ts';
 import {reservedSlots,illumianDC,illumianExtraDice,illumianSpellNotes,resetRacialDaily} from './racial-abilities.ts';
@@ -118,6 +119,8 @@ export function spellFormula(s:Spell,cl:number):string {
  if(s.id==='searing-light')return `${Math.max(1,Math.min(5,Math.floor(cl/2)))}d8`;
  if(s.id==='disintegrate')return `${Math.min(40,cl*2)}d6`;
  if(s.id==='scorching-ray')return '4d6';
+ if(s.id==='supp-splinterbolt')return '4d6';
+ if(s.id==='disrupt-undead')return '1d6';
  if(s.id==='enervation')return '1d4';
  if(s.id==='energy-drain')return '2d4';
  if(s.id==='ray-of-enfeeblement')return `1d6+${Math.min(5,Math.floor(cl/2))}`;
@@ -142,7 +145,8 @@ export function scaledSpellText(value:string,cl:number){if(/^Close\b/i.test(valu
 export function makeSpellRoll(c:Character,p:Caster,k:KnownSpell,s:Spell,includeEffect=false,effectFormula=''):Roll {
  const dc=/^none\b/i.test(s.save)?s.save:`${s.save} (DC ${spellDC(c,p,k,s)})`;
  const formula=includeEffect?(effectFormula||k.formula||spellFormula(s,p.level)):'';
- return {title:s.name,details:[k.notes,illumianSpellNotes(c,p,k)].filter(Boolean).join(' · '),...(formula?{formula}:{}),fields:[['Tradition',p.name],['Spell level',String(k.level)],['Caster level',String(p.level)],['Casting time',s.castingTime],['Components',s.components],['Range',scaledSpellText(s.range,p.level)],['Target / area',s.target],['Duration',scaledSpellText(s.duration,p.level)],['Save',dc],['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]};
+ const result:Roll={title:s.name,details:[k.notes,illumianSpellNotes(c,p,k)].filter(Boolean).join(' · '),...(formula?{formula}:{}),fields:[['Tradition',p.name],['Spell level',String(k.level)],['Caster level',String(p.level)],['Casting time',s.castingTime],['Components',s.components],['Range',scaledSpellText(s.range,p.level)],['Target / area',s.target],['Duration',scaledSpellText(s.duration,p.level)],['Save',dc],['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]};
+ return includeEffect?withSpellAttacks(c,s,p.level,result,k.attack):result;
 }
 export function makeInitiativeRoll(c:Character):Roll{
  return {title:'Initiative',formula:withBonus('1d20',sheetTotals(c).initiative),initiative:true,details:'Roll20: select your character token before rolling to add or update its turn-tracker initiative. Practice rolls stay local.'};
