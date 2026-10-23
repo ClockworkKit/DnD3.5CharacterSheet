@@ -120,6 +120,9 @@ export function spellFormula(s:Spell,cl:number):string {
  if(s.id==='disintegrate')return `${Math.min(40,cl*2)}d6`;
  if(s.id==='scorching-ray')return '4d6';
  if(s.id==='supp-splinterbolt')return '4d6';
+ if(s.id==='supp-shocking-spark')return '4d6';
+ if(s.id==='supp-scourge-of-force')return `1d8+${Math.max(0,Math.min(5,Math.floor(cl/2)))}`;
+ if(s.id==='supp-flesh-ripper')return `${Math.max(1,Math.min(10,cl))}d8`;
  if(s.id==='disrupt-undead')return '1d6';
  if(s.id==='enervation')return '1d4';
  if(s.id==='energy-drain')return '2d4';
