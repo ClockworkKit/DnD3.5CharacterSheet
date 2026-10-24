@@ -16,6 +16,17 @@ export function spendInspiration(c:Character,cost:number) {
   if(!Number.isInteger(cost)||cost<1||cost>factotumNumbers(c).remaining)throw new Error('Not enough inspiration points.');
   c.factotum.spent+=cost;
 }
+export function opportunisticPietyProblem(c:Character):string {
+  const n=factotumNumbers(c);
+  if(n.level<5)return 'Opportunistic Piety requires Factotum level 5.';
+  if(c.factotum.pietyUsed>=n.piety)return 'No daily Opportunistic Piety uses remain.';
+  if(n.remaining<1)return 'Not enough inspiration points.';
+  return '';
+}
+export function useOpportunisticPiety(c:Character){
+  const problem=opportunisticPietyProblem(c);if(problem)throw new Error(problem);
+  spendInspiration(c,1);c.factotum.pietyUsed++;
+}
 const skillKey=(name:string)=>name.trim().toLowerCase().replace(/\s+/g,' ');
 export function cunningKnowledgeProblem(c:Character,skillId:string):string {
   if(factotumLevel(c)<1)return 'Cunning Knowledge requires a Factotum level.';
