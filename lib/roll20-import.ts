@@ -23,6 +23,7 @@ import powers from '../public/data/powers.json' with {type:'json'};
 
 export {roll20ExportSchema,parseRepeating};
 const spells=expandSpellCatalog(baseSpells as unknown as Spell[],extraSpells as unknown as SpellExtension[]);
+export const roll20SpellCatalog=()=>spells;
 const normalized=(s:string)=>s.toLowerCase().replace(/\s*\[[^\]]*\]/g,'').replace(/[’‘]/g,"'").replace(/[^a-z0-9]/g,'');
 function named<T extends {id:string,name:string}>(name:string,catalog:T[]){const hits=catalog.filter(x=>normalized(x.name)===normalized(name));return hits.length===1?hits[0]:undefined;}
 const ability=(value:string|undefined)=>abilityKeys.find(a=>[a,abilityNames[a],'@{'+a.toLowerCase()+'-mod}'].some(k=>k.toLowerCase()===value?.trim().toLowerCase()));
@@ -166,6 +167,9 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  }
  const featText=core.t('feats');if(featText)for(const line of featText.split(/[\n;]+/).filter(s=>s.trim())){const name=line.trim();if(name.length<=160)addFeature(name,'','Feat');else addFeature('Imported feat notes',name,'Other');}
  for(const [field,name,kind] of [['classabilities','Imported class abilities','Class feature'],['racialabilities','Imported racial abilities','Racial trait']] as const){const value=core.t(field);if(value)addFeature(name,value,kind);}
+ for(const section of ['doains','domains','domain'])for(const row of Object.values(groups[section]?.rows||{})){
+  const r=rowScope(row),name=r.t('domainName','name');if(name)addFeature(name.trim()+' domain',r.t('domainGrantedPower','description','notes')||'Imported domain; review its granted power and spell list.','Class feature');
+ }
  for(const section of ['feat','feats','ability','abilities','specialability','specialabilities'])for(const row of Object.values(groups[section]?.rows||{})){
   const r=rowScope(row),name=r.t('name','featname','abilityname');if(name)addFeature(name,r.t('description','desc','notes')||'',/^feats?$/.test(section)?'Feat':'Class feature',r.b('magic','spelllike')||false,r.n('max','uses')??0,r.n('used')??0);
  }

@@ -1,5 +1,6 @@
 import type {Spell,Character,Caster} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
+import {addClericDomainLists} from './cleric-domains.ts';
 export type SpellExtension={id:string,levels:Record<string,number>,sources:string[],spell?:Spell};
 export function expandSpellCatalog(base:Spell[],extensions:SpellExtension[]):Spell[]{
  const map=new Map(base.map(s=>[s.id,{...s,levels:{...s.levels}}]));
@@ -12,6 +13,7 @@ export function expandSpellCatalog(base:Spell[],extensions:SpellExtension[]):Spe
   if(s.levels.Druid!==undefined)s.levels['Spirit Shaman']=s.levels.Druid;
   const arcane=s.levels['Sorcerer / Wizard'];if(arcane>=1&&arcane<=4&&/^(Abjuration|Divination|Enchantment|Illusion|Transmutation)\b/.test(s.school))s.levels.Spellthief=arcane;
  }
+ addClericDomainLists([...map.values()]);
  for(const s of map.values())s.levelText=Object.entries(s.levels).map(([k,v])=>k+' '+v).join(', ').slice(0,160);
  return [...map.values()].sort((a,b)=>a.name.localeCompare(b.name));
 }

@@ -10,6 +10,7 @@ export const roll20ExportSchema=z.object({
 });
 export type Roll20Export=z.infer<typeof roll20ExportSchema>;
 export const roll20ImportDataSchema=z.object({
+ axeBrotherReview:z.number().int().min(0).max(1).optional(),
  spellPreparationReview:z.number().int().min(0).max(1).optional(),
  skillAliasesMigration:z.number().int().min(0).max(1).optional(),
  monkDefenseMigration:z.number().int().min(0).max(1).optional(),
