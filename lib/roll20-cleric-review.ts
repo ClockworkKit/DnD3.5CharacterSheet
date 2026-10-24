@@ -35,6 +35,8 @@ export function repairAxeBrotherImport(c:Character,spells:Spell[]):Character {
  }else if(!next.classLevels.some(e=>e.classId==='cleric'))throw new Error('Add or correct the current Cleric class entry first; existing classes were not replaced.');
  const ordinary=next.casters.filter(p=>!p.casting?.domain&&(p.casting?.classId==='cleric'||!p.casting?.classId&&p.name==='Imported divine casting'));
  const domains=next.casters.filter(p=>p.casting?.domain&&(p.casting.classId==='cleric'||!p.casting.classId&&/^Imported divine casting [—-] imported domain spells$/.test(p.name)));
+ const unresolvedDomains=next.casters.filter(p=>p.casting?.domain&&!p.casting.classId&&!domains.includes(p));
+ if(unresolvedDomains.length)throw new Error('An unlinked domain spellbook needs review in Magic. If it is the renamed imported Dwarf/Strength book, restore its tradition name to "Imported divine casting - imported domain spells" before retrying. No extra domain pool was created.');
  if(ordinary.length!==1||domains.length>1)throw new Error('Review duplicate or missing Cleric spellbooks in Magic first; no books were merged or replaced.');
  const p=ordinary[0],level=next.classLevels.filter(e=>e.classId==='cleric').reduce((n,e)=>n+e.level,0);
  const domain=domains[0]||makeCaster(findClass('cleric')!,level,effectiveScore(next,'WIS'));

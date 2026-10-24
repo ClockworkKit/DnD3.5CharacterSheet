@@ -99,3 +99,24 @@ test('browser save and native reload preserve the completed repair and all count
  const reloaded=await load((await api('/api/characters/'+record.id)).data);
  assert.deepEqual(save(reloaded),save(c));assert.deepEqual(save(repair(reloaded)),save(c));
 });
+
+test('renamed or additional unlinked domain books cannot silently create an extra domain pool',async()=>{
+ for(const extra of [false,true]){
+  const c=await load(importRoll20(raw()).character);
+  const domain=c.casters.find(p=>p.casting.domain);
+  if(extra)c.casters.push({...structuredClone(domain),id:uid(),name:'Other domain book'});
+  else domain.name='My domain prayers';
+  domain.slots[1].used=2;const before=save(c);
+  assert.throws(()=>repair(c),/unlinked domain spellbook/i);assert.deepEqual(save(c),before);
+ }
+});
+
+test('restoring the imported domain title reuses its identity and expenditure',async()=>{
+ const c=await load(importRoll20(raw()).character),domain=c.casters.find(p=>p.casting.domain);
+ domain.name='My domain prayers';domain.slots[1].used=2;
+ const before=save(domain);
+ domain.name='Imported divine casting - imported domain spells';
+ const fixed=repair(c),linked=fixed.casters.find(p=>p.casting.domain);
+ assert.equal(fixed.casters.length,c.casters.length);assert.equal(linked.id,before.id);
+ assert.equal(linked.slots[1].used,2);assert.equal(linked.spells.find(s=>s.spellId==='enlarge-person').spent,1);
+});
