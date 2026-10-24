@@ -10,6 +10,7 @@ import {repairRoll20PowerDetails} from './roll20-power-details.ts';
 import {repairRoll20MonkDefense} from './roll20-monk-defense.ts';
 import {repairRoll20SkillAliases} from './roll20-skill-aliases.ts';
 import {reviewRoll20SpellPreparation} from './roll20-spell-preparation.ts';
+import {reviewRoll20WeaponModes} from './roll20-weapon-mode.ts';
 import {skillFeatBonus} from './advancement.ts';
 
 // Only subtract bonuses recorded at import time, never today's level/feat gains.
@@ -58,6 +59,7 @@ export async function repairRoll20SkillBonuses(c:Character){
 
 // All UI load/import entry points use the same awaited migration.
 export async function prepareCharacter(c:Character){
+ reviewRoll20WeaponModes(c);
  reviewRoll20SpellPreparation(c);
  await repairRoll20SkillAliases(c);
  await repairRoll20SkillBonuses(c);
