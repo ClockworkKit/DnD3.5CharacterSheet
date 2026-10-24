@@ -5,7 +5,7 @@ import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {characterSchema} from '../lib/model.ts';
 import {recompute} from '../lib/automation.ts';
 import {armorProficient,equippedArmor,gearEquipment} from '../lib/equipment.ts';
-import {weaponAttack,skillBonus,makeFullAttackRoll,criticalConfirmation} from '../lib/rules.ts';
+import {weaponAttack,skillBonus,makeFullAttackRoll,criticalConfirmation,abilityCheck,withBonus} from '../lib/rules.ts';
 import {configureAlternateFeature,selectAlternateFeature} from '../lib/alternate-features.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
@@ -72,8 +72,48 @@ test('existing imported equipment, level-ups and spent resources survive normal 
  c.casters[0].slots[1].used=2;shield(c).notes='Player annotation';shield(c).proficient=false;
  const before=saved(c),fixed=await load(c);assert.deepEqual(saved(fixed),before);
  assert.equal(weaponAttack(fixed,fixed.weapons[0]),fixed.bab+3-9-2);
+ assert.equal(abilityCheck(fixed,'STR'),-6);assert.equal(abilityCheck(fixed,'DEX'),-7);
  const records=new Map(),api=createBrowserCharacterApi({scope:'shield-casing',storage:()=>({getItem:k=>records.get(k)??null,setItem:(k,v)=>records.set(k,v)}),lock:async(_,fn)=>fn()});
  const record=await api('/api/characters',{method:'POST',body:JSON.stringify({data:fixed})});
  const backup=parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:(await api('/api/characters/'+record.id)).data}));
  assert.deepEqual(saved(await load(backup)),before);
+});
+
+test('nonproficient armor/shields penalize only STR/DEX ability checks without changing stored abilities',async()=>{
+ const c=await create(),before=saved(c);
+ assert.equal(abilityCheck(c,'STR'),-6);assert.equal(abilityCheck(c,'DEX'),-7);
+ assert.equal(withBonus('1d20',abilityCheck(c,'DEX')),'1d20-7');
+ for(const a of ['CON','INT','WIS','CHA'])assert.equal(abilityCheck(c,a),Math.floor((c.scores[a]-10)/2));
+ assert.deepEqual(saved(c),before);
+ c.automation.enabled=false;
+ assert.equal(abilityCheck(c,'STR'),3);assert.equal(abilityCheck(c,'DEX'),2);
+});
+
+test('armor and shield nonproficiency stack once, while ordinary ACP, loads and tower encumbrance do not penalize bare checks',async()=>{
+ const c=await create({class1:'Wizard',acitem:'Full plate',acitembonus:8,acitemcheckpenalty:6}),g=shield(c),armor=c.gear.find(g=>gearEquipment(g)?.kind==='armor');
+ assert.equal(equippedArmor(c).nonproficient,-15);assert.equal(abilityCheck(c,'STR'),-12);assert.equal(abilityCheck(c,'DEX'),-13);
+ armor.proficient=true;assert.equal(abilityCheck(c,'STR'),-6);
+ g.proficient=true;assert.equal(abilityCheck(c,'STR'),3);assert.equal(abilityCheck(c,'DEX'),2);
+ c.gear.push({id:'heavy-load',name:'Supplies',qty:1,weight:200,carried:true,equipped:false,notes:''});recompute(c);
+ assert.ok(c.defense.checkPenalty<0);assert.equal(abilityCheck(c,'STR'),3);assert.equal(abilityCheck(c,'DEX'),2);
+ const cleric=await create({shieldname:'Shield, heavy steel',shieldbonus:2,shieldcheckpenalty:2});
+ assert.equal(abilityCheck(cleric,'STR'),3);assert.equal(abilityCheck(cleric,'DEX'),2);
+});
+
+test('ability checks follow material, proficiency and equipment changes immediately',async()=>{
+ const c=await create(),g=shield(c);g.masterwork=true;assert.equal(abilityCheck(c,'DEX'),-6);
+ g.material='mithral';assert.equal(abilityCheck(c,'DEX'),-4);
+ for(const flag of ['equipped','carried']){g[flag]=false;assert.equal(abilityCheck(c,'DEX'),2);g[flag]=true;}
+ g.qty=0;assert.equal(abilityCheck(c,'DEX'),2);g.qty=1;
+ g.proficient=true;assert.equal(abilityCheck(c,'DEX'),2);g.proficient=false;assert.equal(abilityCheck(c,'DEX'),-4);delete g.proficient;
+ feat(c,'Tower Shield Proficiency');assert.equal(abilityCheck(c,'DEX'),2);
+});
+
+test('Factotum Brains over Brawn and typed check effects coexist with the penalty without spending inspiration',async()=>{
+ const c=await create({class1:'Factotum',level1:3,int:18});c.factotum.spent=2;
+ assert.equal(abilityCheck(c,'STR'),-2);assert.equal(abilityCheck(c,'DEX'),-3);
+ c.situational=1;c.effects.push({id:'check-bonuses',name:'Check bonuses',preset:'',active:true,permanent:false,casterLevel:3,rounds:0,notes:'',modifiers:[{target:'checks',type:'competence',value:'2',when:''},{target:'check.DEX',type:'competence',value:'3',when:''}]});
+ assert.equal(abilityCheck(c,'STR'),1);assert.equal(abilityCheck(c,'DEX'),1);
+ const before=saved(c);assert.equal(c.factotum.spent,2);
+ const fixed=await load(c);assert.equal(abilityCheck(fixed,'DEX'),1);assert.deepEqual(saved(fixed),before);
 });
