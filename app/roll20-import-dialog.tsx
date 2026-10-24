@@ -6,6 +6,7 @@ import {Btn} from './sheet-ui';
 import {Roll20ImportReport} from './roll20-import-report';
 import {importRoll20,roll20SpellCatalog} from '@/lib/roll20-import';
 import {AxeBrotherImportReview} from './axe-brother-import-review';
+import {ArcaneImportReview,ArchivedFactotumCasting} from './arcane-import-review';
 import type {Character} from '@/lib/model';
 import {toast} from 'sonner';
 
@@ -21,6 +22,8 @@ export function Roll20ImportDialog({open,onOpenChange,onImport,busy=false}:{open
   <Textarea className="field-sizing-fixed h-40 max-h-64" value={raw} disabled={locked} onChange={e=>change(e.target.value)} placeholder="Or paste the complete JSON from the handout…" rows={8} aria-label="Roll20 export JSON"/>
   {error&&<div className="error-box" role="alert">{error}</div>}
   {preview&&<AxeBrotherImportReview c={preview.character} spells={roll20SpellCatalog()} disabled={locked} onRepair={character=>setPreview({character,report:character.roll20Import!.report})}/>}
+  {preview&&<><ArcaneImportReview key={raw} c={preview.character} spells={roll20SpellCatalog()} disabled={locked} onRepair={character=>setPreview({character,report:character.roll20Import!.report})}/><ArchivedFactotumCasting c={preview.character} spells={roll20SpellCatalog()}/></>}
+  {preview?.character.roll20Import?.factotumReview===1&&<p>Arcane Dilettante: {preview.character.factotum.spells.length} daily spell choices. Archived spell records are separate from the ordinary spellbook count below.</p>}
   {preview&&<><h3>{preview.character.name}</h3><p>{preview.character.race||'Race needs review'} · {preview.character.classes||'Classes need review'} · {preview.character.hp}/{preview.character.maxHp} HP</p><p>{preview.character.weapons.length} weapons · {preview.character.features.length} features · {preview.character.casters.reduce((n,c)=>n+c.spells.length,0)} spells · {preview.character.gear.length} equipment entries</p><Roll20ImportReport source={preview.character.roll20Import!}/></>}
   <div className="button-row"><Btn onClick={()=>onOpenChange(false)} disabled={locked}>Cancel</Btn><Btn onClick={analyze} disabled={locked||!raw.trim()}>Review import</Btn><Btn className="primary" onClick={()=>void submit()} disabled={locked||!preview}>{saving?'Importing…':'Import as new character'}</Btn></div>
  </DialogContent></Dialog>;
