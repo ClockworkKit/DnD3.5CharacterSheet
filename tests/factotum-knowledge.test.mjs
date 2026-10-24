@@ -37,6 +37,17 @@ test('roll cards add Factotum level once without spending until accepted; repeat
  const rested=resetDaily(c);assert.equal(cunningKnowledgeProblem(rested,s.id),'');useCunningKnowledge(rested,s.id);
 });
 
+test('Cunning Knowledge remains untyped and uses Factotum levels, not total character levels',()=>{
+ const c=create(),s=train(c,'Climb');
+ c.classLevels.push({id:'fighter-levels',classId:'fighter',name:'Fighter',level:2,notes:''});recompute(c);
+ const base=skillBonus(c,s);
+ for(const [id,target,value] of [['skill-item','skill.Climb','5'],['all-skills','skills','3']])c.effects.push({id,preset:'',name:id,notes:'',active:true,permanent:false,casterLevel:1,rounds:0,modifiers:[{target,type:'competence',value,when:''}]});
+ assert.equal(skillBonus(c,s),base+5,'competing competence effects use the higher bonus');
+ const before=saved(c),roll=makeCunningKnowledgeRoll(c,s.id);
+ assert.equal(roll.formula,'1d20+'+(base+5+3),'Cunning Knowledge adds its separate untyped Factotum-level bonus');
+ assert.deepEqual(saved(c),before);assert.equal(c.factotum.spent,0);
+});
+
 test('duplicate rows share a daily skill limit while different Knowledge specialties remain distinct',()=>{
  const c=create(),s=train(c,'Climb');c.skills.push({...structuredClone(s),id:'duplicate',name:'  CLIMB  '});
  useCunningKnowledge(c,s.id);assert.match(cunningKnowledgeProblem(c,'duplicate'),/already/);
