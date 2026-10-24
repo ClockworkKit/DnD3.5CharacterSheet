@@ -2,7 +2,7 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
-import {spellAttackProfile,spellAttackBonus} from '../lib/spell-attacks.ts';
+import {spellAttackProfile,spellAttackBonus,makeSpellAttackOnlyRoll} from '../lib/spell-attacks.ts';
 import {spellFormula,makeSpellRoll,makeRequest,spendSpell} from '../lib/rules.ts';
 import {makeDilettanteRoll} from '../lib/factotum-rolls.ts';
 import {chooseDilettante,castDilettante} from '../lib/factotum.ts';
@@ -17,6 +17,36 @@ const spell=id=>{const e=entries.find(e=>e.id===id);return {...e.spell,levels:e.
 const create=(kind='Wizard',level=11)=>createPlayerCharacter({name:'Compendium attack QA',kind,level,raceId:'human',scores:{STR:12,DEX:16,CON:12,INT:20,WIS:18,CHA:12},method:'manual'});
 const known=s=>({id:'known-'+s.id,spellId:s.id,level:Object.values(s.levels)[0],slotLevel:Object.values(s.levels)[0],prepared:2,spent:0,formula:'',notes:'Keep my notes',custom:null});
 const snapshot=c=>JSON.parse(JSON.stringify(c));
+
+test('Fiery Vision casts two full-bonus rays with independent fixed damage, without spending twice',()=>{
+ const c=create('Cleric',11),p=c.casters[0],s=spell('supp-fiery-vision'),k={...known(s),prepared:1};p.spells=[k];
+ const before=snapshot(c);
+ for(const cl of [11,15,20]){
+  const profile=spellAttackProfile(s,cl);assert.equal(profile.mode,'ranged-touch');assert.equal(profile.count,2);assert.equal(profile.ray,true);
+  const r=makeSpellRoll(c,{...p,level:cl},k,s,true);
+  assert.deepEqual(r.rolls.map(x=>x.formula),['1d20+'+(c.bab+3),'4d6','1d20+'+(c.bab+3),'4d6']);
+  assert.equal((makeRequest(r,c.name,'https://example.com/').message.match(/\[\[1d20/g)||[]).length,2);
+  assert.match(r.details,/standard action/i);assert.match(r.details,/No attack/i);
+ }
+ assert.equal(makeSpellRoll(c,p,k,s).rolls,undefined);
+ assert.equal(makeSpellAttackOnlyRoll(c,s,p.level).rolls.length,2);
+ assert.deepEqual(snapshot(c),before);
+ Object.assign(p,spendSpell(p,k,c));assert.equal(p.spells[0].spent,1);
+ assert.equal(makeSpellRoll(c,p,{...k,attack:{mode:'none',bonus:0}},s,true).rolls,undefined);
+ const edited=makeSpellRoll(c,p,{...k,formula:'2d6+7',attack:{mode:'auto',count:1,bonus:2}},s,true);
+ assert.deepEqual(edited.rolls.map(x=>x.formula),['1d20+'+(c.bab+5),'2d6+7']);
+});
+
+test('already imported Fiery Vision gains attack rolls without rewriting later progress or spent preparations',async()=>{
+ const s=spell('supp-fiery-vision');
+ const raw={format:'roll20-dnd35-export',version:1,exportedAt:'2026-10-24',character:{id:'vision-import',name:'Vision import QA'},attributes:Object.entries({class1:'Cleric',level1:11,wis:20,dex:16,repeating_spells61_ROW_spellname61:s.name,repeating_spells61_ROW_spellprep61:2,repeating_spells61_ROW_spellused61:1}).map(([name,current])=>({name,current,max:''}))};
+ const c=await prepareCharacter(importRoll20(raw).character);c.classLevels[0].level=12;recompute(c);c.hp-=3;c.notes='Later session';
+ const before=snapshot(c),restored=await prepareCharacter(characterSchema.parse(parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:c}))));
+ assert.deepEqual(snapshot(restored),before);assert.deepEqual(restored.roll20Import.raw,raw);
+ const p=restored.casters.find(p=>p.spells.some(k=>k.spellId===s.id)),k=p.spells.find(k=>k.spellId===s.id);
+ assert.equal(k.prepared,2);assert.equal(k.spent,1);assert.equal(makeSpellRoll(restored,p,k,s,true).rolls.length,4);
+ assert.deepEqual(snapshot(restored),before);
+});
 
 test('Shocking Spark uses its own 6th/10th-level projectile thresholds, full attack bonus and 4d6 per spark',()=>{
  const c=create(),s=spell('supp-shocking-spark'),k=known(s);
