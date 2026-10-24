@@ -70,7 +70,7 @@ export function withSpellAttacks(c:Character,s:Spell,cl:number,roll:Roll,setting
   const prefix=p.count>1?`${i+1}. `:'';
   rows.push({label:prefix+label,formula:withBonus('1d20',bonus)});
   if(key(s)==='meteor swarm'&&roll.formula==='2d6+6d6')rows.push({label:prefix+'Impact on hit (bludgeoning)',formula:'2d6'},{label:prefix+'Explosion (fire; check save)',formula:'6d6'});
-  else if(roll.formula)rows.push({label:prefix+'Effect on hit',formula:roll.formula});
+  else if(roll.formula)rows.push({label:prefix+(s.id==='poison'?'Initial Constitution damage (Fortitude negates)':'Effect on hit'),formula:roll.formula});
  }
  return {...roll,formula:undefined,rolls:rows,details:[roll.details,p.note].filter(Boolean).join(' ')};
 }

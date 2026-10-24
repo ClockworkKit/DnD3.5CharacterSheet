@@ -80,7 +80,7 @@ export function makeFullAttackRoll(c:Character,weapons=fullAttackWeapons(c),incl
   return [{label:label+' to hit',formula:withBonus('1d20',weaponAttack(c,weapon,attack.iteration))},...(includeDamage?[{label:label+' damage on hit',formula:weaponDamage(c,weapon)}]:[])];
  })};
 }
-export function spellDC(c:Character,p:Caster,s:KnownSpell,reference?:Spell){const school=(reference||s.custom)?.school.split(/[ (]/)[0]||'';return 10+s.level+modifier(effectiveScore(c,findClass(p.casting?.classId||p.name)?.casting?.dcAbility||p.ability))+p.dcExtra+(c.automation.enabled?(hasFeat(c,'Spell Focus',school)?1:0)+(hasFeat(c,'Greater Spell Focus',school)?1:0)+(school==='Illusion'&&!racialTraits(c)?.imported&&racialTraits(c)?.id.includes('gnome')&&racialTraits(c)?.id!=='whisper-gnome'?1:0)+illumianDC(c,s.level)+combined(c,['spellDC','spellDC.'+school]):0);}
+export function spellDC(c:Character,p:Caster,s:KnownSpell,reference?:Spell){const spell=reference||s.custom,school=spell?.school.split(/[ (]/)[0]||'';const poison=(spell?.id||s.spellId)==='poison';const level=poison?Math.floor(p.level/2):s.level,ability=poison?'WIS':findClass(p.casting?.classId||p.name)?.casting?.dcAbility||p.ability;return 10+level+modifier(effectiveScore(c,ability))+p.dcExtra+(c.automation.enabled?(hasFeat(c,'Spell Focus',school)?1:0)+(hasFeat(c,'Greater Spell Focus',school)?1:0)+(school==='Illusion'&&!racialTraits(c)?.imported&&racialTraits(c)?.id.includes('gnome')&&racialTraits(c)?.id!=='whisper-gnome'?1:0)+illumianDC(c,s.level)+combined(c,['spellDC','spellDC.'+school]):0);}
 export function spellPenetration(c:Character,p:Caster){return p.level+p.penetration+(c.automation.enabled?(hasFeat(c,'Spell Penetration')?2:0)+(hasFeat(c,'Greater Spell Penetration')?2:0)+effectBonus(c,'penetration'):0);}
 export function preparedAt(p:Caster,level:number){return p.spells.filter(s=>s.slotLevel===level).reduce((a,s)=>a+s.prepared,0);}
 export function castingProblem(p:Caster,s:KnownSpell,c?:Character){
@@ -103,6 +103,7 @@ export function spendSpell(p:Caster,s:KnownSpell,c?:Character):Caster {
 }
 export function resetDaily(c:Character):Character{return {...c,alternateFeatures:{...c.alternateFeatures,settings:Object.fromEntries(Object.entries(c.alternateFeatures.settings).map(([id,s])=>[id,{...s,actions:{},counters:s.counters.map(r=>({...r,used:r.period==='day'?0:r.used}))}])),uses:Object.fromEntries(Object.entries(c.alternateFeatures.uses).filter(([key])=>key.startsWith('weekly:')||key==='daily:original-turning').map(([key,value])=>[key,key.startsWith('daily:')?0:value]))},racialState:resetRacialDaily(c),classSystems:{...classSystemsSchema.parse(c.classSystems),choices:c.classSystems.choices.map(s=>({...s,spent:0,granted:false})),pools:Object.fromEntries(Object.entries(c.classSystems.pools).filter(([key])=>key.startsWith('craft:')||key.startsWith('weekly:')))},factotum:{...c.factotum,spent:0,knowledgeUsed:[],pietyUsed:0,dodgeUsed:false,spells:[]},ancestry:{...c.ancestry,powerPointsSpent:0},psionics:c.psionics.map(p=>({...p,spent:0,focused:false})),casters:c.casters.map(p=>({...p,slots:p.slots.map((x,i)=>({...x,max:Math.min(10000,x.max+reservedSlots(c,p,i)),used:0})),spells:p.spells.map(s=>({...s,spent:0}))})),features:c.features.map(f=>({...f,used:0}))};}
 export function spellFormula(s:Spell,cl:number,settings:SpellAttackSettings|undefined=s.attack):string {
+ if(s.id==='poison')return '1d10';
  const cure:Record<string,[number,number]>={'cure-light-wounds':[1,5],'cure-moderate-wounds':[2,10],'cure-serious-wounds':[3,15],'cure-critical-wounds':[4,20],'inflict-light-wounds':[1,5],'inflict-moderate-wounds':[2,10],'inflict-serious-wounds':[3,15],'inflict-critical-wounds':[4,20]};
  if(cure[s.id])return `${cure[s.id][0]}d8+${Math.min(cl,cure[s.id][1])}`;
  // Catalog/import IDs put "mass" last; retain the older prefix aliases too.
@@ -152,6 +153,10 @@ export function makeSpellRoll(c:Character,p:Caster,k:KnownSpell,s:Spell,includeE
  const dc=/^none\b/i.test(s.save)?s.save:`${s.save} (DC ${spellDC(c,p,k,s)})`;
  const formula=includeEffect?(effectFormula||k.formula||spellFormula(s,p.level,k.attack)):'';
  const result:Roll={title:s.name,details:[k.notes,illumianSpellNotes(c,p,k)].filter(Boolean).join(' · '),...(formula?{formula}:{}),fields:[['Tradition',p.name],['Spell level',String(k.level)],['Caster level',String(p.level)],['Casting time',s.castingTime],['Components',s.components],['Range',scaledSpellText(s.range,p.level)],['Target / area',s.target],['Duration',scaledSpellText(s.duration,p.level)],['Save',dc],['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]};
+ if(s.id==='poison'){
+  result.fields!.push(['Effect type','Initial Constitution damage, not hit-point damage']);
+  result.details=[result.details,'After a successful melee touch attack, the initial Constitution damage requires a failed Fortitude save. One minute later, resolve another Fortitude save at the same DC and a separate 1d10 Constitution damage roll; do not cast or spend another preparation. The secondary damage is not rolled now.'].filter(Boolean).join(' ');
+ }
  return includeEffect?withSpellAttacks(c,s,p.level,result,k.attack):result;
 }
 export function makeInitiativeRoll(c:Character):Roll{
