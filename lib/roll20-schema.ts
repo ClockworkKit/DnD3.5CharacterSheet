@@ -20,6 +20,7 @@ export const roll20ImportDataSchema=z.object({
  powerDetailsMigration:z.number().int().min(0).max(1).optional(),
  castingProgressionMigration:z.number().int().min(0).max(1).optional(),
  legacySpellsMigration:z.number().int().min(0).max(1).optional(),
+ spellNamesMigration:z.number().int().min(0).max(1).optional(),
  globalCombatMigration:z.number().int().min(0).max(1).optional(),
  weaponEnhancementMigration:z.number().int().min(0).max(1).optional(),
  weaponBonusMigration:z.number().int().min(0).max(2).optional(),

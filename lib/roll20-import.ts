@@ -11,6 +11,7 @@ import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
 import {legacyDivineSpell} from './roll20-legacy-spells.ts';
 import {roll20PowerNotes} from './roll20-power-details.ts';
+import {matchRoll20AnnotatedSpell,roll20SpellNameNote} from './roll20-spell-names.ts';
 import {roll20SkillModifiers} from './roll20-skill-aliases.ts';
 import {roll20DashWeaponMode} from './roll20-weapon-mode.ts';
 import {readRoll20WeaponDice,preserveRoll20WeaponDice} from './roll20-weapon-dice.ts';
@@ -261,7 +262,11 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
   let target=p;
   if(domain){const key=p.id+':domain';target=generic.get(key)!;if(!target){target={...structuredClone(p),id:uid(),name:p.name+' — imported domain spells',list:'',spells:[],slots:Array.from({length:10},()=>({max:0,used:0})),casting:p.casting?{...p.casting,domain:true}:undefined};generic.set(key,target);c.casters.push(target);warn('Domain spells use a separate manual tradition; select their domain list and review its slots.');}}
   const details=[r.t('notes','description','desc'),...Object.entries(custom).filter(([k,v])=>!['id','name','source','description','levels','levelText'].includes(k)&&v).map(([k,v])=>k+': '+v)].filter(Boolean).join('\n');
-  target.spells.push({id:uid(),spellId:s?.id||custom.id,level:spellLevel,slotLevel:r.n('slotlevel','preparedlevel')??spellLevel,prepared,spent,formula:'',notes:details,custom:s?null:custom,...(legacyRow?{roll20LegacyRow:legacyRow}:{})});
+  const annotated=!s?matchRoll20AnnotatedSpell(custom,p.list,spells):undefined;
+  const nameNotes=[details,roll20SpellNameNote(name)].filter(Boolean).join('\n\n');
+  const linked=s||(nameNotes.length<=2000?annotated:undefined);
+  if(annotated&&!linked)warn(name+': library matching needs review because the original name would exceed the notes limit.');
+  target.spells.push({id:uid(),spellId:linked?.id||custom.id,level:spellLevel,slotLevel:r.n('slotlevel','preparedlevel')??spellLevel,prepared,spent,formula:'',notes:annotated&&linked?nameNotes:details,custom:linked?null:custom,...(annotated&&linked?{roll20OriginalName:name}:{}),...(legacyRow?{roll20LegacyRow:legacyRow}:{})});
  }
  const migratedDivineRows=new Set(Object.keys(groups.spells11?.rows||{}).map(id=>id.toLowerCase()));
  for(const [section,group] of Object.entries(groups)){
@@ -298,6 +303,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1,monkDefenseMigration:1};
  c.roll20Import.skillAliasesMigration=1;
+ c.roll20Import.spellNamesMigration=1;
  c.roll20Import.spellPreparationReview=1;
  c.roll20Import.weaponModeReview=1;
  syncSourceReferences(c);
