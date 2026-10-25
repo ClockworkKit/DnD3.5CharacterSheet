@@ -1,6 +1,6 @@
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,type Character} from './model.ts';
-import {classCatalog,classTotals,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility} from './classes.ts';
+import {classCatalog,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility} from './classes.ts';
 import {advancementNumbers} from './advancement.ts';
 import {effectiveScore} from './ancestry.ts';
 import {skillIntelligence} from './level-history.ts';
@@ -12,14 +12,14 @@ export function levelUpStatus(c:Character){
 export function levelUpClasses(c:Character,showAll=false){return classCatalog.filter(d=>{
  const level=c.classLevels.filter(e=>e.classId===d.id).reduce((n,e)=>n+e.level,0);
  return d.levels.some(r=>r.level===level+1)&&(showAll||level>0||prestigeEligibility(c,d).eligible);
-});}
+}).map(d=>({...d,hitDie:classHitDie(c,d.id)}));}
 export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  if(c.sheetKind==='monster')throw new Error('Advance monster Hit Dice and class levels manually.');
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
  if(!c.classLevels.length||classTotals(c.classLevels,c.ancestry,c).missing.length)throw new Error('Record supported class levels before using guided level-up.');
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
- if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>def.hitDie))throw new Error('Record a valid roll for the new Hit Die.');
+ if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
  let entry=c.classLevels.find(e=>e.classId===classId);
  if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};c.classLevels.push(entry);}
  if(c.automation.hpMethod==='rolled')c.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});

@@ -1,6 +1,6 @@
 import {hasAlternateFeature} from './alternate-features.ts';
 import type {Character} from './model.ts';
-import {findClass} from './classes.ts';
+import {findClass,classHitDie} from './classes.ts';
 import {effectiveScore,raceProgression,racialBonusSkillPoints} from './ancestry.ts';
 
 export type LevelRow = {key:string;entryId:string;label:string;die:number;skillBase:number;classId:string;classLevel:number};
@@ -17,7 +17,7 @@ export function hitDieSequence(c:Character):LevelRow[] {
   for(let i=1;i<=c.ancestry.racialHitDice;i++)racial.push({key:'racial-'+i,entryId:'racial',label:'Racial HD '+i,die:progression?.die||8,skillBase:progression?.skillBase||2,classId:'racial',classLevel:i});
   const rows:LevelRow[]=[];
   const entries=[...c.classLevels].sort((a,b)=>a.id===c.automation.firstClassId?-1:b.id===c.automation.firstClassId?1:0);
-  for(const e of entries){const d=findClass(e.classId);for(let i=1;i<=e.level;i++)rows.push({key:e.id+'-'+i,entryId:e.id,label:e.name+' '+i,die:e.classId==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric')?10:d?.hitDie||0,skillBase:e.classId==='fighter'&&hasAlternateFeature(c,'fighter-golarion-fighter')||e.classId==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?4:d?.skillPoints||2,classId:e.classId,classLevel:i})}
+  for(const e of entries){const d=findClass(e.classId);for(let i=1;i<=e.level;i++)rows.push({key:e.id+'-'+i,entryId:e.id,label:e.name+' '+i,die:classHitDie(c,e.classId),skillBase:e.classId==='fighter'&&hasAlternateFeature(c,'fighter-golarion-fighter')||e.classId==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?4:d?.skillPoints||2,classId:e.classId,classLevel:i})}
   const order=c.automation.levelOrder;
   const first=order.find(key=>rows.some(row=>row.key===key));
   if(!order.length||first&&c.automation.firstClassId&&rows.find(row=>row.key===first)?.entryId!==c.automation.firstClassId)return [...racial,...rows];
