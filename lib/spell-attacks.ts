@@ -4,7 +4,7 @@ import {spellAttackSchema} from './spell-attack-schema.ts';
 import {spellEffectTargetNote} from './spell-effect-targets.ts';
 import {weaponAttack,sheetTotals,withBonus,type Roll} from './rules.ts';
 import {hasFeat} from './effects.ts';
-import {armorProficient,equippedArmor,gearEquipment} from './equipment.ts';
+import {finesseShieldPenalty} from './weapon-finesse.ts';
 
 export const spellAttackModes:Array<[SpellAttackSettings['mode'],string]>=[['auto','Automatic from spell'],['none','No attack / willing target'],['melee-touch','Melee touch vs touch AC'],['ranged-touch','Ranged touch vs touch AC'],['melee','Melee vs normal AC'],['ranged','Ranged vs normal AC'],['spiritual-weapon','Spiritual Weapon (BAB + Wisdom)']];
 const key=(s:Spell)=>s.name.toLowerCase().replace(/[’']/g,'').trim();
@@ -55,7 +55,7 @@ export function spellAttackBonus(c:Character,s:Spell,cl:number,settings?:SpellAt
  const attackCharacter=spellAttackCharacter(c);
  let ability:Weapon['ability']=ranged?'DEX':'STR',finessePenalty=0;
  if(touch&&c.automation.enabled&&hasFeat(c,'Weapon Finesse')){
-  for(const g of equippedArmor(c).selected){const e=gearEquipment(g)!;if(e.kind==='shield'&&(g.proficient??armorProficient(c,e)))finessePenalty+=Math.min(0,e.checkPenalty!+(g.material==='mithral'?3:g.masterwork||g.enhancement||g.material==='adamantine'?1:0));}
+  finessePenalty=finesseShieldPenalty(c);
   if(t.mods.DEX+finessePenalty>t.mods.STR)ability='DEX';else finessePenalty=0;
  }
  const w:Weapon={id:'spell-attack',name:profile.ray?'Ray':touch?'Touch spell':s.name,ability,attack:0,damage:'0',damageAbility:'none',strength:'one',damageExtra:0,crit:'20 / x2',range:ranged?'Ranged':'Melee',attackMode:ranged?'ranged':'melee',proficiency:'yes',ammo:0,notes:''};

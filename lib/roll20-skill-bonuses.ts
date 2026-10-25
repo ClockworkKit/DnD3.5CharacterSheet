@@ -7,6 +7,7 @@ import {repairRoll20GlobalCombat} from './roll20-global-combat.ts';
 import {repairRoll20LegacySpells} from './roll20-legacy-spells.ts';
 import {repairRoll20SpellNames} from './roll20-spell-names.ts';
 import {reviewRoll20Initiative} from './roll20-initiative.ts';
+import {reviewRoll20WeaponFinesse} from './roll20-weapon-finesse.ts';
 import {repairRoll20CastingProgression} from './roll20-casting-progression.ts';
 import {repairRoll20PowerDetails} from './roll20-power-details.ts';
 import {repairRoll20MonkDefense} from './roll20-monk-defense.ts';
@@ -74,5 +75,6 @@ export async function prepareCharacter(c:Character){
  await repairRoll20MonkDefense(c);
  activateAutomation(migrateRoll20Automation(c));
  await reviewRoll20Initiative(c);
+ await reviewRoll20WeaponFinesse(c);
  return repairRoll20CastingProgression(c);
 }

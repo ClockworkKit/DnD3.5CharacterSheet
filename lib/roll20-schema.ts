@@ -10,6 +10,7 @@ export const roll20ExportSchema=z.object({
 });
 export type Roll20Export=z.infer<typeof roll20ExportSchema>;
 export const roll20ImportDataSchema=z.object({
+ weaponFinesse:z.record(z.object({mode:z.enum(['automatic','manual','review']),includedPenalty:z.number().min(-100).max(0),sourcePenalty:z.number().min(-100).max(0).optional()})).optional(),
  initiativeArmor:z.object({mode:z.enum(['automatic','manual','review']),includedPenalty:z.number().min(-200).max(0),sourcePenalty:z.number().min(-200).max(0).optional()}).optional(),
  factotumReview:z.number().int().min(0).max(1).optional(),
  sorcererReview:z.number().int().min(0).max(1).optional(),
