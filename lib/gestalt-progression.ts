@@ -6,11 +6,13 @@ import type {LevelRow} from './level-history.ts';
 
 const id=z.string().trim().min(1).max(80);
 const approval=z.object({classId:id,gm:z.string().trim().min(1).max(160),reason:z.string().trim().min(1).max(2000)}).strict();
+export const gestaltBonusMethodSchema=z.enum(['printed-table-v1','fractional-v1']);
+export type GestaltBonusMethod=z.infer<typeof gestaltBonusMethodSchema>;
 /** Explicit, versioned data only. Never infer a gestalt plan from old class totals. */
 export const gestaltProgressionSchema=z.object({
  version:z.literal(1),
- // Compare whole progressions, never cherry-pick individual rounded increments.
- bonusMethod:z.literal('best-progression-v1'),
+ // Fractional bonuses are an explicit variant, never an inferred default.
+ bonusMethod:gestaltBonusMethodSchema.default('printed-table-v1'),
  levels:z.array(z.object({id,left:id,right:id,approvals:z.array(approval).max(2).default([])}).strict()).min(1).max(100),
 }).strict().superRefine((plan,ctx)=>{
  const seen=new Set<string>();
@@ -24,7 +26,8 @@ export const gestaltProgressionSchema=z.object({
 export type GestaltProgression=z.infer<typeof gestaltProgressionSchema>;
 
 /** Extension point for source-specific class families and combination prestige rules. */
-export type GestaltClassPolicy={family?:string;combinationPrestige?:boolean};
+export type GestaltBonusProfile={bab:'full'|'medium'|'poor';fort:'good'|'poor';ref:'good'|'poor';will:'good'|'poor'};
+export type GestaltClassPolicy={family?:string;combinationPrestige?:boolean;bonusProfile?:GestaltBonusProfile};
 export const gestaltClassPolicies:Readonly<Record<string,GestaltClassPolicy>>={
  'arcane-trickster':{combinationPrestige:true},
  'eldritch-knight':{combinationPrestige:true},
@@ -33,10 +36,30 @@ export const gestaltClassPolicies:Readonly<Record<string,GestaltClassPolicy>>={
 };
 export type GestaltOptions={definitions?:readonly ClassDefinition[];policies?:Readonly<Record<string,GestaltClassPolicy>>};
 export type BaseProgression={bab:number;fort:number;ref:number;will:number};
-export type GestaltClassAdvance={entryId:string;classId:string;classLevel:number;name:string;base:BaseProgression};
+const baseStats=['bab','fort','ref','will'] as const;
+const rateUnits={full:12,medium:9,poor:6,good:6} as const;
+export type GestaltClassAdvance={entryId:string;classId:string;classLevel:number;name:string;base:BaseProgression;previous:BaseProgression;rates:BaseProgression};
 export type GestaltLevelRow=LevelRow & {
- left:GestaltClassAdvance;right:GestaltClassAdvance;
+ left:GestaltClassAdvance;right:GestaltClassAdvance;bonusMethod:GestaltBonusMethod;
 };
+
+/** Infer only exact standard progressions. Short/ambiguous custom tables need metadata. */
+function bonusRates(def:ClassDefinition,policy:GestaltClassPolicy,golarion:boolean):BaseProgression{
+ const rates={} as BaseProgression;
+ for(const stat of baseStats){
+  const names=stat==='bab'?['full','medium','poor'] as const:['good','poor'] as const;
+  const units=(name:typeof names[number])=>stat!=='bab'&&name==='poor'?4:rateUnits[name];
+  const matches=(name:typeof names[number])=>def.levels.every(row=>{
+   const actual=stat==='bab'&&golarion?row.level:row[stat];
+   return actual===Math.floor(row.level*units(name)/12)+(stat!=='bab'&&name==='good'?2:0);
+  });
+  const explicit=policy.bonusProfile?.[stat];
+  const candidates=names.filter(name=>(!explicit||name===explicit)&&matches(name));
+  if(candidates.length!==1)throw new Error(def.name+' needs an explicit progression policy matching its '+stat+' table.');
+  rates[stat]=units(candidates[0]);
+ }
+ return rates;
+}
 
 /**
  * Compile ordered pairs against existing class entries. Does not change the sheet,
@@ -60,7 +83,11 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   if(definitions.has(d.id))throw new Error('A custom class cannot silently replace a catalog class.');
   definitions.set(d.id,d);
  }
- const policies={...gestaltClassPolicies,...options.policies};
+ const policies:Record<string,GestaltClassPolicy>={...gestaltClassPolicies};
+ for(const [classId,policy] of Object.entries(options.policies??{}))policies[classId]={...policies[classId],...policy,
+  // Adding custom metadata must not remove a catalog restriction or bypass GM approval.
+  combinationPrestige:!!(policies[classId]?.combinationPrestige||policy.combinationPrestige)};
+ const ratesByClass=new Map<string,BaseProgression>();
  const counts=new Map<string,number>();
  const rows:GestaltLevelRow[]=[];
  for(const [index,pair] of plan.levels.entries()){
@@ -78,34 +105,63 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   for(const s of sides)if(s.def.kind==='Prestige'&&s.policy.combinationPrestige&&!pair.approvals.some(a=>a.classId===s.def.id))throw new Error(s.def.name+' requires a named GM approval and reason for gestalt.');
   const advance=(s:typeof left):GestaltClassAdvance=>{
    const base:BaseProgression={bab:s.table.bab,fort:s.table.fort,ref:s.table.ref,will:s.table.will};
-   if(s.def.id==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric'))base.bab=s.level;
-   for(const stat of ['bab','fort','ref','will'] as const){
-    const value=base[stat],delta=value-(s.previous?.[stat]??0);
+   const previous:BaseProgression={bab:s.previous?.bab??0,fort:s.previous?.fort??0,ref:s.previous?.ref??0,will:s.previous?.will??0};
+   const golarion=s.def.id==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric');
+   if(golarion){base.bab=s.level;previous.bab=s.level-1;}
+   for(const stat of baseStats){
+    const value=base[stat],delta=value-previous[stat];
     if(!Number.isInteger(value)||value<0||stat==='bab'&&value>s.level||delta<0)throw new Error(s.def.name+' needs an explicit progression policy for its '+stat+' table.');
    }
-   return {entryId:s.entry.id,classId:s.def.id,classLevel:s.level,name:s.entry.name,base};
+   let rates=ratesByClass.get(s.def.id);
+   if(!rates){rates=bonusRates(s.def,s.policy,golarion);ratesByClass.set(s.def.id,rates);}
+   return {entryId:s.entry.id,classId:s.def.id,classLevel:s.level,name:s.entry.name,base,previous,rates};
   };
   const dice=sides.map(s=>classCatalog.some(d=>d.id===s.def.id)?classHitDie(c,s.def.id):s.def.hitDie);
   const skillBases=sides.map(s=>classSkillPoints(c,s.def.id,s.def));
   if(dice.some(n=>![4,6,8,10,12].includes(n))||skillBases.some(n=>!Number.isInteger(n)||n<0||n>100))throw new Error('Provide valid Hit Dice and skill grants for each class.');
   rows.push({key:'gestalt-'+pair.id,label:left.entry.name+' '+left.level+' // '+right.entry.name+' '+right.level,
    entryId:'gestalt-'+pair.id,classId:'gestalt',classLevel:index+1,classIds:[left.def.id,right.def.id],
-   left:advance(left),right:advance(right),die:Math.max(...dice),skillBase:Math.max(...skillBases)});
+   left:advance(left),right:advance(right),bonusMethod:plan.bonusMethod,die:Math.max(...dice),skillBase:Math.max(...skillBases)});
   for(const s of sides)counts.set(s.entry.id,s.level);
  }
  for(const entry of entries.values())if(counts.get(entry.id)!==entry.level)throw new Error('Paired levels do not match the recorded level of '+entry.name+'.');
  return rows;
 }
 
-export function gestaltBaseTotals(rows:readonly GestaltLevelRow[]){
+export type GestaltBonusContribution={classId:string;classLevel:number;units:number;tableDelta:number;total:number};
+/**
+ * Compare progression rates BEFORE rounding. Ties keep the preceding selected
+ * class, then prefer the higher class level, then stable class ID. Left/right,
+ * display names and entry UUIDs never change the result. See the policy document.
+ * All arithmetic uses twelfths so fractional thirds cannot round down spuriously.
+ */
+export function gestaltBonusLedger(rows:readonly GestaltLevelRow[]){
  if(!rows.length)throw new Error('Record at least one paired level.');
- const identities=rows[0]?[rows[0].left.classId,rows[0].right.classId].sort().join('//'):'';
- if(rows.some(row=>[row.left.classId,row.right.classId].sort().join('//')!==identities))throw new Error('Mixed-class gestalt bonuses require an explicit supported rounding policy.');
+ const method=gestaltBonusMethodSchema.parse(rows[0].bonusMethod);
+ if(rows.some(row=>row.bonusMethod!==method))throw new Error('All paired levels must use the same bonus method.');
+ const previous:Partial<Record<keyof BaseProgression,string>>={},totals:BaseProgression={bab:0,fort:0,ref:0,will:0};
+ return rows.map(row=>{
+  const bonuses={} as Record<keyof BaseProgression,GestaltBonusContribution>;
+  for(const stat of baseStats){
+   const sides=[row.left,row.right].sort((a,b)=>b.rates[stat]-a.rates[stat]
+    ||Number(b.classId===previous[stat])-Number(a.classId===previous[stat])
+    ||b.classLevel-a.classLevel||(a.classId<b.classId?-1:a.classId>b.classId?1:0));
+   const selected=sides[0],tableDelta=selected.base[stat]-selected.previous[stat];
+   const units=method==='printed-table-v1'?tableDelta*12:selected.rates[stat]+(stat!=='bab'&&selected.rates[stat]===6&&selected.classLevel===1?24:0);
+   totals[stat]+=units;previous[stat]=selected.classId;
+   bonuses[stat]={classId:selected.classId,classLevel:selected.classLevel,tableDelta,units,total:Math.floor(totals[stat]/12)};
+  }
+  return {key:row.key,bonuses};
+ });
+}
+
+export function gestaltBaseTotals(rows:readonly GestaltLevelRow[]){
+ const ledger=gestaltBonusLedger(rows);
  const dice=new Map<number,number>();
  const totals={level:rows.length,bab:0,fort:0,ref:0,will:0,hitDice:''};
  for(const row of rows) dice.set(row.die,(dice.get(row.die)??0)+1);
- const last=rows[rows.length-1];
- for(const stat of ['bab','fort','ref','will'] as const)totals[stat]=Math.max(last.left.base[stat],last.right.base[stat]);
+ const last=ledger[ledger.length-1];
+ for(const stat of baseStats)totals[stat]=last.bonuses[stat].total;
  totals.hitDice=[...dice].sort(([a],[b])=>a-b).map(([die,count])=>count+'d'+die).join(' + ');
  return totals;
 }
