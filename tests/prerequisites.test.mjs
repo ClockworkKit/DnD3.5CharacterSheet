@@ -54,8 +54,8 @@ test('multiclass prestige requires both spell traditions and does not depend on 
  for(const p of c.casters)for(const s of p.slots)s.used=s.max;assert.equal(qualify(c,'mystic-theurge').eligible,true);c.classLevels=c.classLevels.filter(e=>e.classId!=='cleric');c.casters=c.casters.filter(p=>p.name!=='Cleric');assert.equal(qualify(c,'mystic-theurge').eligible,false);
 });
 test('XP level-up filters and rechecks prestige entry before mutation, but preserves existing advancement',()=>{
- const c=create('Fighter',7);c.experience=100000;assert.equal(levelUpClasses(c).some(d=>d.id==='horizon-walker'),false);assert.equal(levelUpClasses(c,true).some(d=>d.id==='horizon-walker'),true);const before=structuredClone(c);assert.throws(()=>gainLevel(c,'horizon-walker'),/prerequisites/);assert.deepEqual(c,before);
- grant(c,'Endurance');ranks(c,'Knowledge (geography)',8);assert.equal(levelUpClasses(c).some(d=>d.id==='horizon-walker'),true);gainLevel(c,'horizon-walker');recompute(c);ranks(c,'Knowledge (geography)',0);gainLevel(c,'horizon-walker');assert.equal(c.classLevels.find(e=>e.classId==='horizon-walker').level,2);
+ const c=create('Fighter',7);c.experience=100000;assert.equal(levelUpClasses(c).some(d=>d.id==='horizon-walker'),false);assert.equal(levelUpClasses(c,true).some(d=>d.id==='horizon-walker'),true);const before=structuredClone(c);assert.throws(()=>gainLevel(c,'horizon-walker',4),/prerequisites/);assert.deepEqual(c,before);
+ grant(c,'Endurance');ranks(c,'Knowledge (geography)',8);assert.equal(levelUpClasses(c).some(d=>d.id==='horizon-walker'),true);gainLevel(c,'horizon-walker',4);recompute(c);ranks(c,'Knowledge (geography)',0);gainLevel(c,'horizon-walker',4);assert.equal(c.classLevels.find(e=>e.classId==='horizon-walker').level,2);
 });
 test('metamagic categories and divine list availability qualify advanced casters',()=>{
  const c=create('Cleric',13);c.scores.WIS=20;recompute(c);ranks(c,'Knowledge (religion)',15);assert.equal(qualify(c,'hierophant').eligible,false);grant(c,'Extend Spell');assert.equal(qualify(c,'hierophant').eligible,true);

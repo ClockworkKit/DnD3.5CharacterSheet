@@ -32,7 +32,7 @@ test('split casting abilities control eligibility, bonus slots and DC independen
 });
 
 test('late spellcasting retains zero-base bonus slots and half caster levels',()=>{
- for(const kind of ['Hexblade','Spellthief']){const c=create(kind,3);assert.equal(c.casters[0].slots[1].max,0);assert.equal(c.casters[0].level,0);c.experience=6000;gainLevel(c,findClass(kind).id);recompute(c);assert.equal(c.casters[0].level,2);assert.equal(c.casters[0].slots[1].max,1);assert.equal(spellSlots(findClass(kind),4,10)[1].max,0);}
+ for(const kind of ['Hexblade','Spellthief']){const c=create(kind,3);assert.equal(c.casters[0].slots[1].max,0);assert.equal(c.casters[0].level,0);c.experience=6000;gainLevel(c,findClass(kind).id,4);recompute(c);assert.equal(c.casters[0].level,2);assert.equal(c.casters[0].slots[1].max,1);assert.equal(spellSlots(findClass(kind),4,10)[1].max,0);}
  const dn=create('Dread Necromancer');assert.equal(dn.casters[0].slots[0].max,0);assert.equal(dn.casters[0].slots[1].max,4);
 });
 
@@ -56,12 +56,12 @@ test('supplemental proficiencies respect melee restrictions, shields and armor p
 
 test('supplemental skills and earned bonus feats remain available after level-up and import',()=>{
  assert.equal(isClassSkill('Martial Lore',[findClass('Warblade')]),true);assert.equal(isClassSkill('Truespeak',[findClass('Truenamer')]),true);assert.equal(isClassSkill('Knowledge (arcana)',[findClass('Marshal')]),true);
- const c=create('Warblade',4);c.experience=10000;gainLevel(c,'warblade');recompute(c);
+ const c=create('Warblade',4);c.experience=10000;gainLevel(c,'warblade',6);recompute(c);
  assert.ok(advancementChoices(c).some(r=>r.label==='Warblade level 5 bonus feat'));
  assert.ok(c.skills.some(s=>s.name==='Martial Lore'&&s.classSkill));assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c);
 });
 
 test('special systems do not receive ordinary spell slots, and new casters retain spent slots through advancement',()=>{
  for(const kind of ['Warlock','Artificer','Binder','Shadowcaster','Truenamer','Incarnate','Totemist','Dragonfire Adept','Swordsage']){const c=create(kind,20);assert.equal(c.casters.length,0,kind);assert.ok(c.features.some(f=>f.description.includes('manual')),kind);}
- const c=create('Beguiler');const p=c.casters[0];p.spells=[spell()];Object.assign(p,spendSpell(p,p.spells[0],c));c.experience=1000;gainLevel(c,'beguiler');recompute(c);assert.equal(p.slots[1].used,1);assert.equal(p.level,2);assert.equal(p.spells.length,1);assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c);
+ const c=create('Beguiler');const p=c.casters[0];p.spells=[spell()];Object.assign(p,spendSpell(p,p.spells[0],c));c.experience=1000;gainLevel(c,'beguiler',3);recompute(c);assert.equal(p.slots[1].used,1);assert.equal(p.level,2);assert.equal(p.spells.length,1);assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c);
 });

@@ -1,7 +1,8 @@
 'use client';
 import {MonsterCreation} from './monster-creation';
 import {createNpcSheet} from '@/lib/creatures';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
+import {hitPointMethods} from '@/lib/character-rules';
 import {Dices} from 'lucide-react';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
 import {abilityKeys,abilityNames,type Character} from '@/lib/model';
@@ -15,7 +16,8 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   const [sheetKind,setSheetKind]=useState<'pc'|'npc'|'monster'>('pc');
   const [name,setName]=useState(''),[kind,setKind]=useState('Fighter'),[raceId,setRaceId]=useState('human'),[level,setLevel]=useState(1);
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
-  const [hpMethod,setHpMethod]=useState<'average'|'maximum'>('average'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
+  const [hpMethod,setHpMethod]=useState<Character['automation']['hpMethod']>('rolled'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
+  useEffect(()=>{if(open){setHpMethod('rolled');setSpecialty('none');}},[open]);
   const [raceQuery,setRaceQuery]=useState('');
   const [error,setError]=useState(''),[creating,setCreating]=useState(false);
   const ready=method==='manual'||rolls.length===6,scores=method==='manual'||!ready?manual:assignedScores(rolls,assignment),totals=startingAbilityScores(scores,raceId),race=findRace(raceId);
@@ -30,7 +32,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
     <Choice label="Sheet type" value={sheetKind} onChange={v=>setSheetKind(v as typeof sheetKind)} options={[['pc','Player character'],['npc','NPC'],['monster','Monster']]}/>{sheetKind==='monster'?<MonsterCreation busy={busy} onCreate={async c=>{const ok=await onCreate(c);if(ok)onOpenChange(false);return ok}}/>:<fieldset className="sheet-fieldset" disabled={busy||creating}>
       <F label="Character name" value={name} onChange={setName} placeholder="Your adventurer’s name"/>
       <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/><Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/><N label="Starting class level" value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
-      <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={[['average','Maximum first die, then average'],['maximum','Maximum every Hit Die']]}/>{kind==='Cleric'&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
+      <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={hitPointMethods}/><p className="fine">New characters start with standard D&D 3.5e advancement. Armor grants AC; damage reduction and other house rules are separate optional settings. {hpMethod==='rolled'?'The first Hit Die is maximized. Later starting Hit Dice are rolled once on creation and saved in Notes and Calculations. At level-up, enter your actual die roll.':'This optional HP method applies only to the new character.'}</p>{kind==='Cleric'&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
       {race?.manualHandling&&<p className="fine">{race.manualHandling.join(' ')} <a href={race.source} target="_blank" rel="noreferrer">Race rules</a></p>}
       <section className="creation-abilities" aria-labelledby="starting-abilities"><h3 id="starting-abilities">Ability scores</h3><Choice label="Generation method" value={method} onChange={chooseMethod} options={abilityMethods}/>

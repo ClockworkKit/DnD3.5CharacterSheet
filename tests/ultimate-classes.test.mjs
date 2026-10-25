@@ -28,7 +28,7 @@ test('all class references use Ultimate SRD and new tables match both applicatio
 test('eight new base classes create, level up, and round trip without losing resource use',()=>{
  for(const d of added.filter(c=>c.kind!=='Prestige')){
   for(const level of [1,5,10,20]){const c=create(d.name,level);assert.deepEqual(characterSchema.parse(JSON.parse(JSON.stringify(c))),c);assert.equal(c.bab,d.levels[level-1].bab);assert.equal(c.saves.will.base,d.levels[level-1].will);assert.ok(c.features.some(f=>f.name===d.name+' class features'));}
-  const c=create(d.name,1);if(c.casters[0])c.casters[0].slots[0].used=1;if(c.psionics[0])c.psionics[0].spent=1;c.experience=1000;gainLevel(c,d.id);recompute(c);assert.equal(c.level,2);if(c.casters[0])assert.equal(c.casters[0].slots[0].used,1);if(c.psionics[0])assert.equal(c.psionics[0].spent,1);
+  const c=create(d.name,1);if(c.casters[0])c.casters[0].slots[0].used=1;if(c.psionics[0])c.psionics[0].spent=1;c.experience=1000;gainLevel(c,d.id,1);recompute(c);assert.equal(c.level,2);if(c.casters[0])assert.equal(c.casters[0].slots[0].used,1);if(c.psionics[0])assert.equal(c.psionics[0].spent,1);
  }
 });
 
