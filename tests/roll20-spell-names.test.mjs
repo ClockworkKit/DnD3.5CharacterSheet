@@ -116,7 +116,9 @@ test('name recovery never truncates notes or exceeds save limits',async()=>{
  const fresh=importRoll20(raw({repeating_spells02_ROW0_notes:'x'.repeat(1980)})).character;
  assert.ok(fresh.casters[0].spells[0].custom);assert.equal(fresh.casters[0].spells[0].notes.length,1980);
  const c=await legacy();
- while(Buffer.byteLength(JSON.stringify({data:c}))<979950)c.roll20Import.report.unmapped.push('x'.repeat(500));
+ // Relinking removes empty custom definitions, so it can legitimately shrink a
+ // near-limit save. Keep this fixture oversized even after those are removed.
+ c.roll20Import.report.unmapped.push(...Array(1960).fill('x'.repeat(500)));
  const before=saved(c.casters);
  await repairRoll20SpellNames(c);assert.deepEqual(saved(c.casters),before);assert.equal(c.roll20Import.spellNamesMigration,undefined);
  assert.ok(c.roll20Import.report.warnings.some(s=>s.includes('save limits')));
