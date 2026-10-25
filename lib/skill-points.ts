@@ -11,8 +11,10 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   if(c.ancestry.raceId==='illumian'&&skill.name==='Speak Language')return true;
   if(findRace(c.ancestry.raceId)?.alwaysClassSkills?.includes(skill.name))return true;
   if(row.classId==='racial')return (raceProgression(c.ancestry.raceId)?.classSkills||[]).some(name=>name===skill.name||name.replace(/ \(any\)$/,'')===skill.name.split(' (')[0]);
-  const definition=findClass(row.classId);
-  return definition?alternateClassSkill(c,row.classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;
+  return (row.classIds??[row.classId]).some(classId=>{
+    const definition=findClass(classId);
+    return definition?alternateClassSkill(c,classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;
+  });
 }
 
 export function skillRankLimit(c:Character,skill:Skill,index:number):number {
