@@ -1,4 +1,5 @@
 import {hasTurningAbility,featureReplaced} from './alternate-features.ts';
+import {sneakAttackDice} from './shared-class-features.ts';
 import {krauBonus} from './racial-abilities.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
@@ -129,7 +130,7 @@ export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
   }
   else if(field==='special'){
    if(/proficient with at least one martial weapon/i.test(s))check(s,equipmentCatalog.some(e=>e.kind==='weapon'&&e.category==='martial'&&proficient(c,e.name)));
-   else if(/sneak attack \+2d6/i.test(s)){const rogue=classLevel(c,'rogue'),assassin=classLevel(c,'assassin'),spellthief=classLevel(c,'spellthief');check(s,(classLevel(c,'psychic-rogue')?1+Math.floor((classLevel(c,'psychic-rogue')-1)/3):0)+Math.ceil(rogue/2)+Math.ceil(assassin/2)+(spellthief?1+Math.floor((spellthief-1)/4):0)+Math.floor(classLevel(c,'arcane-trickster')/2)>=2);}
+   else if(/sneak attack \+2d6/i.test(s))check(s,sneakAttackDice(c)>=2);
    else if(/Still mind class feature/i.test(s))check(s,classLevel(c,'monk')>=3&&!featureReplaced(c,'monk','still-mind')||c.features.some(f=>norm(f.name)==='still mind'));
    else manual(s);
   }else manual(section);

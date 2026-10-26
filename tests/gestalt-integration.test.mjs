@@ -14,7 +14,8 @@ import {hitDieSequence} from '../lib/level-history.ts';
 import {advancementNumbers,casterProgression,psionicProgression} from '../lib/advancement.ts';
 import {advancementChoices} from '../lib/advancement-choices.ts';
 import {skillLedger,setSkillPoints,moveSkillLevel} from '../lib/skill-points.ts';
-import {gainLevel} from '../lib/level-up.ts';
+import {gainLevel,previewGestaltLevel,applyGestaltLevel,levelUpStatus} from '../lib/level-up.ts';
+import {prestigeEligibility} from '../lib/prerequisites.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
@@ -25,6 +26,8 @@ import {systemLimits} from '../lib/class-systems.ts';
 const standard=()=>createPlayerCharacter({name:'Paired integration QA',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual'});
 const repeat=(a,b,n)=>Array.from({length:n},()=>[a,b]);
 const unarmed=()=>({...newWeapon(),name:'Unarmed strike'});
+// Mirror CharacterSheet.edit: apply the recipe, then recalculate exactly once.
+const applyReview=(c,preview)=>{const previous=structuredClone(c);applyGestaltLevel(c,preview);recompute(c,previous);};
 // Construct explicit synthetic progression; this is not a player-save conversion API.
 function paired(pairs){
  const c=standard(),counts=new Map();
@@ -38,6 +41,94 @@ function paired(pairs){
  copyClassFeatures(c);recompute(c);c.hp=c.maxHp;
  return c;
 }
+
+test('paired advancement previews one real level without mutation, then preserves existing history and expenditure',async()=>{
+ const c=paired(repeat('fighter','wizard',2));c.experience=3000;c.hp-=3;c.casters[0].slots[1].used=1;c.casters[0].notes='Keep spellbook notes';
+ const history=structuredClone(c.automation.history),before=structuredClone(c),preview=previewGestaltLevel(c,{left:'fighter',right:'wizard',hitDieRoll:9});
+ assert.deepEqual(c,before);assert.equal(preview.summary.level,3);assert.equal(preview.summary.die,10);assert.equal(preview.summary.hpGain,11);assert.equal(preview.summary.skillPoints,4);
+ assert.deepEqual(preview.summary.bab,{before:2,after:3});assert.equal(preview.summary.choices.filter(r=>r.key.startsWith('general-')).length,1);assert.equal(preview.summary.choices.filter(r=>r.kind==='ability').length,0);
+ assert.equal(preview.summary.casting[0].level,3);assert.equal(preview.summary.milestones.length,2);
+ applyReview(c,preview);assert.equal(c.level,3);assert.equal(c.maxHp-c.hp,3);assert.equal(c.casters[0].slots[1].used,1);assert.equal(c.casters[0].notes,'Keep spellbook notes');
+ assert.deepEqual(c.automation.history.slice(0,2),history);assert.equal(c.automation.history[2].hitDieRoll,9);assert.equal(c.experience,3000);assert.equal(levelUpStatus(c).available,0);
+ const previous=structuredClone(c);recompute(c,previous);assert.deepEqual(c,previous,'subsequent recomputation is idempotent');
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));assert.deepEqual(loaded.gestaltProgression,c.gestaltProgression);assert.deepEqual(loaded.automation.history,c.automation.history);assert.equal(loaded.maxHp-loaded.hp,3);
+});
+
+test('paired fourth level offers one ability increase and independent class milestones',()=>{
+ const c=paired(repeat('fighter','wizard',3));c.experience=6000;
+ const p=previewGestaltLevel(c,{left:'wizard',right:'fighter',hitDieRoll:5});
+ assert.equal(p.summary.choices.filter(r=>r.kind==='ability').length,1);assert.equal(p.summary.choices.filter(r=>r.key.startsWith('fighter-')).length,1);
+ assert.equal(p.summary.choices.filter(r=>r.key.startsWith('general-')).length,0);
+ applyReview(c,p);assert.deepEqual(c.scores,{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10});assert.deepEqual(c.classLevels.map(e=>e.level),[4,4]);
+});
+
+test('both sides can change classes and initialize independent casting and manifesting once',()=>{
+ const c=paired(repeat('fighter','rogue',1));c.experience=3000;
+ applyReview(c,previewGestaltLevel(c,{left:'cleric',right:'psion',hitDieRoll:6}));
+ assert.equal(c.level,2);assert.equal(c.casters.length,1);assert.equal(c.psionics.length,1);assert.equal(c.casters[0].casting.classId,'cleric');assert.equal(c.psionics[0].manifesting.classId,'psion');
+ c.psionics[0].spent=1;c.psionics[0].focused=true;c.casters[0].slots[1].used=1;
+ applyReview(c,previewGestaltLevel(c,{left:'psion',right:'cleric',hitDieRoll:5}));
+ assert.equal(c.casters.length,1);assert.equal(c.psionics.length,1);assert.equal(c.psionics[0].spent,1);assert.equal(c.psionics[0].focused,true);assert.equal(c.casters[0].slots[1].used,1);
+ assert.deepEqual(c.classLevels.map(e=>e.level),[1,1,2,2]);assert.equal(c.automation.history.length,3);
+});
+
+test('invalid paired choices, dice, XP and mode leave the complete character unchanged',()=>{
+ const base=paired(repeat('fighter','wizard',2));base.experience=3000;
+ const invalid=[{left:'fighter',right:'fighter',hitDieRoll:3},{left:'fighter',right:'missing',hitDieRoll:3},{left:'Fighter',right:'wizard',hitDieRoll:3},
+  {left:'fighter',right:'wizard'},{left:'fighter',right:'wizard',hitDieRoll:11},{left:'fighter',right:'wizard',hitDieRoll:0},{left:'fighter',right:'wizard',hitDieRoll:2.5},
+  {left:'fighter',right:'wizard',hitDieRoll:3,approvals:[{classId:'fighter',gm:'GM',reason:'Not a combination class'}]}];
+ for(const selection of invalid){const c=structuredClone(base),before=structuredClone(c);assert.throws(()=>previewGestaltLevel(c,selection));assert.deepEqual(c,before);}
+ for(const change of [c=>c.experience=2999,c=>c.automation.enabled=false,c=>c.advancementMode='standard',c=>delete c.gestaltProgression]){
+  const c=structuredClone(base);change(c);const before=structuredClone(c);assert.throws(()=>previewGestaltLevel(c,{left:'fighter',right:'wizard',hitDieRoll:3}));assert.deepEqual(c,before);
+ }
+ const cap=paired(repeat('fighter','wizard',20));cap.experience=1000000;const before=structuredClone(cap);assert.throws(()=>previewGestaltLevel(cap,{left:'fighter',right:'wizard',hitDieRoll:5}));assert.deepEqual(cap,before);
+});
+
+test('paired confirmation rejects stale reviews and changed selections, and never trusts edited after-state',()=>{
+ const c=paired(repeat('fighter','wizard',2));c.experience=3000;
+ const p=previewGestaltLevel(c,{left:'fighter',right:'wizard',hitDieRoll:5});c.hp--;const before=structuredClone(c);
+ assert.throws(()=>applyReview(c,p),/character changed/);assert.deepEqual(c,before);
+ const changed=previewGestaltLevel(c,p.selection);changed.selection.right='cleric';assert.throws(()=>applyReview(c,changed),/choices changed/);assert.deepEqual(c,before);
+ const fresh=previewGestaltLevel(c,p.selection);fresh.character.hp=999;fresh.character.classLevels=[];applyReview(c,fresh);
+ assert.equal(c.level,3);assert.equal(c.maxHp-c.hp,1);assert.equal(c.classLevels.length,2);
+ const applied=structuredClone(c);assert.throws(()=>applyReview(c,fresh),/character changed/);assert.deepEqual(c,applied);
+});
+
+test('prestige entry cannot borrow the other side of the new level, even with GM combination approval',()=>{
+ const c=paired(repeat('wizard','fighter',4));c.experience=100000;c.scores.INT=18;recompute(c);
+ const approvals=[{classId:'eldritch-knight',gm:'Test GM',reason:'Allow this combination prestige class'}],selection={left:'wizard',right:'eldritch-knight',hitDieRoll:4,approvals};
+ const before=structuredClone(c);assert.throws(()=>previewGestaltLevel(c,selection),/before gaining this level/);assert.deepEqual(c,before,'Wizard 5 spells are not available for entry at level 5');
+ applyReview(c,previewGestaltLevel(c,{left:'wizard',right:'fighter',hitDieRoll:4}));
+ assert.throws(()=>previewGestaltLevel(c,{...selection,approvals:[]}),/named GM approval/);
+ const p=previewGestaltLevel(c,selection);applyReview(c,p);
+ assert.equal(c.level,6);assert.equal(c.classLevels.find(e=>e.classId==='eldritch-knight').level,1);assert.deepEqual(c.gestaltProgression.levels.at(-1).approvals,approvals);
+ assert.equal(c.casters.length,1);assert.equal(c.casters[0].level,6);
+ assert.throws(()=>previewGestaltLevel(c,{...selection,approvals:[]}),/named GM approval/,'each combination-class pair needs its own approval');
+});
+
+test('two prestige classes remain prohibited and ordinary existing prestige continuation does not recheck entry',()=>{
+ const c=paired([...repeat('wizard','fighter',10),['fighter','loremaster'],['wizard','archmage']]);c.experience=1000000;
+ const before=structuredClone(c);assert.throws(()=>previewGestaltLevel(c,{left:'loremaster',right:'archmage',hitDieRoll:4}),/two prestige/);assert.deepEqual(c,before);
+ const p=previewGestaltLevel(c,{left:'wizard',right:'loremaster',hitDieRoll:4});assert.equal(p.character.classLevels.find(e=>e.classId==='loremaster').level,2);
+});
+
+test('paired advancement respects LA, optional HP methods, variant dice and historical Intelligence',()=>{
+ const c=paired(repeat('cleric','wizard',2));c.ancestry.levelAdjustment=2;c.ancestry.ignoreLevelAdjustment=false;c.experience=9999;
+ assert.throws(()=>previewGestaltLevel(c,{left:'cleric',right:'wizard',hitDieRoll:5}),/XP/);c.experience=10000;
+ configureAlternateFeature(c,'cleric-golarion-cleric',{reviewed:true});selectAlternateFeature(c,'cleric-golarion-cleric',true);recompute(c);
+ c.scores.INT=18;const oldHistory=structuredClone(c.automation.history);
+ const p=previewGestaltLevel(c,{left:'cleric',right:'wizard',hitDieRoll:10});assert.equal(p.summary.die,10);assert.equal(p.summary.hpGain,12);assert.equal(p.character.automation.history.at(-1).intScore,18);
+ assert.deepEqual(p.character.automation.history.slice(0,2),oldHistory);
+ for(const method of ['average','maximum']){c.automation.hpMethod=method;recompute(c);c.hp=c.maxHp-2;const other=previewGestaltLevel(c,{left:'wizard',right:'cleric'});applyReview(c,other);assert.equal(c.maxHp-c.hp,2);assert.equal(c.automation.hpMethod,method);c.experience=100000;}
+});
+
+test('prestige sneak-attack eligibility agrees with shared dice and alternate feature replacements',()=>{
+ const c=paired(repeat('rogue','spellthief',2)),def=findClass('arcane-trickster');
+ const sneak=d=>prestigeEligibility(d,def).requirements.find(r=>/sneak attack/i.test(r.label));
+ assert.equal(sneak(c).state,'missing');c.advancementMode='standard';assert.equal(sneak(c).state,'met');
+ const trickster=paired(repeat('spellthief','fighter',9));configureAlternateFeature(trickster,'spellthief-trickster',{reviewed:true});selectAlternateFeature(trickster,'spellthief-trickster',true);
+ assert.equal(sneak(trickster).state,'missing');trickster.advancementMode='standard';assert.equal(sneak(trickster).state,'missing');
+});
 
 test('shared sneak attack follows the faster progression, never the largest rounded grant',()=>{
  for(let level=1;level<=20;level++){
