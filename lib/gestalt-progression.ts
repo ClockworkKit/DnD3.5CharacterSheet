@@ -30,6 +30,37 @@ export function characterGestaltRows(c:Character):GestaltLevelRow[]|null{
  return gestaltLevelSequence(c,c.gestaltProgression);
 }
 
+/** Full effective-class-level advancement: overlapping eligible sides count once. */
+export function gestaltSharedLevelCount(c:Character,eligible:(side:GestaltClassAdvance)=>boolean):number|null{
+ const rows=characterGestaltRows(c);
+ return rows?rows.reduce((total,row)=>total+Number([row.left,row.right].some(eligible)),0):null;
+}
+
+export type GestaltFeatureProgression={rate:number;cumulative:(level:number)=>number};
+/**
+ * Discrete shared features use their faster underlying progression, not the
+ * larger rounded grant this level. Equal rates retain the previous class, then
+ * prefer higher class level and stable ID, as with the printed bonus policy.
+ * No fractional dice/uses are invented. Callers supply only currently active
+ * sources of the SAME feature; distinct abilities must remain separate.
+ */
+export function gestaltFeatureLedger(c:Character,policies:Readonly<Record<string,GestaltFeatureProgression>>){
+ const rows=characterGestaltRows(c);if(!rows)return null;
+ let previous='',total=0;
+ return rows.map(row=>{
+  const candidates=[row.left,row.right].flatMap(side=>{
+   const policy=policies[side.classId];if(!policy)return [];
+   const current=policy.cumulative(side.classLevel),before=side.classLevel>1?policy.cumulative(side.classLevel-1):0;
+   if(!Number.isFinite(policy.rate)||policy.rate<0||![current,before].every(n=>Number.isInteger(n)&&n>=0)||current<before)
+    throw new Error('A shared feature needs an explicit nonnegative progression policy.');
+   return current>0?[{...side,rate:policy.rate,grant:current-before}]:[];
+  }).sort((a,b)=>b.rate-a.rate||Number(b.classId===previous)-Number(a.classId===previous)
+   ||b.classLevel-a.classLevel||(a.classId<b.classId?-1:a.classId>b.classId?1:0));
+  const selected=candidates[0];total+=selected?.grant??0;previous=selected?.classId??'';
+  return {key:row.key,classId:selected?.classId??null,classLevel:selected?.classLevel??0,grant:selected?.grant??0,total};
+ });
+}
+
 /** Overlapping advancement of the SAME tradition grants at most the better side per pair. */
 export function gestaltTraditionGrants(c:Character,grant:(entry:ClassLevel,level:number)=>number):number[]|null{
  const rows=characterGestaltRows(c);if(!rows)return null;

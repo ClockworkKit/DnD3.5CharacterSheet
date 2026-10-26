@@ -5,10 +5,11 @@ import {characterSchema,newWeapon} from '../lib/model.ts';
 import {classTotals,findClass,makeCaster,makePsionic,copyClassFeatures} from '../lib/classes.ts';
 import {gestaltProgressionSchema} from '../lib/gestalt-schema.ts';
 import {recompute,resourceNumbers} from '../lib/automation.ts';
-import {sheetTotals,weaponDice,attackRoutine} from '../lib/rules.ts';
+import {sheetTotals,weaponDice,weaponDamage,attackRoutine} from '../lib/rules.ts';
 import {movement,addEquipment,matchEquipment} from '../lib/equipment.ts';
-import {configureAlternateFeature,selectAlternateFeature} from '../lib/alternate-features.ts';
-import {monkAbilityLevel} from '../lib/shared-class-features.ts';
+import {configureAlternateFeature,selectAlternateFeature,turningClassLevel,hasTurningAbility} from '../lib/alternate-features.ts';
+import {monkAbilityLevel,sneakAttackProgressions} from '../lib/shared-class-features.ts';
+import {gestaltFeatureLedger} from '../lib/gestalt-progression.ts';
 import {hitDieSequence} from '../lib/level-history.ts';
 import {advancementNumbers,casterProgression,psionicProgression} from '../lib/advancement.ts';
 import {advancementChoices} from '../lib/advancement-choices.ts';
@@ -37,6 +38,107 @@ function paired(pairs){
  copyClassFeatures(c);recompute(c);c.hp=c.maxHp;
  return c;
 }
+
+test('shared sneak attack follows the faster progression, never the largest rounded grant',()=>{
+ for(let level=1;level<=20;level++){
+  const c=paired(repeat('rogue','spellthief',level));
+  assert.equal(resourceNumbers(c).sneakDice,Math.ceil(level/2));
+  c.advancementMode='standard';assert.equal(resourceNumbers(c).sneakDice,Math.ceil(level/2)+Math.ceil(level/4));
+ }
+ const staggered=paired([...repeat('rogue','fighter',5),...repeat('rogue','assassin',10)]);
+ assert.equal(resourceNumbers(staggered).sneakDice,8,'offset assassin grants cannot fill the continuing rogue progression gaps');
+ const ledger=gestaltFeatureLedger(staggered,sneakAttackProgressions(staggered));
+ assert.ok(ledger.every(row=>row.classId==='rogue'));assert.equal(ledger[5].grant,0);
+});
+
+test('sneak attack retains nonoverlapping prestige grants and is independent of side and bonus method',()=>{
+ const together=paired([...repeat('rogue','wizard',5),...repeat('rogue','arcane-trickster',5)]);
+ assert.equal(resourceNumbers(together).sneakDice,5);
+ const separate=paired([...repeat('rogue','wizard',5),...repeat('wizard','arcane-trickster',2)]);
+ assert.equal(resourceNumbers(separate).sneakDice,4);
+ const original=gestaltFeatureLedger(separate,sneakAttackProgressions(separate));
+ for(const pair of separate.gestaltProgression.levels)[pair.left,pair.right]=[pair.right,pair.left];
+ separate.gestaltProgression.bonusMethod='fractional-v1';
+ assert.deepEqual(gestaltFeatureLedger(separate,sneakAttackProgressions(separate)),original);
+ const before=structuredClone(separate);resourceNumbers(separate);assert.deepEqual(separate,before);
+});
+
+test('all existing sneak sources retain their individual progression and conditional psionic focus',()=>{
+ const formulas={rogue:n=>Math.ceil(n/2),assassin:n=>Math.ceil(n/2),'arcane-trickster':n=>Math.floor(n/2),blackguard:n=>Math.floor(Math.max(0,n-1)/3),'psychic-rogue':n=>Math.ceil(n/3),spellthief:n=>Math.ceil(n/4),lurk:n=>n<2?0:1+Math.floor((n-2)/5)};
+ for(const [id,formula] of Object.entries(formulas))for(let n=1;n<=Math.min(20,findClass(id).levels.length);n++){
+  const c=paired(repeat(id,'fighter',n));
+  if(id==='lurk'){const p=makePsionic(findClass('lurk'),n,14);p.focused=true;c.psionics.push(p);}
+  assert.equal(resourceNumbers(c).sneakDice,formula(n),id+' '+n);
+  c.advancementMode='standard';assert.equal(resourceNumbers(c).sneakDice,formula(n),'standard '+id+' '+n);
+ }
+ const c=paired(repeat('spellthief','lurk',7)),p=makePsionic(findClass('lurk'),7,14);p.focused=true;c.psionics.push(p);
+ assert.equal(resourceNumbers(c).sneakDice,2);p.focused=false;assert.equal(resourceNumbers(c).sneakDice,2);
+ const lurk=paired(repeat('lurk','fighter',7));lurk.psionics.push(p);assert.equal(resourceNumbers(lurk).sneakDice,0);p.focused=true;assert.equal(resourceNumbers(lurk).sneakDice,2);
+});
+
+test('spellthief alternate features change only their own earned sneak grants',()=>{
+ const c=paired([...repeat('spellthief','fighter',4),...repeat('spellthief','rogue',5)]);
+ configureAlternateFeature(c,'spellthief-cursed-blow',{reviewed:true});selectAlternateFeature(c,'spellthief-cursed-blow',true);recompute(c);
+ const ledger=gestaltFeatureLedger(c,sneakAttackProgressions(c));
+ assert.equal(ledger[0].grant,1,'the sacrificed fifth-level die must not erase the first-level grant');assert.equal(resourceNumbers(c).sneakDice,4);
+ const only=paired(repeat('spellthief','fighter',9));configureAlternateFeature(only,'spellthief-cursed-blow',{reviewed:true});selectAlternateFeature(only,'spellthief-cursed-blow',true);
+ assert.deepEqual(gestaltFeatureLedger(only,sneakAttackProgressions(only)).map(row=>row.grant),[1,0,0,0,0,0,0,0,1]);
+ const trickster=paired(repeat('spellthief','fighter',9));configureAlternateFeature(trickster,'spellthief-trickster',{reviewed:true});selectAlternateFeature(trickster,'spellthief-trickster',true);
+ assert.equal(resourceNumbers(trickster).sneakDice,1);
+});
+
+test('combat precision uses shared dice, retains distinct abilities and never multiplies precision on a critical',()=>{
+ const c=paired(repeat('rogue','spellthief',6)),w={...newWeapon(),name:'Test blade',damage:'1d4',damageAbility:'none',criticalMultiplier:2};
+ c.automation.context.sneakAttack=true;assert.equal(weaponDamage(c,w),'1d4+3d6');assert.equal(weaponDamage(c,w,true),'2d4+3d6');
+ configureAlternateFeature(c,'rogue-deaths-ruin',{reviewed:true});selectAlternateFeature(c,'rogue-deaths-ruin',true);recompute(c);
+ c.automation.context.targetType='undead';c.automation.context.deathsRuin=true;
+ assert.equal(weaponDamage(c,w),'1d4+1d6');assert.equal(weaponDamage(c,w,true),'2d4+1d6');
+ const ninja=paired(repeat('rogue','ninja',6));ninja.automation.context.sneakAttack=true;ninja.automation.context.targetFlatFooted=true;
+ assert.equal(weaponDamage(ninja,w),'1d4+3d6+3d6');
+ const scout=paired(repeat('rogue','scout',6));scout.automation.context.sneakAttack=true;scout.automation.context.skirmish=true;scout.automation.context.ownTurn=true;
+ assert.equal(weaponDamage(scout,w),'1d4+3d6+2d6');
+});
+
+test('shared feature extension policies reject negative or fractional grants without modifying sheets',()=>{
+ const c=paired(repeat('rogue','fighter',3)),before=structuredClone(c);
+ for(const policy of [{rate:-1,cumulative:n=>n},{rate:1,cumulative:n=>n/2},{rate:1,cumulative:n=>3-n}])
+  assert.throws(()=>gestaltFeatureLedger(c,{rogue:policy}),/explicit nonnegative progression/);
+ assert.deepEqual(c,before);
+});
+
+test('cleric and paladin turning overlap once at every gestalt level; ordinary multiclass still stacks',()=>{
+ for(let level=1;level<=20;level++){
+  const c=paired(repeat('cleric','paladin',level));
+  assert.equal(turningClassLevel(c),level);assert.equal(resourceNumbers(c).turnDamage,level);
+  const cards=c.features.filter(f=>f.ruleId==='daily:Turn or rebuke undead');
+  assert.equal(cards.length,1);assert.equal(cards[0].max,3);assert.equal(cards[0].description,'Effective turning level '+level+'.');
+  c.advancementMode='standard';assert.equal(turningClassLevel(c),level+Math.max(0,level-3));
+ }
+});
+
+test('turning keeps delayed access and nonoverlapping class advances on either side',()=>{
+ const early=paired(repeat('paladin','fighter',3));assert.equal(turningClassLevel(early),0);assert.equal(hasTurningAbility(early),false);
+ const simultaneous=paired([...repeat('paladin','fighter',3),['cleric','paladin']]);assert.equal(turningClassLevel(simultaneous),1);
+ const separate=paired([...repeat('cleric','fighter',4),...repeat('paladin','fighter',4)]);assert.equal(turningClassLevel(separate),5);
+ for(const pair of separate.gestaltProgression.levels)[pair.left,pair.right]=[pair.right,pair.left];
+ recompute(separate);assert.equal(turningClassLevel(separate),5);
+});
+
+test('turning feat bonuses, replaced abilities and spent uses survive recomputation and reload',async()=>{
+ const c=paired(repeat('cleric','paladin',6));
+ setSkillPoints(c,skillLedger(c).levels[0].key,c.skills.find(s=>s.name==='Knowledge (arcana)').id,2);
+ for(const name of ['Improved Turning','Extra Turning'])c.features.push({id:name,name,kind:'Feat',description:'Player choice',source:'',max:0,used:0});
+ recompute(c);assert.equal(resourceNumbers(c).turnLevel,7);assert.equal(resourceNumbers(c).turnDamage,7);
+ const card=()=>c.features.find(f=>f.ruleId==='daily:Turn or rebuke undead');assert.equal(card().max,7);card().used=4;
+ configureAlternateFeature(c,'cleric-divine-counterspell',{reviewed:true});selectAlternateFeature(c,'cleric-divine-counterspell',true);recompute(c);
+ assert.equal(turningClassLevel(c),3);assert.equal(resourceNumbers(c).turnLevel,4);assert.equal(card().used,4);
+ configureAlternateFeature(c,'paladin-divine-counterspell',{reviewed:true});selectAlternateFeature(c,'paladin-divine-counterspell',true);recompute(c);
+ assert.equal(turningClassLevel(c),0);assert.equal(hasTurningAbility(c),false);assert.equal(card(),undefined);
+ selectAlternateFeature(c,'cleric-divine-counterspell',false);recompute(c);assert.equal(turningClassLevel(c),6);assert.equal(card().used,4);
+ selectAlternateFeature(c,'paladin-divine-counterspell',false);recompute(c);assert.equal(turningClassLevel(c),6);assert.equal(card().used,4);
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+ assert.equal(resourceNumbers(loaded).turnLevel,7);assert.equal(loaded.features.find(f=>f.ruleId==='daily:Turn or rebuke undead').used,4);
+});
 
 test('simultaneous monk and Psionic Fist levels advance shared monk abilities only once',()=>{
  const c=paired([...repeat('monk','fighter',6),...repeat('monk','psionic-fist',4)]);

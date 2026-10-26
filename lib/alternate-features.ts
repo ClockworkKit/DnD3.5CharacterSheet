@@ -1,4 +1,5 @@
 import {automatedAlternateResources} from './alternate-actions.ts';
+import {gestaltSharedLevelCount} from './gestalt-progression.ts';
 import type {Character} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
 import {alternateFeatureCatalog,alternateFeatureById,alternateFeaturesSchema,alternateSettingsSchema,replacementKeys,replacementOverlap,type AlternateFeatureId,type AlternateSettings,type AlternateFeatureDefinition} from './alternate-feature-schema.ts';
@@ -46,7 +47,13 @@ export function selectAlternateFeature(c:Character,id:AlternateFeatureId,selecte
  if(selected&&id==='cleric-destroy-undead'&&!('daily:acf:cleric-destroy-undead:destroy' in c.alternateFeatures.uses))c.alternateFeatures.uses['daily:acf:cleric-destroy-undead:destroy']=c.features.find(f=>f.ruleId==='daily:Turn or rebuke undead')?.used||c.alternateFeatures.uses['daily:original-turning']||0;
  c.alternateFeatures=alternateFeaturesSchema.parse({...c.alternateFeatures,selected:selected?[...new Set([...c.alternateFeatures.selected,id])]:c.alternateFeatures.selected.filter(x=>x!==id)});
 }
-export function turningClassLevel(c:Character){return (featureReplaced(c,'cleric','turn-undead')?0:alternateClassLevel(c,'cleric'))+(featureReplaced(c,'paladin','turn-undead')?0:Math.max(0,alternateClassLevel(c,'paladin')-3));}
+export function turningClassLevel(c:Character){
+ const cleric=classFeatureLevel(c,'cleric','turn-undead'),paladin=classFeatureLevel(c,'paladin','turn-undead');
+ // Paladin's first three class levels grant no turning advancement. Later
+ // levels and cleric levels advance the same ability, once per gestalt pair.
+ return gestaltSharedLevelCount(c,side=>side.classId==='cleric'&&cleric>0||side.classId==='paladin'&&paladin>0&&side.classLevel>=4)
+  ??cleric+Math.max(0,paladin-3);
+}
 export function hasTurningAbility(c:Character){
  if(hasAlternateFeature(c,'cleric-destroy-undead')||turningClassLevel(c)>0||alternateClassLevel(c,'blackguard')>=3||alternateClassLevel(c,'dread-necromancer')>0||alternateClassLevel(c,'death-master')>0)return true;
  // A stale generated turning card must not re-grant a surrendered class feature.
