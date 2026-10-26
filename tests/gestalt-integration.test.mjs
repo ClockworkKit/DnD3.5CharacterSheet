@@ -1,10 +1,14 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
-import {characterSchema} from '../lib/model.ts';
+import {characterSchema,newWeapon} from '../lib/model.ts';
 import {classTotals,findClass,makeCaster,makePsionic,copyClassFeatures} from '../lib/classes.ts';
 import {gestaltProgressionSchema} from '../lib/gestalt-schema.ts';
-import {recompute} from '../lib/automation.ts';
+import {recompute,resourceNumbers} from '../lib/automation.ts';
+import {sheetTotals,weaponDice,attackRoutine} from '../lib/rules.ts';
+import {movement,addEquipment,matchEquipment} from '../lib/equipment.ts';
+import {configureAlternateFeature,selectAlternateFeature} from '../lib/alternate-features.ts';
+import {monkAbilityLevel} from '../lib/shared-class-features.ts';
 import {hitDieSequence} from '../lib/level-history.ts';
 import {advancementNumbers,casterProgression,psionicProgression} from '../lib/advancement.ts';
 import {advancementChoices} from '../lib/advancement-choices.ts';
@@ -19,6 +23,7 @@ import {systemLimits} from '../lib/class-systems.ts';
 
 const standard=()=>createPlayerCharacter({name:'Paired integration QA',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual'});
 const repeat=(a,b,n)=>Array.from({length:n},()=>[a,b]);
+const unarmed=()=>({...newWeapon(),name:'Unarmed strike'});
 // Construct explicit synthetic progression; this is not a player-save conversion API.
 function paired(pairs){
  const c=standard(),counts=new Map();
@@ -32,6 +37,67 @@ function paired(pairs){
  copyClassFeatures(c);recompute(c);c.hp=c.maxHp;
  return c;
 }
+
+test('simultaneous monk and Psionic Fist levels advance shared monk abilities only once',()=>{
+ const c=paired([...repeat('monk','fighter',6),...repeat('monk','psionic-fist',4)]);
+ assert.equal(resourceNumbers(c).monkLevel,10);
+ assert.equal(weaponDice(c,unarmed()),'1d10');
+ assert.equal(movement(c).speed,60);
+ assert.equal(sheetTotals(c).ac,15,'10 + Dex 1 + Wisdom 2 + monk AC 2');
+ c.automation.context.flurry=true;
+ assert.equal(attackRoutine(c,unarmed()).filter(a=>a.label==='Greater flurry').length,0,'Psionic Fist does not advance flurry');
+ assert.equal(c.features.find(f=>f.ruleId==='daily:Wholeness of body — healing points').max,20);
+});
+
+test('separate monk and Psionic Fist advances accumulate regardless of side changes',()=>{
+ const c=paired([...repeat('fighter','monk',6),['monk','psionic-fist'],['psionic-fist','fighter'],['fighter','psionic-fist']]);
+ assert.equal(resourceNumbers(c).monkLevel,9);
+ assert.equal(weaponDice(c,unarmed()),'1d10');assert.equal(movement(c).speed,60);assert.equal(sheetTotals(c).ac,14);
+ const swapped=structuredClone(c);
+ for(const pair of swapped.gestaltProgression.levels)[pair.left,pair.right]=[pair.right,pair.left];
+ recompute(swapped);assert.equal(resourceNumbers(swapped).monkLevel,9);assert.equal(movement(swapped).speed,60);
+});
+
+test('ordinary multiclass monk abilities still stack and an inactive paired plan does not change them',()=>{
+ const c=paired([...repeat('monk','fighter',6),...repeat('monk','psionic-fist',4)]);
+ c.advancementMode='standard';
+ assert.equal(resourceNumbers(c).monkLevel,14);assert.equal(weaponDice(c,unarmed()),'2d6');assert.equal(movement(c).speed,70);
+ c.automation.enabled=false;const w=unarmed();w.damage='3d6';assert.equal(weaponDice(c,w),'3d6');
+});
+
+test('every Psionic Fist level respects shared progression without granting other monk powers',()=>{
+ for(let n=1;n<=10;n++){
+  const c=paired([...repeat('monk','fighter',6),...repeat('psionic-fist','monk',n)]),level=6+n;
+  assert.equal(resourceNumbers(c).monkLevel,level);
+  assert.equal(weaponDice(c,unarmed()),level<8?'1d8':level<12?'1d10':level<16?'2d6':'2d8');
+  assert.equal(sheetTotals(c).ac,13+Math.floor(level/5));assert.equal(movement(c).speed,30+10*Math.floor(level/3));
+  c.automation.context.flurry=true;
+  assert.equal(attackRoutine(c,unarmed()).filter(a=>a.label==='Greater flurry').length,level>=11?1:0);
+ }
+});
+
+test('alternate movement, armor restrictions and recorded unarmed dice retain their existing meaning',()=>{
+ const c=paired([...repeat('monk','fighter',6),...repeat('monk','psionic-fist',4)]);
+ const w=unarmed();w.damage='3d6';w.diceSize='Medium';w.useRecordedDice=true;assert.equal(weaponDice(c,w),'3d6');
+ configureAlternateFeature(c,'monk-standing-jump',{reviewed:true});selectAlternateFeature(c,'monk-standing-jump',true);recompute(c);
+ assert.equal(monkAbilityLevel(c),10);assert.equal(monkAbilityLevel(c,'fast-movement'),4,'replaced monk movement cannot reappear');
+ assert.equal(movement(c).speed,30,'Standing Jump uses its existing alternate speed schedule');
+ selectAlternateFeature(c,'monk-standing-jump',false);recompute(c);
+ addEquipment(c,matchEquipment('Studded leather','armor'));recompute(c);
+ assert.equal(movement(c).free,false);assert.equal(movement(c).speed,30);assert.equal(sheetTotals(c).ac,14,'armor 3 + Dex 1, no monk AC');
+ assert.equal(weaponDice(c,unarmed()),'1d10','armor does not remove unarmed damage progression');
+});
+
+test('shared monk recalculation preserves injury, spent healing and historical purchases through reload',async()=>{
+ const c=paired([...repeat('monk','fighter',6),...repeat('monk','psionic-fist',4)]);
+ c.hp-=7;c.features.find(f=>f.ruleId==='daily:Wholeness of body — healing points').used=5;
+ const ledger=skillLedger(c),skill=c.skills.find(s=>s.name==='Tumble');setSkillPoints(c,ledger.levels[0].key,skill.id,4);
+ const history=structuredClone(c.automation.history),before=structuredClone(c);
+ recompute(c,before);const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+ assert.equal(loaded.maxHp-loaded.hp,7);assert.equal(loaded.features.find(f=>f.ruleId==='daily:Wholeness of body — healing points').used,5);
+ assert.deepEqual(loaded.automation.history,history);assert.equal(resourceNumbers(loaded).monkLevel,10);
+ assert.equal(loaded.skills.find(s=>s.id===skill.id).ranks,4);
+});
 
 test('full sheet uses five actual levels for Fighter 5 // Wizard 5, while keeping each class at five',()=>{
  const c=paired(repeat('fighter','wizard',5)),n=advancementNumbers(c);
