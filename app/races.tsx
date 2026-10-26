@@ -1,4 +1,5 @@
 'use client';
+import {characterHitDice} from '@/lib/character-level';
 import {raceSourceDetail} from '@/lib/source-references';
 import {SourceReferenceDetails} from './source-reference';
 import {RacialAbilities} from './racial-abilities';
@@ -18,7 +19,7 @@ export function Races({c,edit,confirm,roll,spells}:SheetProps&{spells?:import('@
  const [open,setOpen]=useState(false),[query,setQuery]=useState(''),[group,setGroup]=useState('all'),[preview,setPreview]=useState<RaceDefinition|null>(null);
  const [abilities,setAbilities]=useState(false),[traits,setTraits]=useState(false),[body,setBody]=useState(false),[languages,setLanguages]=useState(true),[speedBonus,setSpeedBonus]=useState(0);
  const [refs,setRefs]=useState<RaceDefinition[]>([]),[error,setError]=useState('');
- const race=findRace(c.ancestry.raceId),reserve=powerReserve(c);const classLevels=c.classLevels.length?c.classLevels.reduce((n,e)=>n+e.level,0):Math.max(0,c.level-c.ancestry.racialHitDice);const totalHD=classLevels+c.ancestry.racialHitDice;const ecl=totalHD+(c.ancestry.ignoreLevelAdjustment?0:c.ancestry.levelAdjustment);
+ const race=findRace(c.ancestry.raceId),reserve=powerReserve(c);const classLevels=c.classLevels.length?c.classLevels.reduce((n,e)=>n+e.level,0):Math.max(0,c.level-c.ancestry.racialHitDice);const totalHD=c.advancementMode==='gestalt'?characterHitDice(c):classLevels+c.ancestry.racialHitDice;const ecl=totalHD+(c.ancestry.ignoreLevelAdjustment?0:c.ancestry.levelAdjustment);
  const library=[...raceCatalog,...raceReferenceCatalog],groups=[...new Set(library.map(r=>r.group))].sort();
  const matches=library.filter(r=>(group==='all'||r.group===group)&&(r.name+' '+r.type+' '+r.book).toLowerCase().includes(query.toLowerCase()));
  async function loadReference(){if(refs.length)return;try{setError('');const res=await fetch(assetUrl('data/races.json'));if(!res.ok)throw new Error();setRefs(await res.json() as RaceDefinition[])}catch{setError('Full reference text could not be loaded. The race summary remains available.')}}
@@ -40,10 +41,10 @@ export function Races({c,edit,confirm,roll,spells}:SheetProps&{spells?:import('@
  </>}
  </Section>
  <RacialAbilities c={c} edit={edit} confirm={confirm} roll={roll} spells={spells}/><Section title="Level adjustment & racial Hit Dice">
- <div className="stats"><Stat label="Class levels" value={classLevels}/><Stat label="Total Hit Dice" value={totalHD}/><Stat label="Effective level" value={ecl}/></div>
+ <div className="stats"><Stat label={c.advancementMode==='gestalt'?'Class levels (both tracks)':'Class levels'} value={classLevels}/><Stat label="Total Hit Dice" value={totalHD}/><Stat label="Effective level" value={ecl}/></div>
  <div className="fields two"><N label="Racial Hit Dice" value={c.ancestry.racialHitDice} min={0} max={30} onChange={v=>edit(d=>{d.ancestry.racialHitDice=v})}/><N label="Level adjustment" value={c.ancestry.levelAdjustment} min={0} max={30} onChange={v=>edit(d=>{d.ancestry.levelAdjustment=v})}/></div>
  <Check label="Ignore level adjustment for this character (house rule)" checked={c.ancestry.ignoreLevelAdjustment} onChange={v=>edit(d=>{d.ancestry.ignoreLevelAdjustment=v})}/>
- <p className="fine">Effective character level = class levels + racial Hit Dice + level adjustment. Level adjustment adds no hit points, feats, skill points, or caster levels. Supported racial Hit Dice contribute to level, BAB, saves, hit dice, HP, skill budgets, feats, and ability increases. Racial casting and special abilities require the source rules; they do not automatically add caster levels.</p>
+ <p className="fine">{c.advancementMode==='gestalt'?'Gestalt character level and Hit Dice equal the number of paired levels, not the sum of both class tracks. Effective level adds level adjustment. Racial Hit Dice require a supported paired-level policy.':'Effective character level = class levels + racial Hit Dice + level adjustment. Supported racial Hit Dice contribute to level, BAB, saves, hit dice, HP, skill budgets, feats, and ability increases.'} Level adjustment adds no hit points, feats, skill points, or caster levels. Racial casting and special abilities require the source rules; they do not automatically add caster levels.</p>
  {racialPowerPoints(c)>0&&<><h3 className="race-subtitle">Racial power points</h3><p className="fine">{racialPowerPoints(c)} racial points contribute to your shared reserve: {reserve.remaining} of {reserve.max} remaining. Racial points do not grant a manifester level.</p><N label="PP spent on racial abilities" value={c.ancestry.powerPointsSpent} min={0} max={10000} onChange={v=>edit(d=>{d.ancestry.powerPointsSpent=v})}/></>}
  <F label="Subrace, racial choices, or house rules" value={c.ancestry.notes} onChange={v=>edit(d=>{d.ancestry.notes=v})} area placeholder="Chosen dromite energy, optional racial variant, altered level adjustment…"/>
  </Section>

@@ -1,4 +1,5 @@
 import {classRuleText,classRuleHeading} from './class-rule-text.ts';
+import {characterGestaltRows,gestaltBaseTotals} from './gestalt-progression.ts';
 import {alternateClassSkill} from './alternate-benefits.ts';
 import {effectiveClassMilestone,hasAlternateFeature} from './alternate-features.ts';
 import {classCatalog} from './class-catalog.ts';
@@ -18,7 +19,7 @@ export function classSkillPoints(c:Character,classId:string,definition?:ClassDef
  return (definition??findClass(classId))?.skillPoints??2;
 }
 export function classRow(def:ClassDefinition,level:number){const row=def.levels.find(r=>r.level===level);if(!row)throw new Error(def.name+' has no level '+level+' in this table.');return row;}
-export function classTotals(entries:ClassLevel[],ancestry?:Character['ancestry'],c?:Character){const racial=racialHDProgression(ancestry);let {level,bab,fort,ref,will}=racial;const dice:Record<number,number>=racial.level?{[racial.die]:racial.level}:{};const missing:string[]=[...racial.missing];
+export function classTotals(entries:ClassLevel[],ancestry?:Character['ancestry'],c?:Character){const paired=c?.advancementMode==='gestalt'&&characterGestaltRows({...c,classLevels:entries,...(ancestry?{ancestry}:{})});if(paired)return {...gestaltBaseTotals(paired),missing:[] as string[]};const racial=racialHDProgression(ancestry);let {level,bab,fort,ref,will}=racial;const dice:Record<number,number>=racial.level?{[racial.die]:racial.level}:{};const missing:string[]=[...racial.missing];
  for(const e of entries){const d=findClass(e.classId);level+=e.level;if(!d){missing.push(e.name);continue}const r=d.levels.find(r=>r.level===e.level);if(!r){missing.push(e.name+' '+e.level);continue}const golarion=c&&d.id==='cleric'&&hasAlternateFeature(c,'cleric-golarion-cleric'),die=c?classHitDie(c,d.id):d.hitDie;bab+=golarion?e.level:r.bab;fort+=r.fort;ref+=r.ref;will+=r.will;dice[die]=(dice[die]||0)+e.level;}
  return {level,bab,fort,ref,will,hitDice:Object.entries(dice).map(([die,n])=>`${n}d${die}`).join(' + '),missing};
 }

@@ -1,4 +1,5 @@
 import type {Character} from './model.ts';
+import {characterGestaltRows} from './gestalt-progression.ts';
 import {classHitDie,classSkillPoints} from './classes.ts';
 import {effectiveScore,raceProgression,racialBonusSkillPoints} from './ancestry.ts';
 
@@ -11,6 +12,7 @@ export function skillIntelligence(c:Character):number {
 }
 
 export function hitDieSequence(c:Character):LevelRow[] {
+  const paired=characterGestaltRows(c);if(paired)return paired;
   const racial:LevelRow[]=[];
   const progression=raceProgression(c.ancestry.raceId);
   for(let i=1;i<=c.ancestry.racialHitDice;i++)racial.push({key:'racial-'+i,entryId:'racial',label:'Racial HD '+i,die:progression?.die||8,skillBase:progression?.skillBase||2,classId:'racial',classLevel:i});

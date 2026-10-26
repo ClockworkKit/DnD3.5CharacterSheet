@@ -1,29 +1,9 @@
-import {z} from 'zod';
+import {gestaltBonusMethodSchema,gestaltProgressionSchema,type GestaltBonusMethod,type GestaltProgression} from './gestalt-schema.ts';
+export {gestaltBonusMethodSchema,gestaltProgressionSchema,type GestaltBonusMethod,type GestaltProgression} from './gestalt-schema.ts';
 import type {Character,ClassLevel} from './model.ts';
 import {classCatalog,classHitDie,classSkillPoints,type ClassDefinition} from './classes.ts';
 import {hasAlternateFeature} from './alternate-features.ts';
 import type {LevelRow} from './level-history.ts';
-
-const id=z.string().trim().min(1).max(80);
-const approval=z.object({classId:id,gm:z.string().trim().min(1).max(160),reason:z.string().trim().min(1).max(2000)}).strict();
-export const gestaltBonusMethodSchema=z.enum(['printed-table-v1','fractional-v1']);
-export type GestaltBonusMethod=z.infer<typeof gestaltBonusMethodSchema>;
-/** Explicit, versioned data only. Never infer a gestalt plan from old class totals. */
-export const gestaltProgressionSchema=z.object({
- version:z.literal(1),
- // Fractional bonuses are an explicit variant, never an inferred default.
- bonusMethod:gestaltBonusMethodSchema.default('printed-table-v1'),
- levels:z.array(z.object({id,left:id,right:id,approvals:z.array(approval).max(2).default([])}).strict()).min(1).max(100),
-}).strict().superRefine((plan,ctx)=>{
- const seen=new Set<string>();
- plan.levels.forEach((row,i)=>{
-  if(seen.has(row.id))ctx.addIssue({code:'custom',path:['levels',i,'id'],message:'Gestalt level IDs must be unique.'});
-  seen.add(row.id);
-  if(row.left===row.right)ctx.addIssue({code:'custom',path:['levels',i],message:'Choose two different classes for a gestalt level.'});
-  if(new Set(row.approvals.map(a=>a.classId)).size!==row.approvals.length)ctx.addIssue({code:'custom',path:['levels',i,'approvals'],message:'Record each combination-class approval once.'});
- });
-});
-export type GestaltProgression=z.infer<typeof gestaltProgressionSchema>;
 
 /** Extension point for source-specific class families and combination prestige rules. */
 export type GestaltBonusProfile={bab:'full'|'medium'|'poor';fort:'good'|'poor';ref:'good'|'poor';will:'good'|'poor'};
@@ -42,6 +22,25 @@ export type GestaltClassAdvance={entryId:string;classId:string;classLevel:number
 export type GestaltLevelRow=LevelRow & {
  left:GestaltClassAdvance;right:GestaltClassAdvance;bonusMethod:GestaltBonusMethod;
 };
+
+/** Return null only for explicitly standard/legacy sheets, never for a broken gestalt plan. */
+export function characterGestaltRows(c:Character):GestaltLevelRow[]|null{
+ if(c.advancementMode!=='gestalt')return null;
+ if(!c.gestaltProgression)throw new Error('Gestalt advancement requires a recorded pair for every level.');
+ return gestaltLevelSequence(c,c.gestaltProgression);
+}
+
+/** Overlapping advancement of the SAME tradition grants at most the better side per pair. */
+export function gestaltTraditionGrants(c:Character,grant:(entry:ClassLevel,level:number)=>number):number[]|null{
+ const rows=characterGestaltRows(c);if(!rows)return null;
+ const entries=new Map(c.classLevels.map(entry=>[entry.id,entry]));
+ return rows.map(row=>Math.max(...[row.left,row.right].map(side=>{
+  const entry=entries.get(side.entryId)!;
+  const value=grant(entry,side.classLevel)-(side.classLevel>1?grant(entry,side.classLevel-1):0);
+  if(!Number.isFinite(value)||value<0)throw new Error('A casting progression needs an explicit nonnegative advancement policy.');
+  return value;
+ })));
+}
 
 /** Infer only exact standard progressions. Short/ambiguous custom tables need metadata. */
 function bonusRates(def:ClassDefinition,policy:GestaltClassPolicy,golarion:boolean):BaseProgression{

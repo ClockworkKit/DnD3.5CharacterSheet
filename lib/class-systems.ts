@@ -1,4 +1,5 @@
 import {featureReplaced,classFeatureLevel} from './alternate-features.ts';
+import {characterHitDice} from './character-level.ts';
 import {z} from 'zod';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
@@ -17,7 +18,7 @@ const row=(c:Character,id:string)=>findClass(id)?.levels.find(r=>r.level===Math.
 const column=(c:Character,id:string,i:number)=>parseInt(row(c,id)?.extra[i]?.replaceAll(',','')||'0')||0;
 export function systemLimits(c:Character,id:string){
  const level=lv(c,id),r=row(c,id);if(!level||!r)return null;
- const total=c.classLevels.reduce((n,e)=>n+e.level,0)+(c.ancestry.racialHitDice||0);
+ const total=characterHitDice(c);
  const result:{level:number,kind:SystemChoice['kind'],known:number,readied?:number,stances?:number,maxLevel:number,essentia?:number,capacity?:number,binds?:number,initiator?:number,granted?:number}={level,kind:'invocation',known:0,maxLevel:9};
  if(['warlock','dragonfire-adept'].includes(id))return {...result,known:column(c,id,0),maxLevel:9};
  if(['warblade','crusader','swordsage'].includes(id)){const initiator=level+Math.floor((total-level)/2);return {...result,kind:'maneuver' as const,known:column(c,id,0),readied:column(c,id,1),stances:column(c,id,2),maxLevel:Math.min(9,Math.floor((initiator+1)/2)),initiator,...(id==='crusader'?{granted:Number(r.extra[1].match(/\((\d+)\)/)?.[1]||2)}:{})};}

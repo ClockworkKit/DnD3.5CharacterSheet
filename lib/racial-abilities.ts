@@ -1,9 +1,10 @@
 import type {Character,Caster,KnownSpell,Weapon,Spell} from './model.ts';
+import {characterHitDice} from './character-level.ts';
 import {findRace,effectiveScore} from './ancestry.ts';
 import {hasFeat,type BonusTerm} from './effects.ts';
 import {sigils,emptyRacialState} from './racial-state.ts';
 export {sigils};
-export const racialHD=(c:Character)=>c.classLevels.reduce((n,e)=>n+e.level,0)+c.ancestry.racialHitDice||c.level;
+export const racialHD=(c:Character)=>characterHitDice(c);
 export const racialEnabled=(c:Character)=>c.automation.enabled&&c.ancestry.traitBonuses;
 export const isIllumian=(c:Character)=>racialEnabled(c)&&c.ancestry.raceId==='illumian';
 export function sigilLimit(c:Character){return c.classLevels.some(e=>e.level>=2)?2:1;}

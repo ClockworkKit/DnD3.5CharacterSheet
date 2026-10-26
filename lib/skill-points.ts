@@ -113,6 +113,7 @@ export function assignExistingSkillRanks(c:Character) {
 }
 
 export function moveSkillLevel(c:Character,key:string,direction:-1|1) {
+  if(c.advancementMode==='gestalt')throw new Error('Paired advancement order must be edited together, not as independent skill levels.');
   const rows=hitDieSequence(c),index=rows.findIndex(row=>row.key===key),other=index+direction;
   if(index<0||other<0||other>=rows.length||rows[index].classId==='racial'||rows[other].classId==='racial'||rows[index].entryId===rows[other].entryId)return;
   [rows[index],rows[other]]=[rows[other],rows[index]];
