@@ -1,4 +1,7 @@
 'use client';
+import {ZodError} from 'zod';
+import type {GestaltBonusMethod} from '@/lib/gestalt-schema';
+import {GestaltStartingLevels} from './gestalt-starting-levels';
 import {MonsterCreation} from './monster-creation';
 import {createNpcSheet} from '@/lib/creatures';
 import {useEffect,useState} from 'react';
@@ -9,7 +12,7 @@ import {abilityKeys,abilityNames,type Character} from '@/lib/model';
 import {raceCatalog,findRace} from '@/lib/ancestry';
 import {baseClasses} from '@/lib/classes';
 import {signed} from '@/lib/rules';
-import {abilityMethods,blankScores,startingAssignment,rollAbilityScores,assignedScores,assignAbilityRoll,startingAbilityScores,createPlayerCharacter,type AbilityMethod,type AbilityRoll} from '@/lib/character-creation';
+import {abilityMethods,blankScores,startingAssignment,rollAbilityScores,assignedScores,assignAbilityRoll,startingAbilityScores,createPlayerCharacter,type AbilityMethod,type AbilityRoll,type StartingClassPair} from '@/lib/character-creation';
 import {F,N,Choice,Btn} from './sheet-ui';
 
 export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boolean,onOpenChange:(open:boolean)=>void,busy:boolean,onCreate:(character:Character)=>Promise<boolean>}){
@@ -18,22 +21,30 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
   const [hpMethod,setHpMethod]=useState<Character['automation']['hpMethod']>('rolled'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
   useEffect(()=>{if(open){setHpMethod('rolled');setSpecialty('none');}},[open]);
+  const [advancementMode,setAdvancementMode]=useState<Character['advancementMode']>('standard'),[bonusMethod,setBonusMethod]=useState<GestaltBonusMethod>('printed-table-v1');
+  const [pairChoices,setPairChoices]=useState<StartingClassPair[]>([{left:'fighter',right:'wizard'}]);
+  const startingPairs=Array.from({length:level},(_,i)=>pairChoices[i]??pairChoices.at(-1)!);
+  const hasCleric=advancementMode==='gestalt'?startingPairs.some(p=>p.left==='cleric'||p.right==='cleric'):kind==='Cleric';
+  useEffect(()=>{if(open){setAdvancementMode('standard');setBonusMethod('printed-table-v1');setPairChoices([{left:'fighter',right:'wizard'}]);}},[open]);
   const [raceQuery,setRaceQuery]=useState('');
   const [error,setError]=useState(''),[creating,setCreating]=useState(false);
   const ready=method==='manual'||rolls.length===6,scores=method==='manual'||!ready?manual:assignedScores(rolls,assignment),totals=startingAbilityScores(scores,raceId),race=findRace(raceId);
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
   async function create(){if(creating||busy||!ready)return;setCreating(true);setError('');try{
-    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:kind==='Cleric'?specialty:'none'});
+    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
-  }catch(e){setError(e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
+  }catch(e){setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
   return <Dialog open={open} onOpenChange={value=>{if(!creating)onOpenChange(value)}}><DialogContent className="ledger-modal creation-modal"><DialogHeader><DialogTitle>A new sheet</DialogTitle><DialogDescription>Create an adventurer, an NPC, or a monster.</DialogDescription></DialogHeader>
     <Choice label="Sheet type" value={sheetKind} onChange={v=>setSheetKind(v as typeof sheetKind)} options={[['pc','Player character'],['npc','NPC'],['monster','Monster']]}/>{sheetKind==='monster'?<MonsterCreation busy={busy} onCreate={async c=>{const ok=await onCreate(c);if(ok)onOpenChange(false);return ok}}/>:<fieldset className="sheet-fieldset" disabled={busy||creating}>
       <F label="Character name" value={name} onChange={setName} placeholder="Your adventurer’s name"/>
-      <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/><Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/><N label="Starting class level" value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
-      <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={hitPointMethods}/><p className="fine">New characters start with standard D&D 3.5e advancement. Armor grants AC; damage reduction and other house rules are separate optional settings. {hpMethod==='rolled'?'The first Hit Die is maximized. Later starting Hit Dice are rolled once on creation and saved in Notes and Calculations. At level-up, enter your actual die roll.':'This optional HP method applies only to the new character.'}</p>{kind==='Cleric'&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
+      <Choice label="Advancement mode" value={advancementMode} onChange={v=>{setAdvancementMode(v as typeof advancementMode);setError('')}} options={[['standard','Standard D&D 3.5e (default)'],['gestalt','Gestalt D&D 3.5e']]}/>
+      <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/>{advancementMode==='standard'&&<Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/>}<N label={advancementMode==='gestalt'?'Starting character level':'Starting class level'} value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
+      {advancementMode==='gestalt'&&<GestaltStartingLevels pairs={startingPairs} onChange={p=>{setPairChoices(p);setError('')}} bonusMethod={bonusMethod} onBonusMethod={setBonusMethod}/>}
+      <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={hitPointMethods}/><p className="fine">Standard D&D 3.5e rules are the baseline; gestalt changes advancement only when explicitly selected. Armor grants AC; damage reduction and other house rules are separate optional settings. {hpMethod==='rolled'?'The first Hit Die is maximized. Later starting Hit Dice are rolled once on creation and saved in Notes and Calculations. At level-up, enter your actual die roll.':'This optional HP method applies only to the new character.'}</p>{hasCleric&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
+      {advancementMode==='gestalt'&&!!race?.rhd&&<p className="error-box" role="alert">This race has racial Hit Dice. Their placement in gestalt is not yet supported; choose a race without racial Hit Dice or standard advancement.</p>}
       {race?.manualHandling&&<p className="fine">{race.manualHandling.join(' ')} <a href={race.source} target="_blank" rel="noreferrer">Race rules</a></p>}
       <section className="creation-abilities" aria-labelledby="starting-abilities"><h3 id="starting-abilities">Ability scores</h3><Choice label="Generation method" value={method} onChange={chooseMethod} options={abilityMethods}/>
         {method!=='manual'&&<><Btn className="primary" onClick={rollScores}><Dices size={18}/>{rolls.length?'Reroll all six scores':'Roll six scores'}</Btn><p className="fine creation-hint">{method==='4d6-drop-lowest'?'Roll four six-sided dice for each score and drop one lowest die.':'Roll three six-sided dice for each score and add them together.'} Assign the results to any abilities.</p></>}

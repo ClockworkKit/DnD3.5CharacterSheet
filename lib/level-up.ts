@@ -32,7 +32,7 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  copyClassFeatures(c);
 }
 
-function initializeClassResources(c:Character,def:ClassDefinition,level:number){
+export function initializeClassResources(c:Character,def:ClassDefinition,level:number){
  if(def.levels.some(r=>r.slots)&&(!['paladin','ranger'].includes(def.id)||level>=4)&&!c.casters.some(p=>p.casting?.classId===def.id||p.name===def.name)){
   const ability=castingAbility(def);c.casters.push(makeCaster(def,level,effectiveScore(c,ability),effectiveScore(c,def.casting?.bonusAbility||ability)));
  }
