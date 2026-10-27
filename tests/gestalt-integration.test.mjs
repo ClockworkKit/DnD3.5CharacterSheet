@@ -16,6 +16,7 @@ import {advancementChoices} from '../lib/advancement-choices.ts';
 import {skillLedger,setSkillPoints,moveSkillLevel} from '../lib/skill-points.ts';
 import {gainLevel,previewGestaltLevel,applyGestaltLevel,levelUpStatus} from '../lib/level-up.ts';
 import {prestigeEligibility} from '../lib/prerequisites.ts';
+import {gestaltCastingChoices} from '../lib/gestalt-casting.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
@@ -41,6 +42,97 @@ function paired(pairs){
  copyClassFeatures(c);recompute(c);c.hp=c.maxHp;
  return c;
 }
+
+test('paired prestige targets are recorded per level without moving prior grants or restoring expenditure',async()=>{
+ const c=paired([...repeat('wizard','sorcerer',5),['fighter','loremaster']]);c.experience=1000000;
+ const wizard=c.casters.find(p=>p.casting.classId==='wizard'),sorcerer=c.casters.find(p=>p.casting.classId==='sorcerer'),lore=c.classLevels.find(e=>e.classId==='loremaster');
+ lore.castingTarget=wizard.id;recompute(c);wizard.slots[1].used=2;sorcerer.slots[1].used=1;c.hp-=3;
+ assert.deepEqual(c.casters.map(p=>p.level),[6,5]);const before=structuredClone(c);
+ const p=previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:sorcerer.id}]});
+ assert.deepEqual(c,before);assert.deepEqual(p.character.casters.map(p=>p.level),[6,6]);assert.equal(p.character.classLevels.find(e=>e.classId==='loremaster').castingTarget,wizard.id);
+ applyReview(c,p);assert.deepEqual(c.casters.map(p=>p.slots[1].used),[2,1]);assert.equal(c.maxHp-c.hp,3);
+ assert.equal(c.gestaltProgression.levels[5].castingTargets[0].traditionId,wizard.id);assert.equal(c.gestaltProgression.levels[6].castingTargets[0].traditionId,sorcerer.id);
+ assert.equal(gestaltCastingChoices(c,['fighter','loremaster'])[0].selected,sorcerer.id);
+ applyReview(c,previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:wizard.id}]}));
+ assert.deepEqual(c.casters.map(p=>p.level),[7,6]);assert.deepEqual(await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c)))),c);
+ c.classLevels.find(e=>e.classId==='loremaster').castingTarget=sorcerer.id;recompute(c);assert.deepEqual(c.casters.map(p=>p.level),[7,6],'class-wide edits cannot rewrite recorded gains');
+ const standard=structuredClone(c);standard.advancementMode='standard';recompute(standard);assert.deepEqual(standard.casters.map(p=>p.level),[5,8],'standard progression retains its original class-wide links');
+});
+
+test('new profiles cannot retroactively remove an old automatic prestige grant',()=>{
+ const c=paired([...repeat('wizard','fighter',5),['fighter','loremaster']]);c.experience=1000000;
+ assert.equal(c.casters[0].level,6);const before=structuredClone(c);
+ const p=previewGestaltLevel(c,{left:'fighter',right:'sorcerer',hitDieRoll:4});assert.deepEqual(c,before);
+ assert.equal(p.character.casters[0].level,6);applyReview(c,p);assert.equal(c.casters.length,2);assert.deepEqual(c.casters.map(p=>p.level),[6,1]);
+ assert.equal(c.gestaltProgression.levels[5].castingTargets[0].traditionId,c.casters[0].id);
+ const choices=gestaltCastingChoices(c,['fighter','loremaster']);assert.deepEqual(choices[0].candidates.map(p=>p.id),[c.casters[0].id],'a later sorcerer level was not held before Loremaster entry');
+ assert.throws(()=>previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:c.casters[1].id}]}),/eligible existing tradition/);
+});
+
+test('ambiguous prestige targets need a choice, and explicit no advancement is retained',()=>{
+ const c=paired([...repeat('wizard','sorcerer',5),['fighter','loremaster']]);c.experience=1000000;const before=structuredClone(c);
+ assert.equal(gestaltCastingChoices(c,['fighter','loremaster'])[0].selected,'');
+ assert.throws(()=>previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4}),/Choose.*tradition/);assert.deepEqual(c,before);
+ applyReview(c,previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:'none'}]}));
+ assert.deepEqual(c.casters.map(p=>p.level),[5,5]);assert.ok(c.gestaltProgression.levels.slice(5).every(row=>row.castingTargets[0].traditionId==='none'));
+ assert.equal(gestaltCastingChoices(c,['fighter','loremaster'])[0].selected,'none');
+});
+
+test('target validation is atomic and accepts only roles and eligible pre-level traditions',()=>{
+ const c=paired([...repeat('wizard','sorcerer',5),['fighter','master-specialist']]);c.experience=1000000;
+ const wizard=c.casters[0],sorcerer=c.casters[1],before=structuredClone(c),valid={classId:'master-specialist',kind:'spell',traditionId:wizard.id};
+ for(const castingTargets of [[{...valid,traditionId:'missing'}],[{...valid,traditionId:sorcerer.id}],[{...valid,kind:'psi'}],[{...valid,classId:'fighter'}],[valid,valid],[{...valid,extra:'ignored?'}]]){
+  assert.throws(()=>previewGestaltLevel(c,{left:'fighter',right:'master-specialist',hitDieRoll:4,castingTargets}));assert.deepEqual(c,before);
+ }
+ const choice=gestaltCastingChoices(c,['fighter','master-specialist'])[0];assert.deepEqual(choice.candidates.map(p=>p.id),[wizard.id]);
+});
+
+test('per-level targets retain the same-tradition gestalt cap and independent dual progression',()=>{
+ const c=paired([...repeat('wizard','sorcerer',5),['fighter','loremaster']]);c.experience=1000000;
+ const wizard=c.casters[0],sorcerer=c.casters[1];c.classLevels.find(e=>e.classId==='loremaster').castingTarget=wizard.id;recompute(c);
+ applyReview(c,previewGestaltLevel(c,{left:'wizard',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:wizard.id}]}));
+ assert.deepEqual(c.casters.map(p=>p.level),[7,5]);
+ applyReview(c,previewGestaltLevel(c,{left:'wizard',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:sorcerer.id}]}));
+ assert.deepEqual(c.casters.map(p=>p.level),[8,6]);
+});
+
+test('Cerebremancer target choices keep old arcane and psionic grants and separate expenditures',()=>{
+ const c=paired([...repeat('wizard','psion',3),...repeat('sorcerer','wilder',3),['fighter','cerebremancer']]);c.experience=1000000;
+ const psion=makePsionic(findClass('psion'),3,16),wilder=makePsionic(findClass('wilder'),3,16);c.psionics=[psion,wilder];psion.spent=2;wilder.spent=1;
+ const entry=c.classLevels.find(e=>e.classId==='cerebremancer');entry.castingTarget=c.casters[0].id;entry.psionicTarget=psion.id;recompute(c);
+ const p=previewGestaltLevel(c,{left:'fighter',right:'cerebremancer',hitDieRoll:4,approvals:[{classId:'cerebremancer',gm:'Test GM',reason:'Fixture approval'}],castingTargets:[{classId:'cerebremancer',kind:'spell',traditionId:c.casters[1].id},{classId:'cerebremancer',kind:'psi',traditionId:wilder.id}]});
+ applyReview(c,p);assert.deepEqual(c.casters.map(p=>p.level),[4,4]);assert.deepEqual(c.psionics.map(p=>p.level),[4,4]);assert.deepEqual(c.psionics.map(p=>p.spent),[2,1]);
+});
+
+test('Hierophant scopes caster-level-only targets without granting slots, and malformed row targets fail schema',()=>{
+ const c=paired([...repeat('cleric','wizard',13),['fighter','hierophant']]);c.experience=1000000;
+ const cleric=c.casters[0],slots=cleric.slots.map(s=>s.max);assert.equal(cleric.level,14);
+ applyReview(c,previewGestaltLevel(c,{left:'wizard',right:'hierophant',hitDieRoll:4,castingTargets:[{classId:'hierophant',kind:'divine',traditionId:cleric.id}]}));
+ assert.equal(c.casters[0].level,15);assert.deepEqual(c.casters[0].slots.map(s=>s.max),slots);
+ for(const targets of [[{classId:'rogue',kind:'spell',traditionId:cleric.id}],[{classId:'hierophant',kind:'invalid',traditionId:cleric.id}],Array(2).fill({classId:'hierophant',kind:'divine',traditionId:cleric.id})]){
+  const bad=structuredClone(c);bad.gestaltProgression.levels.at(-1).castingTargets=targets;assert.equal(characterSchema.safeParse(bad).success,false);
+ }
+});
+
+test('Mystic Theurge records both traditions and domain slots follow the primary cleric',()=>{
+ const c=paired([...repeat('wizard','cleric',3),['fighter','mystic-theurge']]);c.experience=1000000;
+ const wizard=c.casters[0],cleric=c.casters[1],domain=makeCaster(findClass('cleric'),3,14);domain.id='domain';domain.name='Domains';domain.casting.domain=true;c.casters.push(domain);recompute(c);
+ domain.slots[1].used=1;cleric.slots[1].used=2;
+ const choices=gestaltCastingChoices(c,['fighter','mystic-theurge']);assert.deepEqual(choices.map(p=>p.candidates.map(q=>q.id)),[[wizard.id],[cleric.id]]);
+ applyReview(c,previewGestaltLevel(c,{left:'fighter',right:'mystic-theurge',hitDieRoll:4,approvals:[{classId:'mystic-theurge',gm:'Test GM',reason:'Fixture approval'}]}));
+ assert.deepEqual(c.casters.map(p=>p.level),[5,5,5]);assert.equal(c.casters[2].slots[1].max,1);assert.deepEqual(c.casters.map(p=>p.slots[1].used),[0,2,1]);
+ assert.deepEqual(c.gestaltProgression.levels.at(-1).castingTargets.map(t=>t.traditionId),[wizard.id,cleric.id]);
+});
+
+test('a missing recorded tradition is never silently reassigned to another profile',async()=>{
+ const c=paired([...repeat('wizard','sorcerer',5),['fighter','loremaster']]);c.experience=1000000;
+ const wizard=c.casters[0],sorcerer=c.casters[1];c.classLevels.find(e=>e.classId==='loremaster').castingTarget=wizard.id;recompute(c);
+ applyReview(c,previewGestaltLevel(c,{left:'fighter',right:'loremaster',hitDieRoll:4,castingTargets:[{classId:'loremaster',kind:'spell',traditionId:sorcerer.id}]}));
+ c.casters=c.casters.filter(p=>p.id!==sorcerer.id);recompute(c);
+ assert.equal(c.casters[0].level,6);assert.equal(c.gestaltProgression.levels.at(-1).castingTargets[0].traditionId,sorcerer.id);
+ assert.equal(gestaltCastingChoices(c,['fighter','loremaster'])[0].selected,'');
+ assert.deepEqual(await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c)))),c);
+});
 
 test('paired advancement previews one real level without mutation, then preserves existing history and expenditure',async()=>{
  const c=paired(repeat('fighter','wizard',2));c.experience=3000;c.hp-=3;c.casters[0].slots[1].used=1;c.casters[0].notes='Keep spellbook notes';

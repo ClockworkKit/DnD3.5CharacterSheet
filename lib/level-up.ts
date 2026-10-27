@@ -8,6 +8,8 @@ import {characterGestaltRows,gestaltBonusLedger,type GestaltProgression} from '.
 import {recompute} from './automation.ts';
 import {advancementChoices} from './advancement-choices.ts';
 import {effectiveClassMilestone} from './alternate-features.ts';
+import {resolveGestaltCastingTargets,retainGestaltCastingHistory} from './gestalt-casting.ts';
+import type {GestaltCastingTarget} from './gestalt-schema.ts';
 export function levelUpStatus(c:Character){
  const n=advancementNumbers(c);let eligible=n.ecl;
  while(eligible<100&&c.experience>=eligible*(eligible+1)*500)eligible++;
@@ -39,7 +41,7 @@ export function initializeClassResources(c:Character,def:ClassDefinition,level:n
  if((def.kind==='Psionic'||def.manifesting)&&!c.psionics.some(p=>p.manifesting?.classId===def.id||p.name===def.name))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
 }
 
-export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals']};
+export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};
 export type GestaltLevelPreview=ReturnType<typeof previewGestaltLevel>;
 
 /** Read-only, atomic preview. Both new classes must qualify BEFORE this level. */
@@ -61,7 +63,9 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};next.classLevels.push(entry);}
   return entry;
  });
- const pair={id:uid(),left:entries[0].id,right:entries[1].id,approvals:structuredClone(selection.approvals??[])};
+ retainGestaltCastingHistory(c,next);
+ const castingTargets=resolveGestaltCastingTargets(c,[selection.left,selection.right],selection.castingTargets);
+ const pair={id:uid(),left:entries[0].id,right:entries[1].id,approvals:structuredClone(selection.approvals??[]),...(castingTargets.length?{castingTargets}:{})};
  next.gestaltProgression!.levels.push(pair);
  // Same-class/family, two-prestige and scoped combination approvals all use
  // the authoritative compiler, before resources or history are initialized.
@@ -77,7 +81,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  recompute(next,c);characterSchema.parse(next);
  const before=advancementNumbers(c),after=advancementNumbers(next),oldChoices=new Set(advancementChoices(c).map(choice=>choice.key));
  return {pending,source:JSON.stringify(c),selection:structuredClone(selection),selectionKey:JSON.stringify(selection),character:next,summary:{
-  level:next.level,label:row.label,die:row.die,hpGain:next.maxHp-c.maxHp,skillPoints:after.skillBudget-before.skillBudget,
+  level:next.level,label:row.label,die:row.die,hpGain:next.maxHp-c.maxHp,skillPoints:after.skillBudget-before.skillBudget,castingTargets,
   bab:{before:c.bab,after:next.bab},saves:{before:{fort:c.saves.fort.base,ref:c.saves.ref.base,will:c.saves.will.base},after:{fort:next.saves.fort.base,ref:next.saves.ref.base,will:next.saves.will.base}},
   bonusDecision:gestaltBonusLedger(rows).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
   milestones:definitions.map((def,i)=>({classId:def.id,name:def.name,level:entries[i].level,text:effectiveClassMilestone(next,def.id,def.levels.find(r=>r.level===entries[i].level)!.special,entries[i].level)})),

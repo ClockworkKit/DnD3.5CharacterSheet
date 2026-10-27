@@ -21,6 +21,7 @@ const rateUnits={full:12,medium:9,poor:6,good:6} as const;
 export type GestaltClassAdvance={entryId:string;classId:string;classLevel:number;name:string;base:BaseProgression;previous:BaseProgression;rates:BaseProgression};
 export type GestaltLevelRow=LevelRow & {
  left:GestaltClassAdvance;right:GestaltClassAdvance;bonusMethod:GestaltBonusMethod;
+ castingTargets?:GestaltProgression['levels'][number]['castingTargets'];
 };
 
 /** Return null only for explicitly standard/legacy sheets, never for a broken gestalt plan. */
@@ -62,12 +63,12 @@ export function gestaltFeatureLedger(c:Character,policies:Readonly<Record<string
 }
 
 /** Overlapping advancement of the SAME tradition grants at most the better side per pair. */
-export function gestaltTraditionGrants(c:Character,grant:(entry:ClassLevel,level:number)=>number):number[]|null{
+export function gestaltTraditionGrants(c:Character,grant:(entry:ClassLevel,level:number,row:GestaltLevelRow)=>number):number[]|null{
  const rows=characterGestaltRows(c);if(!rows)return null;
  const entries=new Map(c.classLevels.map(entry=>[entry.id,entry]));
  return rows.map(row=>Math.max(...[row.left,row.right].map(side=>{
   const entry=entries.get(side.entryId)!;
-  const value=grant(entry,side.classLevel)-(side.classLevel>1?grant(entry,side.classLevel-1):0);
+  const value=grant(entry,side.classLevel,row)-(side.classLevel>1?grant(entry,side.classLevel-1,row):0);
   if(!Number.isFinite(value)||value<0)throw new Error('A casting progression needs an explicit nonnegative advancement policy.');
   return value;
  })));
@@ -129,6 +130,7 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
    return {entry,def,level,table,previous,policy:policies[def.id]??{}};
   };
   const left=resolve(pair.left),right=resolve(pair.right),sides=[left,right];
+  for(const target of pair.castingTargets??[])if(!sides.some(s=>s.def.id===target.classId))throw new Error('Prestige casting target does not belong to either class at this paired level.');
   if((left.policy.family??left.def.id)===(right.policy.family??right.def.id))throw new Error('A gestalt level cannot combine versions of the same class.');
   if(sides.every(s=>s.def.kind==='Prestige'))throw new Error('A gestalt level cannot combine two prestige classes.');
   for(const a of pair.approvals)if(!sides.some(s=>s.def.id===a.classId&&s.def.kind==='Prestige'&&s.policy.combinationPrestige))throw new Error('Combination-class approval does not match this level.');
@@ -151,7 +153,7 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   if(dice.some(n=>![4,6,8,10,12].includes(n))||skillBases.some(n=>!Number.isInteger(n)||n<0||n>100))throw new Error('Provide valid Hit Dice and skill grants for each class.');
   rows.push({key:'gestalt-'+pair.id,label:left.entry.name+' '+left.level+' // '+right.entry.name+' '+right.level,
    entryId:'gestalt-'+pair.id,classId:'gestalt',classLevel:index+1,classIds:[left.def.id,right.def.id],
-   left:advance(left),right:advance(right),bonusMethod:plan.bonusMethod,die:Math.max(...dice),skillBase:Math.max(...skillBases)});
+   left:advance(left),right:advance(right),bonusMethod:plan.bonusMethod,...(pair.castingTargets?{castingTargets:pair.castingTargets}:{}),die:Math.max(...dice),skillBase:Math.max(...skillBases)});
   for(const s of sides)counts.set(s.entry.id,s.level);
  }
  for(const entry of entries.values())if(counts.get(entry.id)!==entry.level)throw new Error('Paired levels do not match the recorded level of '+entry.name+'.');
