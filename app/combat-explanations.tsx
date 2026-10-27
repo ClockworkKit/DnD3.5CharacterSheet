@@ -16,10 +16,15 @@ export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
 }
 export function RogueCombatFeatures({c,edit}:Pick<SheetProps,'c'|'edit'>){
  const features=rogueCombatFeatures(c),ctx=c.automation.context;
- if(!features.evasion&&!features.deathsRuin)return null;
+ if(!features.evasion&&!features.uncanny.length&&!features.deathsRuin)return null;
  return <div className="subcard">
- <h3>Rogue combat features</h3>
- {features.evasion&&<p className="fine"><strong>Evasion — class feature, not a feat.</strong> Granted at rogue level 2. On a successful Reflex save against an effect that normally deals half damage, take no damage instead. Requires light/no armor, a light load when encumbrance applies, and not being helpless. {features.evasionBlocked?`Currently unavailable because of ${features.evasionBlocked}.`:'Available under the recorded armor and load conditions.'} Resolve damage at the table; the sheet does not deduct it automatically.</p>}
+ <h3>Defensive class features & conditional attacks</h3>
+ {features.evasion&&<div aria-label="Evasion class features">
+ <p className="fine"><strong>{features.defensive.tier>1?'Improved evasion':'Evasion'} — class feature, not a feat.</strong> Against an effect that allows a Reflex save for half damage, Evasion prevents damage on success. Improved evasion also halves damage on failure. Duplicate grants do not stack or automatically upgrade Evasion. Resolve damage at the table; the sheet does not deduct it automatically.</p>
+ <ul>{features.defensive.sources.map(source=><li key={source.classId}>{source.name}: {source.tier>1?'improved evasion':'evasion'} — {source.blocked?'unavailable because of '+source.blocked:'available under recorded conditions'}.</li>)}</ul>
+ <p className="fine">Ordinary Evasion needs light/no armor and a light load when encumbrance applies; ninja Evasion needs no armor. Eldritch Grace applies only to spells and magical effects. Being helpless prevents these benefits. One available source is sufficient; a restricted source does not disable another.</p>
+ </div>}
+ {features.uncanny.length>0&&<p className="fine"><strong>Uncanny Dodge.</strong> Granted by {features.uncanny.map(source=>source.name).join(', ')}. Retains Dexterity and dodge bonuses to AC while flat-footed, but not when immobilized or otherwise denied Dexterity. The flat-footed AC display and the flat-footed situation use this benefit when automatic calculations are enabled. The explicit lose-Dexterity override still takes precedence. Improved Uncanny Dodge's flanking protection must be resolved at the table.</p>}
  {features.deathsRuin&&<><Check label="Death's Ruin: this is an eligible sneak attack against undead" checked={ctx.deathsRuin&&ctx.targetType==='undead'} onChange={v=>edit(d=>setDeathsRuin(d,v))}/><p className="fine">Sets the target type to undead and uses {features.deathsRuinDice}d6 sneak-attack damage (half the normal dice, rounded down). You still need the usual sneak-attack conditions, and ranged sneak attacks must be within 30 ft. Applies to the weapon Damage buttons and full-attack damage rolls. Changing the target away from undead disables this benefit.</p></>}
  </div>;
 }

@@ -1,6 +1,7 @@
 import type {Character} from './model.ts';
 import {carrying,equippedArmor} from './equipment.ts';
-import {classFeatureLevel,hasAlternateFeature} from './alternate-features.ts';
+import {hasAlternateFeature} from './alternate-features.ts';
+import {evasionFeatures,uncannyDodgeSources} from './defensive-class-features.ts';
 import {resourceNumbers} from './automation.ts';
 
 export function armorBreakdown(c:Character){
@@ -8,10 +9,9 @@ export function armorBreakdown(c:Character){
  return {armor,load,encumbrance,basePenalty:Math.min(armor.checkPenalty,encumbrance?load.checkPenalty:0),baseDexCap:Math.min(armor.dexCap,encumbrance?load.dexCap:100)};
 }
 export function rogueCombatFeatures(c:Character){
- const {armor,load,encumbrance}=armorBreakdown(c);
- const evasion=classFeatureLevel(c,'rogue','evasion')>=2;
- const evasionBlocked=armor.category>1?'medium or heavy armor':encumbrance&&load.category!=='Light'?'a medium or heavier load':c.automation.context.helpless?'being helpless':'';
- return {evasion,evasionBlocked,deathsRuin:hasAlternateFeature(c,'rogue-deaths-ruin'),deathsRuinDice:Math.floor(resourceNumbers(c).sneakDice/2)};
+ const defensive=evasionFeatures(c),evasion=defensive.tier>0;
+ const evasionBlocked=defensive.magicTier?'':defensive.sources[0]?.blocked??'';
+ return {evasion,evasionBlocked,defensive,uncanny:uncannyDodgeSources(c),deathsRuin:hasAlternateFeature(c,'rogue-deaths-ruin'),deathsRuinDice:Math.floor(resourceNumbers(c).sneakDice/2)};
 }
 export function setDeathsRuin(c:Character,enabled:boolean){
  c.automation.context.deathsRuin=enabled;

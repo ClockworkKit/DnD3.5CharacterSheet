@@ -55,7 +55,7 @@ export function supplementalTerms(c:Character,target:string,context:Record<strin
  if(target==='skill.Jump'&&ninja>=4&&armor.category===0&&lightLoad)add(4,'untyped','great-leap');
  if(target==='initiative'){if(ss)add(1+Math.floor(ss/5),'untyped','quick-to-act');if(sc>=2&&light)add(sc>=20?3:sc>=11?2:1,'competence','battle-fortitude');}
  if(target==='save.fort'&&sc>=2&&light)add(sc>=20?3:sc>=11?2:1,'competence','battle-fortitude');
- if(target==='save.ref'){if(wb&&!x.flatFooted)add(Math.min(wb,Math.max(0,mod(c,'INT'))),'insight','battle-clarity');if(sw>=2&&light&&!featureReplaced(c,'swashbuckler','grace'))add(sw>=20?3:sw>=11?2:1,'competence','grace');}
+ if(target==='save.ref'){if(wb&&!x.flatFooted&&!x.caughtFlatFooted)add(Math.min(wb,Math.max(0,mod(c,'INT'))),'insight','battle-clarity');if(sw>=2&&light&&!featureReplaced(c,'swashbuckler','grace'))add(sw>=20?3:sw>=11?2:1,'competence','grace');}
  if(target==='save.will'){if(cr>=2&&classFeatureLevel(c,'paladin','divine-grace')<2)add(Math.max(0,mod(c,'CHA')),'untyped','indomitable-soul');if(ninja&&free&&(c.features.find(f=>f.ruleId==='supp:ninja:Ki power')?.used||0)<Math.max(1,Math.floor(ninja/2))+Math.max(0,mod(c,'WIS')))add(2,'untyped','ki-power');}
  if(target==='saves'&&lv(c,'hexblade')>=2&&['spell','spell-like'].includes(x.saveAgainst))add(Math.max(0,mod(c,'CHA')),'untyped','arcane-resistance');
  if(target==='ac.misc'&&!x.helpless){if(ninja&&free)add((lv(c,'monk')?0:Math.max(0,mod(c,'WIS')))+Math.floor(ninja/5),'untyped','ninja-ac');if(ss>=2&&armor.category===1&&!armor.hasShield&&lightLoad)add(Math.max(0,mod(c,'WIS')),'untyped','swordsage-ac');}
