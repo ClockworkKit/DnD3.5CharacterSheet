@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
 import {rogueCombatFeatures} from '../lib/combat-explanations.ts';
 import {sheetTotals} from '../lib/rules.ts';
-import {evasionFeatures,uncannyDodgeSources} from '../lib/defensive-class-features.ts';
+import {evasionFeatures,uncannyDodgeSources,uncannyDodgeFeatures} from '../lib/defensive-class-features.ts';
 import {addEquipment,matchEquipment} from '../lib/equipment.ts';
 import {findClass,makePsionic} from '../lib/classes.ts';
 import {addEffect} from '../lib/effects.ts';
@@ -15,6 +15,60 @@ import {supplementalTerms} from '../lib/class-systems.ts';
 const create=(kind,level)=>createPlayerCharacter({name:'Defensive features QA',kind,level,raceId:'human',scores:{STR:14,DEX:18,CON:14,INT:12,WIS:10,CHA:10},method:'manual'});
 const paired=(left,right,level)=>createPlayerCharacter({name:'Paired defenses QA',kind:'Fighter',level,raceId:'human',scores:{STR:14,DEX:18,CON:14,INT:12,WIS:10,CHA:10},method:'manual',advancementMode:'gestalt',gestaltPairs:Array.from({length:level},()=>({left,right}))});
 const selected=(c,id)=>c.alternateFeatures.selected.push(id);
+
+test('listed Improved Uncanny Dodge grants use their own class levels and rogue exception',()=>{
+ for(const [id,level] of [['barbarian',5],['rogue',8],['assassin',5],['shadowdancer',5],['warblade',6],['psychic-rogue',9]]){
+  const c=create('Fighter',1);c.classLevels=[{id:'test-class',classId:id,name:id,level:level-1,notes:''}];
+  if(id==='psychic-rogue'){c.psionics=[makePsionic(findClass(id),level,12)];c.psionics[0].focused=true;}
+  assert.equal(uncannyDodgeFeatures(c).improved,false,id+' before grant');c.classLevels[0].level++;
+  const defense=uncannyDodgeFeatures(c);assert.equal(defense.improved,true,id);assert.equal(defense.minimumRogueLevel,level+4,id);assert.equal(defense.earned[0].classId,id);
+ }
+});
+
+test('ordinary multiclass upgrades duplicate Uncanny Dodge but parallel gestalt waits for the faster improvement',()=>{
+ const c=create('Rogue',4);c.classLevels.push({id:'barbarian',classId:'barbarian',name:'Barbarian',level:2,notes:''});
+ let defense=uncannyDodgeFeatures(c);assert.equal(defense.improved,true);assert.equal(defense.duplicateUpgrade,true);assert.equal(defense.minimumRogueLevel,10);
+ c.classLevels.push({id:'fighter',classId:'fighter',name:'Fighter',level:9,notes:''});assert.equal(uncannyDodgeFeatures(c).minimumRogueLevel,10,'unrelated levels do not improve the defense');
+ const early=paired('rogue','barbarian',4);defense=uncannyDodgeFeatures(early);assert.equal(defense.improved,false);assert.equal(defense.duplicateUpgrade,false);assert.equal(defense.minimumRogueLevel,null);assert.equal(defense.review,'');
+ for(const pair of [['rogue','barbarian'],['barbarian','rogue']]){
+  const advanced=paired(...pair,5);defense=uncannyDodgeFeatures(advanced);assert.equal(defense.improved,true);assert.equal(defense.minimumRogueLevel,9,'paired levels never count twice');assert.deepEqual(defense.earned.map(s=>s.classId),['barbarian']);
+ }
+});
+
+test('uncanny replacements cannot re-grant their own improvement or disable an independent source',()=>{
+ const c=paired('rogue','barbarian',8);selected(c,'barbarian-uncanny-bravery');
+ assert.deepEqual(uncannyDodgeFeatures(c).earned.map(s=>s.classId),['rogue']);
+ selected(c,'rogue-uncanny-bravery');assert.equal(uncannyDodgeFeatures(c).improved,false);assert.equal(uncannyDodgeSources(c).length,2);
+ const standard=create('Rogue',8);standard.classLevels.push({id:'barbarian',classId:'barbarian',name:'Barbarian',level:5,notes:''});selected(standard,'barbarian-uncanny-bravery');selected(standard,'rogue-uncanny-bravery');assert.equal(uncannyDodgeFeatures(standard).improved,false);
+ const replaced=create('Rogue',4);replaced.classLevels.push({id:'barbarian',classId:'barbarian',name:'Barbarian',level:2,notes:''});selected(replaced,'rogue-disruptive-attack');assert.equal(uncannyDodgeFeatures(replaced).improved,false);assert.equal(uncannyDodgeSources(replaced).length,1);
+});
+
+test('focused uncanny improvements suspend without spending resources and basic-only classes do not gain listed upgrades',()=>{
+ const c=create('Psychic Rogue',9);c.psionics[0].focused=true;c.psionics[0].spent=3;
+ assert.equal(uncannyDodgeFeatures(c).minimumRogueLevel,13);c.psionics[0].focused=false;assert.equal(uncannyDodgeFeatures(c).improved,false);assert.equal(c.psionics[0].spent,3);
+ for(const kind of ['Scout','Lurk']){
+  const basic=create(kind,20);if(kind==='Lurk'){selected(basic,'lurk-true-thief');basic.psionics[0].focused=true;}
+  assert.equal(uncannyDodgeFeatures(basic).improved,false,kind+' has no listed Improved Uncanny Dodge grant');
+ }
+});
+
+test('mixed gestalt uncanny histories expose review rather than inventing upgrade timing or a threshold',()=>{
+ const c=createPlayerCharacter({name:'Mixed uncanny QA',kind:'Fighter',level:7,raceId:'human',scores:{STR:14,DEX:18,CON:14,INT:12,WIS:10,CHA:10},method:'manual',advancementMode:'gestalt',gestaltPairs:[
+  ...Array.from({length:4},()=>({left:'rogue',right:'fighter'})),...Array.from({length:3},()=>({left:'barbarian',right:'fighter'})),
+ ]});
+ const result=uncannyDodgeFeatures(c);assert.equal(result.improved,false);assert.equal(result.minimumRogueLevel,null);assert.match(result.review,/DM review/);
+ // A listed improvement is still recognized when the shared scaling is unresolved.
+ const advanced=createPlayerCharacter({name:'Mixed improved QA',kind:'Fighter',level:9,raceId:'human',scores:{STR:14,DEX:18,CON:14,INT:12,WIS:10,CHA:10},method:'manual',advancementMode:'gestalt',gestaltPairs:[
+  ...Array.from({length:4},()=>({left:'rogue',right:'fighter'})),...Array.from({length:5},()=>({left:'barbarian',right:'fighter'})),
+ ]});
+ const improved=uncannyDodgeFeatures(advanced);assert.equal(improved.improved,true);assert.equal(improved.minimumRogueLevel,null);assert.match(improved.review,/DM review/);
+});
+
+test('improved defense explanations are read-only and survive real save/load without changing damage or expenditures',async()=>{
+ const c=paired('rogue','barbarian',8);c.hp-=4;c.factotum.spent=2;c.automation.context.flanking=true;recompute(c);
+ const before=structuredClone(c);assert.equal(rogueCombatFeatures(c).uncannyDefense.minimumRogueLevel,12);assert.deepEqual(c,before);
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));assert.deepEqual(loaded,c);assert.equal(loaded.maxHp-loaded.hp,4);assert.equal(loaded.factotum.spent,2);assert.equal(uncannyDodgeFeatures(loaded).minimumRogueLevel,12);
+});
 
 test('combat explains Evasion from a monk without requiring rogue levels',()=>{
  const c=create('Monk',2);

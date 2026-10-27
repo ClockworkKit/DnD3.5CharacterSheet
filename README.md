@@ -4,6 +4,15 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 
 [Character sheet](https://clockworkkit.github.io/DnD3.5CharacterSheet/) · [Original Sites edition](https://barrow-sheet-demo.clockworkkit.chatgpt.site) · [Source status](SOURCE-STATUS.md) · [Latest debug audit](DEBUG-AUDIT.md)
 
+## Rules policy
+
+**Rules as written wherever applicable.** Published D&D 3.5 rules are the baseline;
+gestalt, other variants and house rules are explicit options. See the enduring
+[rules policy](docs/rules-policy.md) for source verification, ambiguity handling,
+recorded table decisions and protection of existing player saves. See the
+[gestalt implementation record](docs/gestalt-implementation.md) for progress and
+remaining work.
+
 ## Character sheet
 
 - Multiple private characters, autosave, explicit Save, revision conflict protection, and JSON import/export.

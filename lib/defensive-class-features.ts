@@ -2,6 +2,7 @@ import type {Character} from './model.ts';
 import {alternateClassLevel,classFeatureLevel,featureReplaced,hasAlternateFeature} from './alternate-features.ts';
 import {carrying,equippedArmor} from './equipment.ts';
 import {findClass} from './classes.ts';
+import {characterGestaltRows} from './gestalt-progression.ts';
 
 // Explicit source policies, not matches against free-text class summaries.
 const evasionLevels:Readonly<Record<string,{level:number;improved?:number;armor:number}>>={
@@ -10,6 +11,7 @@ const evasionLevels:Readonly<Record<string,{level:number;improved?:number;armor:
  ninja:{level:12,armor:0},scout:{level:5,armor:1},lurk:{level:9,armor:1},'psychic-rogue':{level:2,armor:1},
 };
 const uncannyLevels:Readonly<Record<string,number>>={barbarian:2,rogue:4,assassin:2,shadowdancer:2,warblade:2,scout:2,'psychic-rogue':7,'fist-of-the-forest':2};
+const improvedUncannyLevels:Readonly<Record<string,number>>={barbarian:5,rogue:8,assassin:5,shadowdancer:5,warblade:6,'psychic-rogue':9};
 const focused=(c:Character,id:string)=>c.psionics.some(p=>p.manifesting?.classId===id&&p.focused);
 
 /** Duplicate grants provide the best available benefit, never extra damage reductions. */
@@ -34,4 +36,23 @@ export function uncannyDodgeSources(c:Character){
  const sources=Object.entries(uncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'uncanny-dodge')>=level&&(id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
  if(alternateClassLevel(c,'lurk')>=3&&hasAlternateFeature(c,'lurk-true-thief')&&focused(c,'lurk'))sources.push({classId:'lurk',name:'Lurk (focused True Thief)'});
  return sources;
+}
+
+/** Read-only explanation; no target/attacker information is inferred from the sheet. */
+export function uncannyDodgeFeatures(c:Character){
+ const rows=characterGestaltRows(c),sources=uncannyDodgeSources(c);
+ const earned=Object.entries(improvedUncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'improved-uncanny-dodge')>=level&&(id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
+ // Ordinary multiclass second-source upgrades are distinct from UA's shared
+ // gestalt progression. A replacement cannot re-grant its own surrendered feature.
+ const duplicateUpgrade=!rows&&sources.length>1&&sources.some(s=>!featureReplaced(c,s.classId,'improved-uncanny-dodge'));
+ const improved=earned.length>0||duplicateUpgrade;
+ const ids=[...new Set([...sources,...earned].map(s=>s.classId))];
+ // Equal sets of actual levels cover uninterrupted pairs (and swapping sides).
+ // Staggered/mixed source histories need a specific ruling, not a fabricated
+ // threshold obtained by summing both sides. See docs/rules-policy.md.
+ const histories=rows?ids.map(id=>rows.flatMap((row,i)=>row.left.classId===id||row.right.classId===id?[i]:[])):[];
+ const mixed=histories.some(h=>h.length!==histories[0].length||h.some((level,i)=>level!==histories[0][i]));
+ const review=mixed?'Mixed or staggered gestalt Uncanny Dodge sources need DM review for duplicate-grant timing and the rogue-level exception. Listed class improvements are shown; no additional upgrade or combined threshold is inferred.':'';
+ const minimumRogueLevel=!improved||mixed?null:(rows?(histories[0]?.length??0):ids.reduce((n,id)=>n+alternateClassLevel(c,id),0))+4;
+ return {sources,earned,improved,duplicateUpgrade,minimumRogueLevel,review,gestalt:!!rows};
 }
