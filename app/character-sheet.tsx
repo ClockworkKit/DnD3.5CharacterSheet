@@ -4,6 +4,7 @@ import {challengeRatingLabel} from '@/lib/bestiary';
 import {expandSpellCatalog,type SpellExtension} from '@/lib/spell-catalog';
 import {useState,useEffect,useRef,useCallback,lazy,Suspense} from 'react';
 import {LevelUp} from './level-up';
+import {GestaltRuleWarnings} from './gestalt-rule-warnings';
 import {AdvancementReminders} from './advancement-reminders';
 import {Tabs,TabsList,TabsTrigger,TabsContent} from '@/components/ui/tabs';
 import {Dialog,DialogContent,DialogHeader,DialogTitle,DialogDescription} from '@/components/ui/dialog';
@@ -100,6 +101,7 @@ export default function CharacterSheet(){
  <div className="sheet-rule"><span>{c.sheetKind==='monster'?'MONSTER RECORD':c.sheetKind==='npc'?'NPC RECORD':'CHARACTER RECORD'}</span><span>{c.sheetKind==='monster'?'CR '+challengeRatingLabel(c.creature?.challengeRating??null):'LEVEL '+c.level}</span></div>
  <div className="identity"><div className="identity-main"><F className="character-name" label="Character name" value={c.name} onChange={v=>edit(d=>{d.name=v})}/><p className="character-subtitle">{c.sheetKind==='monster'?c.size+' '+c.creature?.type+' · '+c.hitDice:c.race+' · '+c.classes}</p></div><div className="character-seal"><strong>{t.ac}</strong><small>ARMOR CLASS</small></div></div>
  {c.sheetKind!=='monster'&&<p className="fine">{c.advancementMode==='gestalt'?'Gestalt advancement: each pair counts as one character level. '+(c.gestaltProgression?.bonusMethod==='fractional-v1'?'Optional fractional BAB and saves.':'Printed-table BAB and saves.'):'Standard advancement: class levels count separately.'}</p>}
+ <GestaltRuleWarnings c={c}/>
  {c.sheetKind!=='monster'&&<LevelUp key={record?.id??'new'} c={c} edit={edit} navigate={setTab}/>}
  <div className="quick-vitals"><span><b>{c.hp}</b> / {c.maxHp} HP</span><span>Touch <b>{t.touch}</b></span><span>Flat-footed <b>{t.flat}</b></span><span><b>{c.speed}</b> ft.</span></div>
  {c.sheetKind!=='monster'&&<AdvancementReminders c={c} edit={edit} openFeats={()=>setTab('features')}/>}

@@ -1,6 +1,7 @@
 import {abilityKeys,newCharacter,uid,characterSchema,type Character} from './model.ts';
 import {findClass,copyClassFeatures} from './classes.ts';
 import {gestaltProgressionSchema,type GestaltBonusMethod} from './gestalt-schema.ts';
+import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 import {initializeClassResources} from './level-up.ts';
 import {findRace} from './ancestry.ts';
 import {activateAutomation} from './automation.ts';
@@ -89,6 +90,10 @@ export function createPlayerCharacter(options:CharacterCreationOptions):Characte
 function createPairedCharacter(options:CharacterCreationOptions):Character{
  const pairs=options.gestaltPairs;
  if(!pairs||pairs.length!==options.level)throw new Error('Choose two classes for every starting character level.');
+ for(const [index,pair] of pairs.entries()){
+  const problem=gestaltVariantPairProblem(pair.left,pair.right);
+  if(problem)throw new Error('Starting level '+(index+1)+': '+problem);
+ }
  const definitions=pairs.map((pair,index)=>[pair.left,pair.right].map(id=>{
   const def=findClass(id);
   if(!def||def.id!==id)throw new Error('Choose a supported class for starting level '+(index+1)+'.');

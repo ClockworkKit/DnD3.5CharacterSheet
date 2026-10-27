@@ -3,6 +3,7 @@ export {gestaltBonusMethodSchema,gestaltProgressionSchema,type GestaltBonusMetho
 import type {Character,ClassLevel} from './model.ts';
 import {classCatalog,classHitDie,classSkillPoints,type ClassDefinition} from './classes.ts';
 import {hasAlternateFeature} from './alternate-features.ts';
+import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 import type {LevelRow} from './level-history.ts';
 
 /** Extension point for source-specific class families and combination prestige rules. */
@@ -14,7 +15,7 @@ export const gestaltClassPolicies:Readonly<Record<string,GestaltClassPolicy>>={
  'mystic-theurge':{combinationPrestige:true},
  'cerebremancer':{combinationPrestige:true},
 };
-export type GestaltOptions={definitions?:readonly ClassDefinition[];policies?:Readonly<Record<string,GestaltClassPolicy>>};
+export type GestaltOptions={definitions?:readonly ClassDefinition[];policies?:Readonly<Record<string,GestaltClassPolicy>>;allowHistoricalFamilyConflicts?:boolean};
 export type BaseProgression={bab:number;fort:number;ref:number;will:number};
 const baseStats=['bab','fort','ref','will'] as const;
 const rateUnits={full:12,medium:9,poor:6,good:6} as const;
@@ -28,7 +29,10 @@ export type GestaltLevelRow=LevelRow & {
 export function characterGestaltRows(c:Character):GestaltLevelRow[]|null{
  if(c.advancementMode!=='gestalt')return null;
  if(!c.gestaltProgression)throw new Error('Gestalt advancement requires a recorded pair for every level.');
- return gestaltLevelSequence(c,c.gestaltProgression);
+ // Preserve existing sheets made before catalog variants were classified. New
+ // creation and level-up validate each proposed pair before adding it. The sheet
+ // prominently reports historical conflicts; loading never removes a class.
+ return gestaltLevelSequence(c,c.gestaltProgression,{allowHistoricalFamilyConflicts:true});
 }
 
 /** Full effective-class-level advancement: overlapping eligible sides count once. */
@@ -132,6 +136,8 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   const left=resolve(pair.left),right=resolve(pair.right),sides=[left,right];
   for(const target of pair.castingTargets??[])if(!sides.some(s=>s.def.id===target.classId))throw new Error('Prestige casting target does not belong to either class at this paired level.');
   if((left.policy.family??left.def.id)===(right.policy.family??right.def.id))throw new Error('A gestalt level cannot combine versions of the same class.');
+  const variantProblem=gestaltVariantPairProblem(left.def.id,right.def.id);
+  if(variantProblem&&!options.allowHistoricalFamilyConflicts)throw new Error(variantProblem);
   if(sides.every(s=>s.def.kind==='Prestige'))throw new Error('A gestalt level cannot combine two prestige classes.');
   for(const a of pair.approvals)if(!sides.some(s=>s.def.id===a.classId&&s.def.kind==='Prestige'&&s.policy.combinationPrestige))throw new Error('Combination-class approval does not match this level.');
   for(const s of sides)if(s.def.kind==='Prestige'&&s.policy.combinationPrestige&&!pair.approvals.some(a=>a.classId===s.def.id))throw new Error(s.def.name+' requires a named GM approval and reason for gestalt.');
