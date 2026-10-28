@@ -2,6 +2,7 @@
 import {armorBreakdown,rogueCombatFeatures,setDeathsRuin} from '@/lib/combat-explanations';
 import {signed} from '@/lib/rules';
 import {Check,type SheetProps} from './sheet-ui';
+import {TrapDefenses} from './trap-defenses';
 
 export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
  const {armor,load,encumbrance,basePenalty,baseDexCap}=armorBreakdown(c);
@@ -16,9 +17,10 @@ export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
 }
 export function RogueCombatFeatures({c,edit}:Pick<SheetProps,'c'|'edit'>){
  const features=rogueCombatFeatures(c),ctx=c.automation.context;
- if(!features.evasion&&!features.uncanny.length&&!features.uncannyDefense.improved&&!features.deathsRuin)return null;
+ if(!features.evasion&&!features.uncanny.length&&!features.uncannyDefense.improved&&!features.deathsRuin)return <TrapDefenses c={c} edit={edit}/>;
  return <div className="subcard">
  <h3>Defensive class features & conditional attacks</h3>
+ <TrapDefenses c={c} edit={edit}/>
  {features.evasion&&<div aria-label="Evasion class features">
  <p className="fine"><strong>{features.defensive.tier>1?'Improved evasion':'Evasion'} — class feature, not a feat.</strong> Against an effect that allows a Reflex save for half damage, Evasion prevents damage on success. Improved evasion also halves damage on failure. Duplicate grants do not stack or automatically upgrade Evasion. Resolve damage at the table; the sheet does not deduct it automatically.</p>
  <ul>{features.defensive.sources.map(source=><li key={source.classId}>{source.name}: {source.tier>1?'improved evasion':'evasion'} — {source.blocked?'unavailable because of '+source.blocked:'available under recorded conditions'}.</li>)}</ul>

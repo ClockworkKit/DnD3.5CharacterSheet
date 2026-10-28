@@ -41,7 +41,7 @@ export function gestaltSharedLevelCount(c:Character,eligible:(side:GestaltClassA
  return rows?rows.reduce((total,row)=>total+Number([row.left,row.right].some(eligible)),0):null;
 }
 
-export type GestaltFeatureProgression={rate:number;cumulative:(level:number)=>number};
+export type GestaltFeatureProgression={rate:number|((level:number)=>number);cumulative:(level:number)=>number};
 /**
  * Discrete shared features use their faster underlying progression, not the
  * larger rounded grant this level. Equal rates retain the previous class, then
@@ -56,9 +56,10 @@ export function gestaltFeatureLedger(c:Character,policies:Readonly<Record<string
   const candidates=[row.left,row.right].flatMap(side=>{
    const policy=policies[side.classId];if(!policy)return [];
    const current=policy.cumulative(side.classLevel),before=side.classLevel>1?policy.cumulative(side.classLevel-1):0;
-   if(!Number.isFinite(policy.rate)||policy.rate<0||![current,before].every(n=>Number.isInteger(n)&&n>=0)||current<before)
+   const rate=typeof policy.rate==='function'?policy.rate(side.classLevel):policy.rate;
+   if(!Number.isFinite(rate)||rate<0||![current,before].every(n=>Number.isInteger(n)&&n>=0)||current<before)
     throw new Error('A shared feature needs an explicit nonnegative progression policy.');
-   return current>0?[{...side,rate:policy.rate,grant:current-before}]:[];
+   return current>0?[{...side,rate,grant:current-before}]:[];
   }).sort((a,b)=>b.rate-a.rate||Number(b.classId===previous)-Number(a.classId===previous)
    ||b.classLevel-a.classLevel||(a.classId<b.classId?-1:a.classId>b.classId?1:0));
   const selected=candidates[0];total+=selected?.grant??0;previous=selected?.classId??'';

@@ -210,3 +210,53 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   shared-feature, conversion and end-to-end gates above. The goal is not complete.
 - The preceding variant-family fix `40062bf` deployed successfully (Pages run
   `40590238013`).
+
+## Conditional trap defenses and shared progression (2026-10-28)
+
+- Trap Sense now feeds AC and saving throws for Rogue, Barbarian, Dwarven Defender
+  and focused True Thief. Separate combat controls identify an incoming trap
+  attack and a saving throw against a trap. Only the former adds dodge AC; only
+  the latter adds the Reflex bonus. Dexterity denial, Uncanny Dodge and manual
+  mode retain their existing behavior. The panel explains sources and distinguishes
+  Trap Sense from Trapfinding. Sources: [Rogue](https://www.d20srd.org/srd/classes/rogue.htm#trapSense),
+  [Barbarian](https://www.d20srd.org/srd/classes/barbarian.htm#trapSense),
+  [Dwarven Defender](https://www.d20srd.org/srd/prestigeClasses/dwarvenDefender.htm#trapSense),
+  [True Thief](https://srd.dndtools.org/srd/classes/baseCpsi/lurk.html#true-thief).
+- Ordinary multiclass bonuses stack. Gestalt reuses the faster-feature ledger
+  and its documented mixed-class/tie interpretation, rather than adding both
+  sides or alternating rounded grants. Rogue 6 // Barbarian 6 gives +2, not +4.
+  Separate later advances contribute. Fractional BAB/save policy does not change
+  this discrete feature. Explicit per-level rates let capped True Thief and
+  Dwarven Defender progressions stop competing after their final grants. No early
+  grant or extra psionic expenditure is invented. This applies
+  [UA's shared-feature rule](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+  using the recorded interpretation, not a claim of uniquely specified mixed-class
+  RAW. Replacements such as Death's Ruin remove only their own source.
+- Fixed a selector mismatch: the UI saved `trap`, while Dungeon Crasher and
+  Relic Hunter checked only `traps`. Both values are accepted without rewriting
+  saves. Dungeon Crasher now uses its published competence type, not untyped,
+  for trap AC/all saves; Relic Hunter adds only its distinct Reflex bonus.
+  Sources: [Dungeon Crasher](https://srd.dndtools.org/srd/classes/baseCore/fighter.html#dungeon-crasher),
+  [Relic Hunter](https://srd.dndtools.org/srd/classes/baseCore/cleric.html#relic-hunter).
+  The old plural value retains its previous coupled AC behavior until the player
+  explicitly sets the separate trap-attack control. The new optional field is
+  absent from untouched legacy saves. Clear combat situation resets both contexts.
+- Removed obsolete Classes guidance claiming gestalt totals require manual entry.
+  No class entries, progression history, ranks, preparations, injury or expenditure
+  are migrated or reset by this change.
+- Nine new regressions cover published boundaries, ordinary/paired/offset
+  progression, slower prestige sources, capped/focused progression, replacements,
+  independent contexts, competence stacking, Relic Hunter, manual mode and
+  idempotent legacy/native reload. All 725 tests passed, plus TypeScript and
+  production build. Existing script and bundle-size warnings remain.
+- Browser QA used synthetic sheets only. Dwarven Defender 6 changed AC 16 to 17
+  independently of Reflex +8 to +9; Clear combat situation restored both. Its
+  exported save retained four damage and two spent stance uses. Rogue 6 //
+  Barbarian 6 displayed Trap Sense +2, AC 16 and Reflex +11 with both contexts;
+  save/reload/export retained actual level 6, three damage and one spent Rage.
+  Both actual browser exports passed the real load pipeline unchanged. No live
+  player save or private export was edited.
+- `bbf1872` deployed successfully (Pages run `40654299259`). Remaining gates
+  include custom-class persistence, further variant/shared-feature cases, mixed
+  Uncanny Dodge, class DR, safe reviewed mode conversion and complete end-to-end
+  scenarios. The overall goal remains incomplete.

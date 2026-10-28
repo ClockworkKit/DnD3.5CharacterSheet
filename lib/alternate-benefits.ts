@@ -1,4 +1,5 @@
 import {equippedArmor,carrying} from './equipment.ts';
+import {isTrapSave,isTrapAttack} from './trap-context.ts';
 import {alternateActionActive} from './alternate-actions.ts';
 import {selectedMonkStyle,monkStyleBonus} from './alternate-grants.ts';
 import type {Character} from './model.ts';
@@ -44,7 +45,7 @@ export function alternateTerms(c:Character,target:string,context:Record<string,s
   if(target==='saves')add('Berserker strength',1+tier);
   if(target==='ac.misc')add('Berserker strength',-2);
  }
- if(hasAlternateFeature(c,'fighter-dungeon-crasher')&&x.saveAgainst==='traps'&&['saves','ac.misc'].includes(target))add('Dungeon Crasher',alternateClassLevel(c,'fighter')>=6?4:2);
+ if(hasAlternateFeature(c,'fighter-dungeon-crasher')&&(target==='saves'&&isTrapSave(String(x.saveAgainst))||target==='ac.misc'&&isTrapAttack(c)))add('Dungeon Crasher',alternateClassLevel(c,'fighter')>=6?4:2,'competence');
  if(hasAlternateFeature(c,'fighter-dungeon-crasher')&&target==='check.STR'&&x.skillUse==='break object')add('Dungeon Crasher',alternateClassLevel(c,'fighter')>=6?10:5);
  const style=selectedMonkStyle(c);
  if(style&&target==='skill.'+style.skill)add(style.name,2);
@@ -55,7 +56,7 @@ export function alternateTerms(c:Character,target:string,context:Record<string,s
  if(hasAlternateFeature(c,'cleric-no-turning')){
   const choice=alternateSettings(c,'cleric-no-turning').choice,skills:Record<string,string>={Cultist:'Bluff',Evangelist:'Diplomacy',Fanatic:'Intimidate',Healer:'Heal',Justicar:'Sense Motive',Sage:'Knowledge (religion)',Theologian:'Knowledge (religion)',Weaponmaster:'Craft (weaponsmith)'};
   if(target==='skill.'+skills[choice])add(choice,2);
-  if(choice==='Relic Hunter'&&target==='save.ref'&&x.saveAgainst==='traps')add(choice,Math.max(1,1+Math.floor((effectiveScore(c,'WIS')-10)/2)));
+  if(choice==='Relic Hunter'&&target==='save.ref'&&isTrapSave(String(x.saveAgainst)))add(choice,Math.max(1,1+Math.floor((effectiveScore(c,'WIS')-10)/2)));
  }
  if(!lasting){
   if(alternateActionActive(c,'swashbuckler-shield-of-blades','blades')&&target==='ac.shield'&&equippedArmor(c).category<=1&&carrying(c).category==='Light')add('Shield of Blades',1+Math.floor(alternateClassLevel(c,'swashbuckler')/5),'shield');
