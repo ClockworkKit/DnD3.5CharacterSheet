@@ -302,3 +302,59 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   verification, remaining shared-feature cases, mixed Uncanny Dodge, reviewed
   mode conversion and full end-to-end scenarios remain unfinished. This milestone
   does not complete the goal.
+
+## Typed class DR and Favored Soul choices (2026-10-28)
+
+- Extended the existing read-only DR resolver to the remaining explicit DR grants
+  in the current class tables: Warlock, Dragonfire Adept, Monk's Perfect Self and
+  Favored Soul. Independent bypasses remain separate; do not add their amounts
+  in standard or gestalt mode. This is not a comprehensive audit of every
+  supplemental feature whose text grants DR under another name.
+- Verified Warlock's cold-iron progression and Dragonfire Adept's magic-bypassed
+  grants against the reproduced published text:
+  [Warlock](https://srd.dndtools.org/srd/classes/baseCarc/warlock.html),
+  [Dragonfire Adept](https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html).
+  Only actual class levels advance these grants. Their supernatural versus
+  extraordinary distinction is explained on sheet. Antimagic suppression is
+  still resolved at the table, not a newly implemented global magic switch.
+- [Perfect Self](https://www.d20srd.org/srd/classes/monk.htm#perfectSelf) requires
+  Monk 20. It is not gained early through
+  [Psionic Fist's limited monk advancement](https://www.d20srd.org/srd/psionic/prestigeClasses/psionicFist.htm#monkAbilities),
+  nor lost merely through armor, helplessness or becoming nonlawful. This change
+  adds its DR only; it does not silently replace saved race/creature-type data.
+- [Favored Soul](https://srd.dndtools.org/srd/classes/baseCd/favoredSoul.html)
+  receives alignment-dependent DR at class level 20: lawful uses silver, chaotic
+  uses cold iron, and neither-lawful-nor-chaotic requires a player choice. A
+  validated optional `defense.favoredSoulDr` records only that neutral choice.
+  It has no schema default, so legacy saves do not acquire an invented choice.
+  Recognized abbreviations/full alignment names are accepted case-insensitively;
+  arbitrary prose and missing alignment show a review notice, not a guessed grant.
+- The selected Favored of Bahamut/Tiamat alternate feature replaces the base
+  grant with 10/epic at level 20, following the same source's variant text.
+  Existing unrelated alternate features do not suppress these defenses. The
+  neutral choice remains saved when alignment or a replacement temporarily makes
+  it irrelevant, and returns when applicable again. Imported notes and manual
+  copies remain untouched; a duplicate is not an additive benefit.
+- Combat provides the neutral selector and a collapsed automatic-source guide;
+  the Sheet summary also identifies missing alignment/choice. All added DR uses
+  the existing manual-calculation switch and nonstacking guidance. The general
+  [special-ability rules](https://www.d20srd.org/srd/specialAbilities.htm#damageReduction)
+  still govern bypasses, applicability and extraordinary/supernatural behavior.
+- Five new regressions first reproduced the missing grants, then passed. They
+  cover non-epic boundaries, actual versus advanced monk levels, alignment forms,
+  missing choices, replacements, side swaps, manual mode, optional-field
+  validation and unchanged native reload. All 735 tests passed, plus TypeScript,
+  production build and whitespace checks; existing bundle/script warnings remain.
+- Browser QA imported only synthetic Favored Soul DR UI QA. An unselected neutral
+  character showed the prompt; selecting cold iron displayed 10/cold iron while
+  retaining 122/126 HP, imported notes and an inactive manual source. Save/reload
+  retained the choice. The actual browser export passed the real schema/load
+  pipeline unchanged, including four damage, two spent first-level spell slots,
+  the manual source and its personal note. Changing alignment to LG displayed
+  10/silver; invalid prose showed a review notice; returning to NG restored the
+  saved cold-iron choice. The explanation was visually checked. No player save
+  or private export was edited.
+- `a021c9b` deployed successfully (Pages run `40707323002`). Custom-class
+  persistence, remaining supplemental/shared features and variant verification,
+  mixed Uncanny Dodge, reviewed mode conversion, and outstanding full end-to-end
+  scenarios remain open. The broader goal is not complete.

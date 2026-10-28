@@ -1,10 +1,10 @@
 'use client';
 import {maxDamageReductionSources,type Character,type DamageReductionSource} from '@/lib/model';
-import {activeDamageReductions,damageReductionStatus,formatDamageReduction,newDamageReductionSource} from '@/lib/damage-reduction';
+import {activeDamageReductions,damageReductionStatus,favoredSoulDamageReduction,formatDamageReduction,newDamageReductionSource} from '@/lib/damage-reduction';
 import {F,N,Choice,Check,Btn,Section,type SheetProps} from './sheet-ui';
 
 export function DamageReductionSummary({c}:{c:Character}) {
-  const sources=activeDamageReductions(c);
+  const sources=activeDamageReductions(c),soul=favoredSoulDamageReduction(c);
   return <div className="damage-reduction-summary">
     {sources.length>0&&<ul className="damage-reduction-list">{sources.map((source,index)=><li key={index+':'+source.id}>
       <strong>{formatDamageReduction(source)}</strong> · {source.source.trim()||'Unnamed source'}
@@ -12,10 +12,13 @@ export function DamageReductionSummary({c}:{c:Character}) {
     </li>)}</ul>}
     {c.defense.dr.trim()&&<p className="fine">Other DR / notes: {c.defense.dr}</p>}
     {!sources.length&&<p className="fine">No active DR sources.{c.defense.dr.trim()?' Check the notes above.':''}</p>}
+    {c.automation.enabled&&soul?.unknownAlignment&&<p className="error-text">Favored Soul DR needs a recognized alignment. Record your alignment on Sheet; lawful grants 10/silver, chaotic grants 10/cold iron, and neutral requires a choice in Combat.</p>}
+    {c.automation.enabled&&soul?.needsChoice&&!soul.bypass&&<p className="error-text">Choose your neutral Favored Soul damage reduction in Combat: 10/silver or 10/cold iron. No choice is assumed from imported notes.</p>}
   </div>;
 }
 
 export function DamageReduction({c,edit,confirm}:Pick<SheetProps,'c'|'edit'|'confirm'>) {
+  const soul=favoredSoulDamageReduction(c);
   function update(id:string,patch:Partial<DamageReductionSource>){
     edit(d=>{const source=d.defense.drSources.find(row=>row.id===id);if(source)Object.assign(source,patch);});
   }
@@ -24,7 +27,8 @@ export function DamageReduction({c,edit,confirm}:Pick<SheetProps,'c'|'edit'|'con
       if(d.defense.drSources.length<maxDamageReductionSources)d.defense.drSources.push(newDamageReductionSource());
     })}>+ Add DR</Btn>}>
     <DamageReductionSummary c={c}/>
-    <p className="fine">With automatic calculations enabled, earned Barbarian and Dwarven Defender DR appears above without a manual entry. Recorded alternate features can replace a class grant. Other sources remain editable below. Existing entries and imported notes are never removed; an old manual copy of a class ability is not an extra stacking bonus.</p>
+    {soul?.needsChoice&&<Choice label="Neutral Favored Soul DR choice" value={c.defense.favoredSoulDr||'unselected'} options={[[ 'unselected','Choose a bypass'],['silver','DR 10/silver'],['cold iron','DR 10/cold iron']]} onChange={v=>edit(d=>{if(v==='silver'||v==='cold iron')d.defense.favoredSoulDr=v;else delete d.defense.favoredSoulDr})}/>}
+    <details><summary>Automatic class sources & existing entries</summary><p className="fine">With automatic calculations enabled, earned Barbarian, Dwarven Defender, Warlock, Monk (Perfect Self), Dragonfire Adept and Favored Soul DR appears without a manual entry. Recorded alternate features can replace a grant. Other sources remain editable below. Existing entries and imported notes are never removed; an old manual copy is not an extra stacking bonus. A neutral Favored Soul choice is retained if alignment or class options temporarily make it inapplicable.</p></details>
     <p className="fine">DR applies to weapon and natural-attack damage, not energy damage. Use the best applicable source, not their sum, unless an ability explicitly permits stacking. Armor still grants normal AC; armor DR is a separate optional campaign rule.</p>
     {c.defense.drSources.map((source,index)=>{
       const missingGear=!!source.gearId&&!c.gear.some(item=>item.id===source.gearId);

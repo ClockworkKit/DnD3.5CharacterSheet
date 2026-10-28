@@ -10,6 +10,65 @@ import {gainLevel} from '../lib/level-up.ts';
 const create=(kind='Barbarian',level=7)=>createPlayerCharacter({name:'Class DR QA',kind,level,raceId:'human',scores:{STR:14,DEX:14,CON:14,INT:12,WIS:10,CHA:10},method:'manual'});
 const earned=c=>activeDamageReductions(c).filter(s=>s.id.startsWith('class-dr:'));
 
+test('Warlock and Dragonfire Adept use their class levels and correct bypass at every non-epic boundary',()=>{
+ for(let level=1;level<=20;level++)for(const id of ['warlock','dragonfire-adept']){
+  const c=create('Fighter',1);c.classLevels=[{id:'source',classId:id,name:id,level,notes:''}];
+  const amount=id==='warlock'?Math.floor((level+1)/4):level>=16?5:level>=6?2:0;
+  assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),amount?[[amount,id==='warlock'?'cold iron':'magic']]:[],id+' '+level);
+ }
+});
+
+test('Perfect Self requires twenty actual Monk levels, not Psionic Fist advancement or an unarmored condition',()=>{
+ const c=create('Monk',19);assert.equal(earned(c).length,0);
+ c.classLevels.push({id:'fist',classId:'psionic-fist',name:'Psionic Fist',level:1,notes:''});assert.equal(earned(c).length,0);
+ c.classLevels.find(e=>e.classId==='monk').level=20;
+ c.gear.push({id:'armor',name:'Full plate',qty:1,weight:50,carried:true,equipped:true,notes:''});
+ c.automation.context.helpless=true;c.alignment='Chaotic good';
+ assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[10,'magic']]);
+ assert.equal(c.creature,null,'DR does not silently rewrite creature type');
+});
+
+test('Favored Soul DR follows lawful/chaotic alignment, neutral choice and the draconic replacement',()=>{
+ const c=create('Favored Soul',20);
+ for(const alignment of ['LG','LN','LE',' Lawful   Good ','lawful neutral','Lawful evil']){
+  c.alignment=alignment;assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[10,'silver']]);
+ }
+ for(const alignment of ['CG','CN','CE','Chaotic good','Chaotic neutral','Chaotic evil']){
+  c.alignment=alignment;assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[10,'cold iron']]);
+ }
+ for(const alignment of ['N','TN','NG','NE','True neutral','Neutral','Neutral good','Neutral evil']){
+  c.alignment=alignment;delete c.defense.favoredSoulDr;assert.equal(earned(c).length,0,'neutral requires a saved choice');
+  for(const choice of ['silver','cold iron']){c.defense.favoredSoulDr=choice;assert.equal(earned(c)[0].bypass,choice);}
+ }
+ c.alignment='not lawful';assert.equal(earned(c).length,0,'unknown text is not parsed as lawful');
+ c.alignment='LG';c.defense.favoredSoulDr='cold iron';assert.equal(earned(c)[0].bypass,'silver','lawful rule overrides a dormant neutral choice');
+ c.alternateFeatures.selected=['favored-soul-favored-of-bahamut-tiamat'];assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[10,'epic']]);
+ c.classLevels[0].level=19;assert.equal(earned(c).length,0);
+ c.classLevels[0].level=20;c.alternateFeatures.selected=[];assert.equal(earned(c)[0].bypass,'silver');
+});
+
+test('typed DR remains independent in gestalt and existing non-DR replacement choices do not remove it',()=>{
+ const c=createPlayerCharacter({name:'Typed DR QA',kind:'Fighter',level:20,raceId:'human',scores:{STR:14,DEX:14,CON:14,INT:12,WIS:10,CHA:10},method:'manual',advancementMode:'gestalt',gestaltPairs:Array.from({length:20},()=>({left:'monk',right:'warlock'}))});
+ assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[5,'cold iron'],[10,'magic']]);
+ c.alternateFeatures.selected=['warlock-fiendish-flamewreath','monk-invisible-fist'];
+ assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[5,'cold iron'],[10,'magic']]);
+ for(const row of c.gestaltProgression.levels)[row.left,row.right]=[row.right,row.left];
+ assert.deepEqual(earned(c).map(s=>[s.amount,s.bypass]),[[5,'cold iron'],[10,'magic']]);
+ c.automation.enabled=false;assert.equal(earned(c).length,0);
+});
+
+test('neutral choice persists without adding defaults or overwriting manual notes, damage or spent spells',async()=>{
+ const c=create('Favored Soul',20);c.alignment='NG';c.hp-=4;c.casters[0].slots[1].used=2;
+ assert.equal('favoredSoulDr' in characterSchema.parse(c).defense,false);
+ c.defense.favoredSoulDr='cold iron';c.defense.dr='Player imported DR notes';
+ c.defense.drSources=[{...newDamageReductionSource(),source:'Stoneskin',amount:10,bypass:'adamantine',notes:'Remaining absorption: 27'}];
+ const before=structuredClone(c);activeDamageReductions(c);assert.deepEqual(c,before);
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+ assert.deepEqual(loaded,c);assert.equal(loaded.maxHp-loaded.hp,4);assert.equal(loaded.casters[0].slots[1].used,2);
+ assert.equal(earned(loaded)[0].bypass,'cold iron');
+ for(const value of ['magic','epic','',null]){const bad=structuredClone(c);bad.defense.favoredSoulDr=value;assert.equal(characterSchema.safeParse(bad).success,false);}
+});
+
 test('Barbarian and Dwarven Defender DR appears at every published boundary without requiring rage or stance',()=>{
  for(const [id,limit] of [['barbarian',20],['dwarven-defender',10]])for(let level=1;level<=limit;level++){
   const c=create('Fighter',1);c.classLevels=[{id:'class',classId:id,name:id,level,notes:''}];
