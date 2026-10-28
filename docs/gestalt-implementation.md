@@ -176,3 +176,37 @@ The user chose **printed-table progressions by default; fractional bonuses optio
 - Six new regression tests cover source classifications, both orderings and later starting rows, atomic rejection, compiler metadata, unchanged native import/reload, valid advancement of historical conflicts, and unchanged standard progression. All **711 tests passed**, plus TypeScript, production build and whitespace checks. Existing build warnings remain.
 - Production-browser QA used only synthetic data: imported Psion 2 // Erudite 2 at 9/12 HP with 1/2 power points spent, confirmed the historical warning and rejection of another conflicting pair, then advanced Psion 3 // Fighter 1 while retaining Erudite 2. Save/reload and the actual browser export retained level 3, 17/20 HP, spent points 1/2 and the two historical warnings. The real schema/load path accepted that export without changes. A new Psion // Erudite creation attempt stayed in the dialog with the readable validation error and did not create a character. Private exports and player saves were untouched.
 - The preceding RAW/Uncanny Dodge commit `df9a7d0` deployed successfully (Pages run `40589240811`). The overall goal remains incomplete: custom classes, remaining variant-source verification, other shared/supplemental features, mixed Uncanny Dodge cases, reviewed mode conversion and remaining end-to-end gates still require work.
+
+## Dwarven Defender table and defensive grants (2026-10-28)
+
+- Found a source-table mapping defect: the SRD table puts AC Bonus before Special,
+  but the importer assumed Special was always the sixth column. Corrected only
+  Dwarven Defender in both generated catalogs and its importer. Feature summaries,
+  advancement previews and the browser reference now retain the abilities and a
+  labeled dodge bonus instead of bare AC numbers.
+- Added its missing Uncanny Dodge at class level 2 and Improved Uncanny Dodge at
+  class level 6, following the [published SRD class rules](https://www.d20srd.org/srd/prestigeClasses/dwarvenDefender.htm).
+  Standard second-source upgrades remain separate from gestalt's shared-feature
+  policy. Mixed/staggered gestalt histories still show the documented review
+  notice; this change does not invent their missing ruling.
+- Existing generated cards repair only an exact old numeric-prefix match. Personal
+  additions, counters and sources remain intact; custom descriptions and cards
+  too close to their text-size limit are left alone. Calculations do not depend on
+  the card's wording. No player saves or private exports were changed.
+- Five regressions cover catalog/reference parity, real ordinary and paired
+  advancement, level boundaries, AC while flat-footed/immobilized, duplicate
+  grants, native reload, narrowly recognized legacy cards, text limits, damage
+  and spent stance uses. The full suite passed 716 tests; TypeScript, production
+  build and whitespace checks passed. Existing bundle/script warnings remain.
+- Browser QA imported only a synthetic legacy Fighter 7 / Dwarven Defender 6.
+  The table and repaired feature card displayed all milestones and retained the
+  appended player note. Combat showed AC/touch/flat-footed 16 and the rogue-level
+  10 exception. Saving, reloading and exporting retained 119/123 HP and two spent
+  stance uses; the actual exported file passed the real load pipeline unchanged.
+- Remaining audit findings: Trap Sense and Dwarven Defender DR are not yet wired
+  to automatic defensive calculations (the existing DR editor is manual). The
+  standard Classes tab also retains obsolete guidance to enter gestalt totals
+  manually. These are unfinished work, alongside the broader custom-class,
+  shared-feature, conversion and end-to-end gates above. The goal is not complete.
+- The preceding variant-family fix `40062bf` deployed successfully (Pages run
+  `40590238013`).

@@ -88,6 +88,17 @@ export function syncClassSources(c:Character){
 export function syncClassRuleText(c:Character){
  for(const e of c.classLevels){
   const f=c.features.find(f=>f.id==='class-summary-'+e.id),rules=classRuleText(e.classId);
+  // Repair only the exact generated prefix from the old misaligned SRD table.
+  // Keep the remainder (including personal additions), counters and source intact.
+  if(f&&e.classId==='dwarven-defender'){
+   const rows=findClass(e.classId)!.levels.filter(r=>r.level<=e.level);
+   const old=rows.map(r=>`Level ${r.level}: +${1+Math.floor((r.level-1)/3)}`).join('\n');
+   if(old&&(f.description===old||f.description.startsWith(old+'\n\n'))){
+    const corrected=rows.map(r=>`Level ${r.level}: ${r.special}`).join('\n');
+    const description=corrected+f.description.slice(old.length);
+    if(description.length<=20000)f.description=description;
+   }
+  }
   if(f&&rules&&!f.description.includes(classRuleHeading)&&f.description.includes('Full class reference: ')&&f.description.length+rules.length<=20000)f.description+=rules;
  }
 }

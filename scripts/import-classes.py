@@ -29,6 +29,11 @@ for filename in ['character-classes-i.html','character-classes-ii.html','prestig
    cells=[plain(x) for x in re.findall(r'<td\b[^>]*>(.*?)</td>',tr,re.S)]
    if not cells or not re.match(r'^\d+(st|nd|rd|th)$',cells[0]) or len(cells)<6:continue
    row={'level':number(cells[0]),'bab':number(cells[1]),'fort':number(cells[2]),'ref':number(cells[3]),'will':number(cells[4]),'special':cells[5], 'extra':cells[6:]}
+   # This SRD table inserts AC Bonus before Special. Fold the labeled bonus
+   # into the feature text so both the catalog and browser reference retain it.
+   if cid=='dwarven-defender':
+    row['special']=cells[6]+'; AC dodge bonus '+cells[5]
+    row['extra']=[]
    if cid in spellclasses:
     row['slots']=[None]*10
     for n,v in enumerate(cells[6:]):
@@ -38,6 +43,7 @@ for filename in ['character-classes-i.html','character-classes-ii.html','prestig
     row['powerPoints']=number(cells[6]);row['powersKnown']=number(cells[7]);row['powerLevel']=number(cells[8])
    rows.append(row)
   if not rows:raise ValueError('No rows '+cid)
+  if cid=='dwarven-defender':headers=[h for h in headers if h!='AC Bonus']
   skills=re.search(r'<h3[^>]*class-skills[^>]*>.*?</h3>\s*<p>(.*?)</p>',body,re.S)
   skillpoints=re.search(r'Skill Points at Each(?: Additional)? Level:</strong>\s*(\d+)',body)
   req=re.search(r'<h3[^>]*requirements[^>]*>.*?</h3>(.*?)(?=<h3)',body,re.S)

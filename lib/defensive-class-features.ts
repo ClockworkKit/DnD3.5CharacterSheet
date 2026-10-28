@@ -10,8 +10,8 @@ const evasionLevels:Readonly<Record<string,{level:number;improved?:number;armor:
  shadowdancer:{level:2,improved:10,armor:1},swordsage:{level:9,improved:17,armor:1},
  ninja:{level:12,armor:0},scout:{level:5,armor:1},lurk:{level:9,armor:1},'psychic-rogue':{level:2,armor:1},
 };
-const uncannyLevels:Readonly<Record<string,number>>={barbarian:2,rogue:4,assassin:2,shadowdancer:2,warblade:2,scout:2,'psychic-rogue':7,'fist-of-the-forest':2};
-const improvedUncannyLevels:Readonly<Record<string,number>>={barbarian:5,rogue:8,assassin:5,shadowdancer:5,warblade:6,'psychic-rogue':9};
+const uncannyLevels:Readonly<Record<string,number>>={barbarian:2,rogue:4,assassin:2,shadowdancer:2,warblade:2,scout:2,'psychic-rogue':7,'fist-of-the-forest':2,'dwarven-defender':2};
+const improvedUncannyLevels:Readonly<Record<string,number>>={barbarian:5,rogue:8,assassin:5,shadowdancer:5,warblade:6,'psychic-rogue':9,'dwarven-defender':6};
 const focused=(c:Character,id:string)=>c.psionics.some(p=>p.manifesting?.classId===id&&p.focused);
 
 /** Duplicate grants provide the best available benefit, never extra damage reductions. */
