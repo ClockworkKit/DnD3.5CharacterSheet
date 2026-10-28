@@ -260,3 +260,45 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   include custom-class persistence, further variant/shared-feature cases, mixed
   Uncanny Dodge, class DR, safe reviewed mode conversion and complete end-to-end
   scenarios. The overall goal remains incomplete.
+
+## Earned class damage reduction (2026-10-28)
+
+- Reproduced missing automatic DR for Barbarian and Dwarven Defender with five
+  failing regression cases. The existing DR resolver now derives Barbarian's
+  non-epic grants at levels 7/10/13/16/19 and Dwarven Defender's grants at 6/10.
+  These grants require neither rage nor defensive stance. Sources:
+  [Barbarian](https://www.d20srd.org/srd/classes/barbarian.htm#damageReduction),
+  [Dwarven Defender](https://www.d20srd.org/srd/prestigeClasses/dwarvenDefender.htm#damageReduction).
+- Keep independent sources visible, not summed: the
+  [general DR rule](https://www.d20srd.org/srd/specialAbilities.htm#damageReduction)
+  selects the best applicable protection per hit. This remains true in standard
+  and gestalt mode; no shared-feature ledger invents additive DR. Different
+  bypasses remain distinct. Existing explicitly stacking Berserker Strength stays
+  separate and its explanation is now available in the summary. Damage and HP
+  remain resolved at the table, not automatically applied.
+- Reuse source-specific alternate-feature replacement handling. Devil's Luck,
+  Streetfighter and Totem Manifestation remove only Barbarian's ordinary DR.
+  Replacing rage with Berserker Strength does not remove ordinary DR. Manual
+  calculation mode retains only the existing manually controlled sources.
+- These are read-only derived rows, not migrations or new saved entries. Preserve
+  all old manual class copies, armor links, free-text imports and personal notes;
+  explain that a duplicate manual copy is not an additional stacking benefit.
+  Armor still grants AC. Combat and the main Sheet summary both show earned DR,
+  with collapsible source/condition explanations. Unsupported class DR, spells,
+  racial sources and house rules still use the existing manual tracker.
+- Five regressions cover every non-epic boundary, replacements/restoration,
+  independent sources and bypasses, manual mode, no free-text feature inference,
+  gestalt side swaps/fractional settings, ordinary level-up, damage/counters and
+  unchanged native reload. All 730 tests passed; TypeScript, production build
+  and whitespace checks passed. Existing build script/bundle warnings remain.
+- Browser QA reused only Defender Legacy UI QA on localhost. Both Sheet and
+  Combat displayed DR 3/— at Dwarven Defender 6, with the source explanation
+  checked visually. Save/reload retained actual level 13, 119/123 HP and AC 17.
+  A fresh browser export download was not captured during this pass; native
+  serialization/load preservation is covered by the regression tests. No private
+  exports or player saves were edited.
+- The trap-defense commit `40dc1e9` deployed successfully (Pages run
+  `40705477295`). Further class DR sources, custom-class persistence, variant
+  verification, remaining shared-feature cases, mixed Uncanny Dodge, reviewed
+  mode conversion and full end-to-end scenarios remain unfinished. This milestone
+  does not complete the goal.

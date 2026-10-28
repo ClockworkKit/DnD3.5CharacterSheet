@@ -6,8 +6,9 @@ import {F,N,Choice,Check,Btn,Section,type SheetProps} from './sheet-ui';
 export function DamageReductionSummary({c}:{c:Character}) {
   const sources=activeDamageReductions(c);
   return <div className="damage-reduction-summary">
-    {sources.length>0&&<ul className="damage-reduction-list">{sources.map(source=><li key={source.id}>
+    {sources.length>0&&<ul className="damage-reduction-list">{sources.map((source,index)=><li key={index+':'+source.id}>
       <strong>{formatDamageReduction(source)}</strong> · {source.source.trim()||'Unnamed source'}
+      {source.notes.trim()&&<details><summary>Conditions & source</summary><p className="fine">{source.notes}</p></details>}
     </li>)}</ul>}
     {c.defense.dr.trim()&&<p className="fine">Other DR / notes: {c.defense.dr}</p>}
     {!sources.length&&<p className="fine">No active DR sources.{c.defense.dr.trim()?' Check the notes above.':''}</p>}
@@ -23,6 +24,8 @@ export function DamageReduction({c,edit,confirm}:Pick<SheetProps,'c'|'edit'|'con
       if(d.defense.drSources.length<maxDamageReductionSources)d.defense.drSources.push(newDamageReductionSource());
     })}>+ Add DR</Btn>}>
     <DamageReductionSummary c={c}/>
+    <p className="fine">With automatic calculations enabled, earned Barbarian and Dwarven Defender DR appears above without a manual entry. Recorded alternate features can replace a class grant. Other sources remain editable below. Existing entries and imported notes are never removed; an old manual copy of a class ability is not an extra stacking bonus.</p>
+    <p className="fine">DR applies to weapon and natural-attack damage, not energy damage. Use the best applicable source, not their sum, unless an ability explicitly permits stacking. Armor still grants normal AC; armor DR is a separate optional campaign rule.</p>
     {c.defense.drSources.map((source,index)=>{
       const missingGear=!!source.gearId&&!c.gear.some(item=>item.id===source.gearId);
       const equipmentOptions:Array<[string,string]>=[['manual','Manual toggle'],...c.gear.map(item=>['gear:'+item.id,item.name||'Unnamed item'] as [string,string])];
