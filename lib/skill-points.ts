@@ -12,7 +12,7 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   if(findRace(c.ancestry.raceId)?.alwaysClassSkills?.includes(skill.name))return true;
   if(row.classId==='racial')return (raceProgression(c.ancestry.raceId)?.classSkills||[]).some(name=>name===skill.name||name.replace(/ \(any\)$/,'')===skill.name.split(' (')[0]);
   return (row.classIds??[row.classId]).some(classId=>{
-    const definition=findClass(classId);
+    const definition=findClass(classId,c);
     return definition?alternateClassSkill(c,classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;
   });
 }

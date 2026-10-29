@@ -115,12 +115,13 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   entries.set(entry.id,entry);classIds.add(entry.classId);
  }
  const definitions=new Map(classCatalog.map(d=>[d.id,d]));
- for(const d of options.definitions??[]){
+ for(const d of [...(c.customClasses??[]).map(row=>row.definition),...options.definitions??[]]){
   if(definitions.has(d.id))throw new Error('A custom class cannot silently replace a catalog class.');
   definitions.set(d.id,d);
  }
  const policies:Record<string,GestaltClassPolicy>={...gestaltClassPolicies};
- for(const [classId,policy] of Object.entries(options.policies??{}))policies[classId]={...policies[classId],...policy,
+ if((c.customClasses??[]).some(row=>options.policies?.[row.definition.id]))throw new Error('Temporary policies cannot replace a saved custom class policy.');
+ for(const [classId,policy] of [...(c.customClasses??[]).map(row=>[row.definition.id,row.policy] as const),...Object.entries(options.policies??{})])policies[classId]={...policies[classId],...policy,
   // Adding custom metadata must not remove a catalog restriction or bypass GM approval.
   combinationPrestige:!!(policies[classId]?.combinationPrestige||policy.combinationPrestige)};
  const ratesByClass=new Map<string,BaseProgression>();

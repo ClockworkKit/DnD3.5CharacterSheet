@@ -17,7 +17,7 @@ function advancingKinds(c:Character,entry:ClassLevel):GestaltCastingTarget['kind
 /** Prestige advances a tradition held before entry, not one gained on/after entry. */
 export function gestaltCastingChoices(c:Character,classIds:readonly string[]){
  return [...new Set(classIds)].flatMap(classId=>{
-  const def=findClass(classId);if(!def)return [];
+  const def=findClass(classId,c);if(!def)return [];
   const old=c.classLevels.find(e=>e.classId===classId);
   const entry:ClassLevel=old?{...old,level:old.level+1}:{id:'pending-'+classId,classId,name:def.name,level:1,notes:''};
   const first=old?c.gestaltProgression?.levels.findIndex(row=>row.left===old.id||row.right===old.id)??-1:-1;

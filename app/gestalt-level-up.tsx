@@ -27,7 +27,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  const sides=[left,right].map(id=>options.find(d=>d.id===id));
  const castingChoices=gestaltCastingChoices(c,[left,right]);
  const hitDie=Math.max(...sides.map(d=>d?.hitDie??1));
- const combinationClasses=[...new Set([left,right])].filter(id=>gestaltClassPolicies[id]?.combinationPrestige);
+ const combinationClasses=[...new Set([left,right])].filter(id=>(gestaltClassPolicies[id]?.combinationPrestige||c.customClasses?.find(row=>row.definition.id===id)?.policy.combinationPrestige));
  const stale=!!review&&review.source!==JSON.stringify(c);
  const clearReview=()=>{setReview(undefined);setError('');};
  function choose(side:'left'|'right',id:string){
@@ -36,7 +36,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  function prepare(){
   try{
    const missing=combinationClasses.find(id=>!approvals[id]?.gm.trim()||!approvals[id]?.reason.trim());
-   if(missing)throw new Error('Record the approving GM and reason for '+findClass(missing)?.name+'.');
+   if(missing)throw new Error('Record the approving GM and reason for '+findClass(missing,c)?.name+'.');
    const castingTargets=castingChoices.map(choice=>{
     const traditionId=targetSelection[choice.classId+':'+choice.kind]??choice.selected;
     if(!traditionId)throw new Error('Choose '+choice.label+' before reviewing this level.');
@@ -75,10 +75,10 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     })}
    </fieldset>}
    {combinationClasses.map(id=><fieldset key={id}>
-    <legend>{findClass(id)?.name}: combination-class approval for this level</legend>
+    <legend>{findClass(id,c)?.name}: combination-class approval for this level</legend>
     <p className="fine">Only record approval already given by your GM. This exception is saved with this pair, not applied to future levels.</p>
-    <F label={'Approving GM for '+findClass(id)?.name} value={approvals[id]?.gm??''} onChange={gm=>{setApprovals(a=>({...a,[id]:{reason:a[id]?.reason??'',gm}}));clearReview();}}/>
-    <F label={'Approval reason for '+findClass(id)?.name} area value={approvals[id]?.reason??''} onChange={reason=>{setApprovals(a=>({...a,[id]:{gm:a[id]?.gm??'',reason}}));clearReview();}}/>
+    <F label={'Approving GM for '+findClass(id,c)?.name} value={approvals[id]?.gm??''} onChange={gm=>{setApprovals(a=>({...a,[id]:{reason:a[id]?.reason??'',gm}}));clearReview();}}/>
+    <F label={'Approval reason for '+findClass(id,c)?.name} area value={approvals[id]?.reason??''} onChange={reason=>{setApprovals(a=>({...a,[id]:{gm:a[id]?.gm??'',reason}}));clearReview();}}/>
    </fieldset>)}
    {c.automation.hpMethod==='rolled'?<N label={'One new Hit Die roll (d'+hitDie+')'} value={die} min={1} max={hitDie} onChange={v=>{setDie(v);clearReview();}}/>:<p>HP method: {c.automation.hpMethod}. The larger Hit Die is used once.</p>}
    <div className="button-row"><Btn disabled={sides.some(d=>!d)} onClick={prepare}>{review?'Refresh paired level review':'Review paired level'}</Btn></div>
@@ -97,7 +97,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
      <p>{c.gestaltProgression?.bonusMethod==='fractional-v1'?'Optional fractional bonuses; totals rounded down.':'Printed-table progressions (standard table convention).'}</p>
      <ul>{(['bab','fort','ref','will'] as const).map(stat=>{
       const b=review.summary.bonusDecision.bonuses[stat];
-      return <li key={stat}>{{bab:'BAB',fort:'Fortitude',ref:'Reflex',will:'Will'}[stat]}: {findClass(b.classId)?.name} {b.classLevel}; contribution {c.gestaltProgression?.bonusMethod==='fractional-v1'?b.units+'/12':signed(b.tableDelta)}; resulting base {signed(b.total)}.</li>;
+      return <li key={stat}>{{bab:'BAB',fort:'Fortitude',ref:'Reflex',will:'Will'}[stat]}: {findClass(b.classId,c)?.name} {b.classLevel}; contribution {c.gestaltProgression?.bonusMethod==='fractional-v1'?b.units+'/12':signed(b.tableDelta)}; resulting base {signed(b.total)}.</li>;
      })}</ul>
     </details>
     <h4>Class milestones</h4>
@@ -105,7 +105,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <h4>New feat and ability choices</h4>
     {review.summary.choices.length?<ul>{review.summary.choices.map(choice=><li key={choice.key}>{choice.label}</li>)}</ul>:<p>No new feat or ability-score choices at this level.</p>}
     <p className="fine">Choices and skill points are allocated after confirmation; no feat or ability increase is selected automatically.</p>
-    {review.summary.castingTargets.length>0&&<><h4>Prestige advancement this level</h4><ul>{review.summary.castingTargets.map(target=><li key={target.classId+':'+target.kind}>{findClass(target.classId)?.name} ({target.kind==='psi'?'manifesting':target.kind==='divine'?'divine':'spellcasting'}): {target.traditionId==='none'?'No advancement':(target.kind==='psi'?c.psionics:c.casters).find(p=>p.id===target.traditionId)?.name}.</li>)}</ul></>}
+    {review.summary.castingTargets.length>0&&<><h4>Prestige advancement this level</h4><ul>{review.summary.castingTargets.map(target=><li key={target.classId+':'+target.kind}>{findClass(target.classId,c)?.name} ({target.kind==='psi'?'manifesting':target.kind==='divine'?'divine':'spellcasting'}): {target.traditionId==='none'?'No advancement':(target.kind==='psi'?c.psionics:c.casters).find(p=>p.id===target.traditionId)?.name}.</li>)}</ul></>}
     {(review.summary.casting.length>0||review.summary.psionics.length>0)&&<>
      <h4>Resulting spellcasting and psionics</h4>
      <ul>{review.summary.casting.map(p=><li key={p.id}>{p.name}: caster level {p.level}; daily slots by spell level: {p.slots.map((max,i)=>i+': '+max).join(', ')}.</li>)}

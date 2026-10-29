@@ -87,6 +87,13 @@ const alignment=(s:string)=>({lg:'lawful good',ng:'neutral good',cg:'chaotic goo
 export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
  const q=checker(c,'class:'+d.id),{check,manual}=q;
  if(d.kind!=='Prestige')return result([]);
+ // Custom source prose is not safely covered by the catalog-specific parser.
+ // Require explicit confirmation of the complete source instead of checking
+ // one recognized clause and silently ignoring its other requirements.
+ if(c.customClasses?.some(row=>row.definition.id===d.id)){
+  manual('Verify all entry requirements in '+d.source+': '+(d.requirements||'consult the complete class source'));
+  return result(q.rows);
+ }
  const bab=prerequisiteBab(c);
  const spellRequirement=(s:string)=>{let matched=false;for(const m of s.matchAll(/(\d+)(?:st|nd|rd|th)(?:-level| level)? (arcane|divine) spells?/gi)){matched=true;check(m[0],canSpell(c,+m[1],m[2].toLowerCase()));}if(/without preparation/i.test(s)){matched=true;check(s,canSpell(c,0,'arcane',true));}
   if(/mage hand/i.test(s)){matched=true;check('Able to cast mage hand',knownSpells(c,'arcane').some(s=>s.id==='mage-hand'));}

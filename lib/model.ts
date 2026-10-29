@@ -9,6 +9,7 @@ import { z } from 'zod';
 import {classSystemsSchema} from './class-systems.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
 import {findClass,makeCaster,makePsionic,applyStartingClass,applyClassTotals} from './classes.ts';
+import {customClassesSchema} from './custom-class-schema.ts';
 import {selectRace,findRace,effectiveScore} from './ancestry.ts';
 
 export const abilityKeys = ['STR','DEX','CON','INT','WIS','CHA'] as const;
@@ -41,7 +42,7 @@ const characterDataSchema = z.object({
   alternateFeatures:alternateFeaturesSchema,
   sheetKind:z.enum(['pc','npc','monster']).default('pc'),creature:creatureProfileSchema.nullable().default(null),
   roll20Import:roll20ImportDataSchema.extend({factotumArchivedCasting:z.array(casterSchema).max(15).optional()}).optional(),
-  racialState:racialStateSchema,prerequisiteConfirmations:z.record(z.string().max(1000),z.boolean()).default({}),classSystems:classSystemsSchema,schemaVersion:z.literal(1),clericSpecialty:z.enum(['none','axe-brother']).default('none'),factotum:z.object({spent:count.default(0),inspirationExtra:count.default(0),knowledgeUsed:z.array(ident).max(120).default([]),pietyUsed:count.default(0),dodgeUsed:z.boolean().default(false),spells:z.array(z.object({spell:spellSchema,spent:z.boolean().default(false)})).max(8).default([])}).default({}), name:short.min(1),race:short,classes:z.string().max(2000),level:z.number().int().min(1).max(100),alignment:short,deity:short,player:short,experience:z.number().int().min(0).max(100000000),languages:z.string().max(2000),appearance:z.string().max(2000),size:z.enum(['Fine','Diminutive','Tiny','Small','Medium','Large','Huge','Gargantuan','Colossal']),
+  racialState:racialStateSchema,prerequisiteConfirmations:z.record(z.string().max(4000),z.boolean()).default({}),classSystems:classSystemsSchema,schemaVersion:z.literal(1),clericSpecialty:z.enum(['none','axe-brother']).default('none'),factotum:z.object({spent:count.default(0),inspirationExtra:count.default(0),knowledgeUsed:z.array(ident).max(120).default([]),pietyUsed:count.default(0),dodgeUsed:z.boolean().default(false),spells:z.array(z.object({spell:spellSchema,spent:z.boolean().default(false)})).max(8).default([])}).default({}), name:short.min(1),race:short,classes:z.string().max(2000),level:z.number().int().min(1).max(100),alignment:short,deity:short,player:short,experience:z.number().int().min(0).max(100000000),languages:z.string().max(2000),appearance:z.string().max(2000),size:z.enum(['Fine','Diminutive','Tiny','Small','Medium','Large','Huge','Gargantuan','Colossal']),
   advancementChoices:z.record(z.string().max(100),z.string().max(200)).default({}),
   scores:z.object({STR:num,DEX:num,CON:num,INT:num,WIS:num,CHA:num}),temps:z.object({STR:num,DEX:num,CON:num,INT:num,WIS:num,CHA:num}),
   hp:num,maxHp:count,tempHp:count,nonlethal:count,hitDice:short,speed:count,initiative:num,bab:num,grapple:num,situational:num,
@@ -55,6 +56,7 @@ const characterDataSchema = z.object({
   conditions:z.string().max(2000),notes:note,background:note,
   automation:automationSchema.default({}),effects:z.array(effectSchema).max(100).default([]),
   classLevels:z.array(classLevelSchema).max(30).default([]),
+  customClasses:customClassesSchema.optional(),
   psionics:z.array(psionicSchema).max(15).default([]),
   ancestry:z.object({raceId:short,abilityAdjustments:z.boolean(),traitBonuses:z.boolean(),racialHitDice:count,levelAdjustment:count,ignoreLevelAdjustment:z.boolean(),powerPointsSpent:count,notes:z.string().max(4000)}).default({raceId:'',abilityAdjustments:false,traitBonuses:false,racialHitDice:0,levelAdjustment:0,ignoreLevelAdjustment:false,powerPointsSpent:0,notes:''}),
 });

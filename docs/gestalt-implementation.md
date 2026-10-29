@@ -391,3 +391,49 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   cases, reviewed mode conversion and full end-to-end gates remain incomplete.
 - The preceding class-DR commit `05f4807` deployed successfully (Pages run
   `40775865197`). The overall goal remains incomplete.
+
+## Saved custom basic-class tables (2026-10-29)
+
+- The compiler's temporary custom-table extension did not survive character
+  storage and was unavailable to guided advancement. Added optional, versioned
+  character-local profiles and connected the shared class lookup, HP/history,
+  BAB/saves, skill union and purchase costs, milestone summaries, standard
+  advancement and paired preview/confirmation. No global registry is changed.
+  See [the profile contract and remaining work](custom-class-profiles.md).
+- The schema requires a complete consecutive table matching explicitly recorded
+  standard BAB/save rates, a source citation, class family and prestige policy.
+  Catalog collisions, duplicate IDs, inconsistent/gapped tables and unsupported
+  data fail instead of being stripped. Unknown legacy classes still use manual
+  statistics and receive no invented profile. A missing gestalt definition cannot
+  silently discard one side, and temporary metadata cannot replace saved policy.
+- The existing [UA gestalt rules](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+  and documented printed/fractional convention remain authoritative. Each pair
+  uses the larger die and skill grant, the union of class skills and nonstacking
+  base progressions. Catalog casting alongside a custom class remains separate;
+  the custom class's name and milestone prose do not grant catalog abilities.
+- Custom prestige entry requires review of the entire recorded source because
+  the existing catalog-specific prose parser cannot certify arbitrary source
+  requirements. This confirmation does not waive the independent per-level GM
+  approval, same-family restriction or two-prestige prohibition. Changed source
+  text invalidates its matching confirmation. Bounded confirmation keys now hold
+  up to 4,000 characters so the complete custom requirements survive saving.
+- Classes and guided level-up recognize saved profiles and display their names,
+  source tables and approval controls. Classes explains that these profiles
+  automate basic progression only. Existing manual counters, personal notes,
+  recorded skill purchases, damage and spent casting remain preserved.
+- Eight regressions cover standard/paired totals, skills, either-side placement,
+  fractional mode, actual advancement, native files, the browser storage API with
+  a fresh client, source confirmations, invalid data and unchanged manual legacy
+  sheets. These use synthetic classes, not claimed published class definitions.
+  The final full suite passed all 749 tests; TypeScript, production build and
+  whitespace checks passed. Existing script and bundle-size warnings remain.
+- This is a foundation milestone, not complete custom-class support. The profile
+  editor and reviewed updates, starting custom selections, custom casting and
+  manifesting metadata, proficiencies and source-specific feature automation
+  remain to implement. Unsupported fields are rejected explicitly. Browser UI
+  verification remains outstanding because local browser use is disabled; the
+  storage-API regression is not a substitute for that UI check. No private
+  exports or player saves were edited.
+- The previous conditional-style fix `caa720e` deployed successfully (Pages run
+  `40852607253`). The broader custom-class, variant/shared-feature, reviewed
+  mode-conversion and full end-to-end gates are not complete.
