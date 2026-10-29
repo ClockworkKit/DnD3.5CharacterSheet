@@ -80,10 +80,28 @@ for example, declaring a Rogue family cannot evade the Psychic Rogue restriction
 New conflicting edits/advancement are refused. Previously saved variant conflicts
 remain readable with warnings; no class or earned level is silently removed.
 
+## New-character setup
+
+The new PC/NPC dialog reuses the same reviewed editor in a separate, in-memory
+creation library. Apply a source-checked base-class table there, then choose it
+as the standard starting class or in any gestalt starting row. Custom choices
+are labeled and selected by ID, so a custom class named Wizard cannot acquire
+the catalog Wizard's casting. An unfinished editor draft must be applied or
+canceled before character creation; closing/reopening the dialog starts an empty
+custom library. No existing player character is used as the draft holder.
+
+Only explicit supplied profiles are copied into the created character. Tables
+are validated and cloned, not installed in the global catalog or shared by
+reference between characters. Standard rules remain the default; neither
+gestalt nor optional HP settings are enabled by adding a custom table. Starting
+HP/history uses the final class sequence. Catalog casting on another gestalt
+side remains independent. Unsupported levels, invalid families, malformed
+profiles and prestige starting classes are rejected before a sheet is saved.
+Prestige entries still use guided advancement after their prerequisites exist.
+
 ## Explicit remaining work
 
-Starting-character selection and custom casting/manifesting metadata are
-unfinished. Version 1 rejects casting
+Custom casting/manifesting metadata remains unfinished. Version 1 rejects casting
 fields rather than discarding them or promising unsupported automation. Manual
 spell/power profiles, custom features and counters remain available separately.
 Proficiencies, bonus feats, conditional powers and shared-feature mechanics are

@@ -14,9 +14,17 @@ import {baseClasses} from '@/lib/classes';
 import {signed} from '@/lib/rules';
 import {abilityMethods,blankScores,startingAssignment,rollAbilityScores,assignedScores,assignAbilityRoll,startingAbilityScores,createPlayerCharacter,type AbilityMethod,type AbilityRoll,type StartingClassPair} from '@/lib/character-creation';
 import {F,N,Choice,Btn} from './sheet-ui';
+import {CustomClassEditor} from './custom-class-editor';
+import {recompute} from '@/lib/automation';
+
+// An in-memory form holder only: never added to storage or copied from a player.
+const emptyClassLibrary=()=>createPlayerCharacter({name:'Creation table draft',kind:'Fighter',level:1,raceId:'human',scores:blankScores(),method:'manual',hpMethod:'maximum'});
 
 export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boolean,onOpenChange:(open:boolean)=>void,busy:boolean,onCreate:(character:Character)=>Promise<boolean>}){
   const [sheetKind,setSheetKind]=useState<'pc'|'npc'|'monster'>('pc');
+  const [classLibrary,setClassLibrary]=useState(emptyClassLibrary);
+  const [classDraftPending,setClassDraftPending]=useState(false);
+  useEffect(()=>{if(open){setClassLibrary(emptyClassLibrary());setKind(value=>value.startsWith('custom-')?'Fighter':value);}},[open]);
   const [name,setName]=useState(''),[kind,setKind]=useState('Fighter'),[raceId,setRaceId]=useState('human'),[level,setLevel]=useState(1);
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
   const [hpMethod,setHpMethod]=useState<Character['automation']['hpMethod']>('rolled'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
@@ -31,8 +39,8 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   const ready=method==='manual'||rolls.length===6,scores=method==='manual'||!ready?manual:assignedScores(rolls,assignment),totals=startingAbilityScores(scores,raceId),race=findRace(raceId);
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
-  async function create(){if(creating||busy||!ready)return;setCreating(true);setError('');try{
-    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
+  async function create(){if(creating||busy||!ready||classDraftPending)return;setCreating(true);setError('');try{
+    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(classLibrary.customClasses?{customClasses:classLibrary.customClasses}:{}),...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
   }catch(e){setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
@@ -40,8 +48,9 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
     <Choice label="Sheet type" value={sheetKind} onChange={v=>setSheetKind(v as typeof sheetKind)} options={[['pc','Player character'],['npc','NPC'],['monster','Monster']]}/>{sheetKind==='monster'?<MonsterCreation busy={busy} onCreate={async c=>{const ok=await onCreate(c);if(ok)onOpenChange(false);return ok}}/>:<fieldset className="sheet-fieldset" disabled={busy||creating}>
       <F label="Character name" value={name} onChange={setName} placeholder="Your adventurer’s name"/>
       <Choice label="Advancement mode" value={advancementMode} onChange={v=>{setAdvancementMode(v as typeof advancementMode);setError('')}} options={[['standard','Standard D&D 3.5e (default)'],['gestalt','Gestalt D&D 3.5e']]}/>
-      <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/>{advancementMode==='standard'&&<Choice label="Starting class" value={kind} onChange={setKind} options={baseClasses.map(d=>d.name)}/>}<N label={advancementMode==='gestalt'?'Starting character level':'Starting class level'} value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
-      {advancementMode==='gestalt'&&<GestaltStartingLevels pairs={startingPairs} onChange={p=>{setPairChoices(p);setError('')}} bonusMethod={bonusMethod} onBonusMethod={setBonusMethod}/>}
+      <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/>{advancementMode==='standard'&&<Choice label="Starting class" value={kind} onChange={setKind} options={[...baseClasses.map(d=>d.name),...(classLibrary.customClasses??[]).filter(p=>p.definition.kind!=='Prestige').map(p=>[p.definition.id,p.definition.name+' (custom)'] as [string,string])]}/>}<N label={advancementMode==='gestalt'?'Starting character level':'Starting class level'} value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
+      {advancementMode==='gestalt'&&<GestaltStartingLevels pairs={startingPairs} onChange={p=>{setPairChoices(p);setError('')}} bonusMethod={bonusMethod} onBonusMethod={setBonusMethod} customClasses={classLibrary.customClasses}/>}
+      <CustomClassEditor key={classLibrary.classLevels[0].id} libraryOnly c={classLibrary} onDraftChange={setClassDraftPending} edit={recipe=>{const next=structuredClone(classLibrary);recipe(next);recompute(next,classLibrary);setClassLibrary(next);setError('')}}/>
       <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={hitPointMethods}/><p className="fine">Standard D&D 3.5e rules are the baseline; gestalt changes advancement only when explicitly selected. Armor grants AC; damage reduction and other house rules are separate optional settings. {hpMethod==='rolled'?'The first Hit Die is maximized. Later starting Hit Dice are rolled once on creation and saved in Notes and Calculations. At level-up, enter your actual die roll.':'This optional HP method applies only to the new character.'}</p>{hasCleric&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
       {advancementMode==='gestalt'&&!!race?.rhd&&<p className="error-box" role="alert">This race has racial Hit Dice. Their placement in gestalt is not yet supported; choose a race without racial Hit Dice or standard advancement.</p>}
@@ -55,7 +64,8 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
       </section>
       <p className="fine">HP, skill points, and spell slots use these abilities. Choose equipment, feats, skills, spells, and any level-based ability increases on the sheet.</p>
       {error&&<p className="error-box" role="alert">{error}</p>}
-      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating} onClick={()=>void create()}>{creating?'Creating…':sheetKind==='npc'?'Create NPC':'Create character'}</Btn></div>
+      {classDraftPending&&<p className="fine">Apply or cancel your custom table draft before creating the character.</p>}
+      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating||classDraftPending} onClick={()=>void create()}>{creating?'Creating…':sheetKind==='npc'?'Create NPC':'Create character'}</Btn></div>
     </fieldset>}
   </DialogContent></Dialog>;
 }

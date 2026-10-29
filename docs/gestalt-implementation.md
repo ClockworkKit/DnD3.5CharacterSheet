@@ -474,3 +474,37 @@ The user chose **printed-table progressions by default; fractional bonuses optio
 - The preceding custom-table foundation `bae7e92` deployed successfully
   (Pages run `40854705615`). See [the profile contract](custom-class-profiles.md)
   for supported behavior and limits.
+
+## Custom tables at character creation (2026-10-29)
+
+- The new PC/NPC dialog reuses the source-reviewed custom editor with an isolated
+  in-memory library. Applied base-class tables appear in standard starting-class
+  and every paired-row selector. Custom labels distinguish name collisions.
+  Unfinished table drafts block creation until applied or canceled; reopening
+  creation resets its custom library. This neither reads a player save into the
+  editor nor creates a temporary stored character.
+- Optional creation profiles are validated and cloned before the existing
+  starting-class/race setup. Shared lookup and initialization use character-local
+  definitions. Custom IDs, not names, select their mechanics, and no global
+  catalog is modified. A profile named Wizard does not grant catalog casting.
+  Unused supplied profiles remain available for later advancement; no profiles
+  are added unless explicitly supplied.
+- Standard defaults, first-die maximum/recorded later rolls, class-level bounds,
+  existing printed/fractional rules and racial-HD restrictions are unchanged.
+  Gestalt uses the final paired sequence for HP/history, independently initializes
+  catalog casting, and rejects same-family choices. Custom prestige entry remains
+  a guided-level-up step after prerequisites are allocated, not a creation bypass.
+- Five regressions cover standard and NPC creation, both gestalt sides, mixed
+  starting pairs, class skills/HP/resources, invalid and short tables, prestige
+  and family restrictions, name collisions, library isolation, later advancement,
+  native save/load and a fresh browser-storage API client. Injuries, training,
+  notes and spent spells survive the latter flows. All 762 tests passed, with
+  TypeScript, production build and whitespace checks. Existing non-module-script
+  and large-bundle warnings remain.
+- The previous editor commit `1e9db6e` deployed successfully (Pages run
+  `40900147099`). Browser interaction/visual checks are still outstanding because
+  local browser access is disabled; API persistence tests are not browser UI QA.
+  No private exports or existing player data were changed.
+- Custom casting/manifesting, proficiencies and source-specific abilities remain
+  incomplete. The remaining variant/shared-feature audit, reviewed mode conversion
+  and full end-to-end gates still apply. The overall goal is not complete.

@@ -81,15 +81,16 @@ export const baseSkills: Array<[string,Skill['ability'],boolean,number]> = [
 ];
 export function newCaster(kind='Cleric'): Caster {const def=findClass(kind);if(!def)throw new Error('Choose a known casting class.');return makeCaster(def);}
 export function newWeapon(): Weapon {return {id:uid(),name:'New weapon',ability:'STR',attack:0,damage:'1d6',damageAbility:'STR',strength:'one',damageExtra:0,crit:'20 / ×2',range:'Melee',ammo:0,notes:''};}
-export function newCharacter(kind='Fighter',level=3,raceId?:string): Character {
+export function newCharacter(kind='Fighter',level=3,raceId?:string,customClasses?:Character['customClasses']): Character {
  const c: Character = {advancementMode:'standard',sourceReferences:[],alternateFeatures:alternateFeaturesSchema.parse({}),sheetKind:'pc',creature:null,racialState:emptyRacialState(),prerequisiteConfirmations:{},classSystems:{choices:[],pools:{},delayedDamage:0},schemaVersion:1,advancementChoices:{},clericSpecialty:'none',factotum:{spent:0,inspirationExtra:0,knowledgeUsed:[],pietyUsed:0,dodgeUsed:false,spells:[]},automation:defaultAutomation(),effects:[],classLevels:[],psionics:[],ancestry:{raceId:'',abilityAdjustments:false,traitBonuses:false,racialHitDice:0,levelAdjustment:0,ignoreLevelAdjustment:false,powerPointsSpent:0,notes:''},name:kind==='Fighter'?'Borin Stoneward':'New '+kind.toLowerCase(),race:kind==='Fighter'?'Dwarf':'Human',classes:kind+' 3',level:3,alignment:'',deity:'',player:'',experience:3000,languages:'Common'+(kind==='Fighter'?', Dwarven':''),appearance:'',size:'Medium',scores:{STR:16,DEX:12,CON:14,INT:10,WIS:10,CHA:8},temps:{STR:0,DEX:0,CON:0,INT:0,WIS:0,CHA:0},hp:26,maxHp:30,tempHp:0,nonlethal:0,hitDice:'3d10',speed:20,initiative:0,bab:3,grapple:0,situational:0,defense:{armor:6,shield:2,natural:0,deflection:0,dodge:0,misc:0,dexCap:1,checkPenalty:-6,spellFailure:40,sr:0,dr:'',drSources:[],resistances:''},saves:{fort:{base:3,misc:0},ref:{base:1,misc:0},will:{base:1,misc:0}},skills:baseSkills.map(([name,ability,trained,armor],i)=>({id:'skill-'+i,name,ability,ranks:0,misc:0,trained,armor,classSkill:kind==='Fighter'&&['Climb','Craft','Handle Animal','Intimidate','Jump','Ride','Swim'].includes(name)})),weapons:[{...newWeapon(),name:'Battleaxe',damage:'1d8',crit:'20 / ×3'}],casters:[],gear:[{id:uid(),name:'Banded mail',qty:1,weight:35,carried:true,equipped:true,notes:'Armor +6; max Dex +1; check −6; arcane failure 35%.'},{id:uid(),name:'Heavy wooden shield',qty:1,weight:10,carried:true,equipped:true,notes:'Shield +2; check −2; arcane failure 15%.'},{id:uid(),name:'Battleaxe',qty:1,weight:6,carried:true,equipped:true,notes:''}],coins:{cp:0,sp:0,gp:50,pp:0},coinWeight:true,features:[],conditions:'',notes:'',background:''};
  c.defense.checkPenalty=-8;c.defense.spellFailure=50;
+ if(customClasses!==undefined)c.customClasses=customClassesSchema.parse(customClasses);
  applyStartingClass(c,kind,level);
  if(raceId){
   const oldWis=Math.floor((c.scores.WIS-10)/2),oldCha=Math.max(0,Math.floor((c.scores.CHA-10)/2));
   const speedBonus=kind==='Fighter'?0:Math.max(0,c.speed-30);c.languages='';
   selectRace(c,raceId,{abilities:true,traits:true,body:true,languages:true,speedBonus});applyClassTotals(c);
-  const race=findRace(raceId)!,def=findClass(kind)!,con=Math.floor((effectiveScore(c,'CON')-10)/2);
+  const race=findRace(raceId)!,def=findClass(kind,c)!,con=Math.floor((effectiveScore(c,'CON')-10)/2);
   const hp=def.hitDie+Math.ceil((level-1)*(def.hitDie/2+.5));
   c.maxHp=Math.max(c.level,(race.rhd?8+Math.ceil((race.rhd-1)*4.5+level*(def.hitDie/2+.5)):hp)+con*c.level);c.hp=c.maxHp;
   if(kind==='Monk')c.defense.misc+=Math.floor((effectiveScore(c,'WIS')-10)/2)-oldWis;

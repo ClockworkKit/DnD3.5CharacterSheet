@@ -1,5 +1,5 @@
 'use client';
-import {useState} from 'react';
+import {useEffect,useState} from 'react';
 import {toast} from 'sonner';
 import {ZodError} from 'zod';
 import {Table,TableHeader,TableBody,TableRow,TableHead,TableCell} from '@/components/ui/table';
@@ -10,10 +10,12 @@ import {customClassDraft,customClassTable,previewCustomClassChange,applyCustomCl
 import {F,N,Choice,Check,Btn,Section,type SheetProps} from './sheet-ui';
 
 /** Drafts stay local until the player reviews and explicitly applies the table. */
-export function CustomClassEditor({c,edit}:Pick<SheetProps,'c'|'edit'>){
+export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<SheetProps,'c'|'edit'>&{libraryOnly?:boolean;onDraftChange?:(pending:boolean)=>void}){
  const [draft,setDraft]=useState<CustomClass|null>(null);
  const [review,setReview]=useState<CustomClassPreview|null>(null);
  const [checked,setChecked]=useState(false),[error,setError]=useState(''),[milestone,setMilestone]=useState(1);
+ const pending=draft!==null;
+ useEffect(()=>{onDraftChange?.(pending);return ()=>onDraftChange?.(false);},[pending,onDraftChange]);
  const report=(e:unknown)=>setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not review this class table.');
  function begin(id=''){
   try{setDraft(customClassDraft(c,id));setReview(null);setChecked(false);setError('');setMilestone(1);}catch(e){report(e);}
@@ -33,7 +35,7 @@ export function CustomClassEditor({c,edit}:Pick<SheetProps,'c'|'edit'>){
  }
  function apply(){
   if(!review||!checked)return;
-  try{edit(next=>applyCustomClassChange(next,review));setDraft(null);setReview(null);setChecked(false);setError('');toast.success('Custom class table saved. No levels were added.');}catch(e){setReview(null);report(e);}
+  try{edit(next=>applyCustomClassChange(next,review));setDraft(null);setReview(null);setChecked(false);setError('');toast.success(libraryOnly?'Table added to the creation draft. Choose it as a starting class.':'Custom class table saved. No levels were added.');}catch(e){setReview(null);report(e);}
  }
  const saved=c.customClasses??[];
  const legacy=c.classLevels.filter(e=>e.classId.startsWith('custom-')&&!saved.some(p=>p.definition.id===e.classId));
@@ -43,12 +45,12 @@ export function CustomClassEditor({c,edit}:Pick<SheetProps,'c'|'edit'>){
  if(draft&&!families.has(draft.policy.family))families.set(draft.policy.family,'Recorded family: '+draft.policy.family);
  const stale=!!review&&review.source!==JSON.stringify(c);
  if(c.sheetKind==='monster')return null;
- return <Section title="Custom class tables" note="Optional source-based progression, saved only with this character.">
+ return <Section title="Custom class tables" note={libraryOnly?'Optional source-based tables for this new character only. Nothing is saved until you create the character.':'Optional source-based progression, saved only with this character.'}>
   <details><summary>Create or review a custom class table</summary>
    <p className="fine">These tables calculate basic HP, attack, saves and skills. They do not automate casting, proficiencies or abilities from their names or milestone text. Use the complete class source. Irregular progressions are not supported by this editor.</p>
    {!draft&&<div className="button-row"><Btn onClick={()=>begin()}>New class table</Btn>{saved.map(p=><Btn key={p.definition.id} onClick={()=>begin(p.definition.id)}>Edit {p.definition.name}</Btn>)}{legacy.map(e=><Btn key={e.id} onClick={()=>begin(e.classId)}>Define table for {e.name}</Btn>)}</div>}
    {draft&&<div className="subcard">
-    <p className="fine">This is an unsaved draft. The starting values are a template, not a verified class. Applying a table does not add a class, level up, or switch advancement mode. Use Add class or guided advancement afterward.</p>
+    <p className="fine">This is an unsaved draft. The starting values are a template, not a verified class. Applying a table does not add a class, level up, or switch advancement mode. {libraryOnly?'After applying a base-class table, select it in Starting class or a gestalt row. Prestige entry requires later guided advancement.':'Use Add class or guided advancement afterward.'}</p>
     <div className="fields two">
      <F label="Class name" value={draft.definition.name} onChange={v=>change(d=>{d.definition.name=v})}/>
      <F label="Source citation (book and page, or URL)" value={draft.definition.source} onChange={v=>change(d=>{d.definition.source=v})}/>
@@ -75,11 +77,14 @@ export function CustomClassEditor({c,edit}:Pick<SheetProps,'c'|'edit'>){
     <div className="button-row"><Btn disabled={!checked} onClick={preview}>Review changes</Btn><Btn onClick={()=>{setDraft(null);setReview(null);setChecked(false);setError('')}}>Cancel draft</Btn></div>
     {review&&<div className="subcard" aria-live="polite">
      <h3>Review before applying</h3>
+     {libraryOnly&&<p className="fine">{review.profile.definition.name}: d{review.profile.definition.hitDie}, {review.profile.definition.skillPoints} skill points before Intelligence, {review.profile.definition.levels.length} supported levels. Source: {review.profile.definition.source}. This adds only a table to the creation draft, not an existing character or a global library.</p>}
+     {!libraryOnly&&<>
      <p className="fine">{review.summary.used?'Updates the table for '+review.summary.used+' earned class levels.':'Adds an unused table to this character’s class library only.'} Existing class-entry names and personal notes are retained.</p>
      {review.summary.manual&&<p className="fine">Manual calculations remain enabled: this table will not replace your entered totals.</p>}
      <Table className="class-table"><caption>Character totals</caption><TableHeader><TableRow><TableHead>Statistic</TableHead><TableHead>Current</TableHead><TableHead>Proposed</TableHead></TableRow></TableHeader><TableBody>{([['level','Character level'],['bab','Base attack'],['fort','Base Fortitude'],['ref','Base Reflex'],['will','Base Will'],['hp','Current HP'],['maxHp','Maximum HP'],['skills','Total skill-point allowance']] as const).map(([key,label])=><TableRow key={key}><TableHead scope="row">{label}</TableHead><TableCell>{review.summary.before[key]}</TableCell><TableCell>{review.summary.after[key]}</TableCell></TableRow>)}</TableBody></Table>
      {!!review.summary.overspent.length&&<p className="error-text">Recorded skill spending exceeds the proposed allowance at: {review.summary.overspent.join(', ')}. Purchases and ranks are retained; review them separately with your GM.</p>}
      <p className="fine">Recorded history, skill ranks, personal feature descriptions and spent feature uses are protected. This does not rest the character or refill resources.</p>
+     </>}
      {stale&&<p className="error-text">The character changed since this preview. Review again before applying.</p>}
      <Btn className="primary" disabled={stale||!checked} onClick={apply}>Apply reviewed table</Btn>
     </div>}

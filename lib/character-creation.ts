@@ -9,6 +9,7 @@ import {applyClericSpecialty} from './cleric-specialty.ts';
 import {recompute} from './automation.ts';
 import {secureDie} from './dice.mjs';
 import {recordStartingHitDice} from './character-rules.ts';
+import {customClassesSchema} from './custom-class-schema.ts';
 
 export type AbilityMethod='4d6-drop-lowest'|'3d6'|'manual';
 export type AbilityRoll={dice:number[],droppedIndex:number|null,total:number};
@@ -56,16 +57,17 @@ export function abilityRollRecord(method:AbilityMethod,scores:AbilityScores,roll
 }
 
 export type StartingClassPair={left:string;right:string};
-export type CharacterCreationOptions={name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],hpRolls?:number[],clericSpecialty?:Character['clericSpecialty'],advancementMode?:Character['advancementMode'],gestaltPairs?:StartingClassPair[],gestaltBonusMethod?:GestaltBonusMethod};
+export type CharacterCreationOptions={name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],hpRolls?:number[],clericSpecialty?:Character['clericSpecialty'],advancementMode?:Character['advancementMode'],gestaltPairs?:StartingClassPair[],gestaltBonusMethod?:GestaltBonusMethod;customClasses?:Character['customClasses']};
 
 export function createPlayerCharacter(options:CharacterCreationOptions):Character{
   const {name,kind,level,raceId,scores}=options;
   if(abilityKeys.some(a=>!Number.isInteger(scores[a])||scores[a]<1||scores[a]>100))throw new Error('Enter whole ability scores between 1 and 100.');
   if(!Number.isInteger(level)||level<1||level>20)throw new Error('Choose a starting class level from 1 to 20.');
-  if(options.advancementMode==='gestalt')return createPairedCharacter(options);
+  const customClasses=options.customClasses===undefined?undefined:customClassesSchema.parse(options.customClasses);
+  if(options.advancementMode==='gestalt')return createPairedCharacter({...options,customClasses});
   if(options.gestaltPairs||options.gestaltBonusMethod)throw new Error('Starting pairs and paired bonus methods require explicit gestalt advancement.');
   const record=abilityRollRecord(options.method,scores,options.rolls,options.assignment);
-  const c=newCharacter(kind,level,raceId);
+  const c=newCharacter(kind,level,raceId,customClasses);
   c.name=name.trim()||'Unnamed adventurer';c.scores={...scores};
   // Keep class/race rules, but do not give new players a sample character's possessions or choices.
   c.gear=[];c.weapons=[];c.coins={cp:0,sp:0,gp:0,pp:0};
@@ -91,11 +93,11 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  const pairs=options.gestaltPairs;
  if(!pairs||pairs.length!==options.level)throw new Error('Choose two classes for every starting character level.');
  for(const [index,pair] of pairs.entries()){
-  const problem=gestaltVariantPairProblem(pair.left,pair.right);
+  const problem=gestaltVariantPairProblem(pair.left,pair.right,options.customClasses);
   if(problem)throw new Error('Starting level '+(index+1)+': '+problem);
  }
  const definitions=pairs.map((pair,index)=>[pair.left,pair.right].map(id=>{
-  const def=findClass(id);
+  const def=findClass(id,options);
   if(!def||def.id!==id)throw new Error('Choose a supported class for starting level '+(index+1)+'.');
   if(def.kind==='Prestige')throw new Error('Create your base-class levels first, then use paired level-up to enter prestige classes after allocating their prerequisites.');
   return def;
@@ -104,7 +106,8 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  if(race?.rhd)throw new Error('Gestalt racial Hit Dice require a supported progression policy. Choose a race without racial Hit Dice or use standard advancement.');
  // Reuse the standard blank-character, ability and race setup, without rolling
  // provisional dice. Only the final paired sequence receives starting HP rolls.
- const c=createPlayerCharacter({...options,kind:definitions[0][0].name,level:1,hpMethod:'maximum',hpRolls:undefined,clericSpecialty:'none',advancementMode:'standard',gestaltPairs:undefined,gestaltBonusMethod:undefined});
+ const first=definitions[0][0];
+ const c=createPlayerCharacter({...options,kind:first.id.startsWith('custom-')?first.id:first.name,level:1,hpMethod:'maximum',hpRolls:undefined,clericSpecialty:'none',advancementMode:'standard',gestaltPairs:undefined,gestaltBonusMethod:undefined});
  c.classLevels=[];c.casters=[];c.psionics=[];c.features=c.features.filter(f=>f.kind==='Racial trait');
  c.automation.history=[];c.automation.levelOrder=[];c.automation.hpRolls=[];c.automation.firstClassId='';
  const levels=definitions.map(sides=>{
@@ -116,7 +119,7 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
   return {id:uid(),left:ids[0],right:ids[1],approvals:[]};
  });
  c.advancementMode='gestalt';c.gestaltProgression=gestaltProgressionSchema.parse({version:1,bonusMethod:options.gestaltBonusMethod??'printed-table-v1',levels});
- for(const entry of c.classLevels)initializeClassResources(c,findClass(entry.classId)!,entry.level);
+ for(const entry of c.classLevels)initializeClassResources(c,findClass(entry.classId,c)!,entry.level);
  copyClassFeatures(c);recompute(c);
  if(options.clericSpecialty&&options.clericSpecialty!=='none'){
   if(!c.classLevels.some(e=>e.classId==='cleric'))throw new Error('A cleric specialty requires cleric levels.');
