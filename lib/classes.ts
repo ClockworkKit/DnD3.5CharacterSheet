@@ -52,7 +52,51 @@ export const manifestingLevel=(d:ClassDefinition,level:number)=>d.id==='soulknif
 export function spellSlots(def:ClassDefinition,level:number,score:number,bonusScore=score){const r=classRow(def,level),mod=Math.floor((bonusScore-10)/2);return Array.from({length:10},(_,i)=>{const base=r.slots?.[i];return {max:base==null||score<10+i?0:base+(i>0&&mod>=i?1+Math.floor((mod-i)/4):0),used:0}});}
 export function makeCaster(def:ClassDefinition,level=3,score=16,bonusScore=score):Caster {return {id:crypto.randomUUID(),name:def.name,list:def.casting?.list||(def.id==='wizard'||def.id==='sorcerer'?'Sorcerer / Wizard':def.name),ability:castingAbility(def),level:castingLevel(def,level),mode:def.casting?.mode||(['sorcerer','bard','assassin'].includes(def.id)?'spontaneous':'prepared'),dcExtra:0,penetration:0,slots:spellSlots(def,level,score,bonusScore),spells:[],casting:{classId:def.id,domain:false,progression:null,levelAdjustment:0,slotAdjustments:Array(10).fill(0),automatic:true},notes:def.id==='cleric'?'Daily slots exclude domain slots. Add a separate Domain tradition for those restricted slots.':def.casting?def.description||'':''};}
 export function makePsionic(def:ClassDefinition,level=3,score=16):Psionic{const row=classRow(def,level),bonus=Math.max(0,Math.floor(Math.floor((score-10)/2)*manifestingLevel(def,level)/2));return {id:crypto.randomUUID(),name:def.name,ability:manifestingAbility(def),level:manifestingLevel(def,level),max:def.id==='soulknife'?2:(row.powerPoints||0)+bonus+(def.manifesting?.bonusPoints||0),spent:0,focused:false,dcExtra:0,notes:def.id==='soulknife'?'Wild Talent supplies 2 power points but no powers or manifester level.':def.manifesting&&def.description?def.description:'Choose powers from your class list and discipline. The class table gives powers known and maximum power level.',powers:[],manifesting:{classId:def.id,progression:null,levelAdjustment:0,pointsAdjustment:0,automatic:true}};}
-export function copyClassFeatures(c:Character,existingOnly=false){for(const e of c.classLevels){if(existingOnly&&c.customClasses?.some(row=>row.definition.id===e.classId))continue;const d=findClass(e.classId,c);if(!d||existingOnly&&!c.features.some(f=>f.id==='class-summary-'+e.id))continue;const description=d.levels.filter(r=>r.level<=e.level&&r.special&&r.special!=='—').map(r=>`Level ${r.level}: ${effectiveClassMilestone(c,e.classId,r.special,r.level)}`).join('\n');const id='class-summary-'+e.id;const feature={id,name:d.name+' class features',kind:'Class feature' as const,description:description+(classRuleText(d.id)||((d.description?'\n\n'+d.description:'')+'\n\nUse the latest improved version of a feature. Bonuses are entered in the relevant sheet fields.\nFull class reference: '+d.source)),max:0,used:0,source:d.source};const previous=c.features.find(f=>f.id===id);if(previous){previous.description=feature.description;previous.name=feature.name;previous.source=feature.source;}else c.features.push(feature);}}
+/** Current source-derived text, separate from the player's saved annotations. */
+export function classFeatureSummary(c:Character,e:ClassLevel){
+ const d=findClass(e.classId,c);if(!d)return undefined;
+ const milestones=d.levels.filter(r=>r.level<=e.level&&r.special&&r.special!=='—').map(r=>`Level ${r.level}: ${effectiveClassMilestone(c,e.classId,r.special,r.level)}`).join('\n');
+ return {id:'class-summary-'+e.id,name:d.name+' class features',kind:'Class feature' as const,
+  description:milestones+(classRuleText(d.id)||((d.description?'\n\n'+d.description:'')+'\n\nUse the latest improved version of a feature. Bonuses are entered in the relevant sheet fields.\nFull class reference: '+d.source)),
+  max:0,used:0,source:d.source};
+}
+/** If saved text is customized or too full to refresh safely, expose current rules separately. */
+export function classSummaryView(c:Character,f:Character['features'][number]){
+ const entry=c.classLevels.find(e=>'class-summary-'+e.id===f.id),current=entry&&classFeatureSummary(c,entry);
+ return current&&!f.description.includes(current.description)?current:undefined;
+}
+export function classSummaryPostText(c:Character,f:Character['features'][number]){
+ const current=classSummaryView(c,f);
+ return current?'Current generated class summary:\n'+current.description+'\n\nSaved description and notes (preserved; may include older rules):\n'+f.description:f.description;
+}
+export function copyClassFeatures(c:Character,existingOnly=false,previousCharacter?:Character){
+ for(const e of c.classLevels){
+  if(existingOnly&&c.customClasses?.some(row=>row.definition.id===e.classId))continue;
+  const feature=classFeatureSummary(c,e);if(!feature)continue;
+  const previous=c.features.find(f=>f.id===feature.id);
+  const generatedSummary={description:feature.description,name:feature.name,source:feature.source};
+  if(!previous){if(!existingOnly)c.features.push({...feature,generatedSummary});continue;}
+  if(previous.description.includes(feature.description))continue;
+  // Only replace a complete, uniquely recognized generated block. Unknown edits,
+  // including an intentionally blank description, remain byte-for-byte intact.
+  const oldEntry=previousCharacter?.classLevels.find(row=>row.id===e.id);
+  const candidates=[previous.generatedSummary?.description?{...feature,...previous.generatedSummary}:undefined,oldEntry&&classFeatureSummary(previousCharacter!,oldEntry),
+   ...findClass(e.classId,c)!.levels.map(row=>classFeatureSummary(c,{...e,level:row.level}))]
+   .filter((value):value is NonNullable<typeof value>=>!!value)
+   .sort((a,b)=>b.description.length-a.description.length);
+  for(const candidate of candidates){
+   const at=previous.description.indexOf(candidate.description);if(at<0)continue;
+   if(previous.description.indexOf(candidate.description,at+1)>=0)break;
+   const updated=previous.description.slice(0,at)+feature.description+previous.description.slice(at+candidate.description.length);
+   if(updated.length>20000)break;
+   previous.description=updated;
+   previous.generatedSummary=generatedSummary;
+   if(previous.name===candidate.name)previous.name=feature.name;
+   if(previous.source===candidate.source)previous.source=feature.source;
+   break;
+  }
+ }
+}
 export function applyStartingClass(c:Character,kind:string,level:number){const def=findClass(kind,c);if(!def||def.kind==='Prestige')throw new Error('Choose a base class; add prestige classes in Classes.');classRow(def,level);
  c.classLevels=[{id:crypto.randomUUID(),classId:def.id,name:def.name,level,notes:''}];c.psionics=[];c.casters=[];c.features=[];
  if(def.id!=='fighter'){

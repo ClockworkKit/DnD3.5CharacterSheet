@@ -538,3 +538,34 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   conversion and full end-to-end gates remain unfinished. The RAW policy and
   documented printed-table default/fractional option remain unchanged. The
   overall goal is not complete.
+
+## Class-summary annotations through advancement (2026-10-29)
+
+- Reproduced personal notes being erased by ordinary level-up and full class
+  summary refresh; the same shared operation serves paired advancement and
+  alternate-feature synchronization. Refresh now replaces only a uniquely
+  recognized complete generated block, retaining surrounding annotations,
+  customized names/references, counters and other feature fields.
+- New cards record optional bounded generated-text provenance. Old cards need
+  no migration or default field; exact historical generated blocks can be
+  recognized, while unknown, blank, internally rewritten or ambiguous text stays
+  untouched. Text exceeding the existing description bound is never truncated.
+- Feats & features derives a separate current class summary when saved prose
+  cannot safely refresh, with preserved notes in a disclosure. Post card labels
+  current and preserved text separately. Calculations still use class identities,
+  selected alternatives and levels, not descriptive prose. No RAW mechanic or
+  progression convention changes. See [the preservation contract](class-summary-preservation.md).
+- Seven new regressions cover standard/paired advancement, legacy recognition,
+  alternate selection/restoration, customized names and sources, complete rewrites,
+  ambiguous repeats, size limits, reviewed custom tables and subsequent levels,
+  native reload and a fresh browser-storage client. Recorded history, injuries,
+  spell expenditure and feature counters survive. All 777 tests passed, as did
+  TypeScript and the production build. Existing build warnings remain.
+- The preceding casting fix `fc18f39` deployed successfully (Pages run
+  `40960291716`). No private exports or real player saves were changed. Browser
+  UI interaction remains unverified while browser access is disabled; storage
+  tests are not a substitute. This cannot recover already-erased notes and does
+  not audit independently managed daily-resource or racial-card synchronization.
+- Custom casting/manifesting, proficiencies, remaining source-specific/shared
+  feature cases, reviewed mode conversion and complete end-to-end gates remain
+  open. The broader goal is not complete.
