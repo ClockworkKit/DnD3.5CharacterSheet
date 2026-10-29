@@ -358,3 +358,36 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   persistence, remaining supplemental/shared features and variant verification,
   mixed Uncanny Dodge, reviewed mode conversion, and outstanding full end-to-end
   scenarios remain open. The broader goal is not complete.
+
+## Conditional monk styles and shared Expertise checks (2026-10-29)
+
+- Reproduced Undying Way DR and Denying Stance grapple bonuses activating from
+  a stale Combat Expertise amount without the feat. Both now use the same
+  read-only amount calculation as weapon attacks and dodge AC: an active feat,
+  automatic calculations, and a positive amount capped by effective BAB and 5.
+  Resolute's BAB reduction is shared; negative BAB cannot invert the penalty.
+  Existing `effectiveBab` imports remain compatible through a re-export.
+- Sources: [Undying Way and Denying Stance](https://www.d20srd.org/srd/variant/classes/variantCharacterClasses.htm#monkFightingStyles),
+  [Combat Expertise](https://www.d20srd.org/srd/feats.htm#combatExpertise).
+  Fighting defensively independently triggers either supported benefit; total
+  defense independently triggers Undying Way only. The earned sixth-level style
+  and recorded historical qualification remain required. Current ranks do not
+  erase historical qualification. The DR summary now explains its conditions.
+- No migration, feat grant, resource refund or setting reset is performed.
+  Stale settings stay saved but cannot manufacture a feat benefit. Six regressions
+  cover absent/disabled grants, BAB caps, Resolute, qualification, separate
+  defensive actions, standard/gestalt characters and unchanged native reload with
+  damage, manual protections, notes and spent counters preserved.
+- All 741 tests passed, with TypeScript, production build and whitespace checks.
+  Existing build warnings remain. Browser verification was attempted using a
+  synthetic fixture outside the repository, but did not run: first approval review
+  hit a usage limit, then the resumed browser tool reported local browser use
+  disabled in Work settings. No player browser data or private exports were edited.
+- Scope is consistency with the existing combat selection model, not a complete
+  action-economy or feat-prerequisite validator. The player must actually perform
+  the qualifying action; automatic duration/turn tracking, all feat prerequisite
+  exceptions, Denying Stance disarm resolution and other style bonuses still need
+  their own audit. Custom-class persistence, remaining variant/shared-feature
+  cases, reviewed mode conversion and full end-to-end gates remain incomplete.
+- The preceding class-DR commit `05f4807` deployed successfully (Pages run
+  `40775865197`). The overall goal remains incomplete.

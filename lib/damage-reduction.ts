@@ -1,6 +1,7 @@
 import {berserkerStrengthActive} from './alternate-benefits.ts';
 import {alternateClassLevel,classFeatureLevel,hasAlternateFeature} from './alternate-features.ts';
 import {monkStyleBonus} from './alternate-grants.ts';
+import {combatExpertiseAmount} from './combat-options.ts';
 import {uid,type Character,type DamageReductionSource} from './model.ts';
 
 export function newDamageReductionSource():DamageReductionSource {
@@ -49,7 +50,7 @@ export function activeDamageReductions(c:Character) {
     if(soul?.bypass)add('class-dr:favored-soul',soul.bypass==='epic'?'Favored Soul — Favored of Bahamut/Tiamat':'Favored Soul',10,notes+' Supernatural: unavailable in antimagic; resolve suppression at the table.',soul.bypass);
   }
   if(berserkerStrengthActive(c)){const level=alternateClassLevel(c,'barbarian');add('acf-berserker','Berserker strength',level>=20?4:level>=11?3:2,'Stacks with other damage reduction, as specified by this feature.');}
-  if(c.automation.enabled&&monkStyleBonus(c,'Undying Way')&&(c.automation.context.defensive!=='none'||c.automation.context.combatExpertise>0))add('acf-undying','Undying Way',2);
+  if(c.automation.enabled&&monkStyleBonus(c,'Undying Way')&&(c.automation.context.defensive!=='none'||combatExpertiseAmount(c)>0))add('acf-undying','Undying Way',2,'Requires the qualified sixth-level style benefit and fighting defensively, total defense, or actual Combat Expertise use. A saved Expertise amount without the feat or usable BAB grants no protection. Does not stack with other DR unless that source explicitly says so.');
   return rows;
 }
 

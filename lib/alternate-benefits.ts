@@ -1,5 +1,6 @@
 import {equippedArmor,carrying} from './equipment.ts';
 import {isTrapSave,isTrapAttack} from './trap-context.ts';
+import {combatExpertiseAmount} from './combat-options.ts';
 import {alternateActionActive} from './alternate-actions.ts';
 import {selectedMonkStyle,monkStyleBonus} from './alternate-grants.ts';
 import type {Character} from './model.ts';
@@ -51,7 +52,7 @@ export function alternateTerms(c:Character,target:string,context:Record<string,s
  if(style&&target==='skill.'+style.skill)add(style.name,2);
  if(monkStyleBonus(c,'Sacred Path of Wee Jas')&&target==='skill.Use Magic Device')add('Sacred Path of Wee Jas',Math.floor(alternateClassLevel(c,'monk')/2));
  if(monkStyleBonus(c,'Cobra Strike')&&target==='ac.dodge'&&x.dodgeTarget)add('Cobra Strike',1,'dodge');
- if(monkStyleBonus(c,'Denying Stance')&&target==='grapple'&&(x.defensive==='fighting'||Number(x.combatExpertise)>0))add('Denying Stance',2);
+ if(monkStyleBonus(c,'Denying Stance')&&target==='grapple'&&(x.defensive==='fighting'||combatExpertiseAmount(c,Number(x.combatExpertise))>0))add('Denying Stance',2);
  if(monkStyleBonus(c,'Wushu')&&target==='skill.Bluff'&&x.skillUse==='feint')add('Wushu',Math.floor(alternateClassLevel(c,'monk')/2));
  if(hasAlternateFeature(c,'cleric-no-turning')){
   const choice=alternateSettings(c,'cleric-no-turning').choice,skills:Record<string,string>={Cultist:'Bluff',Evangelist:'Diplomacy',Fanatic:'Intimidate',Healer:'Heal',Justicar:'Sense Motive',Sage:'Knowledge (religion)',Theologian:'Knowledge (religion)',Weaponmaster:'Craft (weaponsmith)'};
