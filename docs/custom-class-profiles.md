@@ -99,6 +99,26 @@ side remains independent. Unsupported levels, invalid families, malformed
 profiles and prestige starting classes are rejected before a sheet is saved.
 Prestige entries still use guided advancement after their prerequisites exist.
 
+## Casting identity safeguards
+
+A saved casting/manifesting class link is authoritative, including an empty link
+that leaves a pool unlinked. Unsupported links do not fall back to a familiar
+display name or spell-list label. Their recorded levels, capacities, preparations,
+notes and expenditure remain intact and editable; automatic-but-unsupported
+profiles display a manual-handling notice. Older profiles with no linking metadata
+retain their existing name/list recognition for compatibility.
+
+Adding or advancing a catalog class matches existing pools by resolved class
+identity, not display name. A different custom pool with the same name cannot
+suppress the proper resource; a domain pool is not an ordinary cleric spellbook.
+Renaming a correctly linked pool cannot create duplicates. Axe Brother selection,
+save-DC ability selection and typed casting prerequisites use the same identity
+boundary. No automatic relinking or resource reset is performed. This prevents
+future overwrites; it cannot reconstruct values already lost in an older save.
+
+These safeguards do not implement custom casting or manifesting tables. Their
+source rules still need explicit supported metadata and reviewed integration.
+
 ## Explicit remaining work
 
 Custom casting/manifesting metadata remains unfinished. Version 1 rejects casting

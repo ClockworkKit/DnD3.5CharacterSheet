@@ -1,7 +1,7 @@
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
-import {advancementNumbers} from './advancement.ts';
+import {advancementNumbers,castingDefinition,manifestDefinition} from './advancement.ts';
 import {effectiveScore} from './ancestry.ts';
 import {skillIntelligence} from './level-history.ts';
 import {characterGestaltRows,gestaltBonusLedger,type GestaltProgression} from './gestalt-progression.ts';
@@ -36,10 +36,10 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
 }
 
 export function initializeClassResources(c:Character,def:ClassDefinition,level:number){
- if(def.levels.some(r=>r.slots)&&(!['paladin','ranger'].includes(def.id)||level>=4)&&!c.casters.some(p=>p.casting?.classId===def.id||p.name===def.name)){
+ if(def.levels.some(r=>r.slots)&&(!['paladin','ranger'].includes(def.id)||level>=4)&&!c.casters.some(p=>!p.casting?.domain&&castingDefinition(p)?.id===def.id)){
   const ability=castingAbility(def);c.casters.push(makeCaster(def,level,effectiveScore(c,ability),effectiveScore(c,def.casting?.bonusAbility||ability)));
  }
- if((def.kind==='Psionic'||def.manifesting)&&!c.psionics.some(p=>p.manifesting?.classId===def.id||p.name===def.name))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
+ if((def.kind==='Psionic'||def.manifesting)&&!c.psionics.some(p=>manifestDefinition(p)?.id===def.id))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
 }
 
 export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};

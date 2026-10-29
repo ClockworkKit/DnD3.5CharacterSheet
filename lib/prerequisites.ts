@@ -4,11 +4,11 @@ import {krauBonus} from './racial-abilities.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 import type {Character,Feat} from './model.ts';
 import {newWeapon,uid} from './model.ts';
-import {classTotals,findClass,type ClassDefinition} from './classes.ts';
+import {classTotals,type ClassDefinition} from './classes.ts';
 import {classLevel,hasFeat,featName,featChoice,featChoiceKey} from './effects.ts';
 import {effectiveScore,findRace} from './ancestry.ts';
 import {equipmentCatalog,matchEquipment,weaponProficient,armorProficient} from './equipment.ts';
-import {castingNumbers,psionicProgression} from './advancement.ts';
+import {castingDefinition,manifestDefinition,castingNumbers,psionicProgression} from './advancement.ts';
 
 export type Requirement={label:string,state:'met'|'missing'|'confirm',key?:string,confirmed?:boolean};
 export type Eligibility={eligible:boolean,requirements:Requirement[],status:'Eligible'|'Missing prerequisites'|'Needs confirmation'};
@@ -68,7 +68,7 @@ export function featEligibility(c:Character,f:Feat,choice=''):Eligibility{
  return result(q.rows);
 }
 export function addEligibleFeat(c:Character,f:Feat,choice='') {choice=featChoices(c,f).find(v=>featChoiceKey(v)===featChoiceKey(choice))||choice;if(!featEligibility(c,f,choice).eligible)throw new Error('Feat prerequisites are not met.');c.features.push({id:uid(),name:clean(f.name),choice,kind:'Feat',description:f.description,max:0,used:0,source:f.source});}
-function traditionType(p:Character['casters'][number]){const d=findClass(p.casting?.classId||p.name);return d?.casting?.type||(['wizard','sorcerer','bard','assassin'].includes(d?.id||'')?'arcane':['cleric','druid','paladin','ranger','blackguard'].includes(d?.id||'')?'divine':'unknown');}
+function traditionType(p:Character['casters'][number]){const d=castingDefinition(p);return d?.casting?.type||(['wizard','sorcerer','bard','assassin'].includes(d?.id||'')?'arcane':['cleric','druid','paladin','ranger','blackguard'].includes(d?.id||'')?'divine':'unknown');}
 function canSpell(c:Character,level:number,type?:string,spontaneous=false){return c.casters.some(p=>(!type||traditionType(p)===type)&&(!spontaneous||p.mode==='spontaneous')&&(p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).slots:p.slots.map(s=>s.max)).some((max,i)=>i>=level&&max>0&&effectiveScore(c,p.ability,true)>=10+i));}
 function knownSpells(c:Character,type?:string){
  const spells=new Map<string,{id:string,school:string,level:number}>();
@@ -76,13 +76,13 @@ function knownSpells(c:Character,type?:string){
   if(type&&traditionType(p)!==type)continue;
   const slots=p.casting?.automatic&&c.automation.enabled?castingNumbers(c,p).slots:p.slots.map(s=>s.max);
   const available=(level:number)=>slots[level]>0&&effectiveScore(c,p.ability,true)>=10+level;
-  const d=findClass(p.casting?.classId||p.name);
+  const d=castingDefinition(p);
   if(['cleric','druid','paladin','ranger','healer','beguiler','warmage','dread-necromancer'].includes(d?.id||''))for(const s of catalog.spells){const level=(s.levels as Partial<Record<string,number>>)[p.list];if(level!==undefined&&available(level))spells.set(s.id,{id:s.id,school:s.school,level});}
   for(const k of p.spells){if(!available(k.level))continue;const s=k.custom||catalog.spells.find(s=>s.id===k.spellId);if(s)spells.set(k.spellId,{id:k.spellId,school:s.school.split(/[ (]/)[0],level:k.level});}
  }
  return [...spells.values()];
 }
-function canPower(c:Character,level:number){return c.psionics.some(p=>{const d=findClass(p.manifesting?.classId||p.name),n=psionicProgression(c,p),row=d?.levels.find(r=>r.level===n.progression);return !!row&&Math.max(row.powerLevel||0,d?.id==='ardent'?Math.ceil(n.level/2):0)>=level&&n.level>=2*level-1&&p.max>=2*level-1&&effectiveScore(c,p.ability,true)>=10+level;});}
+function canPower(c:Character,level:number){return c.psionics.some(p=>{const d=manifestDefinition(p),n=psionicProgression(c,p),row=d?.levels.find(r=>r.level===n.progression);return !!row&&Math.max(row.powerLevel||0,d?.id==='ardent'?Math.ceil(n.level/2):0)>=level&&n.level>=2*level-1&&p.max>=2*level-1&&effectiveScore(c,p.ability,true)>=10+level;});}
 const alignment=(s:string)=>({lg:'lawful good',ng:'neutral good',cg:'chaotic good',ln:'lawful neutral',n:'true neutral',tn:'true neutral',cn:'chaotic neutral',le:'lawful evil',ne:'neutral evil',ce:'chaotic evil'}[s.trim().toLowerCase()]||s.trim().toLowerCase());
 export function prestigeEligibility(c:Character,d:ClassDefinition):Eligibility {
  const q=checker(c,'class:'+d.id),{check,manual}=q;

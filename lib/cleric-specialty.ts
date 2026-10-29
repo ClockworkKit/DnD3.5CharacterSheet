@@ -2,6 +2,7 @@ import type {Character,Spell} from './model.ts';
 import {findClass,makeCaster} from './classes.ts';
 import {effectiveScore} from './ancestry.ts';
 import {addEffect} from './effects.ts';
+import {castingDefinition} from './advancement.ts';
 
 export const silverbeard:Spell={
   id:'silverbeard',name:'Silverbeard',school:'Transmutation',levels:{Paladin:1,'Axe Brother of Clangeddin':1},
@@ -19,7 +20,7 @@ export function applyClericSpecialty(c:Character,specialty:Character['clericSpec
   if(!level)throw new Error('Add a Cleric level before choosing this specialty.');
   // Old native/manual books may identify their class only by name or list.
   // An explicit different class link or a domain book must never be repurposed.
-  const candidates=c.casters.filter(p=>!p.casting?.domain&&(p.casting?.classId?p.casting.classId==='cleric':(findClass(p.name)||findClass(p.list))?.id==='cleric'));
+  const candidates=c.casters.filter(p=>!p.casting?.domain&&castingDefinition(p)?.id==='cleric');
   if(candidates.length>1)throw new Error('More than one ordinary Cleric spellbook is recorded. Review the casting traditions in Magic before choosing this specialty.');
   const caster=candidates[0]||makeCaster(findClass('cleric')!,level,effectiveScore(c,'WIS'));
   c.clericSpecialty=specialty;c.deity='Clangeddin Silverbeard';

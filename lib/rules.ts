@@ -21,8 +21,7 @@ import {effectBonus,effectTerms,stackBonuses,effectActive,classLevel,hasFeat} fr
 import {equipmentById,equippedArmor,weaponProficient,carriedWeight,carrying,movement,scaleDice} from './equipment.ts';
 import {brainsOverBrawn,factotumLevel,factotumNumbers} from './factotum.ts';
 import {classSystemsSchema} from './class-systems.ts';
-import {findClass} from './classes.ts';
-import {skillExtras} from './advancement.ts';
+import {skillExtras,castingDefinition} from './advancement.ts';
 import {diceFormula,resourceNumbers} from './automation.ts';
 export {modifier,signed,withBonus};
 export type Roll={title:string,formula?:string,details:string,initiative?:boolean,fields?:Array<[string,string]>,rolls?:Array<{label:string,formula:string}>};
@@ -92,13 +91,13 @@ export function makeFullAttackRoll(c:Character,weapons=fullAttackWeapons(c),incl
   return [{label:label+' to hit',formula:withBonus('1d20',weaponAttack(c,weapon,attack.iteration))},...(includeDamage?[{label:label+' damage on hit',formula:weaponDamage(c,weapon)}]:[])];
  })};
 }
-export function spellDC(c:Character,p:Caster,s:KnownSpell,reference?:Spell){const spell=reference||s.custom,school=spell?.school.split(/[ (]/)[0]||'';const poison=(spell?.id||s.spellId)==='poison';const level=poison?Math.floor(p.level/2):s.level,ability=poison?'WIS':findClass(p.casting?.classId||p.name)?.casting?.dcAbility||p.ability;return 10+level+modifier(effectiveScore(c,ability))+p.dcExtra+(c.automation.enabled?(hasFeat(c,'Spell Focus',school)?1:0)+(hasFeat(c,'Greater Spell Focus',school)?1:0)+(school==='Illusion'&&!racialTraits(c)?.imported&&racialTraits(c)?.id.includes('gnome')&&racialTraits(c)?.id!=='whisper-gnome'?1:0)+illumianDC(c,s.level)+combined(c,['spellDC','spellDC.'+school]):0);}
+export function spellDC(c:Character,p:Caster,s:KnownSpell,reference?:Spell){const spell=reference||s.custom,school=spell?.school.split(/[ (]/)[0]||'';const poison=(spell?.id||s.spellId)==='poison';const level=poison?Math.floor(p.level/2):s.level,ability=poison?'WIS':castingDefinition(p)?.casting?.dcAbility||p.ability;return 10+level+modifier(effectiveScore(c,ability))+p.dcExtra+(c.automation.enabled?(hasFeat(c,'Spell Focus',school)?1:0)+(hasFeat(c,'Greater Spell Focus',school)?1:0)+(school==='Illusion'&&!racialTraits(c)?.imported&&racialTraits(c)?.id.includes('gnome')&&racialTraits(c)?.id!=='whisper-gnome'?1:0)+illumianDC(c,s.level)+combined(c,['spellDC','spellDC.'+school]):0);}
 export function spellPenetration(c:Character,p:Caster){return p.level+p.penetration+(c.automation.enabled?(hasFeat(c,'Spell Penetration')?2:0)+(hasFeat(c,'Greater Spell Penetration')?2:0)+effectBonus(c,'penetration'):0);}
 export function preparedAt(p:Caster,level:number){return p.spells.filter(s=>s.slotLevel===level).reduce((a,s)=>a+s.prepared,0);}
 export function castingProblem(p:Caster,s:KnownSpell,c?:Character){
- if(c&&featureReplaced(c,p.casting?.classId||p.name.toLowerCase(),'spellcasting'))return 'This class has traded away spellcasting.';
+ if(c&&featureReplaced(c,castingDefinition(p)?.id||'','spellcasting'))return 'This class has traded away spellcasting.';
  if(c?.automation.enabled&&s.slotLevel<s.level)return 'The slot level is below the spell level. Use a sufficient slot or turn off automation for a house-rule exception.';
- if(c?.automation.enabled&&effectiveScore(c,p.ability)+(hasAlternateFeature(c,'sorcerer-blood-of-siberys')&&(p.casting?.classId||p.name.toLowerCase())==='sorcerer'?4:0)<10+s.level)return p.ability+' must be at least '+(10+s.level)+' to cast this spell.';
+ if(c?.automation.enabled&&effectiveScore(c,p.ability)+(hasAlternateFeature(c,'sorcerer-blood-of-siberys')&&(castingDefinition(p)?.id||'')==='sorcerer'?4:0)<10+s.level)return p.ability+' must be at least '+(10+s.level)+' to cast this spell.';
  const slot=p.slots[s.slotLevel];
  if(!slot||slot.max<=0)return 'No daily slots are available at this level.';
  if(p.mode==='prepared'){

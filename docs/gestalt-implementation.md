@@ -508,3 +508,33 @@ The user chose **printed-table progressions by default; fractional bonuses optio
 - Custom casting/manifesting, proficiencies and source-specific abilities remain
   incomplete. The remaining variant/shared-feature audit, reviewed mode conversion
   and full end-to-end gates still apply. The overall goal is not complete.
+
+## Casting identity and resource preservation (2026-10-29)
+
+- Reproduced incorrect fallback from explicit unsupported or empty casting links
+  to familiar names/spell lists, which could overwrite recorded caster levels and
+  slots during recalculation. Explicit casting/manifesting metadata now controls
+  identity; older pools without metadata retain their legacy recognition.
+- Reproduced missing class resources during advancement when an unrelated pool
+  shared a display name, or a domain pool was mistaken for ordinary cleric
+  casting. Initialization and Classes controls now compare resolved class links,
+  exclude domain books from ordinary casting, and recognize renamed valid pools.
+- Axe Brother selection, split-ability save DCs and casting prerequisites respect
+  the same boundary. Unsupported pools retain editable recorded values and show
+  manual-handling notices. No automatic relinking, preparation reset or refund is
+  performed; historical values already overwritten cannot be reconstructed.
+- Eight regressions cover unknown/empty links, legacy compatibility, duplicate
+  prevention, domain separation, standard/paired advancement, Axe Brother setup,
+  save DCs/prerequisites, native reload and a fresh browser-storage API client.
+  Preparations, power choices, expenditure, notes, level history and injuries are
+  preserved. All 770 tests passed; TypeScript, production build and whitespace
+  checks passed. Existing script/bundle warnings remain.
+- The preceding creation milestone `1cd7ffb` deployed successfully (Pages run
+  `40905899927`). Browser UI verification remains unavailable because browser
+  access is disabled; storage API tests are not browser UI checks. No private
+  exports or real player saves were changed.
+- This does not implement custom casting/manifesting tables. Their schema/editor,
+  proficiencies, remaining source-specific/shared features, reviewed mode
+  conversion and full end-to-end gates remain unfinished. The RAW policy and
+  documented printed-table default/fractional option remain unchanged. The
+  overall goal is not complete.

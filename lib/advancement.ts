@@ -12,8 +12,10 @@ import {skillLedger} from './skill-points.ts';
 export {hitDieSequence} from './level-history.ts';
 import known from './spells-known.json' with {type:'json'};
 export const arcaneClasses=['wizard','sorcerer','bard','assassin',...classCatalog.filter(d=>d.casting?.type==='arcane').map(d=>d.id)];
-export function castingDefinition(p:Caster){return findClass(p.casting?.classId||p.name)||findClass(p.list);}
-export function manifestDefinition(p:Psionic){return findClass(p.manifesting?.classId||p.name);}
+// Explicit links (including an intentionally empty link) outrank display labels.
+// Name/list inference is only for older profiles without linking metadata.
+export function castingDefinition(p:Caster){return p.casting?findClass(p.casting.classId):findClass(p.name)||findClass(p.list);}
+export function manifestDefinition(p:Psionic){return findClass(p.manifesting?p.manifesting.classId:p.name);}
 export function advanceTargets(c:Character,e:Character['classLevels'][number]){const definition=findClass(e.classId);const texts=definition?.levels.filter(r=>r.level<=e.level).map(r=>[r.special,...r.extra].join(' '))||[];const text=texts.join(' ');const dual=e.classId==='mystic-theurge',psi=/manifesting/.test(text);return {spell:e.classId==='master-specialist'||/existing.*(?:spellcasting|arcane)|existing class/.test(text),divine:dual||e.classId==='hierophant',psi,arcane:/arcane/.test(text),spellLevels:e.classId==='master-specialist'?Math.min(e.level,10):texts.filter(t=>/\+1\s*level of existing/.test(t)&&!(/^.*manifesting.*$/.test(t)&&!t.includes('spellcasting'))).length,psiLevels:texts.filter(t=>/\+1\s*level of existing manifesting/.test(t)).length};}
 export function advancementCandidates(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi'){
  const target=advanceTargets(c,e);
