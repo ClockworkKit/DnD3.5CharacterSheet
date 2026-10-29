@@ -138,7 +138,7 @@ export function gestaltLevelSequence(c:Character,input:GestaltProgression,option
   const left=resolve(pair.left),right=resolve(pair.right),sides=[left,right];
   for(const target of pair.castingTargets??[])if(!sides.some(s=>s.def.id===target.classId))throw new Error('Prestige casting target does not belong to either class at this paired level.');
   if((left.policy.family??left.def.id)===(right.policy.family??right.def.id))throw new Error('A gestalt level cannot combine versions of the same class.');
-  const variantProblem=gestaltVariantPairProblem(left.def.id,right.def.id);
+  const variantProblem=gestaltVariantPairProblem(left.def.id,right.def.id)||gestaltVariantPairProblem(left.policy.family??left.def.id,right.policy.family??right.def.id);
   if(variantProblem&&!options.allowHistoricalFamilyConflicts)throw new Error(variantProblem);
   if(sides.every(s=>s.def.kind==='Prestige'))throw new Error('A gestalt level cannot combine two prestige classes.');
   for(const a of pair.approvals)if(!sides.some(s=>s.def.id===a.classId&&s.def.kind==='Prestige'&&s.policy.combinationPrestige))throw new Error('Combination-class approval does not match this level.');

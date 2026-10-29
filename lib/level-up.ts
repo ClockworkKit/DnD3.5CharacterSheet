@@ -51,7 +51,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
  characterGestaltRows(c);
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
- const variantProblem=gestaltVariantPairProblem(selection.left,selection.right);
+ const variantProblem=gestaltVariantPairProblem(selection.left,selection.right,c.customClasses);
  if(variantProblem)throw new Error(variantProblem);
  // Do not let the first side supply BAB, spells, feats or ranks needed to enter
  // the other side. Existing prestige entries retain ordinary continuation rules.

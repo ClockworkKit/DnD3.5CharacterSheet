@@ -437,3 +437,40 @@ The user chose **printed-table progressions by default; fractional bonuses optio
 - The previous conditional-style fix `caa720e` deployed successfully (Pages run
   `40852607253`). The broader custom-class, variant/shared-feature, reviewed
   mode-conversion and full end-to-end gates are not complete.
+
+## Reviewed custom-class editor (2026-10-29)
+
+- Added a collapsed Classes panel for source-cited basic custom tables. Drafts
+  are separate from the character; source acknowledgment opens a before/after
+  review before explicit application. New tables add no levels or class entries.
+  The editor supports existing manual custom IDs without enabling automation,
+  source notes, entry requirements, families, prestige policy, ordinary rates,
+  Hit Dice, skills and per-level feature text. It does not infer special powers.
+- The transaction rebuilds its result at confirmation, rejecting stale characters,
+  altered reviews, missing earned rows and unsupported tables. It refuses to
+  clamp or invent historical HP rolls, preserves recorded training/history and
+  feature annotations/expenditure, reports skill overspending without deleting
+  ranks, and recalculates once through the normal sheet boundary. Existing
+  custom feature cards are no longer rewritten by unrelated alternate-feature
+  synchronization. Draft state is scoped to the selected character.
+- Applied the existing source-verified variant-family restriction to declared
+  custom families, including Rogue/Psychic Rogue and Psion/Erudite. This extends
+  the same [UA rule](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm),
+  not a new stacking convention. New conflicting table edits and advancement
+  fail; historical variant conflicts remain readable and visibly warned. Built-in
+  restrictions cannot be removed by temporary custom metadata.
+- Eight new regressions cover read-only previews, standard/paired application,
+  native persistence, damage and spent casting, manual legacy entries, stale and
+  tampered reviews, insufficient tables, preserved milestone text/extra columns,
+  historical HP rolls, custom personal notes during alternate synchronization,
+  and family restrictions with historical compatibility. All 757 tests passed;
+  TypeScript, production build and whitespace checks passed. Existing non-module
+  script and bundle-size warnings remain.
+- Browser UI verification remains unperformed because local browser use is
+  disabled in Work settings. No private exports or player saves were modified.
+  Custom starting selection, casting/manifesting and source-specific abilities,
+  remaining variant/shared-feature cases, reviewed mode conversion and full
+  end-to-end gates are still unfinished. The overall goal is not complete.
+- The preceding custom-table foundation `bae7e92` deployed successfully
+  (Pages run `40854705615`). See [the profile contract](custom-class-profiles.md)
+  for supported behavior and limits.

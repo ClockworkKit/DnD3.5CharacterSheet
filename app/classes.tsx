@@ -14,6 +14,7 @@ import {F,N,Choice,Btn,Section,Stat,type SheetProps} from './sheet-ui';
 import {applyClericSpecialty} from '@/lib/cleric-specialty';
 import {AlternateClassFeatures} from './alternate-class-features';
 import {ClassSystems} from './class-systems';
+import {CustomClassEditor} from './custom-class-editor';
 import {AxeBrotherImportReview} from './axe-brother-import-review';
 import {ArcaneImportReview,ArchivedFactotumCasting} from './arcane-import-review';
 
@@ -26,7 +27,7 @@ export function Classes({c,edit,confirm,roll,spells}:SheetProps&{spells:Spell[]}
  async function show(def:ClassDefinition){setDetail(def);if(refs.length)return;try{setRefError('');const res=await fetch(assetUrl('data/classes.json'));if(!res.ok)throw new Error();setRefs(await res.json() as ClassDefinition[])}catch{setRefError('Full class text could not be loaded. The progression table is available below.')}}
  function add(def:ClassDefinition){if(!prestigeEligibility(c,def).eligible){toast.error('Prestige prerequisites are not met.');return;}if(c.classLevels.some(x=>x.classId===def.id)){toast.error('That class is already recorded. Change its level on the sheet.');return}edit(d=>{if(!prestigeEligibility(d,def).eligible)throw new Error('Prestige prerequisites are not met.');d.classLevels.push({id:uid(),classId:def.id,name:def.name,level:1,notes:''})});setOpen(false);toast.success(def.name+' added. Totals now follow the recorded class levels.');}
  const reference=refs.find(d=>d.id===detail?.id)||detail;
- return <><AxeBrotherImportReview c={c} spells={spells} onRepair={next=>edit(d=>{Object.assign(d,next)})}/><ArcaneImportReview key={c.roll20Import?.sourceCharacterId} c={c} spells={spells} onRepair={next=>edit(d=>{Object.assign(d,next)})}/><ArchivedFactotumCasting c={c} spells={spells}/><Section title="Classes & advancement" action={<Btn onClick={()=>setOpen(true)}>+ Add class</Btn>}>
+ return <><AxeBrotherImportReview c={c} spells={spells} onRepair={next=>edit(d=>{Object.assign(d,next)})}/><ArcaneImportReview key={c.roll20Import?.sourceCharacterId} c={c} spells={spells} onRepair={next=>edit(d=>{Object.assign(d,next)})}/><ArchivedFactotumCasting c={c} spells={spells}/><CustomClassEditor c={c} edit={edit}/><Section title="Classes & advancement" action={<Btn onClick={()=>setOpen(true)}>+ Add class</Btn>}>
  <p className="muted">Record each class separately. Character level, base attack, saves, HP, hit dice and class-skill flags update automatically, including recorded racial Hit Dice.</p>
  {!!c.customClasses?.length&&<p className="fine">This character includes custom progression tables. They calculate basic statistics, skills and feature milestones only. Casting, proficiencies and special abilities still require their source rules and manual tracking; a class name does not grant another class's abilities.</p>}
  {!c.classLevels.length&&<div className="empty-note"><p>Current class line: <strong>{c.classes||'None'}</strong></p><p>Add an entry for each of your current classes before applying totals.</p>{inferred.length>0&&<Btn className="primary" onClick={()=>edit(d=>{d.classLevels=inferred})}>Use current class line</Btn>}</div>}
