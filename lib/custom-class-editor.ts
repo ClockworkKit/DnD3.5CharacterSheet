@@ -1,10 +1,11 @@
-import {customClassSchema,type CustomClass} from './custom-class-schema.ts';
+import {customClassSchema,customProficiencyText,type CustomClass} from './custom-class-schema.ts';
 import {characterSchema,uid,type Character} from './model.ts';
 import {findClass} from './classes.ts';
 import {recompute} from './automation.ts';
 import {hitDieSequence} from './level-history.ts';
 import {skillLedger} from './skill-points.ts';
 import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
+import {weaponProficient,armorProficient,gearEquipment} from './equipment.ts';
 
 /** Build only standard rate tables chosen by the player; never infer a source class. */
 export function customClassTable(draft:CustomClass,length:number):CustomClass{
@@ -29,6 +30,11 @@ export function customClassDraft(c:Character,classId=''):CustomClass{
 }
 
 const summary=(c:Character)=>({level:c.level,hp:c.hp,maxHp:c.maxHp,bab:c.bab,fort:c.saves.fort.base,ref:c.saves.ref.base,will:c.saves.will.base,skills:skillLedger(c).granted});
+function trainingChanges(before:Character,after:Character){
+ const items=before.weapons.map(w=>({id:'weapon:'+w.id,name:w.name,before:weaponProficient(before,w),after:weaponProficient(after,w)}));
+ for(const g of before.gear){const e=gearEquipment(g);if(e&&e.kind!=='weapon')items.push({id:'gear:'+g.id,name:g.name,before:g.proficient??armorProficient(before,e),after:g.proficient??armorProficient(after,e)});}
+ return items.filter(item=>item.before!==item.after);
+}
 
 function buildCustomClassChange(c:Character,targetId:string,input:CustomClass){
  if(c.sheetKind==='monster')throw new Error('Custom player-class tables are not monster Hit Dice.');
@@ -63,7 +69,7 @@ function buildCustomClassChange(c:Character,targetId:string,input:CustomClass){
  for(const skill of c.skills)if(next.skills.find(s=>s.id===skill.id)?.ranks!==skill.ranks)throw new Error('This edit would change purchased skill ranks. Review skill training separately first.');
  for(const feature of c.features){const after=next.features.find(f=>f.id===feature.id);if(!after||after.used!==feature.used||after.description!==feature.description)throw new Error('This edit would rewrite a recorded feature or its expenditure. Review feature records separately first.');}
  const ledger=skillLedger(next);
- return {pending,source:JSON.stringify(c),targetId,profile,profileKey:JSON.stringify(profile),character:next,summary:{before:summary(c),after:summary(next),used,manual:!c.automation.enabled,overspent:ledger.levels.filter(row=>row.spent>row.granted).map(row=>row.label)}};
+ return {pending,source:JSON.stringify(c),targetId,profile,profileKey:JSON.stringify(profile),character:next,summary:{before:summary(c),after:summary(next),used,manual:!c.automation.enabled,overspent:ledger.levels.filter(row=>row.spent>row.granted).map(row=>row.label),proficiencies:{before:customProficiencyText(c.customClasses?.find(p=>p.definition.id===targetId)?.definition.proficiencies),after:customProficiencyText(profile.definition.proficiencies),items:trainingChanges(c,next)}}};
 }
 
 export function previewCustomClassChange(c:Character,targetId:string,input:CustomClass){const {pending,...preview}=buildCustomClassChange(c,targetId,input);return preview;}

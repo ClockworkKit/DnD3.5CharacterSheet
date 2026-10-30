@@ -124,8 +124,9 @@ source rules still need explicit supported metadata and reviewed integration.
 Custom casting/manifesting metadata remains unfinished. Version 1 rejects casting
 fields rather than discarding them or promising unsupported automation. Manual
 spell/power profiles, custom features and counters remain available separately.
-Proficiencies, bonus feats, conditional powers and shared-feature mechanics are
-not inferred from milestone prose. The Classes view explains these limits.
+Bonus feats, conditional powers and shared-feature mechanics are not inferred
+from milestone prose. Equipment training uses only the explicit configuration
+below. The Classes view explains these limits.
 Browser interaction and visual verification of this editor remain outstanding
 while local browser access is disabled. Automated transaction and persistence
 tests are not a substitute for that UI check.
@@ -133,3 +134,35 @@ tests are not a substitute for that UI check.
 The overall gestalt goal also retains its independent variant, shared-feature,
 reviewed mode-conversion and end-to-end verification gates. See
 [the implementation record](gestalt-implementation.md).
+
+## Explicit equipment training
+
+Version 1 accepts an optional `definition.proficiencies` object; it has no
+default and no existing profile is changed automatically. The reviewed editor,
+including the new-character draft, supports:
+
+- Simple and martial weapon groups, each independently all or melee-only.
+- Exact catalog weapon choices, including individual exotic weapons.
+- Cumulative light/medium/heavy armor groups and exact individual armor choices.
+- Bucklers only, bucklers/light shields, standard shields excluding tower
+  shields, or all shields including tower shields.
+- An optional class-level threshold for gaining medium armor from a lower
+  initial group. It uses this class's own levels, never doubled gestalt levels.
+
+Selecting none is an explicit absence of that class grant, not a removal of
+another class, feat or racial benefit. The existing proficiency resolver combines
+independent sources in standard and gestalt modes. Manual weapon and gear
+overrides take precedence. No equipment, feat, class level or resource is added.
+An unused table confers no training, even if named after a catalog class.
+
+Draft review describes old/new class training and changed proficiency for recorded
+items before applying. Stale or malformed changes are rejected. Equipment flags,
+notes, skill purchases, current injuries and expenditure remain intact. Only
+nonproficiency penalties change; ordinary armor skill penalties, spell failure,
+movement restrictions and other class restrictions still apply.
+
+Item-specific choices must use existing catalog names. Unknown items, conditional
+training and progression other than the supported medium-armor threshold require
+manual handling; they are not guessed from prose. Invalid groups, duplicate or
+unknown item names, contradictory restrictions and unsupported fields fail
+validation. Removing the configuration is an explicitly reviewed change.

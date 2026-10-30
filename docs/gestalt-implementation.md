@@ -569,3 +569,44 @@ The user chose **printed-table progressions by default; fractional bonuses optio
 - Custom casting/manifesting, proficiencies, remaining source-specific/shared
   feature cases, reviewed mode conversion and complete end-to-end gates remain
   open. The broader goal is not complete.
+
+## Source-reviewed custom equipment training (2026-10-30)
+
+- Added optional explicit proficiency metadata to saved custom-class profiles,
+  using the existing equipment resolver instead of a second penalty calculator.
+  No schema default, automatic migration, inferred class-name grant or feat copy
+  is introduced. Unused library profiles confer no benefits.
+- The shared creation/Classes editor supports independent simple/martial groups,
+  melee-only restrictions, individual catalog weapons and armor, armor groups,
+  shield scopes including separate tower-shield permission, and delayed medium
+  armor at an actual custom class level. Source acknowledgment and the existing
+  stale-review/atomic confirmation safeguards remain required. The review lists
+  old/new training and changed proficiency for recorded items. Classes displays
+  the saved training description alongside each custom entry.
+- Independent training from either gestalt class combines without stacking.
+  Existing racial weapon familiarity and feat-prerequisite checks consume the
+  same resolver. Manual weapon/gear overrides, all saved equipment, skill history,
+  feature notes, injuries and spent casting remain intact. Ordinary armor skill
+  penalties and arcane spell failure are not removed by proficiency.
+- Rules checked against [UA gestalt class features](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm),
+  [weapon proficiency and categories](https://www.d20srd.org/srd/equipment/weapons.htm#weaponCategories),
+  [armor nonproficiency](https://www.d20srd.org/srd/equipment/armor.htm#armorCheckPenalty),
+  and [dwarf weapon familiarity](https://www.d20srd.org/srd/races.htm#dwarves).
+  The test classes are explicitly synthetic source configurations, not claims
+  about published classes. Actual class grants must be entered from their source.
+- Unknown/duplicate item names, invalid groups, contradictory melee restrictions,
+  unsupported fields and a missing table row for delayed armor training fail
+  validation. Uncatalogued items, conditional training and other progression
+  patterns remain manual rather than guessed. See [the profile contract](custom-class-profiles.md).
+- Eight new regressions cover schema boundaries, no-grant defaults, narrow groups,
+  individual items, actual attack penalties, delayed training in standard/paired
+  advancement, cross-class/feat/racial grants, review and removal, stale changes,
+  native reload and a fresh browser-storage client. All 785 tests passed, along
+  with TypeScript, the production build and whitespace checks. Existing script,
+  bundle-size and build-plugin timing warnings remain.
+- The preceding note-preservation fix `93307c1` deployed successfully (Pages run
+  `40961490669`). Browser UI verification remains unavailable while browser access
+  is disabled; API persistence testing is not a browser interaction test. No
+  private exports or player saves were modified. Custom casting/manifesting,
+  conditional/shared abilities, remaining variant cases, reviewed mode conversion
+  and complete end-to-end gates remain unfinished. The overall goal is not complete.
