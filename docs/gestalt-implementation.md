@@ -1,5 +1,7 @@
 # Standard defaults and gestalt progression
 
+Current continuation: [verified behavior and remaining gates](gestalt-current-status.md).
+
 **Standing requirement:** follow the [rules-as-written policy](rules-policy.md)
 before changing mechanics. The 2026-10-27 user direction resolves the earlier
 Uncanny Dodge question in favor of the gestalt faster-class rule; historical
@@ -610,3 +612,48 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   private exports or player saves were modified. Custom casting/manifesting,
   conditional/shared abilities, remaining variant cases, reviewed mode conversion
   and complete end-to-end gates remain unfinished. The overall goal is not complete.
+
+
+## Cloud continuation: progression controls and preserved resources (2026-11-01)
+
+- Resumed from GitHub `183213f` against the user's complete goal. Standard defaults,
+  paired creation/advancement, independent casting and persistence already exist;
+  this continuation reuses those systems. See [current status](gestalt-current-status.md)
+  for the acceptance mapping and unresolved gates.
+- Found Classes and Skills controls that attempted unsupported independent edits
+  to paired progression. They are now read-only/disabled for gestalt, with saved
+  paired history and instructions for the existing paired level-up workflow.
+  Standard class editing and historical Intelligence/point corrections remain.
+  Effective class dice/skills are distinguished from base-table bonuses.
+- Reproduced renamed Rage cards being deleted and recreated with zero expenditure,
+  and daily/supplemental descriptions being overwritten. Stable rule identities
+  now control synchronization; custom names, sources and notes survive. Only a
+  uniquely recognized generated block refreshes. Current guidance is separate
+  when legacy or rewritten text cannot be safely replaced.
+- Optional retained resource records preserve full cards when a class feature is
+  replaced. Restoration reuses the original identity and retained spent uses;
+  only an explicit daily rest resets them. The Features panel exposes inactive
+  records. No legacy empty archive or reset is added. Five regressions cover
+  standard/paired advancement, old rewritten notes, replacement/restoration/rest,
+  independent counters, native files and a fresh storage client.
+- Reproduced duplicate Monk // Ninja AC milestones, a negative Wisdom penalty
+  and Monk AC remaining active while helpless. The existing effect calculation
+  now consumes one shared, read-only resolver. Use the higher complete monk or
+  ninja source; do not add their levels or bonuses. Applicable Psionic Fist
+  levels still use the previously verified nonstacking monk advancement.
+- Sources: [Monk AC Bonus](https://www.d20srd.org/srd/classes/monk.htm#acBonus)
+  grants Wisdom bonus “if any” and loses both bonuses when immobilized/helpless,
+  armored, shielded or carrying a medium/heavy load. The
+  [Ninja AC Bonus](https://srd.dndtools.org/srd/classes/baseCad/ninja.html) explicitly
+  does not stack with the monk's AC bonus ability and repeats those restrictions.
+  This source-specific nonstacking rule applies in ordinary and gestalt play;
+  it does not invent another mixed-class progression convention.
+- Four new defense regressions cover all levels 1–20 and both side placements,
+  ordinary multiclass, negative Wisdom, flat-footedness, helplessness, gear/load,
+  manual mode and unchanged native persistence with injuries and expenditure.
+- All **794 tests passed**, TypeScript passed, and both Pages and Worker production
+  builds passed. The initial theme-check failure was an execution-sandbox
+  subprocess restriction; it passed with subprocess execution available.
+  Rendered React assertions checked the changed controls and retained notes.
+  Interactive browser checks remain unavailable and are not claimed complete.
+  No private exports or player saves were used. The broader goal remains open.

@@ -1,16 +1,19 @@
 'use client';
 import {armorBreakdown,rogueCombatFeatures,setDeathsRuin} from '@/lib/combat-explanations';
 import {signed} from '@/lib/rules';
+import {classArmorBonus} from '@/lib/class-armor-bonus';
 import {Check,type SheetProps} from './sheet-ui';
 import {TrapDefenses} from './trap-defenses';
 
 export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
  const {armor,load,encumbrance,basePenalty,baseDexCap}=armorBreakdown(c);
+ const classArmor=classArmorBonus(c);
  const cap=(n:number)=>n>=100?'no limit':signed(n);
  return <div className="subcard" aria-label="Armor and load breakdown">
  <h3>Armor and carrying load</h3>
  <p className="fine">Equipped: {armor.selected.map(g=>g.name).join(', ')||'No armor or shield'}. Gear bonuses: armor {signed(armor.armor)}, shield {signed(armor.shield)}. Gear check penalty {signed(armor.checkPenalty)}; maximum Dex {cap(armor.dexCap)}.</p>
  <p className="fine">Carried weight {load.weight.toFixed(2)} lb. — {load.category.toLowerCase()} load. Light-load limit {load.light} lb. {encumbrance?`Load check penalty ${signed(load.checkPenalty)}; maximum Dex ${cap(load.dexCap)}. The worse gear/load value applies, not their sum.`:'Weight-based encumbrance is disabled in Calculations.'}</p>
+ {classArmor.sources.length>0&&<details><summary>Monk / ninja AC bonus: {signed(classArmor.bonus)}</summary><p className="fine">These class bonuses do not stack; use the higher complete bonus. Wisdom contributes only a positive modifier. They apply to touch and flat-footed AC, but require no armor or shield, a light load when encumbrance is enabled, and the ability to move.</p><ul>{classArmor.sources.map(s=><li key={s.name}>{s.name}, class progression {s.level}: {signed(s.bonus)}.</li>)}</ul>{classArmor.blocked&&<p className="fine">Not applied because of {classArmor.blocked}.</p>}</details>}
  <p className="fine">Sheet check penalty {signed(c.defense.checkPenalty)}; maximum Dex {cap(c.defense.dexCap)}. {c.automation.enabled?`Before adjustments: ${signed(basePenalty)} and ${cap(baseDexCap)}.`:'These fields are currently entered manually.'}</p>
  {c.automation.enabled&&(['defense.armor','defense.shield','defense.checkPenalty','defense.dexCap','defense.spellFailure'] as const).some(k=>c.automation.overrides[k]!==undefined||c.automation.adjustments[k])&&<p className="fine">Saved adjustments / overrides: {(['defense.armor','defense.shield','defense.checkPenalty','defense.dexCap','defense.spellFailure'] as const).filter(k=>c.automation.overrides[k]!==undefined||c.automation.adjustments[k]).map(k=>`${({'defense.armor':'armor','defense.shield':'shield','defense.checkPenalty':'check penalty','defense.dexCap':'maximum Dex','defense.spellFailure':'spell failure'}[k])} ${c.automation.overrides[k]!==undefined?'override '+c.automation.overrides[k]:signed(c.automation.adjustments[k])}`).join('; ')}. Review these in Calculations with your DM; imported totals are preserved rather than silently erased.</p>}
  </div>;

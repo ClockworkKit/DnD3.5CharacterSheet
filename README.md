@@ -10,8 +10,8 @@ A D&D 3.5 character-sheet website built with Astra for ClockworkKit.
 gestalt, other variants and house rules are explicit options. See the enduring
 [rules policy](docs/rules-policy.md) for source verification, ambiguity handling,
 recorded table decisions and protection of existing player saves. See the
-[gestalt implementation record](docs/gestalt-implementation.md) for progress and
-remaining work.
+[gestalt implementation record](docs/gestalt-implementation.md) and
+[current verification status](docs/gestalt-current-status.md) for progress and remaining work.
 
 ## Character sheet
 
@@ -55,7 +55,7 @@ The calculation engine connects:
 
 Changing Constitution or Hit Dice preserves damage already taken. Changing spell progression preserves preparations and spent uses. Recalculation does not refund daily resources. Recorded Hit Die rolls and historical Intelligence stay attached to their levels. Temporary ability effects affect current checks, HP, and DCs; lasting scores determine bonus daily slots and power points.
 
-You still choose ability increases, feats, which skills to buy, class levels, targets, equipment, preparations, and power augmentation. Select the relevant situation in Combat to apply conditional modifiers. Prestige prerequisites, form changes, unusual feat/spell exceptions, and custom classes require a ruling or manual adjustment. Gestalt and fractional progression use overrides.
+You still choose ability increases, feats, which skills to buy, class levels, targets, equipment, preparations, and power augmentation. Select the relevant situation in Combat to apply conditional modifiers. Prestige prerequisites, form changes, unusual feat/spell exceptions, and custom classes require a ruling or manual adjustment. Explicit gestalt sheets use saved class pairs and guided paired advancement, with printed-table bonuses by default and fractional bonuses optional. Standard sheets are never automatically converted; see the current verification status for remaining limitations.
 
 Fixed overrides and additive adjustments are available for house rules. Casting and manifesting can also be set to manual progression. Custom effects accept bounded arithmetic and dice formulas; they do not execute JavaScript.
 

@@ -1,3 +1,4 @@
+import {resourceGuidance} from './managed-resources.ts';
 import {classRuleText,classRuleHeading} from './class-rule-text.ts';
 import {characterGestaltRows,gestaltBaseTotals} from './gestalt-progression.ts';
 import {alternateClassSkill} from './alternate-benefits.ts';
@@ -66,6 +67,8 @@ export function classSummaryView(c:Character,f:Character['features'][number]){
  return current&&!f.description.includes(current.description)?current:undefined;
 }
 export function classSummaryPostText(c:Character,f:Character['features'][number]){
+ const resource=resourceGuidance(f);
+ if(resource)return 'Current generated resource guidance:\n'+resource.description+'\n\nSaved description and notes (preserved; may include older guidance):\n'+f.description;
  const current=classSummaryView(c,f);
  return current?'Current generated class summary:\n'+current.description+'\n\nSaved description and notes (preserved; may include older rules):\n'+f.description:f.description;
 }
