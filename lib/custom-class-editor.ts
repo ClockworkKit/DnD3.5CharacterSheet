@@ -8,17 +8,20 @@ import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 import {weaponProficient,armorProficient,gearEquipment} from './equipment.ts';
 import {assertCustomResourceTables,castingNumbers,castingDefinition,manifestDefinition,psionicProgression} from './advancement.ts';
 import {initializeClassResources} from './level-up.ts';
+import {applyCustomPrestigeChoices} from './custom-prestige.ts';
+import type {ClassCastingAdvance} from './gestalt-schema.ts';
 import {retainCastingHistory} from './gestalt-casting.ts';
 
 /** Build only standard rate tables chosen by the player; never infer a source class. */
 export function customClassTable(draft:CustomClass,length:number):CustomClass{
  if(!Number.isInteger(length)||length<1||length>100)throw new Error('Choose 1 to 100 supported class levels.');
- if(draft.definition.levels.slice(length).some(row=>row.special.trim()||row.extra.some(text=>text.trim())||row.slots||row.spellsKnown||row.powerPoints!==undefined))throw new Error('Shortening this table would remove recorded milestones, resource tables or extra text. Keep those rows.');
+ if(draft.definition.levels.slice(length).some(row=>row.special.trim()||row.extra.some(text=>text.trim())||row.slots||row.spellsKnown||row.powerPoints!==undefined||row.advances))throw new Error('Shortening this table would remove recorded milestones, resource tables or extra text. Keep those rows.');
  const next=structuredClone(draft),p=next.policy.bonusProfile;
  next.definition.levels=Array.from({length},(_,index)=>{
   const level=index+1,old=draft.definition.levels.find(row=>row.level===level);
   const save=(kind:'good'|'poor')=>kind==='good'?2+Math.floor(level/2):Math.floor(level/3);
   return {...(old?structuredClone(old):{
+   ...(draft.definition.advances?{advances:{spell:false,divine:false,psi:false}}:{}),
    ...(draft.definition.casting?{slots:Array(10).fill(null)}:{}),
    ...(draft.definition.levels.some(r=>r.spellsKnown)?{spellsKnown:Array(10).fill(0)}:{}),
    ...(draft.definition.manifesting?{powerPoints:0,powersKnown:0,powerLevel:0}:{}),
@@ -52,7 +55,7 @@ function resourceChanges(before:Character,after:Character){
  return snapshot(after).flatMap(p=>{const previous=old.find(q=>q.id===p.id);return JSON.stringify(previous)===JSON.stringify(p)?[]:[{before:previous,after:p}];});
 }
 
-function buildCustomClassChange(c:Character,targetId:string,input:CustomClass){
+function buildCustomClassChange(c:Character,targetId:string,input:CustomClass,castingTargets:ClassCastingAdvance[]=[]){
  if(c.sheetKind==='monster')throw new Error('Custom player-class tables are not monster Hit Dice.');
  const profile=customClassSchema.parse(input);
  if(profile.definition.id!==targetId)throw new Error('A profile edit cannot change its class identity.');
@@ -77,6 +80,7 @@ function buildCustomClassChange(c:Character,targetId:string,input:CustomClass){
  const changedLink=c.casters.some(p=>p.casting?.classId===targetId)&&JSON.stringify(previousDefinition?.casting)!==JSON.stringify(profile.definition.casting)
   ||c.psionics.some(p=>p.manifesting?.classId===targetId)&&JSON.stringify(previousDefinition?.manifesting)!==JSON.stringify(profile.definition.manifesting);
  if(next.casters.length!==c.casters.length||next.psionics.length!==c.psionics.length||changedLink)retainCastingHistory(c,next);
+ const reviewedTargets=applyCustomPrestigeChoices(c,next,profile,castingTargets);
  characterSchema.parse(next);
  // Never clamp or invent a previously recorded die when changing its class table.
  if(c.automation.enabled&&c.automation.hpMethod==='rolled')for(const [i,row]of hitDieSequence(next).entries()){
@@ -98,15 +102,16 @@ function buildCustomClassChange(c:Character,targetId:string,input:CustomClass){
  }
  for(const p of c.psionics){const after=next.psionics.find(q=>q.id===p.id);if(!after||JSON.stringify({...after,level:p.level,max:p.max})!==JSON.stringify(p))throw new Error('This edit would rewrite a power, note or spent point. Review the tradition separately first.');}
  const ledger=skillLedger(next);
- return {pending,source:JSON.stringify(c),targetId,profile,profileKey:JSON.stringify(profile),character:next,summary:{before:summary(c),after:summary(next),used,manual:!c.automation.enabled,resources:resourceChanges(c,next),overspent:ledger.levels.filter(row=>row.spent>row.granted).map(row=>row.label),proficiencies:{before:customProficiencyText(c.customClasses?.find(p=>p.definition.id===targetId)?.definition.proficiencies),after:customProficiencyText(profile.definition.proficiencies),items:trainingChanges(c,next)}}};
+ return {pending,source:JSON.stringify(c),targetId,profile,profileKey:JSON.stringify(profile),castingTargets:structuredClone(castingTargets),targetsKey:JSON.stringify(castingTargets),character:next,summary:{before:summary(c),after:summary(next),used,manual:!c.automation.enabled,castingTargets:reviewedTargets,resources:resourceChanges(c,next),overspent:ledger.levels.filter(row=>row.spent>row.granted).map(row=>row.label),proficiencies:{before:customProficiencyText(c.customClasses?.find(p=>p.definition.id===targetId)?.definition.proficiencies),after:customProficiencyText(profile.definition.proficiencies),items:trainingChanges(c,next)}}};
 }
 
-export function previewCustomClassChange(c:Character,targetId:string,input:CustomClass){const {pending,...preview}=buildCustomClassChange(c,targetId,input);return preview;}
+export function previewCustomClassChange(c:Character,targetId:string,input:CustomClass,castingTargets:ClassCastingAdvance[]=[]){const {pending,...preview}=buildCustomClassChange(c,targetId,input,castingTargets);return preview;}
 export type CustomClassPreview=ReturnType<typeof previewCustomClassChange>;
 /** Apply an uncalculated recipe: the normal sheet boundary recomputes exactly once. */
 export function applyCustomClassChange(c:Character,preview:CustomClassPreview){
  if(JSON.stringify(c)!==preview.source)throw new Error('The character changed. Review the custom table again.');
  if(JSON.stringify(preview.profile)!==preview.profileKey)throw new Error('The table changed. Review it again before applying.');
- const checked=buildCustomClassChange(c,preview.targetId,preview.profile);
+ if(JSON.stringify(preview.castingTargets)!==preview.targetsKey)throw new Error('The prestige targets changed. Review them again before applying.');
+ const checked=buildCustomClassChange(c,preview.targetId,preview.profile,preview.castingTargets);
  Object.assign(c,checked.pending);
 }

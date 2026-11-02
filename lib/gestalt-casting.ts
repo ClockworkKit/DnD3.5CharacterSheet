@@ -5,11 +5,11 @@ import {characterGestaltRows} from './gestalt-progression.ts';
 import {gestaltCastingTargetSchema,type GestaltCastingTarget} from './gestalt-schema.ts';
 
 /** Only choices that actually grant progression at this class level. */
-function advancingKinds(c:Character,entry:ClassLevel):GestaltCastingTarget['kind'][] {
+export function advancingKinds(c:Character,entry:ClassLevel):GestaltCastingTarget['kind'][] {
  const now=advanceTargets(c,entry),before=advanceTargets(c,{...entry,level:entry.level-1});
  const kinds:GestaltCastingTarget['kind'][]=[];
  if(now.spell&&now.spellLevels>before.spellLevels)kinds.push('spell');
- if(now.divine&&(entry.classId==='hierophant'||now.spellLevels>before.spellLevels))kinds.push('divine');
+ if(now.divine&&(entry.classId==='hierophant'||now.divineLevels>before.divineLevels))kinds.push('divine');
  if(now.psi&&now.psiLevels>before.psiLevels)kinds.push('psi');
  return kinds;
 }
@@ -20,7 +20,7 @@ export function gestaltCastingChoices(c:Character,classIds:readonly string[]){
   const def=findClass(classId,c);if(!def)return [];
   const old=c.classLevels.find(e=>e.classId===classId);
   const entry:ClassLevel=old?{...old,level:old.level+1}:{id:'pending-'+classId,classId,name:def.name,level:1,notes:''};
-  const first=old?c.gestaltProgression?.levels.findIndex(row=>row.left===old.id||row.right===old.id)??-1:-1;
+  const first=c.advancementMode==='gestalt'&&old?c.gestaltProgression?.levels.findIndex(row=>row.left===old.id||row.right===old.id)??-1:-1;
   const priorEntries=first>=0?new Set(c.gestaltProgression!.levels.slice(0,first).flatMap(row=>[row.left,row.right])):null;
   const priorClasses=new Set(c.classLevels.filter(e=>!priorEntries||priorEntries.has(e.id)).map(e=>e.classId));
   const advance=advanceTargets(c,entry);
@@ -29,7 +29,7 @@ export function gestaltCastingChoices(c:Character,classIds:readonly string[]){
     const definition=kind==='psi'?manifestDefinition(c.psionics.find(q=>q.id===p.id)!,c):castingDefinition(c.casters.find(q=>q.id===p.id)!,c);
     return !!definition&&priorClasses.has(definition.id);
    });
-   const previous=c.gestaltProgression?.levels.flatMap(row=>row.castingTargets??[]).findLast(t=>t.classId===classId&&t.kind===kind)?.traditionId;
+   const previous=c.advancementMode==='gestalt'?c.gestaltProgression?.levels.flatMap(row=>row.castingTargets??[]).findLast(t=>t.classId===classId&&t.kind===kind)?.traditionId:old?.castingAdvances?.findLast(t=>t.kind===kind)?.traditionId;
    const preferred=previous??(kind==='spell'?entry.castingTarget:kind==='divine'?entry.divineTarget:entry.psionicTarget);
    const selected=preferred?(preferred==='none'||candidates.some(p=>p.id===preferred)?preferred:''):candidates.length===1?candidates[0].id:'';
    const label=kind==='psi'?'manifesting tradition':kind==='divine'?(classId==='hierophant'?'divine caster level only':'divine tradition'):advance.arcane?'arcane tradition':'spell tradition';
@@ -48,6 +48,11 @@ export function resolveGestaltCastingTargets(c:Character,classIds:readonly strin
   if(traditionId!=='none'&&!choice.candidates.some(p=>p.id===traditionId))throw new Error('Choose an eligible existing tradition for '+choice.label+'.');
   return {classId:choice.classId,kind:choice.kind,traditionId};
  });
+}
+
+/** Standard custom prestige levels use the same choices, with class-level scope. */
+export function standardCastingChoices(c:Character,classId:string){
+ return c.advancementMode!=='gestalt'&&findClass(classId,c)?.advances?gestaltCastingChoices(c,[classId]):[];
 }
 
 /** Capture old automatic/class-wide results before new profiles can change ambiguity.

@@ -7,7 +7,7 @@ import {F,N,Choice,Check} from './sheet-ui';
 export function CustomClassResources({draft,change,level,setLevel}:{draft:CustomClass;change:(recipe:(d:CustomClass)=>void)=>void;level:number;setLevel:(n:number)=>void}){
  const d=draft.definition,row=d.levels[level-1],casting=d.casting,manifesting=d.manifesting;
  return <details><summary>Spellcasting and manifesting tables</summary>
-  <p className="fine">Configure this class’s own progression from its complete source. Slots are base daily slots before ability bonuses; power points are the base daily allowance. These tables do not advance another class’s tradition or infer class features. Leave exceptional rules manual.</p>
+  <p className="fine">Configure this class’s own progression from its complete source. Slots are base daily slots before ability bonuses; power points are the base daily allowance. To advance another class’s tradition, use Prestige advancement below. Feature text does not grant automatic mechanics. Leave exceptional rules manual.</p>
   <Check label="This class has its own spellcasting table" checked={!!casting} onChange={on=>change(p=>{
    if(on){p.definition.casting={ability:'INT',mode:'prepared',type:'arcane',list:p.definition.name||'Custom',startLevel:1,halfLevel:false};p.definition.levels.forEach(r=>{r.slots=Array(10).fill(null)});}
    else {delete p.definition.casting;p.definition.levels.forEach(r=>{delete r.slots;delete r.spellsKnown});}

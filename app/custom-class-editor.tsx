@@ -8,6 +8,8 @@ import {customResourceText,type CustomClass} from '@/lib/custom-class-schema';
 import {gestaltClassFamily} from '@/lib/gestalt-class-families';
 import {customClassDraft,customClassTable,previewCustomClassChange,applyCustomClassChange,type CustomClassPreview} from '@/lib/custom-class-editor';
 import {F,N,Choice,Check,Btn,Section,type SheetProps} from './sheet-ui';
+import {customPrestigeChoices} from '@/lib/custom-prestige';
+import {CustomPrestigeEditor} from './custom-prestige-editor';
 import {CustomClassResources} from './custom-class-resources';
 import {CustomProficiencyEditor} from './custom-proficiencies';
 
@@ -16,11 +18,14 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
  const [draft,setDraft]=useState<CustomClass|null>(null);
  const [review,setReview]=useState<CustomClassPreview|null>(null);
  const [checked,setChecked]=useState(false),[error,setError]=useState(''),[milestone,setMilestone]=useState(1);
+ const [targets,setTargets]=useState<Record<string,string>>({});
+ let targetChoices:ReturnType<typeof customPrestigeChoices>=[],targetError='';
+ try{if(draft)targetChoices=customPrestigeChoices(c,draft);}catch(e){targetError=e instanceof Error?e.message:'Review the existing prestige history.';}
  const pending=draft!==null;
  useEffect(()=>{onDraftChange?.(pending);return ()=>onDraftChange?.(false);},[pending,onDraftChange]);
  const report=(e:unknown)=>setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not review this class table.');
  function begin(id=''){
-  try{setDraft(customClassDraft(c,id));setReview(null);setChecked(false);setError('');setMilestone(1);}catch(e){report(e);}
+  try{setDraft(customClassDraft(c,id));setReview(null);setChecked(false);setError('');setMilestone(1);setTargets({});}catch(e){report(e);}
  }
  function change(recipe:(d:CustomClass)=>void,regenerate=false){
   if(!draft)return;
@@ -33,7 +38,7 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
  function preview(){
   if(!draft||!checked)return;
   if(!draft.definition.name.trim()||!draft.definition.source.trim()){setReview(null);setError('Enter a class name and its source citation before reviewing.');return;}
-  try{setReview(previewCustomClassChange(c,draft.definition.id,draft));setError('');}catch(e){setReview(null);report(e);}
+  try{setReview(previewCustomClassChange(c,draft.definition.id,draft,targetChoices.flatMap(choice=>{const traditionId=targets[choice.level+':'+choice.kind]??choice.selected;return traditionId?[{level:choice.level,kind:choice.kind,traditionId}]:[]})));setError('');}catch(e){setReview(null);report(e);}
  }
  function apply(){
   if(!review||!checked)return;
@@ -70,6 +75,9 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
     <F label="Source description / notes" value={draft.definition.description??''} area onChange={v=>change(d=>{d.definition.description=v})}/>
     <CustomProficiencyEditor value={draft.definition.proficiencies} levels={draft.definition.levels.length} onChange={value=>change(d=>{if(value)d.definition.proficiencies=value;else delete d.definition.proficiencies;})}/>
     <CustomClassResources draft={draft} change={change} level={milestone} setLevel={setMilestone}/>
+    <CustomPrestigeEditor draft={draft} change={change} level={milestone} setLevel={setMilestone}/>
+    {targetError&&<p className="error-text">{targetError}</p>}
+    {!!targetChoices.length&&<fieldset><legend>Targets for already earned prestige levels</legend><p className="fine">Review each existing grant before applying the table. These choices are saved with their original levels and do not refill spent resources.</p>{targetChoices.map(choice=>{const key=choice.level+':'+choice.kind;return <Choice key={key} label={choice.label} value={(targets[key]??choice.selected)||'choose'} options={[["choose","Choose a tradition"],["none","No advancement"],...choice.candidates.map(p=>[p.id,p.name] as [string,string])]} onChange={v=>{setTargets(t=>({...t,[key]:v==='choose'?'':v}));setReview(null);setChecked(false)}}/>})}</fieldset>}
     {draft.definition.kind==='Prestige'&&<Check label="Combination prestige class: require named GM approval for each gestalt level" checked={draft.policy.combinationPrestige} onChange={v=>change(d=>{d.policy.combinationPrestige=v})}/>}
     <details><summary>Generated table and feature milestones</summary>
      <p className="fine">Check every row against the source. Changing rates preserves milestone text and extra columns. Existing personal feature cards are not rewritten; use the class reference to see the updated table.</p>
@@ -81,12 +89,13 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
     <div className="button-row"><Btn disabled={!checked} onClick={preview}>Review changes</Btn><Btn onClick={()=>{setDraft(null);setReview(null);setChecked(false);setError('')}}>Cancel draft</Btn></div>
     {review&&<div className="subcard" aria-live="polite">
      <h3>Review before applying</h3>
-     <p className="fine">Current spell and power rules: {customResourceText(c.customClasses?.find(p=>p.definition.id===draft.definition.id)?.definition??{...draft.definition,casting:undefined,manifesting:undefined})}</p>
+     <p className="fine">Current spell and power rules: {customResourceText(c.customClasses?.find(p=>p.definition.id===draft.definition.id)?.definition??{...draft.definition,casting:undefined,manifesting:undefined,advances:undefined})}</p>
      <p className="fine">Proposed spell and power rules: {customResourceText(review.profile.definition)}</p>
      <p className="fine">Current equipment training: {review.summary.proficiencies.before}</p>
      <p className="fine">Proposed equipment training: {review.summary.proficiencies.after}</p>
      {!!review.summary.proficiencies.items.length&&<div className="fine"><p>Changed training for recorded items (manual overrides retained):</p><ul>{review.summary.proficiencies.items.map(item=><li key={item.id}>{item.name}: {item.before?'proficient':'not proficient'} → {item.after?'proficient':'not proficient'}</li>)}</ul></div>}
      <p className="fine">Armor training removes only nonproficiency penalties; ordinary skill armor-check penalties and spell failure still apply. Equipment is not added, removed or equipped by this edit.</p>
+     {!!review.summary.castingTargets.length&&<ul>{review.summary.castingTargets.map(t=><li key={t.level+':'+t.kind}>Class level {t.level} ({t.kind}): {t.before} → {t.after}</li>)}</ul>}
      {!!review.summary.resources.length&&<><h4>Changed spell and power totals</h4><p className="fine">Spell slots are listed in order from spell level 0 through 9. Power capacity is daily power points. Spent amounts and preparations are retained even if a new allowance is lower.</p><ul>{review.summary.resources.map(({before,after})=><li key={after.id}>{after.name} ({after.kind}): {before?'level '+before.level+', capacity '+before.capacity:'new tradition'} → level {after.level}, capacity {after.capacity}. Allowance: {before?.allowance??'new'} → {after.allowance}. {!after.supported&&'Table removed; existing pool retained for manual handling.'}</li>)}</ul></>}
      {libraryOnly&&<p className="fine">{review.profile.definition.name}: d{review.profile.definition.hitDie}, {review.profile.definition.skillPoints} skill points before Intelligence, {review.profile.definition.levels.length} supported levels. Source: {review.profile.definition.source}. This adds only a table to the creation draft, not an existing character or a global library.</p>}
      {!libraryOnly&&<>

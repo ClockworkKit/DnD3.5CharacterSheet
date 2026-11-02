@@ -13,9 +13,11 @@ export const customCastingSchema=z.object({
 export const customManifestingSchema=z.object({
  ability,startLevel,levelOffset:z.number().int().min(-100).max(100),bonusPoints:z.number().int().min(0).max(10000),
 }).strict();
+export const customAdvancementSchema=z.object({spell:z.enum(['none','arcane','any']),divine:z.boolean(),psi:z.boolean()}).strict();
+const advancementRow=z.object({spell:z.boolean(),divine:z.boolean(),psi:z.boolean()}).strict();
 const spellCounts=z.array(count).length(10);
 const resourceRow={slots:z.array(count.nullable()).length(10).optional(),spellsKnown:spellCounts.optional(),
- powerPoints:z.number().int().min(0).max(10000).optional(),powersKnown:count.optional(),powerLevel:z.number().int().min(0).max(9).optional()};
+ powerPoints:z.number().int().min(0).max(10000).optional(),powersKnown:count.optional(),powerLevel:z.number().int().min(0).max(9).optional(),advances:advancementRow.optional()};
 const profile=z.object({bab:z.enum(['full','medium','poor']),fort:z.enum(['good','poor']),ref:z.enum(['good','poor']),will:z.enum(['good','poor'])}).strict();
 const items=(kind:'weapon'|'armor')=>z.array(z.string().min(1).max(200).refine(name=>equipment.some(e=>e.kind===kind&&e.name===name),'Choose an exact item from the equipment catalog.')).max(100).refine(names=>new Set(names).size===names.length,'Do not repeat an equipment choice.');
 /** Explicit source-checked training, using the existing equipment calculation contract. */
@@ -46,13 +48,26 @@ export const customClassSchema=z.object({
   source:z.string().trim().min(1).max(500),description:z.string().max(12000).optional(),book:z.string().max(200).optional(),
   proficiencies:customProficienciesSchema.optional(),
   casting:customCastingSchema.optional(),manifesting:customManifestingSchema.optional(),
+  advances:customAdvancementSchema.optional(),
  }).strict(),
  policy:z.object({family:id,combinationPrestige:z.boolean(),bonusProfile:profile}).strict(),
 }).strict().superRefine(({definition:d,policy},ctx)=>{
+ if(d.advances){
+  const issue=(message:string)=>ctx.addIssue({code:'custom',path:['definition','advances'],message});
+  if(d.kind!=='Prestige')issue('Advancing another tradition requires a prestige class.');
+  if(d.advances.spell==='any'&&d.advances.divine)issue('Use separate arcane and divine grants; overlapping spell targets need a separate supported policy.');
+  const channels=Number(d.advances.spell!=='none')+Number(d.advances.divine)+Number(d.advances.psi);
+  if(!channels)issue('Choose at least one kind of tradition to advance.');
+  if((channels>1||channels>0&&(d.casting||d.manifesting))&&!policy.combinationPrestige)issue('Combined tradition progression requires the combination-prestige restriction and named GM approval in gestalt.');
+ }
  if(d.proficiencies?.mediumAt&&d.proficiencies.mediumAt>d.levels.length)ctx.addIssue({code:'custom',path:['definition','proficiencies','mediumAt'],message:'Keep a table row for the delayed armor-training level.'});
  if(policy.combinationPrestige&&d.kind!=='Prestige')ctx.addIssue({code:'custom',path:['policy','combinationPrestige'],message:'Only prestige classes can require combination-class approval.'});
  d.levels.forEach((row,index)=>{
   const issue=(field:string,message:string)=>ctx.addIssue({code:'custom',path:['definition','levels',index,field],message});
+  if(!!d.advances!==!!row.advances)issue('advances','Configure prestige target types and explicit grants for every class level together.');
+  if(row.advances&&d.advances)for(const kind of ['spell','divine','psi'] as const){
+   if(row.advances[kind]&&!(kind==='spell'?d.advances.spell!=='none':d.advances[kind]))issue('advances','This row grants an unconfigured '+kind+' advancement.');
+  }
   if(!!d.casting!==!!row.slots)issue('slots','Configure casting and a complete ten-column slots table together. Use null for an unavailable spell level.');
   if(row.spellsKnown&&!d.casting)issue('spellsKnown','Spells known requires an explicit casting table.');
   if(d.levels.some(r=>r.spellsKnown)&&!row.spellsKnown)issue('spellsKnown','Supply spells-known allowances for every class level, or omit the whole allowance table.');
@@ -74,7 +89,7 @@ export const customClassesSchema=z.array(customClassSchema).max(30).superRefine(
 });
 export type CustomClass=z.infer<typeof customClassSchema>;
 export function customResourceText(d:CustomClass['definition']){
- const cast=d.casting,psi=d.manifesting;
+ const cast=d.casting,psi=d.manifesting,advances=d.advances;
  return [cast?`${cast.type} ${cast.mode} casting from class level ${cast.startLevel}; ${cast.halfLevel?'half':'full'} caster level; ${cast.ability} eligibility, ${cast.bonusAbility??'tradition ability'} bonus slots, ${cast.dcAbility??'tradition ability'} save DCs; list: ${cast.list}.`:'No automatic spellcasting table.',
-  psi?`Manifesting from class level ${psi.startLevel}; ${psi.ability}; manifester level equals progression ${psi.levelOffset<0?'−':'+'} ${Math.abs(psi.levelOffset)}; ${psi.bonusPoints} fixed additional power points.`:'No automatic manifesting table.'].join(' ');
+  psi?`Manifesting from class level ${psi.startLevel}; ${psi.ability}; manifester level equals progression ${psi.levelOffset<0?'−':'+'} ${Math.abs(psi.levelOffset)}; ${psi.bonusPoints} fixed additional power points.`:'No automatic manifesting table.',advances?'Existing traditions: '+(advances.spell==='none'?'no general spell grant':advances.spell+' spellcasting')+(advances.divine?'; separate divine':'')+(advances.psi?'; manifesting':'')+'. Grant levels: '+d.levels.filter(r=>r.advances&&Object.values(r.advances).some(Boolean)).map(r=>r.level+' ('+Object.entries(r.advances!).filter(([,yes])=>yes).map(([kind])=>kind).join(', ')+')').join('; ')+'.':'No existing-tradition advancement configured.'].join(' ');
 }

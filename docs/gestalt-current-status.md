@@ -86,6 +86,33 @@ Validation for this continuation: the full suite passed **809 tests**, including
 React rendering checks covered the resource editor, unavailable spell columns,
 linked spellbook and known-power limits. Interactive browser QA remains pending.
 
+## Custom-prestige continuation (2026-11-02)
+
+Custom prestige classes can now configure explicit per-level advancement of an
+existing arcane, divine, general spellcasting or psionic tradition. Each schedule
+can include levels without grants. The existing prerequisite, named GM approval,
+same-family and two-prestige safeguards remain in place.
+
+Standard custom-prestige advancement saves targets by class level; gestalt uses
+its existing pair records. Both can choose a different eligible tradition later
+without reassigning earlier gains. Targets require a class held before entry;
+missing or ineligible saved targets produce review notices. Own/base and prestige
+advancement of the same gestalt tradition still counts once.
+
+The custom editor reviews targets for already earned levels alongside changed
+resource totals. Source changes cannot silently discard saved choices, skill
+history, preparations, chosen powers, focus, notes or expenditure. Standard gain
+operations are atomic, and native/browser persistence includes the new optional
+standard-level target records without migrating legacy sheets automatically.
+See [the prestige contract](custom-class-profiles.md#explicit-prestige-advancement-2026-11-02).
+
+Validation for this continuation: **819 tests passed**, including ten new
+prestige regressions. TypeScript, Pages and Worker production builds passed.
+React rendering covered grant controls, skipped levels, and both target-history
+displays. Two standard level-up reference regressions found by the full suite
+were fixed before the passing run. Interactive browser QA is still outstanding;
+existing build notices remain.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
@@ -93,10 +120,9 @@ linked spellbook and known-power limits. Interactive browser QA remains pending.
    custom-table editing, saving/reloading, export/import and character switching.
    No browser-control tool is available in this cloud session. Do not mark this
    gate passed based on React rendering or storage tests.
-2. Custom own-class spellcasting/manifesting tables now use the existing engine
-   and reviewed editor. Custom prestige advancement of another tradition,
-   exceptional formulas/grants, and the broader source-specific feature audit
-   remain unfinished. Manual pools, notes and counters remain supported.
+2. Custom own-class resources and explicit prestige advancement schedules now
+   use the existing engine and reviewed editor. Exceptional formulas, conditional
+   grants/targets, and the broader source-specific feature audit remain unfinished. Manual pools, notes and counters remain supported.
    Names and milestone prose never grant invented mechanics.
 3. Mixed/staggered Uncanny Dodge histories still show an explicit DM-review
    notice; no unsupported combined threshold is silently substituted. Additional

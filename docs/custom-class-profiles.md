@@ -121,9 +121,9 @@ below. A matching custom display name never resolves an unknown saved class ID.
 
 ## Explicit remaining work
 
-Custom prestige advancement of another tradition, exceptional caster-level formulas,
-restricted/specialist slot grants, and automatic learning of an entire custom spell
-list remain manual. Unknown fields still fail validation. Manual spell/power
+Exceptional caster-level formulas, restricted/specialist slot grants, conditional
+prestige grants and automatic learning of an entire custom spell list remain
+manual. Explicit existing-tradition prestige schedules are supported below. Unknown fields still fail validation. Manual spell/power
 profiles, custom features and counters remain available separately.
 Bonus feats, conditional powers and shared-feature mechanics are not inferred
 from milestone prose. Equipment training uses only the explicit configuration
@@ -231,3 +231,73 @@ The [psion](https://www.d20srd.org/srd/psionic/classes/psion.htm) supplies separ
 base points, powers known, maximum power level and ability requirements. Custom
 source-specific grants require the player's complete source; synthetic regression
 profiles are configuration tests, not additional published classes.
+
+
+## Explicit prestige advancement (2026-11-02)
+
+A prestige definition may supply `advances: {spell, divine, psi}`. `spell` is
+`none`, `arcane`, or `any`; `divine` and `psi` enable separate existing divine
+and manifesting targets. Every table row must then supply boolean grants for all
+three keys. True grants one progression level; false grants none. Separate
+schedules are independent, including missed caster levels. An unrestricted
+`any` spell target cannot be combined with a second divine target, because those
+candidate sets overlap; such a source needs a separate policy. Unknown fields,
+non-prestige definitions, missing rows and unconfigured grants fail validation.
+
+Advancing multiple traditions, or combining a separate own-class resource table
+with existing-tradition advancement, requires `combinationPrestige: true`. This
+retains the named GM approval for every gestalt pair, including rows without a
+casting grant. Other combination classes still need the source-reviewed policy
+flag. Approval never waives source entry requirements, same-family restrictions,
+or the prohibition on two prestige classes in one pair.
+
+The existing target resolver and progression engine consume these grants. Targets
+are other supported spellcasting/manifesting classes held before prestige entry,
+using the saved level sequence; a manually added pool with no matching class
+history is insufficient. New classes gained alongside or after entry are not
+eligible. The generic existing-class clause does not invent an additional minimum
+caster-level requirement for the selected class: complete source prerequisites
+still require review. Source-specific exceptions and conditional target restrictions
+remain manual. Domain pools follow the primary cleric and cannot be selected
+as a separate ordinary class progression.
+
+Paired level-up stores targets in the existing `castingTargets` records. Ordinary
+custom-prestige advancement uses optional `ClassLevel.castingAdvances`, with
+`{level, kind, traditionId}` records using the same target schema. The existing
+standard workflow prompts for each granted type, including an explicit No
+advancement choice. These records override class-wide settings only at their
+recorded levels; legacy class-wide targets retain their previous meaning.
+Existing standard catalog advancement is not automatically migrated. Inactive
+paired data on a standard sheet cannot constrain its choices.
+
+Recalculation uses each selected level's grant. One level can advance Wizard and
+a later level Sorcerer without redirecting the first. Simultaneous base/prestige
+advancement of the same gestalt tradition still counts only the better side.
+Slots, known allowances and caster/manifester levels advance; unrelated class
+features, familiar abilities, bonus feats and other class resources do not.
+Manual pool settings remain manual. Standard level-up now constructs its edit
+atomically, so an invalid target or unsupported resource table cannot leave a
+partly incremented class.
+
+The existing class editor exposes target types and every row's grants. For earned
+custom prestige levels, it requires review of each applicable historical target
+and displays changed resource totals. Missing/ambiguous targets require a choice;
+sole eligible targets are shown in the review. Stale source, profile or target
+selections fail before applying. Removing a grant retains its recorded target;
+missing/ineligible pools are not silently replaced. No history metadata is added
+on ordinary load. Invalid or missing choices produce calculation notices.
+
+Preparations, powers, notes, focus, HP damage, skill purchases and expenditure
+remain protected by the same review and persistence boundaries. Standard and
+paired targets survive native exports and fresh browser-storage clients.
+Interactive browser acceptance of these controls remains outstanding.
+
+Authoritative examples of this contract are the SRD
+[Loremaster](https://www.d20srd.org/srd/prestigeClasses/loremaster.htm),
+[Mystic Theurge](https://www.d20srd.org/srd/prestigeClasses/mysticTheurge.htm), and
+[Cerebremancer](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm).
+They describe existing classes, individual level choices, resource progression,
+and exclusion of other class benefits. The
+[UA gestalt restrictions](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+remain in effect. Synthetic test profiles exercise the configurable contract;
+they are not new published classes or blanket approval of a source's exceptions.

@@ -711,3 +711,60 @@ unavailable spell columns, source guidance, linked spellbook and power limits.
 Browser interaction remains unverified; existing bundle/script/plugin-timing and
 route-classification notices remain. The final schema bound was also checked by
 the custom-resource suite; invalid ML formulas fail rather than being capped.
+
+
+## 2026-11-02: Explicit custom prestige schedules and reviewed targets
+
+Added optional source-checked existing-tradition metadata and per-class-level
+grants to custom profiles. The existing engine now keeps arcane/general spell,
+divine and manifesting schedules independent. Missing grants, overlapping target
+categories, non-prestige profiles and unmarked combined progressions are refused.
+No advancement is inferred from names or milestone prose.
+
+The paired workflow already records per-level targets and now consumes these
+schedules. Standard custom prestige levels use the same choice resolver with
+optional class-level target records; old class-wide targets keep their existing
+meaning. Later choices cannot redirect previous levels. Ordinary gain operations
+are now atomic. Prerequisites still use complete custom-source confirmation;
+combination approval is named, reasoned and scoped to each gestalt level. Neither
+approval bypasses same-family or two-prestige restrictions.
+
+Source evidence independently checked:
+
+- [Loremaster spells](https://www.d20srd.org/srd/prestigeClasses/loremaster.htm):
+  advances a prior spellcasting class's daily spells, known spells where applicable,
+  and caster level, without granting its other class benefits.
+- [Mystic Theurge](https://www.d20srd.org/srd/prestigeClasses/mysticTheurge.htm):
+  chooses prior arcane and divine classes separately for each prestige level.
+- [Cerebremancer](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm):
+  separate prior arcane/manifesting targets, progressing spells/points, known
+  powers and caster/manifester levels, excluding other class benefits.
+- [UA gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm):
+  prior shared-progression policy and prestige restrictions remain unchanged.
+
+The supported contract selects other classes held before entry, using saved
+history, and does not invent an additional generic minimum caster level for the
+selected class. Source-specific conditional requirements still need explicit
+support or manual handling. Per-row grants are zero or one; caster-level-only,
+multiple grants to overlapping candidate sets and other exceptions are not
+approximated. Existing catalog Hierophant handling remains distinct.
+
+The reviewed table editor captures explicit targets for earned grants, displays
+old/new totals, and rejects stale target/profile/source edits. Removed grants keep
+their records; missing pools are not reassigned. Standard and paired target
+histories are visible in Calculations and persist through native and browser
+storage. Preparations, powers, notes, focus, injuries, ranks and expenditure are
+preserved. No player files were used and no implicit migration was added.
+
+
+Validation: all **819 tests passed**, including ten new custom-prestige scenarios
+covering separate schedules, standard per-level targets, same-pair caps, source
+prerequisites/GM approval, pre-entry eligibility, domain preparation, reviewed
+historical changes, stale/tampered previews, retained removed targets, and native
+plus fresh-browser-store persistence. TypeScript and final Pages/Worker builds
+passed. React rendering verified explicit grant controls, missed levels, and
+standard/paired history labels. Full-suite failures exposed two existing-caller
+reference regressions in the atomic standard gain recipe; preserving existing
+record objects resolved them before the final full passing run. Interactive
+browser testing remains unavailable and is not represented by rendering checks.
+Existing bundle/script/plugin-timing/route-classification notices remain.

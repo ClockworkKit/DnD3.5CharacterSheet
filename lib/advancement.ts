@@ -33,14 +33,38 @@ export function customResourceProblems(c:Character){
   .map(r=>r.name+': supply the source table for progression level '+r.progression+'. Recorded capacities are retained; no final-row approximation is applied.');
 }
 export function assertCustomResourceTables(c:Character){const problems=customResourceProblems(c);if(problems.length)throw new Error(problems.join(' '));}
-export function advanceTargets(c:Character,e:Character['classLevels'][number]){const definition=findClass(e.classId);const texts=definition?.levels.filter(r=>r.level<=e.level).map(r=>[r.special,...r.extra].join(' '))||[];const text=texts.join(' ');const dual=e.classId==='mystic-theurge',psi=/manifesting/.test(text);return {spell:e.classId==='master-specialist'||/existing.*(?:spellcasting|arcane)|existing class/.test(text),divine:dual||e.classId==='hierophant',psi,arcane:/arcane/.test(text),spellLevels:e.classId==='master-specialist'?Math.min(e.level,10):texts.filter(t=>/\+1\s*level of existing/.test(t)&&!(/^.*manifesting.*$/.test(t)&&!t.includes('spellcasting'))).length,psiLevels:texts.filter(t=>/\+1\s*level of existing manifesting/.test(t)).length};}
-export function advancementCandidates(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi'){
- const target=advanceTargets(c,e);
- if(kind==='psi')return c.psionics.filter(p=>manifestDefinition(p,c)?.id!=='soulknife').map(p=>({id:p.id,name:p.name}));
- return c.casters.filter(p=>!p.casting?.domain&&(e.classId!=='master-specialist'||castingDefinition(p,c)?.id==='wizard')&&(kind==='divine'?!isArcaneCaster(c,p):!target.arcane||isArcaneCaster(c,p))).map(p=>({id:p.id,name:p.name}));
+export function advanceTargets(c:Character,e:Character['classLevels'][number]){
+ const definition=findClass(e.classId,c),custom=definition?.id.startsWith('custom-');
+ if(definition&&custom){
+  const config=definition.advances,rows=definition.levels.filter(r=>r.level<=e.level);
+  const count=(kind:'spell'|'divine'|'psi')=>rows.filter(r=>r.advances?.[kind]).length;
+  return {spell:!!config&&config.spell!=='none',divine:!!config?.divine,psi:!!config?.psi,arcane:config?.spell==='arcane',spellLevels:config?count('spell'):0,divineLevels:config?count('divine'):0,psiLevels:config?count('psi'):0,divineCasterLevels:0};
+ }
+ const texts=definition?.levels.filter(r=>r.level<=e.level).map(r=>[r.special,...r.extra].join(' '))||[],text=texts.join(' ');
+ const spellLevels=e.classId==='master-specialist'?Math.min(e.level,10):texts.filter(t=>/\+1\s*level of existing/.test(t)&&!(/^.*manifesting.*$/.test(t)&&!t.includes('spellcasting'))).length;
+ return {spell:e.classId==='master-specialist'||/existing.*(?:spellcasting|arcane)|existing class/.test(text),divine:e.classId==='mystic-theurge'||e.classId==='hierophant',psi:/manifesting/.test(text),arcane:/arcane/.test(text),spellLevels,divineLevels:e.classId==='mystic-theurge'?spellLevels:0,psiLevels:texts.filter(t=>/\+1\s*level of existing manifesting/.test(t)).length,divineCasterLevels:e.classId==='hierophant'?e.level:0};
 }
-export function selectedAdvancementTarget(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi',row?:GestaltLevelRow){
- const scoped=row?.castingTargets?.find(t=>t.classId===e.classId&&t.kind===kind);
+
+/** Custom source tables advance a different tradition available before entry. */
+function customPriorTraditions(c:Character,e:Character['classLevels'][number]){
+ const sequence=hitDieSequence(c),first=sequence.findIndex(row=>(row.classIds??[row.classId]).includes(e.classId));
+ const counts=new Map<string,number>();
+ for(const row of first<0?sequence:sequence.slice(0,first))for(const id of row.classIds??[row.classId])counts.set(id,(counts.get(id)??0)+1);
+ return (d:ClassDefinition|undefined,kind:'spell'|'psi')=>{
+  if(!d||d.id===e.classId)return false;
+  if(!(counts.get(d.id)??0))return false;
+  // The generic source clause names a class held before entry. It does not
+  // add a separate minimum casting-level prerequisite for the chosen class.
+  return kind==='spell'?!!d.casting||d.levels.some(r=>r.slots):!!d.manifesting||d.levels.some(r=>r.powerLevel!==undefined);
+ };
+}
+export function advancementCandidates(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi'){
+ const target=advanceTargets(c,e),prior=e.classId.startsWith('custom-')?customPriorTraditions(c,e):undefined;
+ if(kind==='psi')return c.psionics.filter(p=>manifestDefinition(p,c)?.id!=='soulknife'&&(!prior||prior(manifestDefinition(p,c),'psi'))).map(p=>({id:p.id,name:p.name}));
+ return c.casters.filter(p=>!p.casting?.domain&&(!prior||prior(castingDefinition(p,c),'spell'))&&(e.classId!=='master-specialist'||castingDefinition(p,c)?.id==='wizard')&&(kind==='divine'?!isArcaneCaster(c,p):!target.arcane||isArcaneCaster(c,p))).map(p=>({id:p.id,name:p.name}));
+}
+export function selectedAdvancementTarget(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi',row?:GestaltLevelRow,standardLevel?:number){
+ const scoped=row?.castingTargets?.find(t=>t.classId===e.classId&&t.kind===kind)??(c.advancementMode!=='gestalt'&&standardLevel!==undefined?e.castingAdvances?.find(t=>t.level===standardLevel&&t.kind===kind):undefined);
  const explicit=scoped?.traditionId??(kind==='psi'?e.psionicTarget:kind==='divine'?e.divineTarget:e.castingTarget);
  const candidates=advancementCandidates(c,e,kind);
  if(explicit)return explicit!=='none'&&candidates.some(p=>p.id===explicit)?explicit:'';
@@ -54,9 +78,9 @@ function gestaltCastingAdvance(c:Character,p:Caster){
   if(entry.classId===d.id)return level;
   const t=advanceTargets(c,{...entry,level});
   return (t.spell&&selectedAdvancementTarget(c,entry,'spell',row)===p.id?t.spellLevels:0)
-   +(t.divine&&entry.classId!=='hierophant'&&selectedAdvancementTarget(c,entry,'divine',row)===p.id?t.spellLevels:0);
+   +(t.divine&&entry.classId!=='hierophant'&&selectedAdvancementTarget(c,entry,'divine',row)===p.id?t.divineLevels:0);
  })!;
- const clGrants=gestaltTraditionGrants(c,(entry,level,row)=>entry.classId==='hierophant'&&selectedAdvancementTarget(c,entry,'divine',row)===p.id?level:0)!;
+ const clGrants=gestaltTraditionGrants(c,(entry,level,row)=>selectedAdvancementTarget(c,entry,'divine',row)===p.id?advanceTargets(c,{...entry,level}).divineCasterLevels:0)!;
  const casterLevel=(n:number)=>d.id==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?n:castingLevel(d,n);
  let progression=0,clOnly=0;
  grants.forEach((gain,i)=>{
@@ -66,11 +90,27 @@ function gestaltCastingAdvance(c:Character,p:Caster){
  });
  return {progression,clOnly};
 }
-export function casterProgression(c:Character,p:Caster):{progression:number;level:number;linked:boolean}{const d=castingDefinition(p,c);if(!d)return {progression:0,level:p.level,linked:false};if(featureReplaced(c,d.id,'spellcasting'))return {progression:0,level:0,linked:true};const base=classLevel(c,d.id);let addition=0,clOnly=0;for(const e of c.classLevels){const t=advanceTargets(c,e);if(t.spell&&selectedAdvancementTarget(c,e,'spell')===p.id)addition+=t.spellLevels;if(t.divine&&selectedAdvancementTarget(c,e,'divine')===p.id){if(e.classId==='hierophant')clOnly+=e.level;else addition+=t.spellLevels;}}
+function standardTraditionAdvance(c:Character,e:Character['classLevels'][number],kind:'spell'|'divine'|'psi',traditionId:string,field:'spellLevels'|'divineLevels'|'divineCasterLevels'|'psiLevels'){
+ if(!advanceTargets(c,e)[kind])return 0;
+ if(!e.castingAdvances?.length)return selectedAdvancementTarget(c,e,kind)===traditionId?advanceTargets(c,e)[field]:0;
+ let total=0;
+ for(let level=1;level<=e.level;level++)if(selectedAdvancementTarget(c,e,kind,undefined,level)===traditionId){
+  total+=advanceTargets(c,{...e,level})[field]-advanceTargets(c,{...e,level:level-1})[field];
+ }
+ return total;
+}
+export function casterProgression(c:Character,p:Caster):{progression:number;level:number;linked:boolean}{
+ const d=castingDefinition(p,c);if(!d)return {progression:0,level:p.level,linked:false};
+ if(featureReplaced(c,d.id,'spellcasting'))return {progression:0,level:0,linked:true};
+ const base=classLevel(c,d.id);let addition=0,clOnly=0;
+ if(c.advancementMode!=='gestalt')for(const e of c.classLevels){
+  addition+=standardTraditionAdvance(c,e,'spell',p.id,'spellLevels')+standardTraditionAdvance(c,e,'divine',p.id,'divineLevels');
+  clOnly+=standardTraditionAdvance(c,e,'divine',p.id,'divineCasterLevels');
+ }
  // Domain profiles follow the selected cleric tradition, including prestige advancement.
  if(p.casting?.domain){const primary=c.casters.find(q=>q.id!==p.id&&!q.casting?.domain&&castingDefinition(q,c)?.id===d.id);if(primary){const r=casterProgression(c,primary);return {...r,level:r.level+(p.casting.levelAdjustment||0)}}}
  const paired=gestaltCastingAdvance(c,p);if(paired){addition=paired.progression-base;clOnly=paired.clOnly;}const progression=p.casting?.progression??(base+addition);const level=(d.id==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?progression:castingLevel(d,progression))+clOnly+(p.casting?.levelAdjustment||0);return {progression,level:level+krauBonus(c,level),linked:base>0||p.casting?.progression!=null};}
-export function psionicProgression(c:Character,p:Psionic){const d=manifestDefinition(p,c);if(!d)return {progression:0,level:p.level,linked:false};const base=classLevel(c,d.id);let extra=0;for(const e of c.classLevels){const t=advanceTargets(c,e);if(t.psi&&selectedAdvancementTarget(c,e,'psi')===p.id)extra+=t.psiLevels;}const grants=gestaltTraditionGrants(c,(entry,level,row)=>{if(entry.classId===d.id)return level;const t=advanceTargets(c,{...entry,level});return t.psi&&selectedAdvancementTarget(c,entry,'psi',row)===p.id?t.psiLevels:0;});if(grants)extra=grants.reduce((sum,n)=>sum+n,0)-base;const progression=p.manifesting?.progression??base+extra;return {progression,level:d.id==='soulknife'?0:Math.max(0,manifestingLevel(d,progression)+(p.manifesting?.levelAdjustment||0)),linked:base>0||p.manifesting?.progression!=null};}
+export function psionicProgression(c:Character,p:Psionic){const d=manifestDefinition(p,c);if(!d)return {progression:0,level:p.level,linked:false};const base=classLevel(c,d.id);let extra=0;if(c.advancementMode!=='gestalt')for(const e of c.classLevels)extra+=standardTraditionAdvance(c,e,'psi',p.id,'psiLevels');const grants=gestaltTraditionGrants(c,(entry,level,row)=>{if(entry.classId===d.id)return level;const t=advanceTargets(c,{...entry,level});return t.psi&&selectedAdvancementTarget(c,entry,'psi',row)===p.id?t.psiLevels:0;});if(grants)extra=grants.reduce((sum,n)=>sum+n,0)-base;const progression=p.manifesting?.progression??base+extra;return {progression,level:d.id==='soulknife'?0:Math.max(0,manifestingLevel(d,progression)+(p.manifesting?.levelAdjustment||0)),linked:base>0||p.manifesting?.progression!=null};}
 export function castingNumbers(c:Character,p:Caster){const d=castingDefinition(p,c),r=casterProgression(c,p);if(d&&!resourceTableAvailable(d,r.progression))return {...r,slots:p.slots.map(s=>s.max),known:null,highest:-1,tableAvailable:false};const siberys=d?.id==='sorcerer'&&hasAlternateFeature(c,'sorcerer-blood-of-siberys')?4:0;const score=effectiveScore(c,p.ability,true)+siberys;const table=d?.id==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')?findClass('bard'):d;const row=table?.levels.find(v=>v.level===Math.min(r.progression,table.levels.length));let slots:number[]=row?.slots?spellSlots(table!,row.level,score,effectiveScore(c,racialBonusAbility(c,p,d?.casting?.bonusAbility||p.ability),true)+siberys).map(s=>s.max):Array(10).fill(0);if(p.casting?.domain)slots=slots.map((_,i)=>i>0&&row?.slots?.[i]!=null&&score>=10+i?1:0);if(d&&featureReplaced(c,d.id,'spellcasting'))slots=Array(10).fill(0);slots=slots.map((v,i)=>Math.max(0,Math.floor(v+(p.casting?.slotAdjustments[i]||0)-reservedSlots(c,p,i))));if(d&&featureReplaced(c,d.id,'spellcasting'))slots=Array(10).fill(0);if(d?.id==='cleric'&&!p.casting?.domain&&hasAlternateFeature(c,'cleric-pool-of-healing'))slots[4]=Math.max(0,slots[4]-1);if(d?.id==='cleric'&&p.casting?.domain&&featureReplaced(c,'cleric','domains'))slots=Array(10).fill(0);if(d?.id==='cleric'&&!p.casting?.domain&&hasAlternateFeature(c,'cleric-no-turning')&&alternateSettings(c,'cleric-no-turning').choice==='Mystic'&&!featureReplaced(c,'cleric','spellcasting')){const highest=row?.slots?.findLastIndex((v,i)=>v!==null&&v!==undefined&&score>=10+i)??0;if(highest>0)slots[highest-1]++;}const knownTables=known as Record<string,Record<string,number[]>>;let allowance=row?.spellsKnown?.slice()??(table?knownTables[table.id]?.[String(Math.min(r.progression,table.levels.length))]?.slice()||null:null);if(d?.id==='sorcerer'&&allowance){if(hasAlternateFeature(c,'sorcerer-domain-access'))allowance=allowance.map((n,i)=>i?Math.max(0,n-1):n);if(hasAlternateFeature(c,'sorcerer-poltergeists'))allowance[0]=Math.max(0,allowance[0]-2);if(hasAlternateFeature(c,'sorcerer-stalwart-sorcerer')){const highest=allowance.findLastIndex(n=>n>1);if(highest>0&&allowance[highest]>1)allowance[highest]--;}}return {...r,slots,known:allowance,tableAvailable:!!d,highest:row?.slots?.reduce((n,v,i)=>v!=null?i:n,-1)??-1};}
 export function hitPoints(c:Character){const con=Math.floor((effectiveScore(c,'CON')-10)/2);return hitDieSequence(c).reduce((n,row,i)=>n+hitPointGrant(c,row,i,con),0)+(monkStyleBonus(c,'Kyokushinkai Karate')?6:0)+(hasAlternateFeature(c,'barbarian-totem-manifestation')&&alternateSettings(c,'barbarian-totem-manifestation').choice==='Bear'?classLevel(c,'barbarian'):0)+3*featCount(c,'Toughness')+(hasAlternateFeature(c,'sorcerer-stalwart-sorcerer')?2*classLevel(c,'sorcerer'):0);}
 export function advancementNumbers(c:Character){const hd=classTotals(c.classLevels,c.ancestry,c).level||c.level,ecl=hd+(c.ancestry.ignoreLevelAdjustment?0:c.ancestry.levelAdjustment);const human=racialBonusFeat(c);const sequence=hitDieSequence(c);const ledger=c.automation.enabled&&c.automation.skillTraining.version===1?skillLedger(c):null;const budget=ledger?.granted??sequence.reduce((n,row,i)=>n+skillPointGrant(c,row,i),0);const spent=ledger?.spent??c.skills.reduce((n,s)=>n+s.ranks*(s.classSkill?1:2),0);const fighter=classLevel(c,'fighter'),wizard=classLevel(c,'wizard'),psion=classLevel(c,'psion'),pw=classLevel(c,'psychic-warrior');return {hd,ecl,nextXp:ecl*(ecl+1)*500,xpRemaining:Math.max(0,ecl*(ecl+1)*500-c.experience),classMax:hd+3,crossMax:(hd+3)/2,skillBudget:budget,skillSpent:spent,skillRemaining:budget-spent,feats:1+Math.floor(hd/3)+(human?1:0),fighterFeats:Array.from({length:fighter},(_,i)=>i+1).filter(l=>(l===1||l%2===0)&&!featureReplaced(c,'fighter','bonus-feat',l)).length,wizardFeats:Array.from({length:wizard},(_,i)=>i+1).filter(l=>l%5===0&&!featureReplaced(c,'wizard','bonus-feat',l)).length,psionicFeats:Array.from({length:psion},(_,i)=>i+1).filter(l=>(l===1||l%5===0)&&!featureReplaced(c,'psion','bonus-feat',l)).length+Array.from({length:pw},(_,i)=>i+1).filter(l=>(l===1||l>=2&&(l-2)%3===0)&&!featureReplaced(c,'psychic-warrior','bonus-feat',l)).length,abilityIncreases:Math.floor(hd/4)};}

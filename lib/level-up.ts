@@ -20,7 +20,11 @@ export function levelUpClasses(c:Character,showAll=false){return characterClasse
  const level=c.classLevels.filter(e=>e.classId===d.id).reduce((n,e)=>n+e.level,0);
  return d.levels.some(r=>r.level===level+1)&&(showAll||level>0||prestigeEligibility(c,d).eligible);
 }).map(d=>({...d,hitDie:classHitDie(c,d.id)}));}
-export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
+/** Install the validated level recipe without replacing existing record identities. */
+function updateLevelRecords<T extends {id:string}>(current:T[],pending:T[]){
+ for(const row of pending){const existing=current.find(p=>p.id===row.id);if(existing)Object.assign(existing,row);else current.push(row);}
+}
+export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingTargets:GestaltCastingTarget[]=[]){
  if(c.advancementMode==='gestalt')throw new Error('Choose a pair of classes to advance a gestalt character.');
  if(c.sheetKind==='monster')throw new Error('Advance monster Hit Dice and class levels manually.');
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
@@ -28,16 +32,25 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId,c);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
- const trial=structuredClone(c),trialEntry=trial.classLevels.find(e=>e.classId===classId);
- if(trialEntry)trialEntry.level++;else trial.classLevels.push({id:'trial',classId:def.id,name:def.name,level:1,notes:''});
- assertCustomResourceTables(trial);
- const source=structuredClone(c);
- let entry=c.classLevels.find(e=>e.classId===classId);
- if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};c.classLevels.push(entry);}
- if(c.automation.hpMethod==='rolled')c.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});
- initializeClassResources(c,def,entry.level);
- if(c.casters.length!==source.casters.length||c.psionics.length!==source.psionics.length)retainCastingHistory(source,c);
- copyClassFeatures(c);
+ const targets=def.advances?resolveGestaltCastingTargets(c,[classId],castingTargets):[];
+ if(castingTargets.length&&!def.advances)throw new Error('This class does not use custom prestige target choices.');
+ const next=structuredClone(c);
+ if(def.advances)retainCastingHistory(c,next);
+ let entry=next.classLevels.find(e=>e.classId===classId);
+ if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};next.classLevels.push(entry);}
+ if(targets.length){
+  entry.castingAdvances=[...(entry.castingAdvances??[]).filter(t=>t.level!==entry.level||!targets.some(v=>v.kind===t.kind)),...targets.map(t=>({level:entry.level,kind:t.kind,traditionId:t.traditionId}))];
+ }
+ if(c.automation.hpMethod==='rolled')next.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});
+ initializeClassResources(next,def,entry.level);
+ if(next.casters.length!==c.casters.length||next.psionics.length!==c.psionics.length)retainCastingHistory(c,next);
+ assertCustomResourceTables(next);
+ copyClassFeatures(next);
+ updateLevelRecords(c.classLevels,next.classLevels);
+ updateLevelRecords(c.features,next.features);
+ c.casters.push(...next.casters.filter(p=>!c.casters.some(old=>old.id===p.id)));
+ c.psionics.push(...next.psionics.filter(p=>!c.psionics.some(old=>old.id===p.id)));
+ c.automation.history.push(...next.automation.history.slice(c.automation.history.length));
 }
 
 export function initializeClassResources(c:Character,def:ClassDefinition,level:number){
