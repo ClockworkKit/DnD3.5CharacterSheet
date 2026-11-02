@@ -4,10 +4,11 @@ import {toast} from 'sonner';
 import {ZodError} from 'zod';
 import {Table,TableHeader,TableBody,TableRow,TableHead,TableCell} from '@/components/ui/table';
 import {characterClasses} from '@/lib/classes';
-import type {CustomClass} from '@/lib/custom-class-schema';
+import {customResourceText,type CustomClass} from '@/lib/custom-class-schema';
 import {gestaltClassFamily} from '@/lib/gestalt-class-families';
 import {customClassDraft,customClassTable,previewCustomClassChange,applyCustomClassChange,type CustomClassPreview} from '@/lib/custom-class-editor';
 import {F,N,Choice,Check,Btn,Section,type SheetProps} from './sheet-ui';
+import {CustomClassResources} from './custom-class-resources';
 import {CustomProficiencyEditor} from './custom-proficiencies';
 
 /** Drafts stay local until the player reviews and explicitly applies the table. */
@@ -48,7 +49,7 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
  if(c.sheetKind==='monster')return null;
  return <Section title="Custom class tables" note={libraryOnly?'Optional source-based tables for this new character only. Nothing is saved until you create the character.':'Optional source-based progression, saved only with this character.'}>
   <details><summary>Create or review a custom class table</summary>
-   <p className="fine">These tables calculate basic HP, attack, saves, skills and explicitly configured equipment training. They do not infer casting or abilities from names or milestone text. Use the complete class source. Irregular progressions are not supported by this editor.</p>
+   <p className="fine">These tables calculate HP, attack, saves, skills, equipment training and explicitly configured spell or power tables. They do not infer abilities from names or milestone text. Use the complete class source. Irregular progressions are not supported by this editor.</p>
    {!draft&&<div className="button-row"><Btn onClick={()=>begin()}>New class table</Btn>{saved.map(p=><Btn key={p.definition.id} onClick={()=>begin(p.definition.id)}>Edit {p.definition.name}</Btn>)}{legacy.map(e=><Btn key={e.id} onClick={()=>begin(e.classId)}>Define table for {e.name}</Btn>)}</div>}
    {draft&&<div className="subcard">
     <p className="fine">This is an unsaved draft. The starting values are a template, not a verified class. Applying a table does not add a class, level up, or switch advancement mode. {libraryOnly?'After applying a base-class table, select it in Starting class or a gestalt row. Prestige entry requires later guided advancement.':'Use Add class or guided advancement afterward.'}</p>
@@ -68,6 +69,7 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
     <F label="Complete entry requirements" value={draft.definition.requirements} area onChange={v=>change(d=>{d.definition.requirements=v})}/>
     <F label="Source description / notes" value={draft.definition.description??''} area onChange={v=>change(d=>{d.definition.description=v})}/>
     <CustomProficiencyEditor value={draft.definition.proficiencies} levels={draft.definition.levels.length} onChange={value=>change(d=>{if(value)d.definition.proficiencies=value;else delete d.definition.proficiencies;})}/>
+    <CustomClassResources draft={draft} change={change} level={milestone} setLevel={setMilestone}/>
     {draft.definition.kind==='Prestige'&&<Check label="Combination prestige class: require named GM approval for each gestalt level" checked={draft.policy.combinationPrestige} onChange={v=>change(d=>{d.policy.combinationPrestige=v})}/>}
     <details><summary>Generated table and feature milestones</summary>
      <p className="fine">Check every row against the source. Changing rates preserves milestone text and extra columns. Existing personal feature cards are not rewritten; use the class reference to see the updated table.</p>
@@ -79,10 +81,13 @@ export function CustomClassEditor({c,edit,libraryOnly=false,onDraftChange}:Pick<
     <div className="button-row"><Btn disabled={!checked} onClick={preview}>Review changes</Btn><Btn onClick={()=>{setDraft(null);setReview(null);setChecked(false);setError('')}}>Cancel draft</Btn></div>
     {review&&<div className="subcard" aria-live="polite">
      <h3>Review before applying</h3>
+     <p className="fine">Current spell and power rules: {customResourceText(c.customClasses?.find(p=>p.definition.id===draft.definition.id)?.definition??{...draft.definition,casting:undefined,manifesting:undefined})}</p>
+     <p className="fine">Proposed spell and power rules: {customResourceText(review.profile.definition)}</p>
      <p className="fine">Current equipment training: {review.summary.proficiencies.before}</p>
      <p className="fine">Proposed equipment training: {review.summary.proficiencies.after}</p>
      {!!review.summary.proficiencies.items.length&&<div className="fine"><p>Changed training for recorded items (manual overrides retained):</p><ul>{review.summary.proficiencies.items.map(item=><li key={item.id}>{item.name}: {item.before?'proficient':'not proficient'} → {item.after?'proficient':'not proficient'}</li>)}</ul></div>}
      <p className="fine">Armor training removes only nonproficiency penalties; ordinary skill armor-check penalties and spell failure still apply. Equipment is not added, removed or equipped by this edit.</p>
+     {!!review.summary.resources.length&&<><h4>Changed spell and power totals</h4><p className="fine">Spell slots are listed in order from spell level 0 through 9. Power capacity is daily power points. Spent amounts and preparations are retained even if a new allowance is lower.</p><ul>{review.summary.resources.map(({before,after})=><li key={after.id}>{after.name} ({after.kind}): {before?'level '+before.level+', capacity '+before.capacity:'new tradition'} → level {after.level}, capacity {after.capacity}. Allowance: {before?.allowance??'new'} → {after.allowance}. {!after.supported&&'Table removed; existing pool retained for manual handling.'}</li>)}</ul></>}
      {libraryOnly&&<p className="fine">{review.profile.definition.name}: d{review.profile.definition.hitDie}, {review.profile.definition.skillPoints} skill points before Intelligence, {review.profile.definition.levels.length} supported levels. Source: {review.profile.definition.source}. This adds only a table to the creation draft, not an existing character or a global library.</p>}
      {!libraryOnly&&<>
      <p className="fine">{review.summary.used?'Updates the table for '+review.summary.used+' earned class levels.':'Adds an unused table to this character’s class library only.'} Existing class-entry names and personal notes are retained.</p>

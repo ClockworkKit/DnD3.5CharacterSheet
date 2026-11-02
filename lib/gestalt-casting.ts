@@ -26,7 +26,7 @@ export function gestaltCastingChoices(c:Character,classIds:readonly string[]){
   const advance=advanceTargets(c,entry);
   return advancingKinds(c,entry).map(kind=>{
    const candidates=advancementCandidates(c,entry,kind).filter(p=>{
-    const definition=kind==='psi'?manifestDefinition(c.psionics.find(q=>q.id===p.id)!):castingDefinition(c.casters.find(q=>q.id===p.id)!);
+    const definition=kind==='psi'?manifestDefinition(c.psionics.find(q=>q.id===p.id)!,c):castingDefinition(c.casters.find(q=>q.id===p.id)!,c);
     return !!definition&&priorClasses.has(definition.id);
    });
    const previous=c.gestaltProgression?.levels.flatMap(row=>row.castingTargets??[]).findLast(t=>t.classId===classId&&t.kind===kind)?.traditionId;
@@ -63,4 +63,16 @@ export function retainGestaltCastingHistory(source:Character,pending:Character){
   }
   if(targets.length)pair.castingTargets=targets;
  });
+}
+
+/** New traditions must not redirect previously earned standard prestige grants. */
+export function retainCastingHistory(source:Character,pending:Character){
+ if(source.advancementMode==='gestalt'){retainGestaltCastingHistory(source,pending);return;}
+ for(const entry of source.classLevels){
+  const after=pending.classLevels.find(e=>e.id===entry.id);if(!after)continue;
+  const grants=advanceTargets(source,entry);
+  for(const [kind,key,active] of [['spell','castingTarget',grants.spell],['divine','divineTarget',grants.divine],['psi','psionicTarget',grants.psi]] as const){
+   if(active&&!entry[key])after[key]=selectedAdvancementTarget(source,entry,kind)||'none';
+  }
+ }
 }

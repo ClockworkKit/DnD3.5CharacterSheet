@@ -1,7 +1,7 @@
 # Character-local custom class profiles
 
-This supports saved basic tables and a reviewed editor, not complete custom-class
-automation.
+This supports saved basic, equipment, spellcasting and manifesting tables through
+a reviewed editor. Exceptional class abilities still require source-specific support.
 Follow [the RAW policy](rules-policy.md); a custom profile is an explicit source
 configuration, never evidence that invented mechanics are published rules.
 
@@ -38,7 +38,7 @@ The shared class lookup, totals, Hit Die/history, class-skill union and point
 costs, milestone summaries, standard level-up and paired preview/confirmation
 consume the saved definition. Gestalt keeps the larger die and skill allowance,
 uses the existing printed/fractional policy, and retains independent catalog
-casting traditions. No custom table is added to fresh characters by default.
+and explicitly configured custom casting traditions. No custom table is added to fresh characters by default.
 
 Custom prestige prerequisites require confirmation of the complete source text;
 the catalog-specific prose parser must not certify a custom class after checking
@@ -116,14 +116,15 @@ save-DC ability selection and typed casting prerequisites use the same identity
 boundary. No automatic relinking or resource reset is performed. This prevents
 future overwrites; it cannot reconstruct values already lost in an older save.
 
-These safeguards do not implement custom casting or manifesting tables. Their
-source rules still need explicit supported metadata and reviewed integration.
+Custom spellcasting and manifesting now use the explicit source tables described
+below. A matching custom display name never resolves an unknown saved class ID.
 
 ## Explicit remaining work
 
-Custom casting/manifesting metadata remains unfinished. Version 1 rejects casting
-fields rather than discarding them or promising unsupported automation. Manual
-spell/power profiles, custom features and counters remain available separately.
+Custom prestige advancement of another tradition, exceptional caster-level formulas,
+restricted/specialist slot grants, and automatic learning of an entire custom spell
+list remain manual. Unknown fields still fail validation. Manual spell/power
+profiles, custom features and counters remain available separately.
 Bonus feats, conditional powers and shared-feature mechanics are not inferred
 from milestone prose. Equipment training uses only the explicit configuration
 below. The Classes view explains these limits.
@@ -166,3 +167,67 @@ training and progression other than the supported medium-armor threshold require
 manual handling; they are not guessed from prose. Invalid groups, duplicate or
 unknown item names, contradictory restrictions and unsupported fields fail
 validation. Removing the configuration is an explicitly reviewed change.
+
+
+## Explicit spell and power tables (2026-11-02)
+
+Optional `definition.casting` uses the existing caster contract: eligibility
+`ability`, optional `bonusAbility` and `dcAbility`, prepared/spontaneous `mode`,
+arcane/divine `type`, spell `list`, explicit `startLevel`, and `halfLevel`.
+Caster level is zero before the start, then full progression or half progression
+rounded down. These are configurable formulas, not claims about an unspecified
+custom class. Each level must include ten `slots` values for spell levels 0–9:
+`null` means unavailable, while `0` permits ability bonus slots only. Before the
+start level all slots must be null. Optional ten-column `spellsKnown` allowances
+must be supplied for every row or omitted entirely; they do not add or delete
+spell choices. Unlimited spellbooks/list access require source-based manual
+spell selection rather than an invented finite known allowance.
+
+Optional `definition.manifesting` specifies `ability`, `startLevel`,
+`levelOffset` and fixed `bonusPoints`. Every row must supply `powerPoints`,
+`powersKnown` and `powerLevel` (0–9). These are zero before the declared start.
+After that, manifester level is progression plus offset, bounded below by zero.
+The existing lasting-ability bonus-point calculation applies, along with any
+existing source-specific restrictions. Known-power allowances are displayed;
+powers and personal notes are never deleted to enforce a limit.
+
+The editor exposes each row and requires the existing complete-source review.
+Generating new BAB/save rows preserves resource data, and extending a table adds
+empty resource rows that must be source-checked. Shortening cannot erase recorded
+resource tables. Incomplete paired metadata/tables and unknown fields fail
+validation. A custom progression beyond its supplied table preserves recorded
+capacities and displays a warning; guided advancement and automatic casting or
+manifesting are blocked until the missing row is supplied or the player explicitly
+chooses manual handling. The last available row is never silently substituted.
+
+Creation and ordinary/paired advancement initialize traditions once by exact
+class ID, including delayed access. All subsequent progression uses the existing
+caster/manifesting engine and authoritative gestalt history. Catalog prestige
+classes can target eligible custom traditions, with the existing one-grant-per-
+pair rule. Custom prestige prose cannot itself grant another class progression.
+Typed spell prerequisites, split save abilities and divine arcane-failure exemption
+resolve the saved custom definition. A custom name cannot borrow catalog powers.
+
+Review shows old/new rules and changes to existing caster/manifester levels,
+capacities and known allowances. Adding metadata to an earned class can create a
+new tradition; linked manual traditions remain manual. Existing tradition names,
+abilities, mode, list, adjustments, spell/power choices, preparations, notes, focus
+and expenditure are protected. Source metadata defaults apply to new traditions;
+existing player-selected settings remain and are explained in the editor. Removing
+a table retains its pool for manual handling. Spent counts may exceed a reduced
+allowance; they are not reset or clamped.
+
+Before new traditions change target ambiguity, existing automatic prestige choices
+are recorded using the old character, both for standard class-wide choices and
+per-level gestalt targets. Reviewed edits reject stale character/profile state.
+Native exports and fresh browser-storage clients retain all tables and resources.
+No profile is installed globally and no legacy sheet acquires metadata by default.
+
+Rules references: [UA gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+requires separate daily spells for separate classes; [ability bonus spells](https://www.d20srd.org/srd/theBasics.htm#abilityScores)
+use class spell access; [psionic classes](https://www.d20srd.org/srd/psionic/classes/index.htm)
+combine power-point reserves while retaining each tradition's manifester level.
+The [psion](https://www.d20srd.org/srd/psionic/classes/psion.htm) supplies separate
+base points, powers known, maximum power level and ability requirements. Custom
+source-specific grants require the player's complete source; synthetic regression
+profiles are configuration tests, not additional published classes.

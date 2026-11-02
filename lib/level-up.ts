@@ -1,14 +1,14 @@
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
-import {advancementNumbers,castingDefinition,manifestDefinition} from './advancement.ts';
+import {assertCustomResourceTables,advancementNumbers,castingDefinition,manifestDefinition} from './advancement.ts';
 import {effectiveScore} from './ancestry.ts';
 import {skillIntelligence} from './level-history.ts';
 import {characterGestaltRows,gestaltBonusLedger,type GestaltProgression} from './gestalt-progression.ts';
 import {recompute} from './automation.ts';
 import {advancementChoices} from './advancement-choices.ts';
 import {effectiveClassMilestone} from './alternate-features.ts';
-import {resolveGestaltCastingTargets,retainGestaltCastingHistory} from './gestalt-casting.ts';
+import {resolveGestaltCastingTargets,retainGestaltCastingHistory,retainCastingHistory} from './gestalt-casting.ts';
 import type {GestaltCastingTarget} from './gestalt-schema.ts';
 import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 export function levelUpStatus(c:Character){
@@ -28,18 +28,23 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number){
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId,c);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
+ const trial=structuredClone(c),trialEntry=trial.classLevels.find(e=>e.classId===classId);
+ if(trialEntry)trialEntry.level++;else trial.classLevels.push({id:'trial',classId:def.id,name:def.name,level:1,notes:''});
+ assertCustomResourceTables(trial);
+ const source=structuredClone(c);
  let entry=c.classLevels.find(e=>e.classId===classId);
  if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};c.classLevels.push(entry);}
  if(c.automation.hpMethod==='rolled')c.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});
  initializeClassResources(c,def,entry.level);
+ if(c.casters.length!==source.casters.length||c.psionics.length!==source.psionics.length)retainCastingHistory(source,c);
  copyClassFeatures(c);
 }
 
 export function initializeClassResources(c:Character,def:ClassDefinition,level:number){
- if(def.levels.some(r=>r.slots)&&(!['paladin','ranger'].includes(def.id)||level>=4)&&!c.casters.some(p=>!p.casting?.domain&&castingDefinition(p)?.id===def.id)){
+ if(def.levels.some(r=>r.slots)&&level>=(def.casting?.startLevel??(['paladin','ranger'].includes(def.id)?4:1))&&!c.casters.some(p=>!p.casting?.domain&&castingDefinition(p,c)?.id===def.id)){
   const ability=castingAbility(def);c.casters.push(makeCaster(def,level,effectiveScore(c,ability),effectiveScore(c,def.casting?.bonusAbility||ability)));
  }
- if((def.kind==='Psionic'||def.manifesting)&&!c.psionics.some(p=>manifestDefinition(p)?.id===def.id))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
+ if((def.kind==='Psionic'||def.manifesting)&&level>=(def.manifesting?.startLevel??1)&&!c.psionics.some(p=>manifestDefinition(p,c)?.id===def.id))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
 }
 
 export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};
@@ -80,6 +85,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  copyClassFeatures(next);
  // Keep the uncalculated edit recipe too: the sheet's existing edit boundary
  // recomputes once. Installing already-adjusted HP there would heal twice.
+ assertCustomResourceTables(next);
  const pending=structuredClone(next);
  recompute(next,c);characterSchema.parse(next);
  const before=advancementNumbers(c),after=advancementNumbers(next),oldChoices=new Set(advancementChoices(c).map(choice=>choice.key));

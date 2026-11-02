@@ -1,6 +1,6 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-01 from the user's supplied goal and the GitHub checkout at
+Updated 2026-11-02 from the user's supplied goal and the GitHub checkout at
 `183213f`. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
@@ -36,7 +36,7 @@ printed-table convention remains the default, with fractional bonuses optional.
 | Native files, fresh storage clients, injuries, purchases and expenditure | `gestalt-integration.test.mjs`, `resource-preservation.test.mjs` |
 | Standard behavior and Roll20 compatibility | Full regression suite, including the Roll20 suites |
 
-## This continuation
+## Resource-preservation continuation (2026-11-01)
 
 - Classes displays authoritative paired history and actual character level.
   Independent class-level/removal/addition controls and skill-history reorder
@@ -64,6 +64,28 @@ skill-order protection and retained-note visibility. Rendering and storage API
 tests do **not** establish interactive browser acceptance. Builds retain existing
 large-chunk, script, plugin-timing and route-classification notices.
 
+## Custom-resource continuation (2026-11-02)
+
+The reviewed custom-class editor now supports explicit daily spell slots,
+optional spells-known allowances, power points, powers known, maximum power
+levels, split casting abilities, delayed access, and supported level formulas.
+Creation and guided standard/gestalt advancement reuse existing resource pools
+and calculations. Eligible catalog prestige classes can advance custom traditions
+without duplicating same-pair grants. Exact class IDs prevent name-based adoption.
+
+Table review shows changed resource totals and preserves prepared spells, chosen
+powers, notes, manual settings, focus and expenditure. Existing prestige targets
+are recorded before new traditions change their ambiguity. Missing progression
+rows preserve saved values and require source review rather than approximation.
+All tables and resources survive native files and fresh storage clients. See
+[the custom-profile contract](custom-class-profiles.md#explicit-spell-and-power-tables-2026-11-02).
+
+Validation for this continuation: the full suite passed **809 tests**, including
+15 new custom-resource regressions. After the final missing-table guards, all
+108 related mechanics tests passed. TypeScript and both production builds passed.
+React rendering checks covered the resource editor, unavailable spell columns,
+linked spellbook and known-power limits. Interactive browser QA remains pending.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
@@ -71,10 +93,11 @@ large-chunk, script, plugin-timing and route-classification notices.
    custom-table editing, saving/reloading, export/import and character switching.
    No browser-control tool is available in this cloud session. Do not mark this
    gate passed based on React rendering or storage tests.
-2. The historical plan's arbitrary custom casting/manifesting automation and
-   source-specific feature audit remain unfinished. Basic custom tables,
-   proficiencies, manual spell/power pools, notes and counters are supported and
-   preserved. Names and milestone prose never grant invented mechanics.
+2. Custom own-class spellcasting/manifesting tables now use the existing engine
+   and reviewed editor. Custom prestige advancement of another tradition,
+   exceptional formulas/grants, and the broader source-specific feature audit
+   remain unfinished. Manual pools, notes and counters remain supported.
+   Names and milestone prose never grant invented mechanics.
 3. Mixed/staggered Uncanny Dodge histories still show an explicit DM-review
    notice; no unsupported combined threshold is silently substituted. Additional
    source-specific cases need their own evidence, policies and regressions.

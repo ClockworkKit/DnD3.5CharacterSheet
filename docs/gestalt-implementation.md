@@ -657,3 +657,57 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   Rendered React assertions checked the changed controls and retained notes.
   Interactive browser checks remain unavailable and are not claimed complete.
   No private exports or player saves were used. The broader goal remains open.
+
+
+## 2026-11-02: Explicit custom casting and manifesting tables
+
+The optional custom profile contract now exposes source-reviewed own-class spell
+and power tables, including delayed access, split spell abilities, known limits,
+and the existing supported level formulas. Metadata and per-level resource rows
+validate together; unknown or incomplete mechanics are rejected. The same editor
+serves new-character drafts and existing characters.
+
+This extends the existing class lookup, resource initialization, progression,
+prerequisites, UI and persistence paths. Custom IDs are resolved exactly; names
+cannot adopt unknown pools or grant catalog-specific class powers. Standard and
+paired advancement preserve independent traditions, and catalog prestige target
+selection honors custom arcane/divine/psionic identity with the existing gestalt
+per-level cap. No custom prestige progression is inferred from milestone prose.
+
+Reviewed table changes expose old/new rules, levels, capacities and allowances.
+Preparations, spell/power choices, notes, focus, personal settings and expenditure
+are protected. Linked manual pools stay manual. Removing a table retains its
+pool. Adding a new tradition preserves earlier automatic prestige choices before
+candidate ambiguity changes. Missing source rows preserve capacities and block
+further automatic use/advancement instead of copying a final row as an estimate.
+
+Published rules checked independently during this continuation:
+
+- [UA gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm):
+  separate daily spells for each spellcasting class and the existing prestige
+  restrictions. No new interpretation of mixed BAB/save progression was added.
+- [Ability modifiers/bonus spells](https://www.d20srd.org/srd/theBasics.htm#abilityScores):
+  bonus spells depend on the relevant score and accessible spell levels.
+- [Psionic classes](https://www.d20srd.org/srd/psionic/classes/index.htm):
+  multiclass power points share a reserve, with tradition-specific manifester
+  levels; bonus points use one-half the key ability modifier times ML, rounded down.
+- [Psion](https://www.d20srd.org/srd/psionic/classes/psion.htm): separate base
+  point/known/maximum-level tables and minimum key ability for a power's level.
+
+The custom formulas are explicit configuration, not claims that all published
+classes follow them. Custom prestige advancement of another tradition, exceptional
+slot restrictions/formulas, automatic custom whole-list learning and conditional
+features remain manual. Existing source-specific catalog implementations remain.
+See [the contract](custom-class-profiles.md) for supported metadata and safeguards.
+No private saves were used. The overall goal still retains the current handoff's
+browser and source-specific gates.
+
+
+Validation: full regression suite **809 passed** (15 new custom-resource tests),
+followed by **108 passing related mechanics tests** for the final missing-table
+guards and standard prestige-history preservation. TypeScript and both Pages and
+Worker production builds passed. React rendering checked the resource editor,
+unavailable spell columns, source guidance, linked spellbook and power limits.
+Browser interaction remains unverified; existing bundle/script/plugin-timing and
+route-classification notices remain. The final schema bound was also checked by
+the custom-resource suite; invalid ML formulas fail rather than being capped.
