@@ -20,7 +20,7 @@ import {modifier,signed,withBonus,parseDiceFormula,macroLabel} from './dice.mjs'
 import {effectBonus,effectTerms,stackBonuses,effectActive,classLevel,hasFeat} from './effects.ts';
 import {equipmentById,equippedArmor,weaponProficient,carriedWeight,carrying,movement,scaleDice} from './equipment.ts';
 import {brainsOverBrawn,factotumLevel,factotumNumbers} from './factotum.ts';
-import {classSystemsSchema} from './class-systems.ts';
+import {classSystemsSchema} from './class-systems-schema.ts';
 import {skillExtras,castingDefinition,castingNumbers} from './advancement.ts';
 import {diceFormula,resourceNumbers} from './automation.ts';
 export {modifier,signed,withBonus};

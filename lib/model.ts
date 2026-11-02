@@ -6,7 +6,7 @@ import {creatureProfileSchema} from './creature-schema.ts';
 import {racialStateSchema,emptyRacialState} from './racial-state.ts';
 import {roll20ImportDataSchema} from './roll20-schema.ts';
 import { z } from 'zod';
-import {classSystemsSchema} from './class-systems.ts';
+import {classSystemsSchema} from './class-systems-schema.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
 import {findClass,makeCaster,makePsionic,applyStartingClass,applyClassTotals} from './classes.ts';
 import {customClassesSchema} from './custom-class-schema.ts';

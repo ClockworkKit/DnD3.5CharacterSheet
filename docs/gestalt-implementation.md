@@ -768,3 +768,65 @@ reference regressions in the atomic standard gain recipe; preserving existing
 record objects resolved them before the final full passing run. Interactive
 browser testing remains unavailable and is not represented by rendering checks.
 Existing bundle/script/plugin-timing/route-classification notices remain.
+
+
+## 2026-11-02: Shared meldshaping limits and explicit essentia rulings
+
+The shared-feature audit checked the existing Evasion restrictions against the
+class texts and the general encumbrance rule; those restrictions remain intact.
+It then reproduced a missing cross-class Constitution check and unconditional
+addition of both gestalt essentia tables in the existing class-system warnings.
+
+Source evidence: *Magic of Incarnum*, p. 20, “Multiclass Meldshapers” and
+“Abilities and Meldshapers” ([text reproduction](https://dokumen.pub/magic-of-incarnum-a-new-source-of-power-for-your-d-d-game.html)).
+Meld lists, binds and class-specific capacity increases remain independent.
+Constitution limits the combined number of shaped melds; the book's Incarnate 6 /
+Totemist 6 example requires Constitution 18 for eight melds and has ten essentia.
+The [Incarnate](https://srd.dndtools.org/srd/classes/baseMoi/incarnate.html),
+[Totemist](https://srd.dndtools.org/srd/classes/baseMoi/totemist.html) and
+[Soulborn](https://srd.dndtools.org/srd/classes/baseMoi/soulborn.html) tables supply
+the existing individual resource amounts.
+
+The read-only resolver now checks the combined Constitution ceiling. Ordinary
+multiclass and nonoverlapping gestalt essentia contributions add normally. For
+classes progressing at the same actual levels, a printed progression that is at
+least as large at every earned level supplies the shared pool once. This is a
+conservative application of [UA's faster shared-feature rule](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+to essentia, not a claim that UA explicitly describes incarnum. Left/right swaps
+and the BAB/save bonus method do not affect it. Class capacity increases and
+separate meld/bind limits retain their existing meaning.
+
+Mixed or staggered overlapping histories have no inferred combined pool. An
+optional total records the GM, sources/reason and reviewed progression; it is
+also available for source-specific additional essentia. Advancement retains an
+old ruling but marks it stale until reviewed again. No choices, allocations,
+binds, notes or spent resources are removed or reset. Warnings never treat an
+unresolved total as zero. Fresh/legacy characters acquire no implicit ruling.
+Levels missing from the supported tables likewise require source review; the
+resolver does not copy the last row or extrapolate new grants.
+
+The existing Magic panel shows the shared total and Constitution limit, explains
+class-table reference amounts, and offers the reviewed total controls. A saved
+ruling remains visible even after its class is removed. The persisted class-system
+schema moved into a module independent of calculations, preserving its public
+re-export; rendering exposed an initialization cycle when that entry module was
+loaded before Character, and a cold-module regression now covers the fix.
+
+Additional sources for the unchanged defensive audit:
+[Rogue Evasion](https://www.d20srd.org/srd/classes/rogue.htm#evasion),
+[Monk Evasion](https://www.d20srd.org/srd/classes/monk.htm#evasion),
+[Ninja Evasion](https://srd.dndtools.org/srd/classes/baseCad/ninja.html), and
+[carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm). Medium/heavy
+loads count as the corresponding armor for armor-restricted abilities; the
+ninja's stricter restriction is source-specific. No speculative defense change
+was made during this audit.
+
+Validation: the full suite passed **830 tests**. The final missing-table guard
+then passed all **31 related tests**, including all twelve new meldshaping
+regressions. TypeScript and both Pages/Worker production builds passed. React
+rendering verified combined limits, independent table references, unresolved and
+saved rulings, removed-class history and missing-table guidance. Native and fresh
+storage-client tests retained injuries, other expenditure, over-limit choices,
+binds, notes and allocations. Existing build notices remain. Interactive browser
+QA and the remaining source-specific cases are still open; no player saves or
+private exports were used.

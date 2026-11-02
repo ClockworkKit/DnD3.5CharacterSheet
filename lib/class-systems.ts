@@ -1,19 +1,15 @@
 import {classArmorBonus} from './class-armor-bonus.ts';
+import type {SystemChoice} from './class-systems-schema.ts';
+export {classSystemsSchema,type SystemChoice} from './class-systems-schema.ts';
+import {meldshapingWarnings} from './meldshaping.ts';
 import {refreshResourceText,retireResources,restoreResource} from './managed-resources.ts';
 import {featureReplaced,classFeatureLevel} from './alternate-features.ts';
 import {characterHitDice} from './character-level.ts';
-import {z} from 'zod';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
 import {effectiveScore} from './ancestry.ts';
 import {equippedArmor,carrying,equipmentById} from './equipment.ts';
 
-export const classSystemsSchema=z.object({
- choices:z.array(z.object({id:z.string().min(1).max(100),classId:z.string().max(100),name:z.string().min(1).max(160),invocationGrade:z.enum(['least','lesser','greater','dark']).optional(),kind:z.enum(['invocation','maneuver','stance','vestige','soulmeld','mystery','fundamental','utterance','aura']),level:z.number().int().min(0).max(9),readied:z.boolean().default(false),granted:z.boolean().default(false),spent:z.number().int().min(0).max(10000).default(0),essentia:z.number().int().min(0).max(20).default(0),bound:z.boolean().default(false),totem:z.boolean().default(false),notes:z.string().max(4000).default('')})).max(200).default([]),
- pools:z.record(z.number().int().min(0).max(10000)).default({}),
- delayedDamage:z.number().int().min(0).max(1000).default(0),
-}).default({});
-export type SystemChoice=z.infer<typeof classSystemsSchema>['choices'][number];
 const lv=(c:Character,id:string)=>c.classLevels.filter(e=>e.classId===id).reduce((n,e)=>n+e.level,0);
 const mod=(c:Character,a:'INT'|'WIS'|'CHA'|'CON')=>Math.floor((effectiveScore(c,a)-10)/2);
 const row=(c:Character,id:string)=>findClass(id)?.levels.find(r=>r.level===Math.min(20,lv(c,id)));
@@ -38,7 +34,7 @@ export function essentiaCapacity(c:Character,s:SystemChoice){const n=systemLimit
 export function systemKinds(c:Character,id:string):SystemChoice['kind'][] {const n=systemLimits(c,id);return !n?[]:n.kind==='maneuver'?['maneuver','stance']:n.kind==='mystery'?['mystery','fundamental']:[n.kind];}
 export function systemWarnings(c:Character){const warnings:string[]=[];const choices=c.classSystems.choices;
  for(const id of new Set(choices.map(s=>s.classId))){const n=systemLimits(c,id);if(!n){warnings.push(id+': no matching supported class levels.');continue}const group=choices.filter(s=>s.classId===id);if(group.some(s=>!systemKinds(c,id).includes(s.kind)))warnings.push(id+': a choice belongs to a different ability system.');if(n.granted!==undefined&&group.filter(s=>s.granted&&!s.readied).length)warnings.push(id+': only readied maneuvers can be granted.');const primary=group.filter(s=>s.kind===n.kind);if(primary.length>n.known)warnings.push(id+': too many '+n.kind+' choices.');if(group.some(s=>!invocationGradeAvailable(c,s)||s.level>n.maxLevel&&s.kind!=='fundamental'))warnings.push(id+': a choice exceeds the current level limit.');if(n.readied!==undefined&&primary.filter(s=>s.readied).length>n.readied)warnings.push(id+': too many readied maneuvers.');if(n.stances!==undefined&&group.filter(s=>s.kind==='stance').length>n.stances)warnings.push(id+': too many stances.');if(n.binds!==undefined&&group.filter(s=>s.bound).length>n.binds)warnings.push(id+': too many chakra binds.');for(const s of group)if(s.kind==='soulmeld'&&s.essentia>essentiaCapacity(c,s))warnings.push(s.name+': essentia exceeds capacity.');if(id==='shadowcaster'&&group.filter(s=>s.kind==='fundamental').length>3+Math.floor(n.level/4))warnings.push('Shadowcaster: extra fundamentals must replace mystery choices.');}
- const pool=['incarnate','soulborn','totemist'].reduce((n,id)=>n+(systemLimits(c,id)?.essentia||0),0);if(choices.reduce((n,s)=>n+s.essentia,0)>pool)warnings.push('Soulmeld investments exceed the combined class essentia pool.');return warnings;
+ warnings.push(...meldshapingWarnings(c));return warnings;
 }
 export function spendSystemChoice(c:Character,id:string){const s=c.classSystems.choices.find(s=>s.id===id);if(!s||!lv(c,s.classId))throw new Error('This class choice is not available.');const limit=systemLimits(c,s.classId);if(!limit||!invocationGradeAvailable(c,s)||!systemKinds(c,s.classId).includes(s.kind)||s.level>limit.maxLevel)throw new Error('This choice exceeds the current level limit.');if(s.kind==='maneuver'&&(!s.readied||s.spent||s.classId==='crusader'&&!s.granted))throw new Error('Ready and recover this maneuver before using it.');if(s.spent>=choiceDailyUses(c,s))throw new Error('No daily uses remain.');if(s.kind==='mystery'&&effectiveScore(c,'INT')<10+s.level)throw new Error('Intelligence is too low for this mystery.');if(s.kind==='maneuver'||s.kind==='utterance'||choiceDailyUses(c,s)!==Infinity)s.spent++;if(s.classId==='crusader')s.granted=false;}
 export function recoverManeuvers(c:Character,id:string){for(const s of c.classSystems.choices)if(s.classId===id&&s.kind==='maneuver'){s.spent=0;s.granted=false};}

@@ -113,6 +113,35 @@ displays. Two standard level-up reference regressions found by the full suite
 were fixed before the passing run. Interactive browser QA is still outstanding;
 existing build notices remain.
 
+## Shared-meldshaping continuation (2026-11-02)
+
+The existing class-system panel now checks one Constitution ceiling across all
+recorded soulmelds and shows a shared essentia total. Ordinary multiclass sources
+add normally. Simultaneous gestalt classes use the consistently better printed
+essentia progression once; unrelated class levels never increase capacity twice.
+Independent meld lists, binds and class capacity increases remain separate.
+
+Mixed or staggered overlapping essentia histories require an explicit total with
+a GM name and source/ruling explanation. This optional record is scoped to the
+reviewed progression and stays saved but becomes stale after advancement. It can
+also describe additional essentia sources. Neither warnings nor loading delete
+over-limit melds, binds, allocations, notes or expenditure. Rulings remain visible
+after their class is removed and survive explicit daily rest without resetting
+allocated essentia. Legacy sheets gain no implicit rule choice.
+
+The implementation record distinguishes published multiclass rules from the
+conservative gestalt application and unresolved mixed cases. The defensive audit
+also verified the existing Evasion armor/load restrictions; it did not replace
+them with an unsupported interpretation.
+
+Validation: **830 tests passed** in the full suite, followed by **31 passing
+related tests** after the final missing-table guard. The twelve new regressions
+cover combined restrictions, every supported parallel pair through level 20,
+side swaps, sequential and mixed histories, reviewed/stale rulings, unavailable
+tables, independent capacities, module initialization and persistence. TypeScript
+and both production builds passed. Rendering checks covered the changed states;
+interactive browser acceptance remains separate and is still unavailable here.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
@@ -127,6 +156,9 @@ existing build notices remain.
 3. Mixed/staggered Uncanny Dodge histories still show an explicit DM-review
    notice; no unsupported combined threshold is silently substituted. Additional
    source-specific cases need their own evidence, policies and regressions.
+   Mixed/staggered shared essentia now has an explicit, persisted GM ruling;
+   exceptional meld effects, chakra choices and other source prerequisites still
+   require review rather than being inferred from free-form notes.
 4. Racial-HD occupancy in gestalt remains explicitly unsupported. Level
    adjustment is supported without adding paired levels. Existing standard
    racial-HD support remains intact.
