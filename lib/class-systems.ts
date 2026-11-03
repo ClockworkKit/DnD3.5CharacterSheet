@@ -1,4 +1,5 @@
 import {classArmorBonus} from './class-armor-bonus.ts';
+import {syncFeatGrants} from './feat-grants.ts';
 import type {SystemChoice} from './class-systems-schema.ts';
 export {classSystemsSchema,type SystemChoice} from './class-systems-schema.ts';
 import {meldshapingWarnings} from './meldshaping.ts';
@@ -100,6 +101,6 @@ export function syncSupplementalResources(c:Character){
 }
 export function syncGrantedFeats(c:Character){
  const grants:Array<[string,number,string,string?]>=[['erudite',1,'Psicrystal Affinity'],['frenzied-berserker',1,'Diehard'],['master-specialist',1,'Skill Focus','Spellcraft'],['dervish',3,'Spring Attack'],['swashbuckler',1,'Weapon Finesse'],['samurai',8,'Improved Initiative'],['duskblade',2,'Combat Casting'],['archivist',1,'Scribe Scroll'],['beguiler',5,'Silent Spell'],['beguiler',10,'Still Spell'],['healer',2,'Skill Focus','Heal'],['marshal',1,'Skill Focus','Diplomacy'],['artificer',1,'Scribe Scroll'],['artificer',2,'Brew Potion'],['artificer',3,'Craft Wondrous Item'],['artificer',5,'Craft Magic Arms and Armor'],['artificer',6,'Craft Wand'],['artificer',9,'Craft Rod'],['artificer',12,'Craft Staff'],['artificer',14,'Forge Ring']];
- const earned=grants.filter(([id,at])=>lv(c,id)>=at),keys=new Set(earned.map(([id,at,name])=>'granted:'+id+':'+at+':'+name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('granted:')||keys.has(f.ruleId));
- for(const [id,at,name,choice] of earned){if(c.features.some(f=>f.kind==='Feat'&&f.name===name&&(!choice||f.choice===choice)))continue;if(c.features.length>=250)continue;c.features.push({id:crypto.randomUUID(),name,kind:'Feat',description:'Granted by '+findClass(id)!.name+' at class level '+at+'.',max:0,used:0,source:findClass(id)!.source,ruleId:'granted:'+id+':'+at+':'+name,...(choice?{choice}:{})});}
+ const earned=grants.filter(([id,at])=>lv(c,id)>=at);
+ syncFeatGrants(c,earned.map(([id,at,name,choice])=>({ruleId:'granted:'+id+':'+at+':'+name,name,choice,description:'Granted by '+findClass(id)!.name+' at class level '+at+'.',source:findClass(id)!.source})),'granted:');
 }

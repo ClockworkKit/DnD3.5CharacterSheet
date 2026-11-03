@@ -1,6 +1,6 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-02 from the user's supplied goal and the GitHub checkout at
+Updated 2026-11-03 from the user's supplied goal and the GitHub checkout at
 `183213f`. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
@@ -141,6 +141,32 @@ side swaps, sequential and mixed histories, reviewed/stale rulings, unavailable
 tables, independent capacities, module initialization and persistence. TypeScript
 and both production builds passed. Rendering checks covered the changed states;
 interactive browser acceptance remains separate and is still unavailable here.
+
+## Granted-feat continuation (2026-11-03)
+
+Catalog and alternate granted feats now preserve card identity, personal notes,
+names, source annotations and counters. Changing a style, weapon or bonus feat
+keeps the old record inactive; restoring that choice restores its original card.
+The existing retained-resource store holds these histories alongside resources.
+Saved rule identity keeps renamed cards functional without producing duplicates.
+Legacy duplicate cards remain readable while contributing one copy of a grant.
+
+Fixed grants from overlapping classes keep one source; separately selected
+repeatable feats retain their stacking behavior. Ordinary selected feats remain
+independent. Both kinds of managed class grant are excluded from general or
+separately selected bonus-feat assignments. Invalid old assignments are retained
+and explained for review, with their advancement reminder left pending.
+
+The existing Feats panel exposes current granted identity, personal notes and
+inactive records. Ten regressions cover standard/gestalt recomputation, style
+and weapon changes, repeated choices, duplicate records, class advancement,
+native files and fresh browser storage. The four initial regressions failed
+before the fix. No player saves or private exports were used.
+
+Validation: all **841 tests passed**, plus TypeScript and React rendering of the
+changed controls and retained-note states. Pages and Worker production builds
+passed; their existing bundle/script/plugin-timing/route-classification notices remain.
+Interactive browser QA remains unavailable and is not replaced by rendering tests.
 
 ## Remaining work and explicit limits
 

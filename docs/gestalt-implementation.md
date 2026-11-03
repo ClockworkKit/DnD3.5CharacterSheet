@@ -830,3 +830,56 @@ storage-client tests retained injuries, other expenditure, over-limit choices,
 binds, notes and allocations. Existing build notices remain. Interactive browser
 QA and the remaining source-specific cases are still open; no player saves or
 private exports were used.
+
+
+## 2026-11-03: Granted feat preservation and separate advancement choices
+
+Four new regressions first reproduced lost descriptions/counters on alternate
+granted feats, a duplicate catalog grant after renaming its card, a style change
+reusing the old feat's ID for a different feat, and an alternate-granted feat
+being accepted as a separate general advancement selection.
+
+Both existing grant synchronizers now use one shared operation and the existing
+retained-resource store. Optional saved feat identity separates the granted rule
+and weapon/skill choice from personal display text. Known grants retain their
+IDs, names, source annotations, descriptions, formulas and counters. A changed
+style, weapon or bonus selection retains the old full card and can restore it
+later. Historical choices and legacy duplicate cards remain distinct records;
+duplicate copies of one grant contribute that feat only once. Ordinary personal
+feats are never adopted or overwritten. No empty archive or identity field is
+added by schema defaults.
+
+Existing fixed grants from overlapping classes keep the current source where
+possible. Explicitly repeatable choices remain independent: an existing personal
+Toughness does not suppress later selected bonus copies. Choice-specific feats
+continue to require their own eligible weapon/skill choices. Armor and alternate
+feature activation checks retain their existing behavior.
+
+Source evidence independently checked:
+
+- [Fighter bonus feats](https://www.d20srd.org/srd/classes/fighter.htm#bonusFeats)
+  distinguish class bonus choices from normal advancement choices.
+- [UA monk fighting styles](https://www.d20srd.org/srd/variant/classes/variantCharacterClasses.htm#monkVariantFightingStyles)
+  specify feats at class milestones. The Cobra Strike and Undying Way lists
+  supply the style replacement/restoration regression cases.
+- [Toughness](https://www.d20srd.org/srd/feats.htm#toughness) and
+  [Extra Turning](https://www.d20srd.org/srd/feats.htm#extraTurning) explicitly
+  permit repeated selections with stacking effects. Existing source lists and
+  prerequisite validation still govern which alternate bonus feats can be chosen.
+
+The existing advancement tracker and its selector now exclude both types of
+managed class grant. Invalid historical assignments remain saved and show a
+review message; no score, feat or old assignment is silently removed. The Feats
+panel shows current granted identity, preserved editable alternate-feat notes,
+retained counters and inactive historical choices. Rule choices remain managed
+through Classes rather than being changed by a personal card label.
+
+Ten new tests cover standard and paired sheets, variable choices, repeatable and
+overlapping grants, legacy duplicates, class-level changes, guided paired gain,
+native files and a fresh storage client. Injuries, training, spell expenditure
+and invalid old assignment records survive; explicit rest resets only the usual
+daily counters. All **841 tests passed**, along with TypeScript and both Pages
+and Worker production builds. React rendering verified the displayed rule
+identity, preserved notes/counters, inactive records and old-assignment review.
+Existing build notices remain. No private player saves or exports were used. Browser
+acceptance and the remaining source-specific gates are still open.
