@@ -3,6 +3,7 @@ import {useState} from 'react';
 import {alternateClassLevel,alternateSettings,configureAlternateFeature} from '@/lib/alternate-features';
 import {alternateActions,alternateActionProblem,alternateActionRemaining,useAlternateAction as spendAlternateAction,endAlternateAction,type AlternateAction} from '@/lib/alternate-actions';
 import {alternateFeatSlots,allowedAlternateFeats,alternateFeatSelectionProblem,selectAlternateBonusFeat,alternateWeaponChoices,selectedMonkStyle} from '@/lib/alternate-grants';
+import {rangerStyleRestriction} from '@/lib/ranger-style';
 import {featChoices} from '@/lib/prerequisites';
 import {advanceEffects} from '@/lib/effects';
 import {Btn,N,Check,Choice,type SheetProps} from './sheet-ui';
@@ -34,6 +35,7 @@ export function AlternateRuleControls(props:SheetProps&{id:string}){
  const rule=(key:string,value:string)=>edit(d=>configureAlternateFeature(d,id,{rules:{...alternateSettings(d,id).rules,[key]:value}}));
  return <div>
  {!c.automation.enabled&&<p className="fine">Enable automatic calculations in Calculations to apply granted feats and activate ability effects.</p>}
+ {id==='ranger-combat-styles'&&<p className="fine">{rangerStyleRestriction(c)||'Ranger combat style benefits require light or no armor and, when encumbrance is enabled, a light load.'}</p>}
  {style&&<><p className="fine">Style feats: {style.feats.join(' → ')}. +2 {style.skill}.</p><p>{style.bonus}</p><p className="fine">Sixth-level benefit: {style.requirements} Requirements must have been met when monk level 6 was gained.</p><Check label="Qualified for this style’s sixth-level benefit when gained" checked={s.styleQualifiedAtSix} onChange={v=>edit(d=>configureAlternateFeature(d,id,{styleQualifiedAtSix:v}))}/></>}
  {id==='monk-draconic-fist'&&<Choice label="Draconic Fist energy" value={s.rules.energy||'__choose__'} options={[["__choose__","Choose an energy type"],'acid','cold','electricity','fire']} onChange={v=>rule('energy',v==='__choose__'?'':v)}/>}
  {weapon&&<Choice label="Granted weapon choice" value={s.rules.weapon||'__choose__'} options={[["__choose__","Choose a weapon"],...alternateWeaponChoices(id)]} onChange={v=>rule('weapon',v==='__choose__'?'':v)}/>}

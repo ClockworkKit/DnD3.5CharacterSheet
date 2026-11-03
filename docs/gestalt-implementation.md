@@ -883,3 +883,51 @@ and Worker production builds. React rendering verified the displayed rule
 identity, preserved notes/counters, inactive records and old-assignment review.
 Existing build notices remain. No private player saves or exports were used. Browser
 acceptance and the remaining source-specific gates are still open.
+
+## 2026-11-03: Ranger combat-style armor and load restrictions
+
+Reproduced ordinary archery and two-weapon styles retaining attack benefits with
+a medium load, alternate styles ignoring all loads, and alternate styles ignoring
+imported armor stat blocks. A shared read-only restriction now governs ordinary
+style attacks and alternate granted feats. It reads the existing equipment and
+carrying systems, including effective Strength, size, coins and the character's
+independent encumbrance option. Disabling encumbrance does not waive worn armor
+restrictions. Imported armor and mithral use their existing saved metadata.
+
+Source evidence independently checked:
+
+- [Ranger Combat Style, Improved Combat Style and Combat Style Mastery](https://www.d20srd.org/srd/classes/ranger.htm#combatStyle)
+  require light or no armor at each milestone. The alternate
+  [Combat Styles](https://srd.dndtools.org/srd/classes/baseCore/ranger.html#combat-styles)
+  lists explicitly use those same three class features and their levels.
+- [Carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm)
+  treats medium and heavy loads as the corresponding armor for restricted
+  abilities. Overloaded/immobile characters likewise exceed a light load.
+- [Mithral](https://www.d20srd.org/srd/specialMaterials.htm#mithral)
+  reduces medium armor to light and heavy to medium for these limitations;
+  light remains light. Shields alone do not violate the ranger's armor rule.
+
+The helper reads worn gear without invoking proficiency checks: those checks
+can themselves depend on a granted feat. It checks every carried, equipped,
+nonzero armor item, preserving the alternate-style rule for multiple worn items.
+Ordinary style penalties, Rapid Shot and advanced offhand attacks reuse the same
+availability check. Independently selected feats retain their own benefits.
+This does not add a new feat, change class progression, remove saved choices or
+retire temporarily unavailable cards. The existing UI now explains inactivity
+beside ordinary style controls, alternate style controls and granted feat cards.
+
+Eight automated cases cover both advancement modes at ranger levels 2, 6 and 11;
+light/medium/heavy/overloaded boundaries; optional encumbrance; effective Strength,
+size and coin weight; imported armor and mithral; worn state and shields;
+independent feats and replaced sources; and native/browser persistence plus
+paired advancement. Seven cases reproduced failures before the fix. Loading and
+advancing preserve card identity, notes, counters, history, injuries and spell
+expenditure; removing the restriction restores the benefit without a refund.
+
+Validation: **849 tests passed**, TypeScript passed, and Pages and Worker builds
+passed with the existing bundle/script/plugin-timing/route-classification notices.
+React rendering checked both restriction messages, the optional encumbrance
+setting and retained personal notes. It does not substitute for interactive
+browser acceptance. No private player saves were read or modified. The remaining
+source-specific feature audit, mixed Uncanny Dodge histories, reviewed conversion,
+racial-HD occupancy policy and browser acceptance gates remain open.

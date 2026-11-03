@@ -168,6 +168,23 @@ changed controls and retained-note states. Pages and Worker production builds
 passed; their existing bundle/script/plugin-timing/route-classification notices remain.
 Interactive browser QA remains unavailable and is not replaced by rendering tests.
 
+## Ranger-style continuation (2026-11-03)
+
+Ordinary and alternate ranger combat styles now share their armor and load
+restriction. Medium or heavier loads suppress the style when the saved
+encumbrance option is enabled. Imported armor uses its saved category; mithral
+retains its usual category reduction. Independent selected feats remain usable.
+Attack penalties and extra attacks agree, and Classes, Calculations and granted
+feat cards explain temporary inactivity. No choices or cards are removed.
+
+Eight regressions cover standard and paired milestone levels, load boundaries,
+effective Strength, optional encumbrance, imported armor, mithral, separate feats,
+native files, fresh storage clients and paired advancement with preserved notes,
+training, injuries and spent spell slots. Seven cases failed before the fix.
+All **849 tests passed**, as did TypeScript and rendering checks of the updated
+panels. Pages and Worker production builds passed with their existing notices.
+Browser interaction remains unverified; the overall goal remains open.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,

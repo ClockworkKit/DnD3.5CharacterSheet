@@ -2,7 +2,8 @@ import type {Character,Feat} from './model.ts';
 import {syncFeatGrants} from './feat-grants.ts';
 import {alternateClassLevel,activeAlternateFeatures,alternateSettings,configureAlternateFeature,hasAlternateFeature} from './alternate-features.ts';
 import {monkStyles,rangerStyles} from './alternate-styles.ts';
-import {equipmentById,equipmentCatalog} from './equipment.ts';
+import {equipmentCatalog} from './equipment.ts';
+import {rangerStyleRestriction} from './ranger-style.ts';
 import {featEligibility,featChoices} from './prerequisites.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 const clean=(name:string)=>name.replace(/\s*\[[^\]]*\]/g,'').trim();
@@ -13,7 +14,7 @@ export function monkStyleBonus(c:Character,name:string){return selectedMonkStyle
 export function alternateGrantActive(c:Character,ruleId?:string){
  if(ruleId?.startsWith('acf-grant:')&&!hasAlternateFeature(c,ruleId.split(':')[1]))return false;
  if(!ruleId?.startsWith('acf-grant:ranger-combat-styles:'))return true;
- return !c.gear.some(g=>g.carried&&g.equipped&&g.qty>0&&equipmentById(g.catalogId)?.kind==='armor'&&(['light','medium','heavy'].indexOf(equipmentById(g.catalogId)!.category)-(g.material==='mithral'?1:0))>0);
+ return !rangerStyleRestriction(c);
 }
 type Grant={featureId:string,slot:string,name:string,choice?:string};
 const splitFeat=(text:string)=>{const m=text.match(/^(.*?)\s*\((.*)\)$/);return m?{name:m[1],choice:m[2]}:{name:text};};
