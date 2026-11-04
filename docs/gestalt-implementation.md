@@ -1,5 +1,7 @@
 # Standard defaults and gestalt progression
 
+Current continuation: [verified behavior and remaining gates](gestalt-current-status.md).
+
 **Standing requirement:** follow the [rules-as-written policy](rules-policy.md)
 before changing mechanics. The 2026-10-27 user direction resolves the earlier
 Uncanny Dodge question in favor of the gestalt faster-class rule; historical
@@ -610,3 +612,382 @@ The user chose **printed-table progressions by default; fractional bonuses optio
   private exports or player saves were modified. Custom casting/manifesting,
   conditional/shared abilities, remaining variant cases, reviewed mode conversion
   and complete end-to-end gates remain unfinished. The overall goal is not complete.
+
+
+## Cloud continuation: progression controls and preserved resources (2026-11-01)
+
+- Resumed from GitHub `183213f` against the user's complete goal. Standard defaults,
+  paired creation/advancement, independent casting and persistence already exist;
+  this continuation reuses those systems. See [current status](gestalt-current-status.md)
+  for the acceptance mapping and unresolved gates.
+- Found Classes and Skills controls that attempted unsupported independent edits
+  to paired progression. They are now read-only/disabled for gestalt, with saved
+  paired history and instructions for the existing paired level-up workflow.
+  Standard class editing and historical Intelligence/point corrections remain.
+  Effective class dice/skills are distinguished from base-table bonuses.
+- Reproduced renamed Rage cards being deleted and recreated with zero expenditure,
+  and daily/supplemental descriptions being overwritten. Stable rule identities
+  now control synchronization; custom names, sources and notes survive. Only a
+  uniquely recognized generated block refreshes. Current guidance is separate
+  when legacy or rewritten text cannot be safely replaced.
+- Optional retained resource records preserve full cards when a class feature is
+  replaced. Restoration reuses the original identity and retained spent uses;
+  only an explicit daily rest resets them. The Features panel exposes inactive
+  records. No legacy empty archive or reset is added. Five regressions cover
+  standard/paired advancement, old rewritten notes, replacement/restoration/rest,
+  independent counters, native files and a fresh storage client.
+- Reproduced duplicate Monk // Ninja AC milestones, a negative Wisdom penalty
+  and Monk AC remaining active while helpless. The existing effect calculation
+  now consumes one shared, read-only resolver. Use the higher complete monk or
+  ninja source; do not add their levels or bonuses. Applicable Psionic Fist
+  levels still use the previously verified nonstacking monk advancement.
+- Sources: [Monk AC Bonus](https://www.d20srd.org/srd/classes/monk.htm#acBonus)
+  grants Wisdom bonus “if any” and loses both bonuses when immobilized/helpless,
+  armored, shielded or carrying a medium/heavy load. The
+  [Ninja AC Bonus](https://srd.dndtools.org/srd/classes/baseCad/ninja.html) explicitly
+  does not stack with the monk's AC bonus ability and repeats those restrictions.
+  This source-specific nonstacking rule applies in ordinary and gestalt play;
+  it does not invent another mixed-class progression convention.
+- Four new defense regressions cover all levels 1–20 and both side placements,
+  ordinary multiclass, negative Wisdom, flat-footedness, helplessness, gear/load,
+  manual mode and unchanged native persistence with injuries and expenditure.
+- All **794 tests passed**, TypeScript passed, and both Pages and Worker production
+  builds passed. The initial theme-check failure was an execution-sandbox
+  subprocess restriction; it passed with subprocess execution available.
+  Rendered React assertions checked the changed controls and retained notes.
+  Interactive browser checks remain unavailable and are not claimed complete.
+  No private exports or player saves were used. The broader goal remains open.
+
+
+## 2026-11-02: Explicit custom casting and manifesting tables
+
+The optional custom profile contract now exposes source-reviewed own-class spell
+and power tables, including delayed access, split spell abilities, known limits,
+and the existing supported level formulas. Metadata and per-level resource rows
+validate together; unknown or incomplete mechanics are rejected. The same editor
+serves new-character drafts and existing characters.
+
+This extends the existing class lookup, resource initialization, progression,
+prerequisites, UI and persistence paths. Custom IDs are resolved exactly; names
+cannot adopt unknown pools or grant catalog-specific class powers. Standard and
+paired advancement preserve independent traditions, and catalog prestige target
+selection honors custom arcane/divine/psionic identity with the existing gestalt
+per-level cap. No custom prestige progression is inferred from milestone prose.
+
+Reviewed table changes expose old/new rules, levels, capacities and allowances.
+Preparations, spell/power choices, notes, focus, personal settings and expenditure
+are protected. Linked manual pools stay manual. Removing a table retains its
+pool. Adding a new tradition preserves earlier automatic prestige choices before
+candidate ambiguity changes. Missing source rows preserve capacities and block
+further automatic use/advancement instead of copying a final row as an estimate.
+
+Published rules checked independently during this continuation:
+
+- [UA gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm):
+  separate daily spells for each spellcasting class and the existing prestige
+  restrictions. No new interpretation of mixed BAB/save progression was added.
+- [Ability modifiers/bonus spells](https://www.d20srd.org/srd/theBasics.htm#abilityScores):
+  bonus spells depend on the relevant score and accessible spell levels.
+- [Psionic classes](https://www.d20srd.org/srd/psionic/classes/index.htm):
+  multiclass power points share a reserve, with tradition-specific manifester
+  levels; bonus points use one-half the key ability modifier times ML, rounded down.
+- [Psion](https://www.d20srd.org/srd/psionic/classes/psion.htm): separate base
+  point/known/maximum-level tables and minimum key ability for a power's level.
+
+The custom formulas are explicit configuration, not claims that all published
+classes follow them. Custom prestige advancement of another tradition, exceptional
+slot restrictions/formulas, automatic custom whole-list learning and conditional
+features remain manual. Existing source-specific catalog implementations remain.
+See [the contract](custom-class-profiles.md) for supported metadata and safeguards.
+No private saves were used. The overall goal still retains the current handoff's
+browser and source-specific gates.
+
+
+Validation: full regression suite **809 passed** (15 new custom-resource tests),
+followed by **108 passing related mechanics tests** for the final missing-table
+guards and standard prestige-history preservation. TypeScript and both Pages and
+Worker production builds passed. React rendering checked the resource editor,
+unavailable spell columns, source guidance, linked spellbook and power limits.
+Browser interaction remains unverified; existing bundle/script/plugin-timing and
+route-classification notices remain. The final schema bound was also checked by
+the custom-resource suite; invalid ML formulas fail rather than being capped.
+
+
+## 2026-11-02: Explicit custom prestige schedules and reviewed targets
+
+Added optional source-checked existing-tradition metadata and per-class-level
+grants to custom profiles. The existing engine now keeps arcane/general spell,
+divine and manifesting schedules independent. Missing grants, overlapping target
+categories, non-prestige profiles and unmarked combined progressions are refused.
+No advancement is inferred from names or milestone prose.
+
+The paired workflow already records per-level targets and now consumes these
+schedules. Standard custom prestige levels use the same choice resolver with
+optional class-level target records; old class-wide targets keep their existing
+meaning. Later choices cannot redirect previous levels. Ordinary gain operations
+are now atomic. Prerequisites still use complete custom-source confirmation;
+combination approval is named, reasoned and scoped to each gestalt level. Neither
+approval bypasses same-family or two-prestige restrictions.
+
+Source evidence independently checked:
+
+- [Loremaster spells](https://www.d20srd.org/srd/prestigeClasses/loremaster.htm):
+  advances a prior spellcasting class's daily spells, known spells where applicable,
+  and caster level, without granting its other class benefits.
+- [Mystic Theurge](https://www.d20srd.org/srd/prestigeClasses/mysticTheurge.htm):
+  chooses prior arcane and divine classes separately for each prestige level.
+- [Cerebremancer](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm):
+  separate prior arcane/manifesting targets, progressing spells/points, known
+  powers and caster/manifester levels, excluding other class benefits.
+- [UA gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm):
+  prior shared-progression policy and prestige restrictions remain unchanged.
+
+The supported contract selects other classes held before entry, using saved
+history, and does not invent an additional generic minimum caster level for the
+selected class. Source-specific conditional requirements still need explicit
+support or manual handling. Per-row grants are zero or one; caster-level-only,
+multiple grants to overlapping candidate sets and other exceptions are not
+approximated. Existing catalog Hierophant handling remains distinct.
+
+The reviewed table editor captures explicit targets for earned grants, displays
+old/new totals, and rejects stale target/profile/source edits. Removed grants keep
+their records; missing pools are not reassigned. Standard and paired target
+histories are visible in Calculations and persist through native and browser
+storage. Preparations, powers, notes, focus, injuries, ranks and expenditure are
+preserved. No player files were used and no implicit migration was added.
+
+
+Validation: all **819 tests passed**, including ten new custom-prestige scenarios
+covering separate schedules, standard per-level targets, same-pair caps, source
+prerequisites/GM approval, pre-entry eligibility, domain preparation, reviewed
+historical changes, stale/tampered previews, retained removed targets, and native
+plus fresh-browser-store persistence. TypeScript and final Pages/Worker builds
+passed. React rendering verified explicit grant controls, missed levels, and
+standard/paired history labels. Full-suite failures exposed two existing-caller
+reference regressions in the atomic standard gain recipe; preserving existing
+record objects resolved them before the final full passing run. Interactive
+browser testing remains unavailable and is not represented by rendering checks.
+Existing bundle/script/plugin-timing/route-classification notices remain.
+
+
+## 2026-11-02: Shared meldshaping limits and explicit essentia rulings
+
+The shared-feature audit checked the existing Evasion restrictions against the
+class texts and the general encumbrance rule; those restrictions remain intact.
+It then reproduced a missing cross-class Constitution check and unconditional
+addition of both gestalt essentia tables in the existing class-system warnings.
+
+Source evidence: *Magic of Incarnum*, p. 20, “Multiclass Meldshapers” and
+“Abilities and Meldshapers” ([text reproduction](https://dokumen.pub/magic-of-incarnum-a-new-source-of-power-for-your-d-d-game.html)).
+Meld lists, binds and class-specific capacity increases remain independent.
+Constitution limits the combined number of shaped melds; the book's Incarnate 6 /
+Totemist 6 example requires Constitution 18 for eight melds and has ten essentia.
+The [Incarnate](https://srd.dndtools.org/srd/classes/baseMoi/incarnate.html),
+[Totemist](https://srd.dndtools.org/srd/classes/baseMoi/totemist.html) and
+[Soulborn](https://srd.dndtools.org/srd/classes/baseMoi/soulborn.html) tables supply
+the existing individual resource amounts.
+
+The read-only resolver now checks the combined Constitution ceiling. Ordinary
+multiclass and nonoverlapping gestalt essentia contributions add normally. For
+classes progressing at the same actual levels, a printed progression that is at
+least as large at every earned level supplies the shared pool once. This is a
+conservative application of [UA's faster shared-feature rule](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+to essentia, not a claim that UA explicitly describes incarnum. Left/right swaps
+and the BAB/save bonus method do not affect it. Class capacity increases and
+separate meld/bind limits retain their existing meaning.
+
+Mixed or staggered overlapping histories have no inferred combined pool. An
+optional total records the GM, sources/reason and reviewed progression; it is
+also available for source-specific additional essentia. Advancement retains an
+old ruling but marks it stale until reviewed again. No choices, allocations,
+binds, notes or spent resources are removed or reset. Warnings never treat an
+unresolved total as zero. Fresh/legacy characters acquire no implicit ruling.
+Levels missing from the supported tables likewise require source review; the
+resolver does not copy the last row or extrapolate new grants.
+
+The existing Magic panel shows the shared total and Constitution limit, explains
+class-table reference amounts, and offers the reviewed total controls. A saved
+ruling remains visible even after its class is removed. The persisted class-system
+schema moved into a module independent of calculations, preserving its public
+re-export; rendering exposed an initialization cycle when that entry module was
+loaded before Character, and a cold-module regression now covers the fix.
+
+Additional sources for the unchanged defensive audit:
+[Rogue Evasion](https://www.d20srd.org/srd/classes/rogue.htm#evasion),
+[Monk Evasion](https://www.d20srd.org/srd/classes/monk.htm#evasion),
+[Ninja Evasion](https://srd.dndtools.org/srd/classes/baseCad/ninja.html), and
+[carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm). Medium/heavy
+loads count as the corresponding armor for armor-restricted abilities; the
+ninja's stricter restriction is source-specific. No speculative defense change
+was made during this audit.
+
+Validation: the full suite passed **830 tests**. The final missing-table guard
+then passed all **31 related tests**, including all twelve new meldshaping
+regressions. TypeScript and both Pages/Worker production builds passed. React
+rendering verified combined limits, independent table references, unresolved and
+saved rulings, removed-class history and missing-table guidance. Native and fresh
+storage-client tests retained injuries, other expenditure, over-limit choices,
+binds, notes and allocations. Existing build notices remain. Interactive browser
+QA and the remaining source-specific cases are still open; no player saves or
+private exports were used.
+
+
+## 2026-11-03: Granted feat preservation and separate advancement choices
+
+Four new regressions first reproduced lost descriptions/counters on alternate
+granted feats, a duplicate catalog grant after renaming its card, a style change
+reusing the old feat's ID for a different feat, and an alternate-granted feat
+being accepted as a separate general advancement selection.
+
+Both existing grant synchronizers now use one shared operation and the existing
+retained-resource store. Optional saved feat identity separates the granted rule
+and weapon/skill choice from personal display text. Known grants retain their
+IDs, names, source annotations, descriptions, formulas and counters. A changed
+style, weapon or bonus selection retains the old full card and can restore it
+later. Historical choices and legacy duplicate cards remain distinct records;
+duplicate copies of one grant contribute that feat only once. Ordinary personal
+feats are never adopted or overwritten. No empty archive or identity field is
+added by schema defaults.
+
+Existing fixed grants from overlapping classes keep the current source where
+possible. Explicitly repeatable choices remain independent: an existing personal
+Toughness does not suppress later selected bonus copies. Choice-specific feats
+continue to require their own eligible weapon/skill choices. Armor and alternate
+feature activation checks retain their existing behavior.
+
+Source evidence independently checked:
+
+- [Fighter bonus feats](https://www.d20srd.org/srd/classes/fighter.htm#bonusFeats)
+  distinguish class bonus choices from normal advancement choices.
+- [UA monk fighting styles](https://www.d20srd.org/srd/variant/classes/variantCharacterClasses.htm#monkVariantFightingStyles)
+  specify feats at class milestones. The Cobra Strike and Undying Way lists
+  supply the style replacement/restoration regression cases.
+- [Toughness](https://www.d20srd.org/srd/feats.htm#toughness) and
+  [Extra Turning](https://www.d20srd.org/srd/feats.htm#extraTurning) explicitly
+  permit repeated selections with stacking effects. Existing source lists and
+  prerequisite validation still govern which alternate bonus feats can be chosen.
+
+The existing advancement tracker and its selector now exclude both types of
+managed class grant. Invalid historical assignments remain saved and show a
+review message; no score, feat or old assignment is silently removed. The Feats
+panel shows current granted identity, preserved editable alternate-feat notes,
+retained counters and inactive historical choices. Rule choices remain managed
+through Classes rather than being changed by a personal card label.
+
+Ten new tests cover standard and paired sheets, variable choices, repeatable and
+overlapping grants, legacy duplicates, class-level changes, guided paired gain,
+native files and a fresh storage client. Injuries, training, spell expenditure
+and invalid old assignment records survive; explicit rest resets only the usual
+daily counters. All **841 tests passed**, along with TypeScript and both Pages
+and Worker production builds. React rendering verified the displayed rule
+identity, preserved notes/counters, inactive records and old-assignment review.
+Existing build notices remain. No private player saves or exports were used. Browser
+acceptance and the remaining source-specific gates are still open.
+
+## 2026-11-03: Ranger combat-style armor and load restrictions
+
+Reproduced ordinary archery and two-weapon styles retaining attack benefits with
+a medium load, alternate styles ignoring all loads, and alternate styles ignoring
+imported armor stat blocks. A shared read-only restriction now governs ordinary
+style attacks and alternate granted feats. It reads the existing equipment and
+carrying systems, including effective Strength, size, coins and the character's
+independent encumbrance option. Disabling encumbrance does not waive worn armor
+restrictions. Imported armor and mithral use their existing saved metadata.
+
+Source evidence independently checked:
+
+- [Ranger Combat Style, Improved Combat Style and Combat Style Mastery](https://www.d20srd.org/srd/classes/ranger.htm#combatStyle)
+  require light or no armor at each milestone. The alternate
+  [Combat Styles](https://srd.dndtools.org/srd/classes/baseCore/ranger.html#combat-styles)
+  lists explicitly use those same three class features and their levels.
+- [Carrying capacity](https://www.d20srd.org/srd/carryingCapacity.htm)
+  treats medium and heavy loads as the corresponding armor for restricted
+  abilities. Overloaded/immobile characters likewise exceed a light load.
+- [Mithral](https://www.d20srd.org/srd/specialMaterials.htm#mithral)
+  reduces medium armor to light and heavy to medium for these limitations;
+  light remains light. Shields alone do not violate the ranger's armor rule.
+
+The helper reads worn gear without invoking proficiency checks: those checks
+can themselves depend on a granted feat. It checks every carried, equipped,
+nonzero armor item, preserving the alternate-style rule for multiple worn items.
+Ordinary style penalties, Rapid Shot and advanced offhand attacks reuse the same
+availability check. Independently selected feats retain their own benefits.
+This does not add a new feat, change class progression, remove saved choices or
+retire temporarily unavailable cards. The existing UI now explains inactivity
+beside ordinary style controls, alternate style controls and granted feat cards.
+
+Eight automated cases cover both advancement modes at ranger levels 2, 6 and 11;
+light/medium/heavy/overloaded boundaries; optional encumbrance; effective Strength,
+size and coin weight; imported armor and mithral; worn state and shields;
+independent feats and replaced sources; and native/browser persistence plus
+paired advancement. Seven cases reproduced failures before the fix. Loading and
+advancing preserve card identity, notes, counters, history, injuries and spell
+expenditure; removing the restriction restores the benefit without a refund.
+
+Validation: **849 tests passed**, TypeScript passed, and Pages and Worker builds
+passed with the existing bundle/script/plugin-timing/route-classification notices.
+React rendering checked both restriction messages, the optional encumbrance
+setting and retained personal notes. It does not substitute for interactive
+browser acceptance. No private player saves were read or modified. The remaining
+source-specific feature audit, mixed Uncanny Dodge histories, reviewed conversion,
+racial-HD occupancy policy and browser acceptance gates remain open.
+
+## 2026-11-04: Imported armor and independent armored casting
+
+The Magic interface called `specialSpellFailure` for supported spellbooks and
+invocations. That function selected worn equipment through the shared resolver,
+then looked it up again using only a catalog ID. Imported stat blocks without
+an ID threw; stat blocks overriding a catalog item could use the wrong failure
+chance. It now consumes the same resolved equipment as AC and proficiency.
+Saved armor/shield values, carried/equipped/quantity flags, material reductions
+and independent class exemptions remain in the existing calculation path.
+
+Rules evidence independently checked:
+
+- [Armor and arcane spell failure](https://www.d20srd.org/srd/equipment/armor.htm#arcaneSpellFailure)
+  adds armor and shield chances and applies to spells with somatic components.
+  The same page's [tower shield](https://www.d20srd.org/srd/equipment/armor.htm#shieldTower)
+  rules retain the separate attack penalty.
+- [Bard weapon and armor rules](https://www.d20srd.org/srd/classes/bard.htm#weaponAndArmorProficiency)
+  waive light-armor failure for bard spells only, retaining shield failure and
+  normal failure for spells from another class.
+- [Duskblade Armored Mage](https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html)
+  advances its medium-armor allowance at class level 4 and heavy-shield allowance
+  at 7. [Warmage Armored Mage](https://srd.dndtools.org/srd/classes/baseCarc/warmage.html)
+  advances medium armor at 8 and does not extend to heavy shields. Both limit
+  their exemption to spells of their own class.
+- [Warlock](https://srd.dndtools.org/srd/classes/baseCarc/warlock.html) invocations
+  waive light armor but retain shield failure; the
+  [Dragonfire Adept](https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html)
+  text explicitly subjects draconic invocations to armor/shield failure. Neither
+  source grants its exception to a parallel wizard tradition.
+- [Mithral](https://www.d20srd.org/srd/specialMaterials.htm#mithral) supplies the
+  existing effective-category and ten-percentage-point reduction rules.
+
+An optional `armorStats.shieldType` uses the existing imported-item record. Gear
+can explicitly select buckler/light/heavy/tower; absence keeps old saves intact.
+The shared equipment resolver prefers this explicit type, then a known catalog
+identity or an exact normalized catalog-name match. It does not infer an
+armored-casting exemption from fragments in personal names. An unidentified
+shield retains its recorded failure chance and shows a source-review message
+where a class shield exemption might apply. Explicit types also govern the
+existing tower/buckler and light-shield training checks, so renaming a reviewed
+tower shield cannot erase its attack penalty. Existing catalog class policies,
+including their buckler handling, are retained; this is not a complete audit of
+all armored-casting feats or exceptional class/race combinations.
+
+Thirteen new tests cover custom stats with/without catalog IDs, separate
+standard/gestalt traditions, Duskblade/Warmage milestones, material reductions,
+independent invocation/divine rules, unknown/explicit/legacy shield identity,
+strict saved values, a synthetic Roll20 import, native/browser round trips and
+paired advancement. The first nine imported-equipment cases reproduced the
+exception before the fix. Tests retain source exports, gear notes, preparations,
+spent slots, injuries, prior training and personal text. No actual player files
+were used. The new optional field has no default and performs no migration.
+
+All **862 tests passed**, along with TypeScript and both Pages and Worker
+production builds. React rendering covered both spellbook traditions, an
+imported-armor invocation panel, unknown-shield review and the Gear selector.
+The builds retain existing bundle/script/plugin-timing/route-classification
+notices. Interactive browser acceptance and the documented remaining goal gates
+remain open.

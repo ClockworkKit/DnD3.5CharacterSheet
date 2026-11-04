@@ -1,17 +1,16 @@
+import {classArmorBonus} from './class-armor-bonus.ts';
+import {syncFeatGrants} from './feat-grants.ts';
+import type {SystemChoice} from './class-systems-schema.ts';
+export {classSystemsSchema,type SystemChoice} from './class-systems-schema.ts';
+import {meldshapingWarnings} from './meldshaping.ts';
+import {refreshResourceText,retireResources,restoreResource} from './managed-resources.ts';
 import {featureReplaced,classFeatureLevel} from './alternate-features.ts';
 import {characterHitDice} from './character-level.ts';
-import {z} from 'zod';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
 import {effectiveScore} from './ancestry.ts';
-import {equippedArmor,carrying,equipmentById} from './equipment.ts';
+import {equippedArmor,carrying,gearEquipment,shieldType} from './equipment.ts';
 
-export const classSystemsSchema=z.object({
- choices:z.array(z.object({id:z.string().min(1).max(100),classId:z.string().max(100),name:z.string().min(1).max(160),invocationGrade:z.enum(['least','lesser','greater','dark']).optional(),kind:z.enum(['invocation','maneuver','stance','vestige','soulmeld','mystery','fundamental','utterance','aura']),level:z.number().int().min(0).max(9),readied:z.boolean().default(false),granted:z.boolean().default(false),spent:z.number().int().min(0).max(10000).default(0),essentia:z.number().int().min(0).max(20).default(0),bound:z.boolean().default(false),totem:z.boolean().default(false),notes:z.string().max(4000).default('')})).max(200).default([]),
- pools:z.record(z.number().int().min(0).max(10000)).default({}),
- delayedDamage:z.number().int().min(0).max(1000).default(0),
-}).default({});
-export type SystemChoice=z.infer<typeof classSystemsSchema>['choices'][number];
 const lv=(c:Character,id:string)=>c.classLevels.filter(e=>e.classId===id).reduce((n,e)=>n+e.level,0);
 const mod=(c:Character,a:'INT'|'WIS'|'CHA'|'CON')=>Math.floor((effectiveScore(c,a)-10)/2);
 const row=(c:Character,id:string)=>findClass(id)?.levels.find(r=>r.level===Math.min(20,lv(c,id)));
@@ -36,16 +35,35 @@ export function essentiaCapacity(c:Character,s:SystemChoice){const n=systemLimit
 export function systemKinds(c:Character,id:string):SystemChoice['kind'][] {const n=systemLimits(c,id);return !n?[]:n.kind==='maneuver'?['maneuver','stance']:n.kind==='mystery'?['mystery','fundamental']:[n.kind];}
 export function systemWarnings(c:Character){const warnings:string[]=[];const choices=c.classSystems.choices;
  for(const id of new Set(choices.map(s=>s.classId))){const n=systemLimits(c,id);if(!n){warnings.push(id+': no matching supported class levels.');continue}const group=choices.filter(s=>s.classId===id);if(group.some(s=>!systemKinds(c,id).includes(s.kind)))warnings.push(id+': a choice belongs to a different ability system.');if(n.granted!==undefined&&group.filter(s=>s.granted&&!s.readied).length)warnings.push(id+': only readied maneuvers can be granted.');const primary=group.filter(s=>s.kind===n.kind);if(primary.length>n.known)warnings.push(id+': too many '+n.kind+' choices.');if(group.some(s=>!invocationGradeAvailable(c,s)||s.level>n.maxLevel&&s.kind!=='fundamental'))warnings.push(id+': a choice exceeds the current level limit.');if(n.readied!==undefined&&primary.filter(s=>s.readied).length>n.readied)warnings.push(id+': too many readied maneuvers.');if(n.stances!==undefined&&group.filter(s=>s.kind==='stance').length>n.stances)warnings.push(id+': too many stances.');if(n.binds!==undefined&&group.filter(s=>s.bound).length>n.binds)warnings.push(id+': too many chakra binds.');for(const s of group)if(s.kind==='soulmeld'&&s.essentia>essentiaCapacity(c,s))warnings.push(s.name+': essentia exceeds capacity.');if(id==='shadowcaster'&&group.filter(s=>s.kind==='fundamental').length>3+Math.floor(n.level/4))warnings.push('Shadowcaster: extra fundamentals must replace mystery choices.');}
- const pool=['incarnate','soulborn','totemist'].reduce((n,id)=>n+(systemLimits(c,id)?.essentia||0),0);if(choices.reduce((n,s)=>n+s.essentia,0)>pool)warnings.push('Soulmeld investments exceed the combined class essentia pool.');return warnings;
+ warnings.push(...meldshapingWarnings(c));return warnings;
 }
 export function spendSystemChoice(c:Character,id:string){const s=c.classSystems.choices.find(s=>s.id===id);if(!s||!lv(c,s.classId))throw new Error('This class choice is not available.');const limit=systemLimits(c,s.classId);if(!limit||!invocationGradeAvailable(c,s)||!systemKinds(c,s.classId).includes(s.kind)||s.level>limit.maxLevel)throw new Error('This choice exceeds the current level limit.');if(s.kind==='maneuver'&&(!s.readied||s.spent||s.classId==='crusader'&&!s.granted))throw new Error('Ready and recover this maneuver before using it.');if(s.spent>=choiceDailyUses(c,s))throw new Error('No daily uses remain.');if(s.kind==='mystery'&&effectiveScore(c,'INT')<10+s.level)throw new Error('Intelligence is too low for this mystery.');if(s.kind==='maneuver'||s.kind==='utterance'||choiceDailyUses(c,s)!==Infinity)s.spent++;if(s.classId==='crusader')s.granted=false;}
 export function recoverManeuvers(c:Character,id:string){for(const s of c.classSystems.choices)if(s.classId===id&&s.kind==='maneuver'){s.spent=0;s.granted=false};}
 export function settleDelayedDamage(c:Character){const damage=c.classSystems.delayedDamage;c.classSystems.delayedDamage=0;const absorbed=Math.min(c.tempHp,damage);c.tempHp-=absorbed;c.hp-=damage-absorbed;}
 export function delayedCapacity(c:Character){const l=lv(c,'crusader');return l?l>=20?30:l>=16?25:l>=12?20:l>=8?15:l>=4?10:5:0;}
-export function specialSpellFailure(c:Character,id:string){
- if(findClass(id)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard'].includes(id))return 0;
+function armoredCasting(c:Character,id:string){
+ const divine=findClass(id,c)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard'].includes(id);
  const level=lv(c,id);let allowed=0,shield='none';if(['bard','beguiler','dread-necromancer','hexblade','spellthief','warlock'].includes(id))allowed=1;if(id==='warmage'){allowed=level>=8?2:1;shield='light'}if(id==='duskblade'){allowed=level>=4?2:1;shield=level>=7?'standard':'light'}
- let total=0;const a=equippedArmor(c);for(const g of a.selected){const e=equipmentById(g.catalogId)!;const rank=Math.max(1,['light','medium','heavy'].indexOf(e.category)+1-(g.material==='mithral'?1:0));const ignored=e.kind==='armor'?rank<=allowed:e.kind==='shield'&&(shield==='standard'&&!e.name.includes('tower')||shield==='light'&&(/light/i.test(e.name)||e.name==='Buckler'));if(!ignored)total+=Math.max(0,(e.spellFailure||0)-(g.material==='mithral'?10:0));}return Math.min(100,total+(c.ancestry.raceId==='warforged'&&allowed===0?5:0));
+ return {divine,allowed,shield};
+}
+export function specialSpellFailureWarnings(c:Character,id:string){
+ const {divine,shield}=armoredCasting(c,id);
+ if(divine||shield==='none')return [];
+ return equippedArmor(c).selected.flatMap(g=>{const e=gearEquipment(g)!;return e.kind==='shield'&&!shieldType(e)?[g.name+': shield type is unidentified. Set its type in Gear after checking your source; no armored-casting shield exemption is included.']:[];});
+}
+export function specialSpellFailure(c:Character,id:string){
+ const {divine,allowed,shield}=armoredCasting(c,id);if(divine)return 0;
+ let total=0;
+ // Use the same resolved equipment as AC and proficiency: imported stat blocks
+ // can have no catalog ID, or intentionally override the referenced item.
+ for(const g of equippedArmor(c).selected){
+  const e=gearEquipment(g)!;
+  const rank=Math.max(1,['light','medium','heavy'].indexOf(e.category)+1-(g.material==='mithral'?1:0));
+  const kind=shieldType(e);
+  const ignored=e.kind==='armor'?rank<=allowed:!!kind&&(shield==='standard'&&kind!=='tower'||shield==='light'&&(kind==='light'||kind==='buckler'));
+  if(!ignored)total+=Math.max(0,(e.spellFailure||0)-(g.material==='mithral'?10:0));
+ }
+ return Math.min(100,total+(c.ancestry.raceId==='warforged'&&allowed===0?5:0));
 }
 export function supplementalTerms(c:Character,target:string,context:Record<string,string|number|boolean>={}){
  if(!c.automation.enabled||!['initiative','save.fort','save.ref','save.will','saves','ac.misc','ac.naturalEnhancement','ac.dodge','speed','damage','attack','critical.confirm','skill.Climb','skill.Jump','skill.Tumble'].includes(target))return [];
@@ -58,7 +76,8 @@ export function supplementalTerms(c:Character,target:string,context:Record<strin
  if(target==='save.ref'){if(wb&&!x.flatFooted&&!x.caughtFlatFooted)add(Math.min(wb,Math.max(0,mod(c,'INT'))),'insight','battle-clarity');if(sw>=2&&light&&!featureReplaced(c,'swashbuckler','grace'))add(sw>=20?3:sw>=11?2:1,'competence','grace');}
  if(target==='save.will'){if(cr>=2&&classFeatureLevel(c,'paladin','divine-grace')<2)add(Math.max(0,mod(c,'CHA')),'untyped','indomitable-soul');if(ninja&&free&&(c.features.find(f=>f.ruleId==='supp:ninja:Ki power')?.used||0)<Math.max(1,Math.floor(ninja/2))+Math.max(0,mod(c,'WIS')))add(2,'untyped','ki-power');}
  if(target==='saves'&&lv(c,'hexblade')>=2&&['spell','spell-like'].includes(x.saveAgainst))add(Math.max(0,mod(c,'CHA')),'untyped','arcane-resistance');
- if(target==='ac.misc'&&!x.helpless){if(ninja&&free)add((lv(c,'monk')?0:Math.max(0,mod(c,'WIS')))+Math.floor(ninja/5),'untyped','ninja-ac');if(ss>=2&&armor.category===1&&!armor.hasShield&&lightLoad)add(Math.max(0,mod(c,'WIS')),'untyped','swordsage-ac');}
+ if(target==='ac.misc')add(classArmorBonus(c).bonus,'untyped','monk-ninja-ac');
+ if(target==='ac.misc'&&!x.helpless){if(ss>=2&&armor.category===1&&!armor.hasShield&&lightLoad)add(Math.max(0,mod(c,'WIS')),'untyped','swordsage-ac');}
  if(target==='ac.dodge'&&sw>=5&&light&&!featureReplaced(c,'swashbuckler','dodge-bonus')&&x.dodgeTarget)add(Math.floor(sw/5),'dodge','swashbuckler-dodge');
  if(target==='ac.misc'&&sc>=3&&light&&x.skirmish&&!featureReplaced(c,'scout','skirmish'))add(1+Math.floor((sc-3)/4),'competence','skirmish');
  if(target==='speed'&&sc>=3&&light&&!featureReplaced(c,'scout','fast-movement'))add(sc>=11?20:10,'enhancement','scout-speed');
@@ -89,9 +108,18 @@ export function supplementalResources(c:Character){const out:ClassResource[]=[];
  for(const [at,name] of [[3,'Cleanse paralysis'],[4,'Cleanse disease'],[5,'Cleanse fear'],[6,'Cleanse poison'],[8,'Call companion'],[9,'Cleanse blindness'],[10,'Cleanse spirit'],[13,'Cleanse petrification'],[15,'New limb']] as const)add('healer',at,name,1,'Resolve the corresponding healing ability from the class reference.');
  return out.filter(r=>!featureReplaced(c,r.classId,r.name.toLowerCase().replaceAll(' ','-')));
 }
-export function syncSupplementalResources(c:Character){const resources=supplementalResources(c),keep=new Set(resources.map(r=>'supp:'+r.classId+':'+r.name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('supp:')||keep.has(f.ruleId));for(const r of resources){const ruleId='supp:'+r.classId+':'+r.name;let f=c.features.find(f=>f.ruleId===ruleId);if(!f){if(c.features.length>=250)continue;f={id:crypto.randomUUID(),name:findClass(r.classId)!.name+' · '+r.name,kind:'Class feature',description:r.description,max:r.max,used:c.alternateFeatures.uses['retained:'+ruleId]||0,source:findClass(r.classId)!.source,ruleId};c.features.push(f)}f.max=r.max;f.description=r.description;f.source=findClass(r.classId)!.source;}}
+export function syncSupplementalResources(c:Character){
+ const resources=supplementalResources(c),keep=new Set(resources.map(r=>'supp:'+r.classId+':'+r.name));
+ retireResources(c,f=>!!f.ruleId?.startsWith('supp:')&&!keep.has(f.ruleId));
+ for(const r of resources){
+  const ruleId='supp:'+r.classId+':'+r.name,definition=findClass(r.classId)!,name=definition.name+' · '+r.name,source=definition.source;
+  let f=c.features.find(f=>f.ruleId===ruleId)||restoreResource(c,ruleId);
+  if(!f){if(c.features.length>=250)continue;f={id:crypto.randomUUID(),name,kind:'Class feature',description:r.description,max:r.max,used:c.alternateFeatures.uses['retained:'+ruleId]??0,source,ruleId};c.features.push(f);}
+  f.max=r.max;refreshResourceText(f,{name,description:r.description,source});
+ }
+}
 export function syncGrantedFeats(c:Character){
  const grants:Array<[string,number,string,string?]>=[['erudite',1,'Psicrystal Affinity'],['frenzied-berserker',1,'Diehard'],['master-specialist',1,'Skill Focus','Spellcraft'],['dervish',3,'Spring Attack'],['swashbuckler',1,'Weapon Finesse'],['samurai',8,'Improved Initiative'],['duskblade',2,'Combat Casting'],['archivist',1,'Scribe Scroll'],['beguiler',5,'Silent Spell'],['beguiler',10,'Still Spell'],['healer',2,'Skill Focus','Heal'],['marshal',1,'Skill Focus','Diplomacy'],['artificer',1,'Scribe Scroll'],['artificer',2,'Brew Potion'],['artificer',3,'Craft Wondrous Item'],['artificer',5,'Craft Magic Arms and Armor'],['artificer',6,'Craft Wand'],['artificer',9,'Craft Rod'],['artificer',12,'Craft Staff'],['artificer',14,'Forge Ring']];
- const earned=grants.filter(([id,at])=>lv(c,id)>=at),keys=new Set(earned.map(([id,at,name])=>'granted:'+id+':'+at+':'+name));c.features=c.features.filter(f=>!f.ruleId?.startsWith('granted:')||keys.has(f.ruleId));
- for(const [id,at,name,choice] of earned){if(c.features.some(f=>f.kind==='Feat'&&f.name===name&&(!choice||f.choice===choice)))continue;if(c.features.length>=250)continue;c.features.push({id:crypto.randomUUID(),name,kind:'Feat',description:'Granted by '+findClass(id)!.name+' at class level '+at+'.',max:0,used:0,source:findClass(id)!.source,ruleId:'granted:'+id+':'+at+':'+name,...(choice?{choice}:{})});}
+ const earned=grants.filter(([id,at])=>lv(c,id)>=at);
+ syncFeatGrants(c,earned.map(([id,at,name,choice])=>({ruleId:'granted:'+id+':'+at+':'+name,name,choice,description:'Granted by '+findClass(id)!.name+' at class level '+at+'.',source:findClass(id)!.source})),'granted:');
 }

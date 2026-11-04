@@ -6,7 +6,7 @@ export function magicSections(c:Character){return {
  spells:c.casters.length>0,
  powers:c.psionics.length>0,
  factotum:c.classLevels.some(e=>e.classId==='factotum'&&e.level>0),
- systems:c.classLevels.some(e=>magicalSystemIds.includes(e.classId)&&(systemLimits(c,e.classId)||e.classId==='artificer'||e.classId==='healer'&&e.level>=20))||c.classSystems.choices.some(s=>magicalSystemIds.includes(s.classId)),
+ systems:!!c.classSystems.essentiaRuling||c.classLevels.some(e=>magicalSystemIds.includes(e.classId)&&(systemLimits(c,e.classId)||e.classId==='artificer'||e.classId==='healer'&&e.level>=20))||c.classSystems.choices.some(s=>magicalSystemIds.includes(s.classId)),
  abilities:c.features.some(isSpellLikeFeature),
 };}
 

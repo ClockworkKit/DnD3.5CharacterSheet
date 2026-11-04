@@ -1,6 +1,6 @@
 import type {Character,Psionic} from './model.ts';
 import {scaledSpellText,type Roll} from './rules.ts';
-import {manifestDefinition,psionicProgression} from './advancement.ts';
+import {manifestDefinition,psionicProgression,resourceTableAvailable} from './advancement.ts';
 import {effectBonus} from './effects.ts';
 import {racialPowerPoints,effectiveScore} from './ancestry.ts';
 export type PowerReference={id:string,name:string,school:string,levels:Record<string,number>,levelText:string,cost:number,display:string,manifesting:string,range:string,target:string,duration:string,save:string,resistance:string,description:string,source:string};
@@ -9,7 +9,8 @@ export function powerDC(c:Character,p:Psionic,k:Psionic['powers'][number]){retur
 export function manifestingProblem(c:Character,p:Psionic,k:Psionic['powers'][number]){
  if(c.automation.enabled){
   if(effectiveScore(c,p.ability)<10+k.level)return p.ability+' is too low to manifest this power level.';
-  const d=manifestDefinition(p),progression=psionicProgression(c,p).progression;
+  const d=manifestDefinition(p,c),progression=psionicProgression(c,p).progression;
+  if(p.manifesting?.automatic&&d&&!resourceTableAvailable(d,progression))return 'Supply this progression level in the custom manifesting table, or turn off Automatic progression to use source-checked manual values.';
   const highest=d?.id==='ardent'?Math.min(9,Math.floor((p.level+1)/2)):d?.levels.find(r=>r.level===Math.min(progression,d.levels.length))?.powerLevel;
   if(p.manifesting?.automatic&&d&&(highest===undefined||k.level>highest))return 'This tradition cannot manifest that power level yet.';
  }

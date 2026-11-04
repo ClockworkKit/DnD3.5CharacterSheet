@@ -1,7 +1,9 @@
 import type {Character,Feat} from './model.ts';
+import {syncFeatGrants} from './feat-grants.ts';
 import {alternateClassLevel,activeAlternateFeatures,alternateSettings,configureAlternateFeature,hasAlternateFeature} from './alternate-features.ts';
 import {monkStyles,rangerStyles} from './alternate-styles.ts';
-import {equipmentById,equipmentCatalog} from './equipment.ts';
+import {equipmentCatalog} from './equipment.ts';
+import {rangerStyleRestriction} from './ranger-style.ts';
 import {featEligibility,featChoices} from './prerequisites.ts';
 import catalog from './prerequisite-catalog.json' with {type:'json'};
 const clean=(name:string)=>name.replace(/\s*\[[^\]]*\]/g,'').trim();
@@ -12,7 +14,7 @@ export function monkStyleBonus(c:Character,name:string){return selectedMonkStyle
 export function alternateGrantActive(c:Character,ruleId?:string){
  if(ruleId?.startsWith('acf-grant:')&&!hasAlternateFeature(c,ruleId.split(':')[1]))return false;
  if(!ruleId?.startsWith('acf-grant:ranger-combat-styles:'))return true;
- return !c.gear.some(g=>g.carried&&g.equipped&&g.qty>0&&equipmentById(g.catalogId)?.kind==='armor'&&(['light','medium','heavy'].indexOf(equipmentById(g.catalogId)!.category)-(g.material==='mithral'?1:0))>0);
+ return !rangerStyleRestriction(c);
 }
 type Grant={featureId:string,slot:string,name:string,choice?:string};
 const splitFeat=(text:string)=>{const m=text.match(/^(.*?)\s*\((.*)\)$/);return m?{name:m[1],choice:m[2]}:{name:text};};
@@ -56,18 +58,10 @@ export function alternateGrantedFeats(c:Character):Grant[]{
  return out;
 }
 export function syncAlternateFeatGrants(c:Character){
- const old=new Map(c.features.filter(f=>f.ruleId?.startsWith('acf-grant:')).map(f=>[f.ruleId!,f]));
- const previous=c.features;
- c.features=c.features.filter(f=>!f.ruleId?.startsWith('acf-grant:'));
- const grants:Character['features']=[];
- for(const g of alternateGrantedFeats(c)){
-  const key='acf-grant:'+g.featureId+':'+g.slot;
-  if(c.features.some(f=>f.kind==='Feat'&&!f.ruleId?.startsWith('acf-grant:')&&identity(f.name)===identity(g.name)&&(f.choice||'')===(g.choice||'')))continue;
-  if(c.features.length+grants.length>=250)continue;
+ const grants=alternateGrantedFeats(c).map(g=>{
   const def=activeAlternateFeatures(c).find(d=>d.id===g.featureId)!;
-  grants.push({...old.get(key),id:old.get(key)?.id||crypto.randomUUID(),ruleId:key,name:g.name,kind:'Feat',choice:g.choice||'',description:'Granted by '+def.name+'. Manage the choice in Classes.',source:def.source,max:0,used:0});
- }
- const byKey=new Map(grants.map(f=>[f.ruleId,f]));
- c.features=previous.flatMap(f=>{if(!f.ruleId?.startsWith('acf-grant:'))return [f];const next=byKey.get(f.ruleId);byKey.delete(f.ruleId);return next?[next]:[];});
- c.features.push(...byKey.values());
+  const feat=alternateFeatLibrary.find(f=>identity(f.name)===identity(g.name));
+  return {ruleId:'acf-grant:'+g.featureId+':'+g.slot,name:g.name,choice:g.choice||'',description:'Granted by '+def.name+'. Manage the choice in Classes.',source:def.source,repeatable:!!feat?.repeatable&&!featChoices(c,feat).length};
+ });
+ syncFeatGrants(c,grants,'acf-grant:');
 }

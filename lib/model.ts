@@ -1,12 +1,13 @@
 import {alternateFeaturesSchema} from './alternate-feature-schema.ts';
-import {gestaltProgressionSchema} from './gestalt-schema.ts';
+import {isGrantedFeat,retainedResourceIdentity} from './feat-identity.ts';
+import {classCastingAdvancesSchema,gestaltProgressionSchema} from './gestalt-schema.ts';
 import {characterGestaltRows} from './gestalt-progression.ts';
 import {spellAttackSchema} from './spell-attack-schema.ts';
 import {creatureProfileSchema} from './creature-schema.ts';
 import {racialStateSchema,emptyRacialState} from './racial-state.ts';
 import {roll20ImportDataSchema} from './roll20-schema.ts';
 import { z } from 'zod';
-import {classSystemsSchema} from './class-systems.ts';
+import {classSystemsSchema} from './class-systems-schema.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
 import {findClass,makeCaster,makePsionic,applyStartingClass,applyClassTotals} from './classes.ts';
 import {customClassesSchema} from './custom-class-schema.ts';
@@ -20,7 +21,7 @@ const count = z.number().int().min(0).max(10000);
 const short = z.string().max(160);
 const note = z.string().max(20000);
 const ident = z.string().min(1).max(100);
-export const importedArmorSchema=z.object({kind:z.enum(['armor','shield']),category:z.enum(['light','medium','heavy','shields']),armor:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100)});
+export const importedArmorSchema=z.object({kind:z.enum(['armor','shield']),category:z.enum(['light','medium','heavy','shields']),armor:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100),shieldType:z.enum(['buckler','light','heavy','tower']).optional()});
 export const maxDamageReductionSources = 50;
 const damageReductionSourceSchema = z.object({
   id:ident,source:short,amount:count,bypass:short,active:z.boolean().default(true),
@@ -33,8 +34,9 @@ const knownSchema = z.object({attack:spellAttackSchema.optional(),roll20Original
 const casterSchema = z.object({id:ident,name:short,list:short,ability,level:z.number().int().min(0).max(100),mode:z.enum(['prepared','spontaneous']),dcExtra:num,penetration:num,slots:z.array(z.object({max:count,used:count})).length(10),spells:z.array(knownSchema).max(1000),notes:z.string().max(4000),casting:z.object({classId:short,domain:z.boolean().default(false),progression:z.number().min(0).max(100).nullable().default(null),levelAdjustment:num.default(0),slotAdjustments:z.array(num).length(10).default(Array(10).fill(0)),automatic:z.boolean().default(true)}).optional()});
 const skillSchema = z.object({roll20Bonus:z.object({sourceMisc:num,sourceTotal:num.optional(),automatic:num,adjustment:num,status:z.enum(['pending','review','included','separate','total','custom'])}).optional(),id:ident,name:short,ability,ranks:z.number().min(0).max(1000).multipleOf(.5),misc:num,trained:z.boolean(),armor:z.number().int().min(0).max(2),classSkill:z.boolean(),classSkillOverride:z.boolean().optional()});
 const weaponSchema = z.object({roll20AttackSource:z.object({total:z.number().finite(),explicitFocusAdjustment:num}).optional(),globalAttackOffset:num.optional(),globalDamageIncluded:z.boolean().optional(),roll20Enhancement:z.object({attack:count,damage:count}).optional(),roll20AttackAdjustment:num.optional(),roll20DamageAdjustment:num.optional(),useRecordedDice:z.boolean().optional(),attackSequence:z.array(z.number().finite().min(-100).max(100)).min(1).max(20).optional(),id:ident,name:short,ability,attack:num,damage:z.string().max(80),damageAbility:z.enum(['STR','DEX','none']),strength:z.enum(['one','two','off']),damageExtra:num,crit:short,range:short,ammo:count,notes:z.string().max(2000),catalogId:short.optional(),enhancement:count.optional(),masterwork:z.boolean().optional(),proficiency:z.enum(['auto','yes','no']).optional(),role:z.enum(['main','off']).optional(),attackMode:z.enum(['auto','melee','ranged']).optional(),diceSize:short.optional(),criticalRange:count.optional(),criticalMultiplier:count.optional(),extraDamage:z.string().max(200).optional(),bowStrength:count.optional(),keen:z.boolean().optional()});
-const classLevelSchema = z.object({id:ident,classId:short,name:short,level:z.number().int().min(1).max(30),notes:z.string().max(2000),castingTarget:short.optional(),divineTarget:short.optional(),psionicTarget:short.optional()});
+const classLevelSchema = z.object({id:ident,classId:short,name:short,level:z.number().int().min(1).max(30),notes:z.string().max(2000),castingTarget:short.optional(),divineTarget:short.optional(),psionicTarget:short.optional(),castingAdvances:classCastingAdvancesSchema.optional()});
 const psionicSchema = z.object({id:ident,name:short,ability,level:z.number().int().min(0).max(100),max:count,spent:count,focused:z.boolean(),dcExtra:num,notes:z.string().max(4000),powers:z.array(z.object({id:ident,name:short,powerId:short.default(''),level:z.number().int().min(1).max(9),cost:z.number().int().min(1).max(100),formula:z.string().max(80),notes:z.string().max(10000)})).max(200),manifesting:z.object({classId:short,progression:z.number().min(0).max(100).nullable().default(null),levelAdjustment:num.default(0),pointsAdjustment:num.default(0),automatic:z.boolean().default(true)}).optional()});
+const featureSchema = z.object({id:ident,name:short,kind:z.enum(['Feat','Class feature','Racial trait','Other']),description:note,generatedSummary:z.object({description:note,name:short,source:z.string().max(500)}).strict().optional(),grantedFeat:z.object({name:short,choice:short}).strict().optional(),max:count,used:count,source:z.string().max(500),magic:z.boolean().optional(),choice:short.optional(),ruleId:short.optional(),formula:z.string().max(200).optional()});
 const characterDataSchema = z.object({
   advancementMode:z.enum(['standard','gestalt']).default('standard'),
   gestaltProgression:gestaltProgressionSchema.optional(),
@@ -52,7 +54,8 @@ const characterDataSchema = z.object({
   gear:z.array(z.object({id:ident,name:short,qty:count,weight:z.number().min(0).max(100000),carried:z.boolean(),equipped:z.boolean(),notes:z.string().max(2000),catalogId:short.optional(),enhancement:count.optional(),masterwork:z.boolean().optional(),material:z.enum(['standard','mithral','adamantine']).optional(),proficient:z.boolean().optional(),weaponId:short.optional(),importedManual:z.boolean().optional(),armorStats:importedArmorSchema.optional()})).max(500),
   coins:z.object({cp:count,sp:count,gp:count,pp:count}),coinWeight:z.boolean(),
   sourceReferences:z.array(z.object({id:ident,title:short,book:short,url:z.string().max(500),text:z.string().max(50000)})).max(100).default([]),
-  features:z.array(z.object({id:ident,name:short,kind:z.enum(['Feat','Class feature','Racial trait','Other']),description:note,generatedSummary:z.object({description:note,name:short,source:z.string().max(500)}).strict().optional(),max:count,used:count,source:z.string().max(500),magic:z.boolean().optional(),choice:short.optional(),ruleId:short.optional(),formula:z.string().max(200).optional()})).max(250),
+  features:z.array(featureSchema).max(250),
+  retiredResources:z.array(featureSchema).max(250).refine(rows=>rows.every(f=>f.ruleId?.startsWith('daily:')||f.ruleId?.startsWith('supp:')||isGrantedFeat(f)),'Only managed class grants and resources can be retained.').refine(rows=>new Set(rows.map(f=>f.id)).size===rows.length&&new Set(rows.map(retainedResourceIdentity)).size===rows.length,'Retained resource identities must be unique.').optional(),
   conditions:z.string().max(2000),notes:note,background:note,
   automation:automationSchema.default({}),effects:z.array(effectSchema).max(100).default([]),
   classLevels:z.array(classLevelSchema).max(30).default([]),

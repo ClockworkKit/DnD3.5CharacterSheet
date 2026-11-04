@@ -1,4 +1,6 @@
 import {advanceAlternateRound} from './alternate-actions.ts';
+import {featName,featChoice,featChoiceKey,effectiveFeatIdentity,isGrantedFeat} from './feat-identity.ts';
+export {featName,featChoice,featChoiceKey} from './feat-identity.ts';
 import {alternateGrantActive} from './alternate-grants.ts';
 import {alternateTerms} from './alternate-benefits.ts';
 import {featureReplaced} from './alternate-features.ts';
@@ -9,11 +11,16 @@ import {expression} from './formulas.ts';
 type Effect=Character['effects'][number];
 export type Modifier=Effect['modifiers'][number];
 export const classLevel=(c:Character,id:string)=>c.classLevels.filter(x=>x.classId===id).reduce((n,x)=>n+x.level,0);
-export const featName=(name:string)=>name.toLowerCase().replace(/\s*\[[^\]]*\]/g,'').replace(/\s*\(.*/, '').replace(/[–—-]/g,' ').replace(/\s+/g,' ').trim();
-// Preserve nested skill choices and normalize common equipment name ordering.
-export const featChoice=(name:string)=>name.replace(/\s*\[[^\]]*\]/g,'').match(/\((.*)\)\s*$/)?.[1]?.trim()||'';
-export const featChoiceKey=(choice:string)=>choice.toLowerCase().trim().split(/,\s*/).reverse().join(' ').replace(/[–—-]/g,' ').replace(/\s*([()])\s*/g,'$1').replace(/\s+/g,' ').trim();
-export function featCount(c:Character,name:string,choice?:string){const wanted=choice||featChoice(name);return c.features.filter(f=>(f.kind==='Feat'||f.ruleId?.startsWith('granted:'))&&alternateGrantActive(c,f.ruleId)&&featName(f.name)===featName(name)&&(!wanted||featChoiceKey(f.choice?.trim()||featChoice(f.name))===featChoiceKey(wanted))).length;}
+// Multiple legacy cards for one grant never grant that feat more than once.
+export function featCount(c:Character,name:string,choice?:string){
+ const wanted=choice||featChoice(name),grants=new Set<string>();
+ return c.features.filter(f=>{
+  const identity=effectiveFeatIdentity(f);
+  if(!(f.kind==='Feat'||isGrantedFeat(f))||!alternateGrantActive(c,f.ruleId)||featName(identity.name)!==featName(name)||wanted&&featChoiceKey(identity.choice?.trim()||featChoice(identity.name))!==featChoiceKey(wanted))return false;
+  if(isGrantedFeat(f)){if(grants.has(f.ruleId!))return false;grants.add(f.ruleId!);}
+  return true;
+ }).length;
+}
 export const hasFeat=(c:Character,name:string,choice?:string)=>featCount(c,name,choice)>0;
 export function baseVariables(c:Character){const v:Record<string,number>={LEVEL:c.level,HD:c.level,BAB:c.bab,CL:Math.max(0,...c.casters.map(p=>p.level)),ML:Math.max(0,...c.psionics.map(p=>p.level)),BARBARIAN:0};for(const a of ['STR','DEX','CON','INT','WIS','CHA'] as const){v[a]=c.scores[a]+c.temps[a];v[a+'_MOD']=Math.floor((v[a]-10)/2)}for(const e of c.classLevels){const k=e.classId.toUpperCase().replaceAll('-','_');v[k]=(v[k]||0)+e.level}return v;}
 export function effectActive(c:Character,id:string){return c.automation.enabled&&c.effects.some(e=>e.active&&e.preset===id)&&!(id==='fatigued'&&c.effects.some(e=>e.active&&e.preset==='exhausted'));}

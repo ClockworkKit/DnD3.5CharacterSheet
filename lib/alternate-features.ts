@@ -1,3 +1,4 @@
+import {retireResources,restoreResource} from './managed-resources.ts';
 import {automatedAlternateResources} from './alternate-actions.ts';
 import {gestaltSharedLevelCount} from './gestalt-progression.ts';
 import type {Character} from './model.ts';
@@ -94,7 +95,7 @@ export function syncAlternateFeatureCards(c:Character){
  const active=activeAlternateFeatures(c),ids=new Set(active.map(d=>'acf:'+d.id));
  c.features=c.features.filter(f=>!f.ruleId?.startsWith('acf:')||ids.has(f.ruleId));
  for(const d of active){const ruleId='acf:'+d.id;let f=c.features.find(f=>f.ruleId===ruleId);if(!f){if(c.features.length>=250)continue;f={id:crypto.randomUUID(),name:d.name,kind:'Class feature',description:'',source:d.source,max:0,used:0,ruleId,magic:false};c.features.push(f);}const settings=alternateSettings(c,d.id);f.description=d.description+'\n'+(d.replaces.length?'Replaces '+alternateReplacementLabels(c,d).join(', ')+'.':'Optional class rule.')+(settings.choice?'\nOption: '+settings.choice:'')+(settings.notes?'\n'+settings.notes:'')+'\nManage tracked uses in Classes → Alternate class features.';f.source=d.source;}
- if(!c.automation.enabled&&turningClassLevel(c)&&'daily:original-turning' in c.alternateFeatures.uses&&!c.features.some(f=>f.ruleId==='daily:Turn or rebuke undead')){c.features.push({id:crypto.randomUUID(),name:'Turn or rebuke undead',kind:'Class feature',description:'Effective turning level '+turningClassLevel(c)+'.',max:Math.max(0,3+Math.floor((effectiveScore(c,'CHA')-10)/2)+4*c.features.filter(f=>f.kind==='Feat'&&f.name==='Extra Turning').length),used:c.alternateFeatures.uses['daily:original-turning'],source:'https://srd.dndtools.org/srd/classes/classes.html',ruleId:'daily:Turn or rebuke undead'});}
+ if(!c.automation.enabled&&turningClassLevel(c)&&'daily:original-turning' in c.alternateFeatures.uses&&!c.features.some(f=>f.ruleId==='daily:Turn or rebuke undead')){if(!restoreResource(c,'daily:Turn or rebuke undead'))c.features.push({id:crypto.randomUUID(),name:'Turn or rebuke undead',kind:'Class feature',description:'Effective turning level '+turningClassLevel(c)+'.',max:Math.max(0,3+Math.floor((effectiveScore(c,'CHA')-10)/2)+4*c.features.filter(f=>f.kind==='Feat'&&f.name==='Extra Turning').length),used:c.alternateFeatures.uses['daily:original-turning'],source:'https://srd.dndtools.org/srd/classes/classes.html',ruleId:'daily:Turn or rebuke undead'});}
  // Only this app's generated resource is removed. User-written references remain untouched.
- if(!turningClassLevel(c)&&(featureReplaced(c,'cleric','turn-undead')||featureReplaced(c,'paladin','turn-undead')))c.features=c.features.filter(f=>f.ruleId!=='daily:Turn or rebuke undead');
+ if(!turningClassLevel(c)&&(featureReplaced(c,'cleric','turn-undead')||featureReplaced(c,'paladin','turn-undead')))retireResources(c,f=>f.ruleId==='daily:Turn or rebuke undead');
 }
