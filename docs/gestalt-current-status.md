@@ -1,6 +1,6 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-03 from the user's supplied goal and the GitHub checkout at
+Updated 2026-11-04 from the user's supplied goal and the GitHub checkout at
 `183213f`. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
@@ -184,6 +184,29 @@ training, injuries and spent spell slots. Seven cases failed before the fix.
 All **849 tests passed**, as did TypeScript and rendering checks of the updated
 panels. Pages and Worker production builds passed with their existing notices.
 Browser interaction remains unverified; the overall goal remains open.
+
+## Imported armored-casting continuation (2026-11-04)
+
+Imported armor no longer throws while rendering a supported spellbook or
+invocation panel. Per-tradition spell failure reads the same saved equipment
+stats as AC, including custom values that override a catalog reference. Bard,
+warmage, duskblade and warlock exemptions remain scoped to their own traditions;
+paired wizard spells retain their separate failure chance.
+
+Gear now offers an optional shield type for imported shields. Explicit types
+and recognized catalog identities survive personal renaming and drive existing
+casting, shield-training and tower-penalty checks. Unidentified shields cannot
+gain a casting exemption from an arbitrary name; the Spellbook shows a review
+message. Old records acquire no automatic shield-type setting.
+
+Thirteen regressions cover saved/custom and catalog stats, paired and ordinary
+multiclass traditions, class milestones, shields, mithral, invocations, real
+Roll20-format fixtures, native files, browser storage and paired advancement.
+Preparations, expenditure, notes, injuries, equipment and earlier training stay
+saved. The initial nine imported-equipment cases reproduced the crash before
+the fix. All **862 tests passed**, as did TypeScript, React rendering checks and
+both Pages and Worker production builds. Existing build notices remain.
+Interactive browser QA and the broader source-specific audit remain open.
 
 ## Remaining work and explicit limits
 

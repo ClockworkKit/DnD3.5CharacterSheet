@@ -931,3 +931,63 @@ setting and retained personal notes. It does not substitute for interactive
 browser acceptance. No private player saves were read or modified. The remaining
 source-specific feature audit, mixed Uncanny Dodge histories, reviewed conversion,
 racial-HD occupancy policy and browser acceptance gates remain open.
+
+## 2026-11-04: Imported armor and independent armored casting
+
+The Magic interface called `specialSpellFailure` for supported spellbooks and
+invocations. That function selected worn equipment through the shared resolver,
+then looked it up again using only a catalog ID. Imported stat blocks without
+an ID threw; stat blocks overriding a catalog item could use the wrong failure
+chance. It now consumes the same resolved equipment as AC and proficiency.
+Saved armor/shield values, carried/equipped/quantity flags, material reductions
+and independent class exemptions remain in the existing calculation path.
+
+Rules evidence independently checked:
+
+- [Armor and arcane spell failure](https://www.d20srd.org/srd/equipment/armor.htm#arcaneSpellFailure)
+  adds armor and shield chances and applies to spells with somatic components.
+  The same page's [tower shield](https://www.d20srd.org/srd/equipment/armor.htm#shieldTower)
+  rules retain the separate attack penalty.
+- [Bard weapon and armor rules](https://www.d20srd.org/srd/classes/bard.htm#weaponAndArmorProficiency)
+  waive light-armor failure for bard spells only, retaining shield failure and
+  normal failure for spells from another class.
+- [Duskblade Armored Mage](https://srd.dndtools.org/srd/classes/basePhb2/duskblade.html)
+  advances its medium-armor allowance at class level 4 and heavy-shield allowance
+  at 7. [Warmage Armored Mage](https://srd.dndtools.org/srd/classes/baseCarc/warmage.html)
+  advances medium armor at 8 and does not extend to heavy shields. Both limit
+  their exemption to spells of their own class.
+- [Warlock](https://srd.dndtools.org/srd/classes/baseCarc/warlock.html) invocations
+  waive light armor but retain shield failure; the
+  [Dragonfire Adept](https://srd.dndtools.org/srd/classes/baseDrm/dragonfireAdept.html)
+  text explicitly subjects draconic invocations to armor/shield failure. Neither
+  source grants its exception to a parallel wizard tradition.
+- [Mithral](https://www.d20srd.org/srd/specialMaterials.htm#mithral) supplies the
+  existing effective-category and ten-percentage-point reduction rules.
+
+An optional `armorStats.shieldType` uses the existing imported-item record. Gear
+can explicitly select buckler/light/heavy/tower; absence keeps old saves intact.
+The shared equipment resolver prefers this explicit type, then a known catalog
+identity or an exact normalized catalog-name match. It does not infer an
+armored-casting exemption from fragments in personal names. An unidentified
+shield retains its recorded failure chance and shows a source-review message
+where a class shield exemption might apply. Explicit types also govern the
+existing tower/buckler and light-shield training checks, so renaming a reviewed
+tower shield cannot erase its attack penalty. Existing catalog class policies,
+including their buckler handling, are retained; this is not a complete audit of
+all armored-casting feats or exceptional class/race combinations.
+
+Thirteen new tests cover custom stats with/without catalog IDs, separate
+standard/gestalt traditions, Duskblade/Warmage milestones, material reductions,
+independent invocation/divine rules, unknown/explicit/legacy shield identity,
+strict saved values, a synthetic Roll20 import, native/browser round trips and
+paired advancement. The first nine imported-equipment cases reproduced the
+exception before the fix. Tests retain source exports, gear notes, preparations,
+spent slots, injuries, prior training and personal text. No actual player files
+were used. The new optional field has no default and performs no migration.
+
+All **862 tests passed**, along with TypeScript and both Pages and Worker
+production builds. React rendering covered both spellbook traditions, an
+imported-armor invocation panel, unknown-shield review and the Gear selector.
+The builds retain existing bundle/script/plugin-timing/route-classification
+notices. Interactive browser acceptance and the documented remaining goal gates
+remain open.

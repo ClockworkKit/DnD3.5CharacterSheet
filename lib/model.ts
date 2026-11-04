@@ -21,7 +21,7 @@ const count = z.number().int().min(0).max(10000);
 const short = z.string().max(160);
 const note = z.string().max(20000);
 const ident = z.string().min(1).max(100);
-export const importedArmorSchema=z.object({kind:z.enum(['armor','shield']),category:z.enum(['light','medium','heavy','shields']),armor:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100)});
+export const importedArmorSchema=z.object({kind:z.enum(['armor','shield']),category:z.enum(['light','medium','heavy','shields']),armor:num,dexCap:z.number().min(-100).max(100),checkPenalty:z.number().min(-100).max(0),spellFailure:z.number().min(0).max(100),shieldType:z.enum(['buckler','light','heavy','tower']).optional()});
 export const maxDamageReductionSources = 50;
 const damageReductionSourceSchema = z.object({
   id:ident,source:short,amount:count,bypass:short,active:z.boolean().default(true),

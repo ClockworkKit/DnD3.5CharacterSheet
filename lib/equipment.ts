@@ -6,15 +6,25 @@ import {findClass} from './classes.ts';
 import type {Character,Weapon} from './model.ts';
 import {effectiveScore,racialTraits} from './ancestry.ts';
 import {classLevel,hasFeat,effectTerms,stackBonuses,effectActive} from './effects.ts';
-export type Equipment={id:string,name:string,kind:'weapon'|'armor'|'shield',category:string,weight:number,price:number,source:string,damage?:string,small?:string,threat?:number,multiplier?:number,range?:number,ranged?:boolean,thrown?:boolean,hands?:string,damageType?:string,double?:boolean,armor?:number,dexCap?:number,checkPenalty?:number,spellFailure?:number};
+export type Equipment={id:string,name:string,kind:'weapon'|'armor'|'shield',category:string,weight:number,price:number,source:string,damage?:string,small?:string,threat?:number,multiplier?:number,range?:number,ranged?:boolean,thrown?:boolean,hands?:string,damageType?:string,double?:boolean,armor?:number,dexCap?:number,checkPenalty?:number,spellFailure?:number,shieldType?:'buckler'|'light'|'heavy'|'tower'};
 export const equipmentCatalog=raw as Equipment[];
 export const equipmentById=(id?:string)=>equipmentCatalog.find(e=>e.id===id);
 export function gearEquipment(g:Character['gear'][number]):Equipment|undefined{return g.armorStats?{id:g.catalogId||g.id,name:g.name,weight:g.weight,price:0,source:'Roll20 import',...g.armorStats}:equipmentById(g.catalogId);}
 const canonical=(s:string)=>s.toLowerCase().replace(/[^a-z0-9 ]/g,' ').split(/\s+/).filter(Boolean).sort().join(' ');
 export const matchEquipment=(name:string,kind?:string)=>equipmentCatalog.find(e=>(!kind||e.kind===kind)&&canonical(e.name)===canonical(name));
-// Imported custom stat blocks keep the player's label instead of the catalog's casing.
-const towerShield=(e:Equipment)=>e.kind==='shield'&&/tower/i.test(e.name);
-const buckler=(e:Equipment)=>e.kind==='shield'&&canonical(e.name)==='buckler';
+/** Explicit custom metadata wins; a catalog identity is the only inferred type.
+ * Unrecognized personal labels do not grant armored-casting exemptions. */
+export function shieldType(e:Equipment):Equipment['shieldType']{
+ if(e.kind!=='shield')return undefined;
+ if(e.shieldType)return e.shieldType;
+ const reference=equipmentCatalog.find(r=>r.kind==='shield'&&r.id===e.id)??matchEquipment(e.name,'shield');
+ if(!reference)return undefined;
+ return /tower/i.test(reference.name)?'tower':/heavy/i.test(reference.name)?'heavy':/light/i.test(reference.name)?'light':canonical(reference.name)==='buckler'?'buckler':undefined;
+}
+// Keep legacy label handling for unresolved combat equipment; explicit type and
+// recognized identities govern renamed shields once supplied.
+const towerShield=(e:Equipment)=>shieldType(e)==='tower'||!shieldType(e)&&e.kind==='shield'&&/tower/i.test(e.name);
+const buckler=(e:Equipment)=>shieldType(e)==='buckler';
 
 const regionalDruidWeapons:Record<string,string[]>={
  'Coastland / Aquatic':['Club','Dagger','Dart','Longspear','Net','Quarterstaff','Sling','Spear','Shortspear','Trident'],
@@ -43,7 +53,7 @@ function classEquipmentAllowed(c:Character,id:string,e:Equipment){
 function supplementalProficient(c:Character,e:Equipment){return c.classLevels.some(entry=>{
  const p=findClass(entry.classId,c)?.proficiencies;if(!classEquipmentAllowed(c,entry.classId,e)||!p)return false;
  if(e.kind==='armor'){if(p.armors?.includes(e.name))return true;const armor=p.mediumAt&&entry.level>=p.mediumAt?'medium':p.armor;return ['none','light','medium','heavy'].indexOf(armor)>=['none','light','medium','heavy'].indexOf(e.category);}
- if(e.kind==='shield')return p.shields==='buckler'&&buckler(e)||p.shields==='all'||(!towerShield(e)&&(p.shields==='standard'||p.shields==='light'&&(/light/i.test(e.name)||buckler(e))));
+ if(e.kind==='shield')return p.shields==='buckler'&&buckler(e)||p.shields==='all'||(!towerShield(e)&&(p.shields==='standard'||p.shields==='light'&&(shieldType(e)==='light'||buckler(e))));
  return p.weapons.includes(e.name)||e.category==='simple'&&p.simple&&(!p.simpleMeleeOnly||!e.ranged)||e.category==='martial'&&p.martial&&(!p.martialMeleeOnly||!e.ranged);
 });}
 export const allSizes=['Fine','Diminutive','Tiny','Small','Medium','Large','Huge','Gargantuan','Colossal'] as const;

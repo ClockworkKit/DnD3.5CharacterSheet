@@ -9,7 +9,7 @@ import {characterHitDice} from './character-level.ts';
 import type {Character} from './model.ts';
 import {findClass} from './classes.ts';
 import {effectiveScore} from './ancestry.ts';
-import {equippedArmor,carrying,equipmentById} from './equipment.ts';
+import {equippedArmor,carrying,gearEquipment,shieldType} from './equipment.ts';
 
 const lv=(c:Character,id:string)=>c.classLevels.filter(e=>e.classId===id).reduce((n,e)=>n+e.level,0);
 const mod=(c:Character,a:'INT'|'WIS'|'CHA'|'CON')=>Math.floor((effectiveScore(c,a)-10)/2);
@@ -41,10 +41,29 @@ export function spendSystemChoice(c:Character,id:string){const s=c.classSystems.
 export function recoverManeuvers(c:Character,id:string){for(const s of c.classSystems.choices)if(s.classId===id&&s.kind==='maneuver'){s.spent=0;s.granted=false};}
 export function settleDelayedDamage(c:Character){const damage=c.classSystems.delayedDamage;c.classSystems.delayedDamage=0;const absorbed=Math.min(c.tempHp,damage);c.tempHp-=absorbed;c.hp-=damage-absorbed;}
 export function delayedCapacity(c:Character){const l=lv(c,'crusader');return l?l>=20?30:l>=16?25:l>=12?20:l>=8?15:l>=4?10:5:0;}
-export function specialSpellFailure(c:Character,id:string){
- if(findClass(id,c)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard'].includes(id))return 0;
+function armoredCasting(c:Character,id:string){
+ const divine=findClass(id,c)?.casting?.type==='divine'||['cleric','druid','paladin','ranger','blackguard'].includes(id);
  const level=lv(c,id);let allowed=0,shield='none';if(['bard','beguiler','dread-necromancer','hexblade','spellthief','warlock'].includes(id))allowed=1;if(id==='warmage'){allowed=level>=8?2:1;shield='light'}if(id==='duskblade'){allowed=level>=4?2:1;shield=level>=7?'standard':'light'}
- let total=0;const a=equippedArmor(c);for(const g of a.selected){const e=equipmentById(g.catalogId)!;const rank=Math.max(1,['light','medium','heavy'].indexOf(e.category)+1-(g.material==='mithral'?1:0));const ignored=e.kind==='armor'?rank<=allowed:e.kind==='shield'&&(shield==='standard'&&!e.name.includes('tower')||shield==='light'&&(/light/i.test(e.name)||e.name==='Buckler'));if(!ignored)total+=Math.max(0,(e.spellFailure||0)-(g.material==='mithral'?10:0));}return Math.min(100,total+(c.ancestry.raceId==='warforged'&&allowed===0?5:0));
+ return {divine,allowed,shield};
+}
+export function specialSpellFailureWarnings(c:Character,id:string){
+ const {divine,shield}=armoredCasting(c,id);
+ if(divine||shield==='none')return [];
+ return equippedArmor(c).selected.flatMap(g=>{const e=gearEquipment(g)!;return e.kind==='shield'&&!shieldType(e)?[g.name+': shield type is unidentified. Set its type in Gear after checking your source; no armored-casting shield exemption is included.']:[];});
+}
+export function specialSpellFailure(c:Character,id:string){
+ const {divine,allowed,shield}=armoredCasting(c,id);if(divine)return 0;
+ let total=0;
+ // Use the same resolved equipment as AC and proficiency: imported stat blocks
+ // can have no catalog ID, or intentionally override the referenced item.
+ for(const g of equippedArmor(c).selected){
+  const e=gearEquipment(g)!;
+  const rank=Math.max(1,['light','medium','heavy'].indexOf(e.category)+1-(g.material==='mithral'?1:0));
+  const kind=shieldType(e);
+  const ignored=e.kind==='armor'?rank<=allowed:!!kind&&(shield==='standard'&&kind!=='tower'||shield==='light'&&(kind==='light'||kind==='buckler'));
+  if(!ignored)total+=Math.max(0,(e.spellFailure||0)-(g.material==='mithral'?10:0));
+ }
+ return Math.min(100,total+(c.ancestry.raceId==='warforged'&&allowed===0?5:0));
 }
 export function supplementalTerms(c:Character,target:string,context:Record<string,string|number|boolean>={}){
  if(!c.automation.enabled||!['initiative','save.fort','save.ref','save.will','saves','ac.misc','ac.naturalEnhancement','ac.dodge','speed','damage','attack','critical.confirm','skill.Climb','skill.Jump','skill.Tumble'].includes(target))return [];
