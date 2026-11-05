@@ -4,6 +4,7 @@ import {signed} from '@/lib/rules';
 import {classArmorBonus} from '@/lib/class-armor-bonus';
 import {Check,type SheetProps} from './sheet-ui';
 import {TrapDefenses} from './trap-defenses';
+import {UncannyDodgeRuling} from './uncanny-dodge-review';
 
 export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
  const {armor,load,encumbrance,basePenalty,baseDexCap}=armorBreakdown(c);
@@ -20,7 +21,7 @@ export function ArmorBreakdown({c}:Pick<SheetProps,'c'>){
 }
 export function RogueCombatFeatures({c,edit}:Pick<SheetProps,'c'|'edit'>){
  const features=rogueCombatFeatures(c),ctx=c.automation.context;
- if(!features.evasion&&!features.uncanny.length&&!features.uncannyDefense.improved&&!features.deathsRuin)return <TrapDefenses c={c} edit={edit}/>;
+ if(!features.evasion&&!features.uncanny.length&&!features.uncannyDefense.improved&&!features.deathsRuin&&!features.uncannyDefense.rulingEligible&&!c.classSystems.uncannyDodgeRuling)return <TrapDefenses c={c} edit={edit}/>;
  return <div className="subcard">
  <h3>Defensive class features & conditional attacks</h3>
  <TrapDefenses c={c} edit={edit}/>
@@ -33,7 +34,9 @@ export function RogueCombatFeatures({c,edit}:Pick<SheetProps,'c'|'edit'>){
  {(features.uncanny.length>0||features.uncannyDefense.improved)&&<div aria-label="Improved Uncanny Dodge progression">
  <p className="fine"><strong>Improved Uncanny Dodge: {features.uncannyDefense.improved?'granted':features.uncannyDefense.review?'review needed':'not yet granted'}.</strong> {features.uncannyDefense.earned.length>0&&<>Listed improvement from {features.uncannyDefense.earned.map(s=>s.name).join(', ')}. </>}{features.uncannyDefense.duplicateUpgrade&&<>Granted by ordinary multiclass Uncanny Dodge from a second class. </>}{features.uncannyDefense.gestalt&&<>Gestalt uses the faster shared progression; overlapping basic grants do not automatically upgrade it. </>}{features.uncannyDefense.improved&&<>Prevents flanking, including sneak attacks that depend on flanking. {features.uncannyDefense.minimumRogueLevel!==null&&<>The rogue exception requires at least {features.uncannyDefense.minimumRogueLevel} rogue levels in the attacker. </>}It does not prevent sneak attacks from other qualifying conditions. Resolve the opponent's abilities and attacks at the table; this does not alter your outgoing flanking or sneak-attack selections.</>}</p>
  {features.uncannyDefense.review&&<p className="fine" role="note">{features.uncannyDefense.review}</p>}
+ {features.uncannyDefense.rulingApplied&&<p className="fine">Improvement timing and the rogue-level exception use the saved GM ruling below.</p>}
  </div>}
+ <UncannyDodgeRuling c={c} edit={edit}/>
  {features.deathsRuin&&<><Check label="Death's Ruin: this is an eligible sneak attack against undead" checked={ctx.deathsRuin&&ctx.targetType==='undead'} onChange={v=>edit(d=>setDeathsRuin(d,v))}/><p className="fine">Sets the target type to undead and uses {features.deathsRuinDice}d6 sneak-attack damage (half the normal dice, rounded down). You still need the usual sneak-attack conditions, and ranged sneak attacks must be within 30 ft. Applies to the weapon Damage buttons and full-attack damage rolls. Changing the target away from undead disables this benefit.</p></>}
  </div>;
 }

@@ -1,5 +1,6 @@
 import {z} from 'zod';
 import {essentiaRulingSchema} from './meldshaping-schema.ts';
+import {uncannyDodgeRulingSchema} from './uncanny-dodge-schema.ts';
 
 // Keep persistence independent of calculations and the Character module.
 export const classSystemsSchema=z.object({
@@ -7,5 +8,6 @@ export const classSystemsSchema=z.object({
  pools:z.record(z.number().int().min(0).max(10000)).default({}),
  delayedDamage:z.number().int().min(0).max(1000).default(0),
  essentiaRuling:essentiaRulingSchema.optional(),
+ uncannyDodgeRuling:uncannyDodgeRulingSchema.optional(),
 }).default({});
 export type SystemChoice=z.infer<typeof classSystemsSchema>['choices'][number];

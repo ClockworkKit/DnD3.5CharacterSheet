@@ -1,7 +1,7 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-04 from the user's supplied goal and the GitHub checkout at
-`183213f`. Read [the rules policy](rules-policy.md) and
+Updated 2026-11-05 from the user's supplied goal and the GitHub checkout at
+`9761c3f`, with the mixed Uncanny Dodge continuation below. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
 **The overall goal remains open.** This page separates currently verified
@@ -208,6 +208,26 @@ the fix. All **862 tests passed**, as did TypeScript, React rendering checks and
 both Pages and Worker production builds. Existing build notices remain.
 Interactive browser QA and the broader source-specific audit remain open.
 
+## Mixed Uncanny Dodge continuation (2026-11-05)
+
+Combat now offers an explicit GM ruling for mixed or staggered gestalt Uncanny
+Dodge histories. Review and confirmation record whether the improvement is
+granted and, if so, the minimum attacker rogue level, with a GM name and source
+explanation. This is a table decision, not a new automatic interpretation of RAW.
+Ordinary multiclass and parallel faster-class progression retain their rules.
+
+The optional record is scoped to the reviewed progression and relevant feature
+replacements. Advancement makes it stale without deleting it. Focus loss suspends
+a dependent ruling without erasing it or suppressing independent listed benefits.
+Rulings cannot remove listed improvements or restore surrendered features. Saved
+rulings stay visible when their sources disappear. Switching characters resets
+the Combat draft, and confirmation rejects changed choices or progression.
+
+Fourteen new regression cases exercise these boundaries, native/browser storage,
+and paired advancement while preserving damage, preparations, history and spent
+resources. Actual React rendering covers active, stale, suspended and removed
+source states. Final validation is recorded in the implementation record.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
@@ -219,8 +239,8 @@ Interactive browser QA and the broader source-specific audit remain open.
    use the existing engine and reviewed editor. Exceptional formulas, conditional
    grants/targets, and the broader source-specific feature audit remain unfinished. Manual pools, notes and counters remain supported.
    Names and milestone prose never grant invented mechanics.
-3. Mixed/staggered Uncanny Dodge histories still show an explicit DM-review
-   notice; no unsupported combined threshold is silently substituted. Additional
+3. Mixed/staggered Uncanny Dodge histories now support an explicit, persisted
+   GM ruling; no unsupported combined threshold is silently substituted. Additional
    source-specific cases need their own evidence, policies and regressions.
    Mixed/staggered shared essentia now has an explicit, persisted GM ruling;
    exceptional meld effects, chakra choices and other source prerequisites still

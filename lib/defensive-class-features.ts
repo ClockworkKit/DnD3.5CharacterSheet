@@ -32,27 +32,54 @@ export function evasionFeatures(c:Character){
 }
 
 /** Basic Dexterity retention only; improved anti-flanking progression is separate. */
-export function uncannyDodgeSources(c:Character){
- const sources=Object.entries(uncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'uncanny-dodge')>=level&&(id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
- if(alternateClassLevel(c,'lurk')>=3&&hasAlternateFeature(c,'lurk-true-thief')&&focused(c,'lurk'))sources.push({classId:'lurk',name:'Lurk (focused True Thief)'});
+function uncannySources(c:Character,ignoreFocus=false){
+ const sources=Object.entries(uncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'uncanny-dodge')>=level&&(ignoreFocus||id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
+ if(alternateClassLevel(c,'lurk')>=3&&hasAlternateFeature(c,'lurk-true-thief')&&(ignoreFocus||focused(c,'lurk')))sources.push({classId:'lurk',name:'Lurk (focused True Thief)'});
  return sources;
+}
+export const uncannyDodgeSources=(c:Character)=>uncannySources(c);
+function earnedUncannySources(c:Character,ignoreFocus=false){
+ return Object.entries(improvedUncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'improved-uncanny-dodge')>=level&&(ignoreFocus||id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
+}
+const distinctSources=(sources:Array<{classId:string}>)=>[...new Set(sources.map(s=>s.classId))].sort();
+function uncannyHistories(rows:ReturnType<typeof characterGestaltRows>,ids:string[]){
+ const histories=rows?ids.map(id=>rows.flatMap((row,i)=>row.left.classId===id||row.right.classId===id?[i]:[])):[];
+ return {histories,mixed:histories.some(h=>h.length!==histories[0].length||h.some((level,i)=>level!==histories[0][i]))};
 }
 
 /** Read-only explanation; no target/attacker information is inferred from the sheet. */
 export function uncannyDodgeFeatures(c:Character){
  const rows=characterGestaltRows(c),sources=uncannyDodgeSources(c);
- const earned=Object.entries(improvedUncannyLevels).filter(([id,level])=>classFeatureLevel(c,id,'improved-uncanny-dodge')>=level&&(id!=='psychic-rogue'||focused(c,id))).map(([id])=>({classId:id,name:findClass(id)?.name??id}));
+ const earned=earnedUncannySources(c);
  // Ordinary multiclass second-source upgrades are distinct from UA's shared
  // gestalt progression. A replacement cannot re-grant its own surrendered feature.
  const duplicateUpgrade=!rows&&sources.length>1&&sources.some(s=>!featureReplaced(c,s.classId,'improved-uncanny-dodge'));
- const improved=earned.length>0||duplicateUpgrade;
- const ids=[...new Set([...sources,...earned].map(s=>s.classId))];
+ const automaticImproved=earned.length>0||duplicateUpgrade;
+ const ids=distinctSources([...sources,...earned]);
  // Equal sets of actual levels cover uninterrupted pairs (and swapping sides).
  // Staggered/mixed source histories need a specific ruling, not a fabricated
  // threshold obtained by summing both sides. See docs/rules-policy.md.
- const histories=rows?ids.map(id=>rows.flatMap((row,i)=>row.left.classId===id||row.right.classId===id?[i]:[])):[];
- const mixed=histories.some(h=>h.length!==histories[0].length||h.some((level,i)=>level!==histories[0][i]));
- const review=mixed?'Mixed or staggered gestalt Uncanny Dodge sources need DM review for duplicate-grant timing and the rogue-level exception. Listed class improvements are shown; no additional upgrade or combined threshold is inferred.':'';
- const minimumRogueLevel=!improved||mixed?null:(rows?(histories[0]?.length??0):ids.reduce((n,id)=>n+alternateClassLevel(c,id),0))+4;
- return {sources,earned,improved,duplicateUpgrade,minimumRogueLevel,review,gestalt:!!rows};
+ const {histories,mixed}=uncannyHistories(rows,ids);
+ const automaticMinimumRogueLevel=!automaticImproved||mixed?null:(rows?(histories[0]?.length??0):ids.reduce((n,id)=>n+alternateClassLevel(c,id),0))+4;
+ // Focus is a temporary eligibility condition, not a change to the progression
+ // the GM reviewed. Losing focus suspends a dependent ruling without erasing it.
+ const potentialEarned=earnedUncannySources(c,true),potentialIds=distinctSources([...uncannySources(c,true),...potentialEarned]);
+ const rulingEligible=!!rows&&uncannyHistories(rows,potentialIds).mixed;
+ const progression=JSON.stringify({version:1,mode:c.advancementMode??'standard',
+  sources:potentialIds.map(id=>[id,featureReplaced(c,id,'uncanny-dodge'),featureReplaced(c,id,'improved-uncanny-dodge'),potentialEarned.some(s=>s.classId===id)]),
+  levels:rows?.map(row=>[row.left,row.right].map(side=>[side.classId,side.classLevel]).sort((a,b)=>String(a[0]).localeCompare(String(b[0]))))??null});
+ const ruling=c.classSystems.uncannyDodgeRuling;
+ const improvementAvailable=potentialIds.some(id=>!featureReplaced(c,id,'improved-uncanny-dodge'));
+ const staleRuling=!!ruling&&(!rulingEligible||ruling.progression!==progression);
+ const incompatibleRuling=!!ruling&&(potentialEarned.length>0&&!ruling.decision.improved||ruling.decision.improved&&!improvementAvailable);
+ const suspendedSources=potentialIds.filter(id=>!ids.includes(id));
+ const rulingApplied=!!ruling&&!staleRuling&&!incompatibleRuling&&!suspendedSources.length;
+ const improved=rulingApplied?ruling!.decision.improved:automaticImproved;
+ const minimumRogueLevel=rulingApplied?ruling!.decision.minimumRogueLevel:automaticMinimumRogueLevel;
+ const review=staleRuling?'The saved Uncanny Dodge GM ruling no longer matches the progression or feature choices. It is retained but not applied; review again.'
+  :incompatibleRuling?'The saved Uncanny Dodge GM ruling conflicts with a listed class improvement or replacement. It is retained but not applied; review again.'
+  :ruling&&suspendedSources.length?'The saved Uncanny Dodge GM ruling is temporarily inactive while a reviewed source is unavailable (for example, without psionic focus). Listed active class benefits still apply.'
+  :!rulingApplied&&mixed?'Mixed or staggered gestalt Uncanny Dodge sources need DM review for duplicate-grant timing and the rogue-level exception. Listed class improvements are shown; no additional upgrade or combined threshold is inferred.':'';
+ return {sources,earned,improved,duplicateUpgrade,minimumRogueLevel,review,gestalt:!!rows,
+  automaticImproved,automaticMinimumRogueLevel,rulingEligible,progression,staleRuling,incompatibleRuling,rulingApplied,suspendedSources,listedImprovement:potentialEarned.length>0,improvementAvailable};
 }
