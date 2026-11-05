@@ -1,4 +1,5 @@
 import {classArmorBonus} from './class-armor-bonus.ts';
+import {effectiveTurningLevel,turningDailyUses} from './turning-feats.ts';
 import {syncFeatGrants} from './feat-grants.ts';
 import type {SystemChoice} from './class-systems-schema.ts';
 export {classSystemsSchema,type SystemChoice} from './class-systems-schema.ts';
@@ -91,14 +92,14 @@ export function supplementalTerms(c:Character,target:string,context:Record<strin
 export type ClassResource={classId:string,name:string,max:number,description:string};
 export function supplementalResources(c:Character){const out:ClassResource[]=[];const add=(id:string,at:number,name:string,max:number,description:string)=>{if(lv(c,id)>=at)out.push({classId:id,name,max:Math.max(0,max),description})};
  for(const e of c.classLevels){const d=findClass(e.classId);if(!d?.book)continue;const values=new Map<string,number>();for(const r of d.levels.filter(r=>r.level<=lv(c,d.id)))for(const m of r.special.matchAll(/([^,]+?)\s+(\d+)\/day/g)){const raw=m[1].trim(),name=(raw[0].toUpperCase()+raw.slice(1)).replace('Aura of unlucky','Aura of unluck');if(!/sustaining|sleep/i.test(name))values.set(name,Number(m[2]));}for(const [name,max] of values)add(d.id,1,name,max,'Daily uses. Resolve the feature and its targets using the class reference.');}
- add('death-master',1,'Rebuke undead',3+mod(c,'CHA'),'Rebuke as a cleric of your Death Master level; resolve the turning check at the table.');
+ add('death-master',1,'Rebuke undead',turningDailyUses(c),'Effective turning level '+effectiveTurningLevel(c,lv(c,'death-master'))+'. Resolve the rebuking check at the table.');
  add('jester',1,"Jester's performance",lv(c,'jester'),'Daily performance uses. Check Perform ranks and the selected performance in the class reference.');
  add('swashbuckler',11,'Lucky',1,'Reroll a failed attack, skill check, ability check, or save; keep the new result.');
  add('crusader',3,'Zealous surge',1,'Reroll one save; decide before the result is announced.');
  add('warlock',8,'Fiendish resilience',1,'Fast healing '+(lv(c,'warlock')>=18?5:lv(c,'warlock')>=13?2:1)+' for 20 rounds; apply healing as rounds pass.');
  add('ninja',1,'Ki power',Math.max(1,Math.floor(lv(c,'ninja')/2))+Math.max(0,mod(c,'WIS')),'Shared daily pool for ninja ki abilities. Unarmored and unencumbered.');
  add('knight',1,"Knight's challenge",Math.max(1,Math.floor(lv(c,'knight')/2)+mod(c,'CHA')),'Shared challenge pool; save DC '+(10+Math.floor(lv(c,'knight')/2)+mod(c,'CHA'))+'.');
- add('dread-necromancer',1,'Rebuke undead',3+mod(c,'CHA'),'Turning level '+lv(c,'dread-necromancer')+'.');
+ add('dread-necromancer',1,'Rebuke undead',turningDailyUses(c),'Effective turning level '+effectiveTurningLevel(c,lv(c,'dread-necromancer'))+'.');
  add('dragon-shaman',6,'Touch of vitality',2*lv(c,'dragon-shaman')*Math.max(0,mod(c,'CHA')),'Healing points per day; condition removal spends points from this same pool.');
  add('spirit-shaman',2,'Chastise spirits',3+mod(c,'CHA'),lv(c,'spirit-shaman')+'d6; Will DC '+(10+lv(c,'spirit-shaman')+mod(c,'CHA'))+' halves.');
  add('spirit-shaman',7,'Warding of the spirits',1,'10 minutes per spirit shaman level.');add('spirit-shaman',17,'Spirit journey',1,'Self-only spirit travel.');

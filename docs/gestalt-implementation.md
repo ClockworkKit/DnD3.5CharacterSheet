@@ -1054,3 +1054,56 @@ Validation: **876 tests passed**, including all fourteen new cases; TypeScript
 and the GitHub Pages and Worker production builds passed. Existing bundle,
 script, plugin-timing and route-classification notices remain. The standing user
 instruction to deploy every finished patch is now recorded in `AGENTS.md`.
+
+## 2026-11-05: Turning feats on existing rebuking resources
+
+The resource audit reproduced three omissions: Extra Turning and Improved
+Turning were ignored by Dread Necromancer and Death Master cards; Blackguard's
+Command Undead included Extra Turning but omitted Improved Turning from its
+effective level. The first three regression tests failed before this correction.
+
+Sources independently checked:
+
+- [Extra Turning](https://www.d20srd.org/srd/feats.htm#extraTurning) grants four
+  additional daily attempts per selection, is repeatable, and benefits each
+  turning/rebuking ability. [Improved Turning](https://www.d20srd.org/srd/feats.htm#improvedTurning)
+  treats the granting class as one level higher for turning or rebuking. It is
+  not repeatable and does not grant earlier access to the ability itself.
+- [Dread Necromancer Rebuke Undead](https://srd.dndtools.org/srd/classes/baseHoh/dreadNecromancer.html)
+  invokes the cleric class feature. [Death Master Rebuke Undead](https://srd.dndtools.org/srd/classes/baseDc/deathMaster.html)
+  explicitly grants 3 + Charisma modifier daily attempts and the Knowledge
+  (religion) synergy. The existing class-level interpretations are retained;
+  this patch applies the published feats to those existing resources.
+- [Blackguard Command Undead](https://www.d20srd.org/srd/prestigeClasses/blackguard.htm#commandUndead)
+  starts at class level 3 and uses the cleric level two below its own. Improved
+  Turning increases that effective level once, without moving the entry gate.
+
+The small shared `turning-feats` helper reuses existing feat identity/counting
+and effective Charisma. Cleric/paladin's existing shared gestalt progression and
+ordinary multiclass calculation are unchanged. Improved Turning contributes once
+after that calculation; duplicate saved copies do not multiply its benefit.
+Extra Turning still counts independently selected copies and deduplicates legacy
+cards for a single earned grant. Nothing infers extra feat choices from the two
+class tracks. This patch neither merges nor creates turning/rebuking pools and
+does not establish new cross-class stacking policies for exceptional sources.
+
+Existing resource cards receive corrected maxima and effective-level guidance.
+Their IDs, personal names, descriptions, source annotations and expenditure are
+preserved. Legacy text with no recognized generated block stays intact; current
+guidance appears separately in the same interface. Removing a feat or changing
+Charisma never refunds spent attempts, including expenditures above a reduced
+maximum. Manual mode retains its saved caps. Only the existing explicit daily
+rest clears daily use. Standard and paired advancement preserve old training,
+injuries, preparations, casting expenditure and optional settings.
+
+Eleven automated cases cover the published feat effects, delayed/replaced
+abilities, Charisma boundaries, renamed/duplicate earned feats, legacy guidance,
+manual limits, both advancement modes, native exports, fresh browser clients and
+module initialization. React rendering checks the actual feature cards, current
+guidance, personal notes and zero remaining uses when over the limit. Interactive
+browser QA and the broader documented goal gates remain open. No private player
+saves were read or changed.
+
+Validation: **887 tests passed**, including eleven new regressions. TypeScript,
+the GitHub Pages build and the Worker production build passed. The existing
+script, plugin-timing and route-classification build notices remain.

@@ -1,7 +1,7 @@
 # Standard defaults and gestalt: current handoff
 
 Updated 2026-11-05 from the user's supplied goal and the GitHub checkout at
-`9761c3f`, with the mixed Uncanny Dodge continuation below. Read [the rules policy](rules-policy.md) and
+`4e8d0b4`, with the turning-feat continuation below. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
 **The overall goal remains open.** This page separates currently verified
@@ -227,6 +227,22 @@ Fourteen new regression cases exercise these boundaries, native/browser storage,
 and paired advancement while preserving damage, preparations, history and spent
 resources. Actual React rendering covers active, stale, suspended and removed
 source states. Final validation is recorded in the implementation record.
+
+## Turning-feat continuation (2026-11-05)
+
+Extra Turning now adds its repeatable four uses to the existing Dread Necromancer
+and Death Master rebuking cards. Improved Turning updates their effective levels
+and Blackguard's Command Undead level. Cleric/paladin and Blackguard daily limits
+reuse the same feat calculations; no new turning pools or class levels are added.
+
+Eleven new regression cases cover ordinary and paired characters, delayed entry,
+replacements, effective Charisma, granted-feat identity, old resource text, manual
+limits, advancement and native/browser persistence. Changing a maximum preserves
+spent uses even above the new limit. Personal names, notes, source annotations,
+injuries, preparations and historical training remain intact. Current effective
+levels appear through the existing resource guidance. The first three tests
+reproduced the omissions before the fix. Final validation is recorded in the
+implementation record; interactive browser acceptance remains open.
 
 ## Remaining work and explicit limits
 
