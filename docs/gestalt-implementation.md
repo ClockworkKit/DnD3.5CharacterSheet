@@ -991,3 +991,66 @@ imported-armor invocation panel, unknown-shield review and the Gear selector.
 The builds retain existing bundle/script/plugin-timing/route-classification
 notices. Interactive browser acceptance and the documented remaining goal gates
 remain open.
+
+## 2026-11-05: Reviewed mixed Uncanny Dodge histories
+
+The Combat panel previously flagged mixed or staggered Uncanny Dodge histories
+without a way to retain the table's decision. It now reviews and confirms an
+optional ruling for improvement timing and the minimum attacker rogue level.
+A GM name and source/ruling explanation are required. No ruling is inferred for
+new or old characters, and no existing save is converted.
+
+Source evidence independently checked:
+
+- [Unearthed Arcana gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm)
+  says features shared by both classes, explicitly including Uncanny Dodge,
+  accrue at the faster class's rate. It does not spell out a complete combination
+  algorithm for every mixed or staggered history. The new input is therefore
+  labeled an explicit table ruling, not a published formula or automatic grant.
+- [Rogue](https://www.d20srd.org/srd/classes/rogue.htm#improvedUncannyDodge)
+  lists the improvement at class level 8; [barbarian](https://www.d20srd.org/srd/classes/barbarian.htm#improvedUncannyDodge)
+  lists it at 5. Both retain the rogue-level exception and ordinary multiclass
+  second-source upgrade. Those established automatic paths are unchanged.
+- [Psychic Rogue Danger Sense](https://srd.dndtools.org/srd/classes/baseOther/psychicRogue.html)
+  requires maintained psionic focus, with Uncanny Dodge at 7 and its improvement
+  at 9. A ruling involving this source cannot waive focus. Existing focused
+  True Thief restrictions also remain in the shared source resolver.
+
+`classSystems.uncannyDodgeRuling` is optional and versioned. Its scope records the
+actual paired class history and relevant replacements. Personal names, entry
+ordering, side swaps and the separate BAB method do not affect that scope.
+Advancement or a changed source invalidates the decision while retaining the
+record. Temporary loss of a required source suspends it; independently available
+listed benefits continue to work. The ruling cannot remove a listed improvement
+or restore an improvement surrendered by every reviewed source. Semantically
+incompatible imported decisions remain visible for review instead of taking
+effect. Structurally invalid data is rejected through the existing file schema.
+
+Preview does not mutate a character. Confirmation revalidates the decision and
+rejects changed choices, progression or an intervening saved ruling. Injury,
+preparation and expenditure changes made during review remain intact. Combat
+remounts on character switching so one sheet cannot inherit another's draft.
+Clearing the optional record restores the existing automatic explanation without
+resetting other state. Daily rest preserves the record and follows the usual
+focus/resource rules. Missing sources do not hide an existing ruling.
+
+The threshold remains an explanation for resolving incoming attacks at the
+table. It does not infer an opponent's class, change outgoing flanking/sneak
+attack selections, or alter basic Dexterity retention. Additional class-specific
+exceptions still require source-backed policies; this is not a universal feature
+override or a completed audit of all gestalt shared abilities.
+
+Fourteen automated cases cover unchanged standard/parallel behavior, explicit
+yes/no decisions, malformed/incompatible imports, cancelled and stale reviews,
+replacements, advancement, stable identity, focus loss/restoration, independent
+benefits, native files and fresh browser storage. They preserve paired training,
+preparations, injuries, notes and expenditure. React rendering checks the actual
+form, automatic-control absence, applied provenance/threshold, stale decisions,
+removed sources and suspended focus. Interactive browser acceptance remains an
+open gate; rendering checks are not a substitute. No private player saves were
+used or modified.
+
+Validation: **876 tests passed**, including all fourteen new cases; TypeScript
+and the GitHub Pages and Worker production builds passed. Existing bundle,
+script, plugin-timing and route-classification notices remain. The standing user
+instruction to deploy every finished patch is now recorded in `AGENTS.md`.
