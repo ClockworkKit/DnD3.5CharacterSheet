@@ -1,7 +1,7 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-05 from the user's supplied goal and the GitHub checkout at
-`4e8d0b4`, with the turning-feat continuation below. Read [the rules policy](rules-policy.md) and
+Updated 2026-11-06 after desktop continuation from Cloud Astra's merged
+`88c9d83`, including the standard prestige form correction below. Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
 **The overall goal remains open.** This page separates currently verified
@@ -244,13 +244,38 @@ levels appear through the existing resource guidance. The first three tests
 reproduced the omissions before the fix. Final validation is recorded in the
 implementation record; interactive browser acceptance remains open.
 
+## Desktop continuation: standard prestige target form (2026-11-06)
+
+The standard level-up form displayed custom prestige target choices but did not
+send them to `gainLevel`. An interactive reproduction selected Sorcerer after a
+previous Wizard grant; it incorrectly advanced Wizard again. The button now
+submits all displayed choices, including explicit no-advancement selections.
+An empty choice blocks advancement with an inline error; failed validation keeps
+the draft for correction. Successful advancement clears transient targets and
+the next die input. Existing saved targets are not rewritten or guessed.
+
+Local browser verification covered the failing-before/passing-after target
+change, blank-selection rejection, explicit opt-out, saved per-level history,
+export and full reload. Inspection of the actual browser export confirmed
+unchanged historical training, preparations, spent slots, notes and injury.
+Additional browser smoke tests created a standard Fighter and Cleric // Wizard,
+advanced them, saved and reloaded, and checked paired cancellation/stale-review
+protection. These used synthetic characters on a separate localhost origin.
+
+All 887 existing regression tests, TypeScript and both Pages/Worker builds passed.
+This is a form-wiring correction, not a new rules interpretation. See the
+implementation record for the exact reproduction and validation scope. The
+complete browser acceptance matrix below remains open.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
    changing each side during level-up, prestige target review, cancel/stale review,
    custom-table editing, saving/reloading, export/import and character switching.
-   No browser-control tool is available in this cloud session. Do not mark this
-   gate passed based on React rendering or storage tests.
+   The cloud session lacked browser control; desktop has now completed the
+   limited interactive scenarios recorded above. Full acceptance, including
+   custom-table editing, both-side class changes and the broader prestige matrix,
+   is still pending. Do not mark this gate passed based on rendering/storage tests.
 2. Custom own-class resources and explicit prestige advancement schedules now
    use the existing engine and reviewed editor. Exceptional formulas, conditional
    grants/targets, and the broader source-specific feature audit remain unfinished. Manual pools, notes and counters remain supported.

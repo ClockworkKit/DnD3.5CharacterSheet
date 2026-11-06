@@ -1107,3 +1107,57 @@ saves were read or changed.
 Validation: **887 tests passed**, including eleven new regressions. TypeScript,
 the GitHub Pages build and the Worker production build passed. The existing
 script, plugin-timing and route-classification build notices remain.
+
+## 2026-11-06: Desktop continuation and standard prestige form targets
+
+Continued from Cloud Astra's merged `88c9d83` (PRs #32-34) after a clean
+fast-forward. The browser audit reproduced a gap between the tested advancement
+engine and its standard level-up form: the target selector updated component
+state, but the Gain Level callback omitted the fourth `gainLevel` argument.
+This silently repeated a previous target, or failed when no default existed.
+
+Reproduction: a synthetic Wizard 3 / Sorcerer 3 / custom Scholar 1 has a recorded
+first prestige grant to Wizard, giving caster levels 4 and 3. With enough XP for
+actual level 8, select the Scholar's next level and choose Sorcerer. Before the
+fix, the saved result was Wizard CL5 / Sorcerer CL3. After the fix it is CL4 / CL4,
+and the history lists Wizard at Scholar 1 and Sorcerer at Scholar 2. This uses a
+synthetic explicit advancement schedule, not a claimed published class.
+
+The callback now passes every displayed target, keeping an explicit blank
+distinct from the default and `none` distinct from a missing choice. Missing or
+invalid input reports an inline error; the existing atomic engine and edit clone
+preserve the sheet on failure. Successful advancement resets transient targets
+and the next die input; changing class/target clears the old error. The existing
+character-keyed form continues to isolate drafts. No save migration, change to
+prestige eligibility, target policy, progression formulas or RAW interpretation
+was introduced. Already misassigned historical targets require player review;
+this patch cannot infer their intended destination.
+
+Interactive tests used the local development site and disposable characters,
+without reading or modifying production player storage:
+
+- Confirmed the target bug before the fix. Afterward an explicit blank blocked
+  advancement and displayed an error; selecting Sorcerer then advanced correctly.
+- Exported the actual corrected browser character and checked earlier training,
+  preparations, spell expenditure, notes, both recorded targets and three points
+  of injury against its pre-advancement synthetic export. A full reload retained
+  level 8, CL4/CL4 and 39/42 HP.
+- A separate original copy selected "No advancement this level": both CL4/CL3
+  remained unchanged, and Scholar 2 recorded No advancement without changing
+  the earlier Wizard grant.
+- Created a standard Human Fighter with default recorded HP. CON15 produced
+  12 initial HP; after taking three damage and entering a d10 roll of 7, level 2
+  saved and reloaded at 18/21 HP.
+- Created Cleric 1 // Wizard 1 through the actual dialog. Cancel left the level
+  unapplied; changing injury after preview disabled stale confirmation. Refresh
+  and confirmation produced actual level 2 with both classes/CLs at 2. Save and
+  reload retained 8/12 HP (four damage) and separate traditions. This character's
+  rolled Wisdom was below casting eligibility; its cleric slot limitation was
+  retained, not overridden to manufacture usable spells.
+
+All **887 existing tests passed**, along with TypeScript and both Pages/Worker
+builds. Existing script, bundle-size, plugin-timing and route notices remain.
+The full browser acceptance matrix, exceptional class rules, racial-HD occupancy
+and reviewed mode conversion remain unfinished; this is partial browser evidence,
+not completion of the overall goal. No private exports or real player saves were
+used. The rules policy and printed-table default/fractional option remain intact.
