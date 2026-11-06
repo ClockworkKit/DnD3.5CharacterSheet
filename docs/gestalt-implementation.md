@@ -1161,3 +1161,63 @@ The full browser acceptance matrix, exceptional class rules, racial-HD occupancy
 and reviewed mode conversion remain unfinished; this is partial browser evidence,
 not completion of the overall goal. No private exports or real player saves were
 used. The rules policy and printed-table default/fractional option remain intact.
+
+## 2026-11-06: Shared Wizard/Sorcerer lists and custom paired browser checks
+
+The prior standard prestige form fix (`1d71484`) is deployed: Pages run
+`42205433258` succeeded, and its live entry bundle was checked against the CI
+build output. This continuation then exercised the actual custom-class creation
+and paired advancement forms using only synthetic localhost characters.
+
+The catalog exposed a separate defect: selecting `Wizard` matched only literal
+Wizard-only metadata, omitting shared `Sorcerer / Wizard` entries. Magic Missile
+returned no matches. Adding a shared spell to that tradition could also fall
+through to another class's lowest level (for example, Bard 3 for Scrying).
+`spellListLevel` now resolves an explicit Wizard/Sorcerer entry first, then the
+shared entry. Filtering, level filtering, initial browsing and adding spells use
+the same lookup. Other list names remain exact, Wizard-only entries do not become
+Sorcerer entries, and a shared filter does not absorb class-only entries. Level 0
+is a valid result. The catalog and existing saved spells are not mutated.
+
+Rules evidence: the [SRD Sorcerer and Wizard class descriptions](https://www.d20srd.org/srd/classes/sorcererWizard.htm) identify their common
+sorcerer/wizard spell list. The bundled SRD records Magic Missile at shared level
+1, Light at shared level 0, and Scrying at shared level 4/Bard level 3. This is
+list resolution, not an inferred casting identity for arbitrary custom classes.
+Previously saved incorrect levels require review; this patch does not guess
+whether a saved level is an intentional adjustment.
+
+Interactive acceptance evidence:
+
+- Created a two-row synthetic `QA Arcanist` through the New character custom
+  editor, with explicit Wizard-list INT prepared casting, d8, medium BAB, poor
+  saves and two skill points. This is test configuration, not a published class.
+  Paired it with Fighter using INT16/CON14 and recorded-roll HP.
+- Reproduced zero Magic Missile matches before the fix; after the fix added it
+  from the Wizard filter, set two preparations and one spent use, and inflicted
+  three points of damage on the synthetic sheet.
+- At actual level 2 changed the left side to Rogue while advancing QA Arcanist
+  to 2; recorded d8 roll 5. At actual level 3 changed the right side to Wizard
+  while advancing Rogue to 2; recorded d6 roll 4. The resulting pairs are
+  Fighter/QA Arcanist, Rogue/QA Arcanist, Rogue/Wizard. HP progressed from 9/12
+  through 16/19 to 22/25. The custom caster stayed CL2 and Wizard began at CL1.
+- Edited the custom level-2 first-level base slots from two to three with an
+  updated synthetic source note. A character-name change invalidated the review
+  and disabled Apply. Refreshing and applying changed only the reviewed custom
+  capacity (including INT bonus, three to four); preparations, expenditure,
+  independent Wizard casting and injury stayed intact.
+- Saved, reloaded and exported the actual browser character. Assertions on that
+  export confirmed three paired levels, rolls [10,5,4], HP22/25, caster levels
+  2/1, Magic Missile level1/prepared2/spent1 and the revised custom row. Imported
+  this native export through the actual Import control, saved and fully reloaded;
+  the browser retained the same state and one remaining prepared casting.
+- Filtered the library to Wizard level4, added the exact Scrying entry and
+  verified the spellbook placed it at level4. Casting remained unavailable with
+  the existing no-daily-slots explanation; no slot or level was fabricated.
+
+Three new automated regressions cover every shared base-catalog spell, explicit
+class overrides including cantrips, exclusive entries, unrelated lists and
+nonmutation. All **890 tests passed**, together with TypeScript and both the
+Pages and Worker production builds. Existing script, bundle-size, plugin-timing
+and route-classification build notices remain.
+No private character exports or production saves were used. The larger browser
+matrix and the remaining goal gates stay open.

@@ -2,6 +2,13 @@ import type {Spell,Character,Caster} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
 import {addClericDomainLists} from './cleric-domains.ts';
 export type SpellExtension={id:string,levels:Record<string,number>,sources:string[],spell?:Spell};
+/** Wizard and Sorcerer lists include their shared list, but not each other's exclusive entries. */
+export function spellListLevel(spell:Pick<Spell,'levels'>,list:string):number|undefined{
+ const direct=spell.levels[list];
+ if(direct!==undefined)return direct;
+ if(list==='Wizard'||list==='Sorcerer')return spell.levels['Sorcerer / Wizard'];
+ return undefined;
+}
 export function expandSpellCatalog(base:Spell[],extensions:SpellExtension[]):Spell[]{
  const map=new Map(base.map(s=>[s.id,{...s,levels:{...s.levels}}]));
  for(const x of extensions){const s=map.get(x.id)||x.spell;if(!s)continue;const levels={...s.levels,...x.levels};map.set(x.id,{...s,levels,levelText:Object.entries(levels).map(([k,v])=>k+' '+v).join(', ').slice(0,160)});}

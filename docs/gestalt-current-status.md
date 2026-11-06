@@ -267,15 +267,34 @@ This is a form-wiring correction, not a new rules interpretation. See the
 implementation record for the exact reproduction and validation scope. The
 complete browser acceptance matrix below remains open.
 
+## Desktop continuation: shared spell lists and custom paired browser QA (2026-11-06)
+
+Wizard and Sorcerer catalog filters now include the shared Sorcerer / Wizard
+list. Adding a spell uses its destination tradition's level before other lists;
+explicit class-only entries still take precedence and remain exclusive. No
+existing saved spell levels, preparations or expenditures are rewritten.
+
+Interactive testing created a synthetic custom prepared caster paired with
+Fighter, changed the left side to Rogue and later the right side to Wizard,
+and reviewed an edit to the earned custom casting table. Stale review was
+blocked after changing the character name. Save, reload, native export and
+reimport preserved three points of damage, recorded rolls, independent caster
+levels and Magic Missile's two preparations/one spent use. The library now
+finds Magic Missile on the Wizard list and adds Scrying at Wizard level 4.
+The low-level character still cannot cast Scrying. See the implementation
+record for the exact scope. All **890 tests passed**, as did TypeScript and both
+the Pages and Worker production builds.
+
 ## Remaining work and explicit limits
 
 1. Interactive browser QA is still required: standard and paired creation,
    changing each side during level-up, prestige target review, cancel/stale review,
    custom-table editing, saving/reloading, export/import and character switching.
    The cloud session lacked browser control; desktop has now completed the
-   limited interactive scenarios recorded above. Full acceptance, including
-   custom-table editing, both-side class changes and the broader prestige matrix,
-   is still pending. Do not mark this gate passed based on rendering/storage tests.
+   interactive scenarios recorded above, including one custom-table edit and
+   changes to each side on successive levels. Character-switch draft isolation
+   and the broader prestige/custom-profile matrix still need interactive checks.
+   Do not mark the entire gate passed based on rendering/storage tests.
 2. Custom own-class resources and explicit prestige advancement schedules now
    use the existing engine and reviewed editor. Exceptional formulas, conditional
    grants/targets, and the broader source-specific feature audit remain unfinished. Manual pools, notes and counters remain supported.
