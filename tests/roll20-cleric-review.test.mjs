@@ -120,3 +120,39 @@ test('restoring the imported domain title reuses its identity and expenditure',a
  assert.equal(fixed.casters.length,c.casters.length);assert.equal(linked.id,before.id);
  assert.equal(linked.slots[1].used,2);assert.equal(linked.spells.find(s=>s.spellId==='enlarge-person').spent,1);
 });
+
+test('contradictory class evidence blocks specialty review without changing the save', () => {
+  for (const [field, values] of [['class2', ['Fighter', 'Rogue']], ['level1', [1, 2]]]) {
+    const source = raw();
+    source.attributes.push(...values.map(current => ({name: field, current, max: ''})));
+    const c = importRoll20(source).character;
+    const before = save(c);
+    assert.equal(axeBrotherImportEvidence(c), null);
+    assert.throws(() => repair(c), /uniquely identify/);
+    assert.deepEqual(save(c), before);
+  }
+});
+
+test('a leveled cleric keeps a linked domain title, full personal notes and spent uses on review', async () => {
+  const c = await load(importRoll20(raw({class1: 'Cleric', level1: 2})).character);
+  c.classLevels[0].level = 5;
+  recompute(c);
+  c.hp -= 3;
+  const domain = c.casters.find(p => p.casting?.domain);
+  domain.name = 'My domain journal';
+  domain.notes = '  ' + 'x'.repeat(3996) + '  ';
+  domain.slots[1].used = 2;
+  const history = save(c.automation.history), injury = c.maxHp - c.hp;
+  const fixed = await load(repair(c));
+  const linked = fixed.casters.find(p => p.id === domain.id);
+  assert.equal(linked.name, domain.name);
+  assert.equal(linked.notes, domain.notes);
+  assert.equal(linked.list, axeBrotherDomainList);
+  assert.equal(linked.slots[1].used, 2);
+  assert.equal(linked.spells.find(k => k.spellId === 'enlarge-person').spent, 1);
+  assert.equal(linked.level, 5);
+  assert.deepEqual(save(fixed.automation.history), history);
+  assert.equal(fixed.maxHp - fixed.hp, injury);
+  assert.ok(fixed.roll20Import.report.warnings.some(s => s.includes('Elemental Swarm')));
+  assert.deepEqual(save(repair(fixed)), save(fixed));
+});

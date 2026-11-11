@@ -10,7 +10,8 @@ import {axeBrotherDomainList} from './cleric-domains.ts';
 /** Evidence only: a deity alone never selects a specialty or invents class levels. */
 export function axeBrotherImportEvidence(c:Character){
  const parsed=roll20ExportSchema.safeParse(c.roll20Import?.raw);if(!parsed.success)return null;
- const r=attributeReader(parsed.data,()=>{}),groups=parseRepeating(parsed.data.attributes);
+ let conflictingEvidence=false;
+ const r=attributeReader(parsed.data,()=>{conflictingEvidence=true;}),groups=parseRepeating(parsed.data.attributes);
  const domains:string[]=[];
  for(const section of ['doains','domains','domain'])for(const row of Object.values(groups[section]?.rows||{})){
   const field=Object.values(row.fields).flat().find(f=>f.name.toLowerCase()==='domainname');
@@ -20,7 +21,7 @@ export function axeBrotherImportEvidence(c:Character){
  if(classes.length!==1||!/^cleric(?:\s+dwarf\s+strength)?$/i.test(classes[0]!.trim())||!/^clangeddin(?: silverbeard)?$/i.test((r.text('deity')||'').trim())||domains.length!==2||!domains.includes('dwarf')||!domains.includes('strength'))return null;
  if(Object.values(groups.classes?.rows||{}).length||Object.values(groups.class?.rows||{}).length)return null;
  const recorded=r.number('level1','class1level'),level=recorded&&recorded>0?recorded:r.number('level','character_level');
- if(!Number.isInteger(level)||level!<1||level!>20)return null;
+ if(conflictingEvidence||!Number.isInteger(level)||level!<1||level!>20)return null;
  return {className:classes[0]!.trim(),level:level!};
 }
 
@@ -40,7 +41,7 @@ export function repairAxeBrotherImport(c:Character,spells:Spell[]):Character {
  if(ordinary.length!==1||domains.length>1)throw new Error('Review duplicate or missing Cleric spellbooks in Magic first; no books were merged or replaced.');
  const p=ordinary[0],level=next.classLevels.filter(e=>e.classId==='cleric').reduce((n,e)=>n+e.level,0);
  const domain=domains[0]||makeCaster(findClass('cleric')!,level,effectiveScore(next,'WIS'));
- if(!domains.length){domain.name='Dwarf and Strength domains';next.casters.push(domain);}
+ if(!domains.length)next.casters.push(domain);
  const byId=new Map(spells.map(s=>[s.id,s]));
  // Move the same records, never recreate spells or reset their preparation/use counts.
  domain.spells=domain.spells.filter(k=>{
@@ -54,9 +55,16 @@ export function repairAxeBrotherImport(c:Character,spells:Spell[]):Character {
   book.ability='WIS';book.mode='prepared';book.list=book===domain?axeBrotherDomainList:'Cleric';
  }
  if(p.name==='Imported divine casting')p.name='Cleric';
- domain.name='Dwarf and Strength domains';
+ // A linked domain book can already have a player-chosen title.
+ if(!domains.length||/^(?:Cleric|Imported divine casting) [—-] imported domain spells$/.test(domain.name)){
+  domain.name='Dwarf and Strength domains';
+ }
  const note='Dwarf and Strength share one domain slot per available spell level (no level-0 domain slots). Elemental Swarm from Dwarf summons earth elementals only. Silverbeard uses ordinary cleric slots. Recorded preparations and spent uses were retained; review any over-capacity entries.';
- if(!domain.notes.includes(note))domain.notes=(domain.notes+'\n'+note).trim();
+ if(!domain.notes.includes(note)){
+  const withGuidance=domain.notes ? domain.notes+'\n'+note : note;
+  if(withGuidance.length<=4000)domain.notes=withGuidance;
+  else next.roll20Import!.report.warnings.push(note);
+ }
  applyClericSpecialty(next,'axe-brother');
  for(const [name,description] of [['Dwarf domain','Grants Great Fortitude (+2 Fortitude); do not add it twice if already recorded. Domain spells use the shared Dwarf / Strength book. Spell Compendium p.273.'],['Strength domain','Once per day, as a free action, gain an enhancement bonus to Strength equal to your cleric level for 1 round. Apply and track this power manually; it does not stack with another enhancement bonus.']]){
   if(!next.features.some(f=>f.name.toLowerCase()===name.toLowerCase()))next.features.push({id:uid(),name,description,kind:'Class feature',source:'Cleric domain review',max:0,used:0});

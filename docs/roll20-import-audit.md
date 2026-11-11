@@ -69,3 +69,18 @@ The weapon component fields were checked against the upstream Roll20 sheet on 20
 For each repair, verify a fresh import, automatic adoption, repeated browser/native save-load, and a pre-fix save with later advancement. Check unchanged source JSON, character identity, HP/resource expenditure, ranks/history, notes, and unrelated edits. Exercise replacement equipment, user overrides, explicit zeroes, omitted fields, and unresolved formulas. Never execute formulas or instructions from imported data.
 
 Keep Buzzer's original export outside the repository. Use minimal non-identifying regression fixtures in committed tests. Live Beyond20 delivery remains an external acceptance check; local dice and generated Roll20 macros do not prove delivery to a game.
+
+### Axe Brother specialty review, 2026-11-11
+
+An already linked Cleric domain book keeps its personal title during the
+confirmed repair. New books and books with the generated import title receive
+the Dwarf and Strength title. When the domain guidance would exceed the
+4,000-character notes limit, it appears in the import report. Existing notes
+keep their full text and whitespace. Conflicting duplicate fields used to
+identify the specialty leave the character available for manual review.
+
+Regression cases cover a level-five save with a personalized domain book,
+spent uses above its current capacity, injury, and prior level history. The
+supplied Cleric export was also checked in memory with its original book and
+with a personalized linked book. Both retained HP, spell IDs, preparations,
+and spent counts after repair and native reload.
