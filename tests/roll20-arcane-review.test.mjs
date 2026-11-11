@@ -6,6 +6,7 @@ import {characterSchema,uid} from '../lib/model.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {recompute} from '../lib/automation.ts';
 import {castingNumbers} from '../lib/advancement.ts';
+import {casterLibraryList} from '../lib/spell-catalog.ts';
 import {castDilettante,factotumNumbers} from '../lib/factotum.ts';
 import {makeDilettanteRoll} from '../lib/factotum-rolls.ts';
 import {resetDaily} from '../lib/rules.ts';
@@ -42,6 +43,10 @@ test('normal Sorcerer review removes source offsets but not spells, notes, use c
  for(const key of ['classLevels','scores','hp','maxHp','notes','gear','skills'])assert.deepEqual(save(fixed[key]),before[key],key);
  assert.deepEqual(save(fixed.automation.history),before.automation.history);
  assert.deepEqual(save(await load(fixed)),save(fixed));assert.equal(repairSorcererImport(fixed),fixed);
+ const reopenedBook = (await load(fixed)).casters[0], savedBook = save(reopenedBook);
+ assert.equal(casterLibraryList(reopenedBook), 'Sorcerer');
+ assert.equal(reopenedBook.list, 'Sorcerer / Wizard');
+ assert.deepEqual(save(reopenedBook), savedBook);
  fixed.classLevels[0].level=6;recompute(fixed);assert.equal(fixed.casters[0].level,6);assert.equal(fixed.casters[0].slots[1].used,4);
 });
 

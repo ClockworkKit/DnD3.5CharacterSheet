@@ -2,6 +2,14 @@ import type {Spell,Character,Caster} from './model.ts';
 import {effectiveScore} from './ancestry.ts';
 import {addClericDomainLists} from './cleric-domains.ts';
 export type SpellExtension={id:string,levels:Record<string,number>,sources:string[],spell?:Spell};
+/** Resolve the common saved list for a linked class without changing its saved book. */
+export function casterLibraryList(caster: Pick<Caster, 'list' | 'casting'>): string {
+  if (caster.list === 'Sorcerer / Wizard' && !caster.casting?.domain) {
+    if (caster.casting?.classId === 'sorcerer') return 'Sorcerer';
+    if (caster.casting?.classId === 'wizard') return 'Wizard';
+  }
+  return caster.list;
+}
 /** Wizard and Sorcerer lists include their shared list, but not each other's exclusive entries. */
 export function spellListLevel(spell:Pick<Spell,'levels'>,list:string):number|undefined{
  const direct=spell.levels[list];

@@ -1221,3 +1221,30 @@ Pages and Worker production builds. Existing script, bundle-size, plugin-timing
 and route-classification build notices remain.
 No private character exports or production saves were used. The larger browser
 matrix and the remaining goal gates stay open.
+
+## 2026-11-11: Linked arcane spellbooks
+
+Built-in Wizard and Sorcerer books, including books restored by the confirmed
+Roll20 Sorcerer review, store the common list name. The shared-only library
+filter hid class-specific catalog entries from these books. The catalog now uses
+the recorded casting class when opening that list and choosing the level of a new
+spell. The existing shared-list lookup supplies common spells. Explicit lists,
+domain books and unlinked traditions continue to use the saved list directly.
+Renaming a tradition has no effect on class identity. Players can choose other
+filters in the library. The shared base list is documented in the
+[SRD class descriptions](https://www.d20srd.org/srd/classes/sorcererWizard.htm).
+Specific levels here come from catalog metadata, including entries labeled for
+source review.
+
+On the synthetic paired sheet, the older empty Wizard book opened with the
+shared-only filter. After the fix it opened with Wizard selected. Adding
+Backlash used its recorded Wizard level 2, and the CL1 character had zero slots
+available there. On a separate multiclass sheet, Browse opened with Sorcerer
+selected and showed the Sorcerer-only Arcane Fusion entry at level 5.
+
+The supplied Sorcerer export was imported, reviewed and reloaded locally in
+memory. Its book retained CL2 and found Arcane Fusion at level 5. Comparing the
+whole character before and after lookup confirmed the operation was read-only.
+Regression coverage includes an already leveled import with spent slots, named
+traditions, domain and custom lists, and different class levels on one catalog
+entry. The full automated suite passed all 892 tests.

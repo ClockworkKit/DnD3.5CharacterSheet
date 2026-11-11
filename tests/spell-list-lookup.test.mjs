@@ -1,9 +1,37 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
-import {spellListLevel} from '../lib/spell-catalog.ts';
+import {casterLibraryList, expandSpellCatalog, spellListLevel} from '../lib/spell-catalog.ts';
+import {findClass, makeCaster} from '../lib/classes.ts';
 
 const spells=JSON.parse(readFileSync(new URL('../public/data/spells.json',import.meta.url),'utf8'));
+test('linked default books find their class entries as well as shared spells', () => {
+  const extensions = JSON.parse(readFileSync(new URL('../public/data/supplemental-spells.json', import.meta.url)));
+  const catalog = expandSpellCatalog(spells, extensions);
+  const wizard = makeCaster(findClass('wizard'));
+  const sorcerer = makeCaster(findClass('sorcerer'));
+  const fusion = catalog.find(spell => spell.name === 'Arcane Fusion');
+  const backlash = catalog.find(spell => spell.name === 'Backlash');
+  assert.equal(wizard.list, 'Sorcerer / Wizard');
+  assert.equal(sorcerer.list, wizard.list);
+  assert.equal(spellListLevel(fusion, casterLibraryList(sorcerer)), 5);
+  assert.equal(spellListLevel(fusion, casterLibraryList(wizard)), undefined);
+  assert.equal(spellListLevel(backlash, casterLibraryList(wizard)), 2);
+  assert.equal(spellListLevel(backlash, casterLibraryList(sorcerer)), 4);
+});
+
+test('list lookup uses recorded class identity and respects domain, custom and manual lists', () => {
+  const book = makeCaster(findClass('wizard'));
+  book.name = 'Personal grimoire';
+  assert.equal(casterLibraryList(book), 'Wizard');
+  for (const list of ['Strength', 'Sorcerer', 'Campaign list']) {
+    assert.equal(casterLibraryList({...book, list}), list);
+  }
+  const shared = 'Sorcerer / Wizard';
+  assert.equal(casterLibraryList({...book, casting: undefined, name: 'Wizard'}), shared);
+  assert.equal(casterLibraryList({...book, casting: {...book.casting, domain: true}}), shared);
+  assert.equal(casterLibraryList({...book, casting: {...book.casting, classId: 'custom-wizard'}}), shared);
+});
 test('Wizard and Sorcerer filters include shared SRD spells at their recorded levels',()=>{
  const missile=spells.find(s=>s.id==='magic-missile'),light=spells.find(s=>s.id==='light');
  for(const list of ['Wizard','Sorcerer','Sorcerer / Wizard']){

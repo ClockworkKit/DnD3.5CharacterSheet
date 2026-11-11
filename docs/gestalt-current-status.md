@@ -287,13 +287,20 @@ the Pages and Worker production builds.
 
 ## Remaining work and explicit limits
 
+The November 6 spellbook release reached Pages in run [42258109599](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/runs/42258109599).
+The live entry and Magic files matched the CI build. Two subsequent browser
+checks switched away from a reviewed custom-class edit and a pending paired
+level-up. Returning to the original sheet retained its saved custom table,
+level 3 and 22/25 HP. Both unconfirmed reviews cleared on switch.
+
 1. Interactive browser QA is still required: standard and paired creation,
    changing each side during level-up, prestige target review, cancel/stale review,
    custom-table editing, saving/reloading, export/import and character switching.
    The cloud session lacked browser control; desktop has now completed the
    interactive scenarios recorded above, including one custom-table edit and
-   changes to each side on successive levels. Character-switch draft isolation
-   and the broader prestige/custom-profile matrix still need interactive checks.
+   changes to each side on successive levels and character switching during the
+   two reviews described above. The broader prestige/custom-profile matrix
+   still needs interactive checks.
    Do not mark the entire gate passed based on rendering/storage tests.
 2. Custom own-class resources and explicit prestige advancement schedules now
    use the existing engine and reviewed editor. Exceptional formulas, conditional
