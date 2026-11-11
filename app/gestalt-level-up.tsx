@@ -105,11 +105,26 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <h4>New feat and ability choices</h4>
     {review.summary.choices.length?<ul>{review.summary.choices.map(choice=><li key={choice.key}>{choice.label}</li>)}</ul>:<p>No new feat or ability-score choices at this level.</p>}
     <p className="fine">Choices and skill points are allocated after confirmation; no feat or ability increase is selected automatically.</p>
+    {review.summary.featureCapacities.length>0&&<>
+     <h4>Feature counters</h4>
+     <ul>{review.summary.featureCapacities.map(f=><li key={f.id}>
+      {f.name} — {f.before===undefined?'new counter':`previous maximum ${f.before}`},
+      {' '}{f.after===undefined?'no longer active':`new maximum ${f.after}`}. Already spent {f.used}.
+     </li>)}</ul>
+    </>}
     {review.summary.castingTargets.length>0&&<><h4>Prestige advancement this level</h4><ul>{review.summary.castingTargets.map(target=><li key={target.classId+':'+target.kind}>{findClass(target.classId,c)?.name} ({target.kind==='psi'?'manifesting':target.kind==='divine'?'divine':'spellcasting'}): {target.traditionId==='none'?'No advancement':(target.kind==='psi'?c.psionics:c.casters).find(p=>p.id===target.traditionId)?.name}.</li>)}</ul></>}
     {(review.summary.casting.length>0||review.summary.psionics.length>0)&&<>
      <h4>Resulting spellcasting and psionics</h4>
-     <ul>{review.summary.casting.map(p=><li key={p.id}>{p.name}: caster level {p.level}; daily slots by spell level: {p.slots.map((max,i)=>i+': '+max).join(', ')}.</li>)}
-      {review.summary.psionics.map(p=><li key={p.id}>{p.name}: manifester level {p.level}; maximum power points {p.points}.</li>)}</ul>
+     <ul>{review.summary.casting.map(p=><li key={p.id}>
+      <strong>{p.name}</strong> · Caster level {p.level}
+      <div>Daily slots by spell level {p.slots.map((max,i)=>`${i}: ${max}`).join(', ')}</div>
+      {p.known&&<div>Spells known allowance by spell level {p.known.map((max,i)=>`${i}: ${max}`).join(', ')}</div>}
+     </li>)}
+      {review.summary.psionics.map(p=><li key={p.id}>
+       <strong>{p.name}</strong> · Manifester level {p.level} · Daily power-point contribution {p.points}
+       {p.known!==undefined&&<div>Powers known allowance {p.known}</div>}
+       {p.maxPowerLevel!==undefined&&<div>Maximum power level {p.maxPowerLevel}</div>}
+      </li>)}</ul>
      <p className="fine">Check each tradition before confirming. Prestige targets are recorded for this level only; earlier automatic gains are retained. Spent slots, power points and uses are not refreshed.</p>
     </>}
     <div className="button-row"><Btn className="primary" onClick={confirm}>Confirm paired level {review.summary.level}</Btn><Btn onClick={clearReview}>Cancel level review</Btn></div>

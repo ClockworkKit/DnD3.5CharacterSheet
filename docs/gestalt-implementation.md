@@ -1248,3 +1248,24 @@ whole character before and after lookup confirmed the operation was read-only.
 Regression coverage includes an already leveled import with spent slots, named
 traditions, domain and custom lists, and different class levels on one catalog
 entry. The full automated suite passed all 892 tests.
+
+## Paired level review of class resources
+
+The confirmation screen compares active feature counters by their saved IDs.
+It shows additions, removals and changes to maximum capacity alongside the
+amount already spent. Each casting tradition with a spells-known table shows
+its own allowance. Manifesting traditions show their individual contributions
+to the shared reserve and their class-table allowances for powers known and
+maximum power level when recorded. These are read-only views of the proposed
+character. They do not select spells, learn powers or refresh uses.
+
+The Bard // Psion regression starts both classes on an existing paired sheet,
+spends bardic music, a spell slot and a power point, and advances both classes
+again. It checks the proposed limits, then confirms and reloads the character
+to verify that the renamed counter, its notes and all three expenditures survive.
+
+In the local browser the synthetic level-3 multiclass sheet previewed Bard 1
+// Psion 1 at actual level 4. It showed one bardic music use, four bard cantrips
+known, three powers known, maximum power level 1 and a three-point contribution
+to the daily reserve. Wizard and the custom arcanist retained their independent
+caster levels of 1 and 2. Cancelling closed the review. All 895 tests passed.

@@ -1,7 +1,7 @@
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
-import {assertCustomResourceTables,advancementNumbers,castingDefinition,manifestDefinition} from './advancement.ts';
+import {assertCustomResourceTables,advancementNumbers,castingDefinition,castingNumbers,manifestDefinition,psionicProgression} from './advancement.ts';
 import {effectiveScore} from './ancestry.ts';
 import {skillIntelligence} from './level-history.ts';
 import {characterGestaltRows,gestaltBonusLedger,type GestaltProgression} from './gestalt-progression.ts';
@@ -63,6 +63,19 @@ export function initializeClassResources(c:Character,def:ClassDefinition,level:n
 export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};
 export type GestaltLevelPreview=ReturnType<typeof previewGestaltLevel>;
 
+function featureCapacityChanges(before:Character,after:Character){
+ const oldFeatures=new Map(before.features.map(feature=>[feature.id,feature]));
+ const newFeatures=new Map(after.features.map(feature=>[feature.id,feature]));
+ const changes=[];
+ for(const id of new Set([...oldFeatures.keys(),...newFeatures.keys()])){
+  const previous=oldFeatures.get(id),current=newFeatures.get(id);
+  if(previous?.max===current?.max)continue;
+  if(!previous?.max&&!current?.max&&!previous?.used&&!current?.used&&!previous?.formula&&!current?.formula)continue;
+  changes.push({id,name:(current??previous)!.name,before:previous?.max,after:current?.max,used:current?.used??previous!.used});
+ }
+ return changes;
+}
+
 /** Read-only, atomic preview. Both new classes must qualify BEFORE this level. */
 function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  if(c.advancementMode!=='gestalt')throw new Error('Paired advancement requires an existing gestalt character.');
@@ -107,8 +120,13 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   bab:{before:c.bab,after:next.bab},saves:{before:{fort:c.saves.fort.base,ref:c.saves.ref.base,will:c.saves.will.base},after:{fort:next.saves.fort.base,ref:next.saves.ref.base,will:next.saves.will.base}},
   bonusDecision:gestaltBonusLedger(rows).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
   milestones:definitions.map((def,i)=>({classId:def.id,name:def.name,level:entries[i].level,text:effectiveClassMilestone(next,def.id,def.levels.find(r=>r.level===entries[i].level)!.special,entries[i].level)})),
-  casting:next.casters.map(p=>({id:p.id,name:p.name,level:p.level,slots:p.slots.map(s=>s.max)})),
-  psionics:next.psionics.map(p=>({id:p.id,name:p.name,level:p.level,points:p.max})),
+  featureCapacities:featureCapacityChanges(c,next),
+  casting:next.casters.map(p=>({id:p.id,name:p.name,level:p.level,slots:p.slots.map(s=>s.max),known:castingNumbers(next,p).known})),
+  psionics:next.psionics.map(p=>{
+   const progression=psionicProgression(next,p).progression;
+   const row=manifestDefinition(p,next)?.levels.find(r=>r.level===progression);
+   return {id:p.id,name:p.name,level:p.level,points:p.max,known:row?.powersKnown,maxPowerLevel:row?.powerLevel};
+  }),
  }};
 }
 

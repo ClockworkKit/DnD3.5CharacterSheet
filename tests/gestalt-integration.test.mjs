@@ -164,6 +164,40 @@ test('both sides can change classes and initialize independent casting and manif
  assert.deepEqual(c.classLevels.map(e=>e.level),[1,1,2,2]);assert.equal(c.automation.history.length,3);
 });
 
+test('paired review previews class allowances and counter changes without refreshing spent resources',async()=>{
+ const c=paired([['fighter','rogue']]);
+ c.experience=3000;
+ const selection={left:'bard',right:'psion',hitDieRoll:4};
+ const first=previewGestaltLevel(c,selection);
+ const added=first.summary.featureCapacities.find(f=>f.name==='Bardic music');
+ assert.equal(added.before,undefined);
+ assert.equal(added.after,1);
+ applyReview(c,first);
+ const music=c.features.find(f=>f.ruleId==='daily:Bardic music');
+ music.name='My performances';
+ music.description+=' Personal performance notes.';
+ music.used=1;
+ c.psionics[0].spent=1;
+ c.casters[0].slots[0].used=1;
+ const original=structuredClone(c),review=previewGestaltLevel(c,selection);
+ assert.deepEqual(c,original);
+ assert.deepEqual(review.summary.featureCapacities.find(f=>f.id===music.id),{
+  id:music.id,name:music.name,before:1,after:2,used:1,
+ });
+ assert.deepEqual(review.summary.casting[0].known.slice(0,2),[5,2]);
+ const manifesting=review.summary.psionics[0];
+ assert.equal(manifesting.known,5);
+ assert.equal(manifesting.maxPowerLevel,1);
+ applyReview(c,review);
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+ const counter=loaded.features.find(f=>f.id===music.id);
+ assert.equal(counter.max,2);
+ assert.equal(counter.used,1);
+ assert.equal(counter.description,music.description);
+ assert.equal(loaded.psionics[0].spent,1);
+ assert.equal(loaded.casters[0].slots[0].used,1);
+});
+
 test('invalid paired choices, dice, XP and mode leave the complete character unchanged',()=>{
  const base=paired(repeat('fighter','wizard',2));base.experience=3000;
  const invalid=[{left:'fighter',right:'fighter',hitDieRoll:3},{left:'fighter',right:'missing',hitDieRoll:3},{left:'Fighter',right:'wizard',hitDieRoll:3},
