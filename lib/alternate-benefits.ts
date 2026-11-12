@@ -4,6 +4,7 @@ import {combatExpertiseAmount} from './combat-options.ts';
 import {alternateActionActive} from './alternate-actions.ts';
 import {selectedMonkStyle,monkStyleBonus} from './alternate-grants.ts';
 import type {Character} from './model.ts';
+import {psionDisciplineRules} from './psion-disciplines.ts';
 import {effectiveScore} from './ancestry.ts';
 import type {BonusTerm} from './effects.ts';
 import {activeAlternateFeatures,alternateClassLevel,alternateSettings,hasAlternateFeature} from './alternate-features.ts';
@@ -75,7 +76,7 @@ export function alternateTerms(c:Character,target:string,context:Record<string,s
 }
 
 export function alternateClassSkill(c:Character,classId:string,name:string,ordinary:boolean){
- let result=ordinary;
+ let result=ordinary||(classId==='psion'&&!!c.psionDiscipline&&psionDisciplineRules[c.psionDiscipline].skills.includes(name));
  for(const d of activeAlternateFeatures(c).filter(d=>d.classId===classId&&d.id.includes('-skilled-city-dweller-'))){const [lost,gained]=alternateSettings(c,d.id).choice.split(' → ');if(name===lost)result=false;if(name===gained)result=true;}
  if(classId==='spellthief'&&hasAlternateFeature(c,'spellthief-trickster')&&['Appraise','Bluff','Disable Device','Escape Artist','Hide','Jump','Move Silently','Open Lock','Search','Swim','Tumble'].includes(name))result=false;
  if(classId==='fighter'&&hasAlternateFeature(c,'fighter-golarion-fighter')&&['Diplomacy','Gather Information','Knowledge (architecture and engineering)','Knowledge (geography)','Knowledge (nobility and royalty)','Sense Motive'].includes(name))result=true;

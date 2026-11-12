@@ -8,6 +8,7 @@ import {racialStateSchema,emptyRacialState} from './racial-state.ts';
 import {roll20ImportDataSchema} from './roll20-schema.ts';
 import { z } from 'zod';
 import {missingPsionicSkills} from './psionic-skills.ts';
+import {psionDisciplines} from './psion-disciplines.ts';
 import {classSystemsSchema} from './class-systems-schema.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
 import {findClass,makeCaster,makePsionic,applyStartingClass,applyClassTotals} from './classes.ts';
@@ -60,6 +61,7 @@ const characterDataSchema = z.object({
   conditions:z.string().max(2000),notes:note,background:note,
   automation:automationSchema.default({}),effects:z.array(effectSchema).max(100).default([]),
   classLevels:z.array(classLevelSchema).max(30).default([]),
+  psionDiscipline:z.enum(psionDisciplines).optional(),
   customClasses:customClassesSchema.optional(),
   psionics:z.array(psionicSchema).max(15).default([]),
   ancestry:z.object({raceId:short,abilityAdjustments:z.boolean(),traitBonuses:z.boolean(),racialHitDice:count,levelAdjustment:count,ignoreLevelAdjustment:z.boolean(),powerPointsSpent:count,notes:z.string().max(4000)}).default({raceId:'',abilityAdjustments:false,traitBonuses:false,racialHitDice:0,levelAdjustment:0,ignoreLevelAdjustment:false,powerPointsSpent:0,notes:''}),

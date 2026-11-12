@@ -1278,8 +1278,16 @@ prices purchases against the two classes actually taken at the purchase level.
 A level-3 Wizard // Psion can buy six ranks each in Knowledge (arcana) and
 Knowledge (psionics) over three levels. This satisfies the skill requirements
 for the next level of Cerebremancer. Spellcasting, manifesting and the gestalt
-combination-class approval are checked separately. Discipline-specific
-additional class skills still use the existing training override.
+combination-class approval are checked separately.
+Psions can choose their discipline during character creation or in Classes.
+Its additional skills apply at levels that include Psion on either track.
+Older sheets can record a discipline later. Previously purchased ranks keep
+their historical training price through the ledger's per-level overrides.
+The power library opens to the common list and the recorded discipline for
+a Psion. Other listed traditions use their own lists. Players can select a
+different list for exceptional grants. Newly added powers use the selected
+list's level and base cost. Existing known powers keep their recorded values.
+[Power point costs by level](https://www.d20srd.org/srd/psionic/psionicPowersOverview.htm#powerPoints)
 [Psionic skills](https://www.d20srd.org/srd/psionic/skills/overview.htm) ·
 [Psion disciplines and class skills](https://www.d20srd.org/srd/psionic/classes/psion.htm) ·
 [Cerebremancer entry](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm)

@@ -22,6 +22,24 @@ export function skillRankLimit(c:Character,skill:Skill,index:number):number {
   return (index+4)/(sequence.slice(0,index+1).some(row=>classSkillAt(c,skill,row))?1:2);
 }
 
+/** Record the source choice while retaining the price paid for existing ranks. */
+export function setPsionDiscipline(c:Character,discipline:Character['psionDiscipline']){
+ if(c.psionDiscipline===discipline)return;
+ if(!c.classLevels.some(entry=>entry.classId==='psion'&&entry.level>0))throw new Error('Record a Psion level before choosing a discipline.');
+ const proposed={...c,psionDiscipline:discipline};
+ for(const row of hitDieSequence(c)){
+  const history=c.automation.history.find(entry=>entry.key===row.key);
+  if(!history)continue;
+  for(const skill of c.skills){
+   if(!history.skillRanks[skill.id])continue;
+   const previous=classSkillAt(c,skill,row);
+   if(previous!==classSkillAt(proposed,skill,row))history.skillClassOverrides[skill.id]=previous;
+  }
+ }
+ if(discipline)c.psionDiscipline=discipline;
+ else delete c.psionDiscipline;
+}
+
 export function ranksAtLevel(c:Character,skillId:string,index:number):number {
   return hitDieSequence(c).slice(0,index+1).reduce((total,row)=>total+(c.automation.history.find(h=>h.key===row.key)?.skillRanks[skillId]||0),0);
 }

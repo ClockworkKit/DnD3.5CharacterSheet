@@ -2,6 +2,7 @@
 import {ZodError} from 'zod';
 import type {GestaltBonusMethod} from '@/lib/gestalt-schema';
 import {GestaltStartingLevels} from './gestalt-starting-levels';
+import {PsionDisciplineChoice} from './psion-discipline';
 import {MonsterCreation} from './monster-creation';
 import {createNpcSheet} from '@/lib/creatures';
 import {useEffect,useState} from 'react';
@@ -22,17 +23,19 @@ const emptyClassLibrary=()=>createPlayerCharacter({name:'Creation table draft',k
 
 export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boolean,onOpenChange:(open:boolean)=>void,busy:boolean,onCreate:(character:Character)=>Promise<boolean>}){
   const [sheetKind,setSheetKind]=useState<'pc'|'npc'|'monster'>('pc');
+  const [psionDiscipline,setDiscipline]=useState<Character['psionDiscipline']>();
   const [classLibrary,setClassLibrary]=useState(emptyClassLibrary);
   const [classDraftPending,setClassDraftPending]=useState(false);
   useEffect(()=>{if(open){setClassLibrary(emptyClassLibrary());setKind(value=>value.startsWith('custom-')?'Fighter':value);}},[open]);
   const [name,setName]=useState(''),[kind,setKind]=useState('Fighter'),[raceId,setRaceId]=useState('human'),[level,setLevel]=useState(1);
   const [method,setMethod]=useState<AbilityMethod>('4d6-drop-lowest'),[rolls,setRolls]=useState<AbilityRoll[]>([]),[assignment,setAssignment]=useState(startingAssignment),[manual,setManual]=useState(blankScores);
   const [hpMethod,setHpMethod]=useState<Character['automation']['hpMethod']>('rolled'),[specialty,setSpecialty]=useState<Character['clericSpecialty']>('none');
-  useEffect(()=>{if(open){setHpMethod('rolled');setSpecialty('none');}},[open]);
+  useEffect(()=>{if(open){setHpMethod('rolled');setSpecialty('none');setDiscipline(undefined);}},[open]);
   const [advancementMode,setAdvancementMode]=useState<Character['advancementMode']>('standard'),[bonusMethod,setBonusMethod]=useState<GestaltBonusMethod>('printed-table-v1');
   const [pairChoices,setPairChoices]=useState<StartingClassPair[]>([{left:'fighter',right:'wizard'}]);
   const startingPairs=Array.from({length:level},(_,i)=>pairChoices[i]??pairChoices.at(-1)!);
   const hasCleric=advancementMode==='gestalt'?startingPairs.some(p=>p.left==='cleric'||p.right==='cleric'):kind==='Cleric';
+  const hasPsion=advancementMode==='gestalt'?startingPairs.some(p=>p.left==='psion'||p.right==='psion'):kind==='Psion';
   useEffect(()=>{if(open){setAdvancementMode('standard');setBonusMethod('printed-table-v1');setPairChoices([{left:'fighter',right:'wizard'}]);}},[open]);
   const [raceQuery,setRaceQuery]=useState('');
   const [error,setError]=useState(''),[creating,setCreating]=useState(false);
@@ -40,7 +43,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
   async function create(){if(creating||busy||!ready||classDraftPending)return;setCreating(true);setError('');try{
-    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(classLibrary.customClasses?{customClasses:classLibrary.customClasses}:{}),...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
+    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,psionDiscipline:hasPsion?psionDiscipline:undefined,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(classLibrary.customClasses?{customClasses:classLibrary.customClasses}:{}),...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
   }catch(e){setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
@@ -55,6 +58,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
       {advancementMode==='gestalt'&&!!race?.rhd&&<p className="error-box" role="alert">This race has racial Hit Dice. Their placement in gestalt is not yet supported; choose a race without racial Hit Dice or standard advancement.</p>}
       {race?.manualHandling&&<p className="fine">{race.manualHandling.join(' ')} <a href={race.source} target="_blank" rel="noreferrer">Race rules</a></p>}
+      {hasPsion&&<PsionDisciplineChoice value={psionDiscipline} onChange={setDiscipline}/>}
       <section className="creation-abilities" aria-labelledby="starting-abilities"><h3 id="starting-abilities">Ability scores</h3><Choice label="Generation method" value={method} onChange={chooseMethod} options={abilityMethods}/>
         {method!=='manual'&&<><Btn className="primary" onClick={rollScores}><Dices size={18}/>{rolls.length?'Reroll all six scores':'Roll six scores'}</Btn><p className="fine creation-hint">{method==='4d6-drop-lowest'?'Roll four six-sided dice for each score and drop one lowest die.':'Roll three six-sided dice for each score and add them together.'} Assign the results to any abilities.</p></>}
         {rolls.length===6&&<div className="generation-rolls" aria-live="polite">{rolls.map((roll,index)=><div className="generation-roll" key={index}><span>Roll {index+1}</span><strong>{roll.total}</strong><div className="generation-dice" aria-label={'Dice '+roll.dice.map((n,i)=>n+(i===roll.droppedIndex?' dropped':'')).join(', ')}>{roll.dice.map((n,i)=>i===roll.droppedIndex?<del key={i} title="Dropped die">{n}</del>:<span key={i}>{n}</span>)}</div></div>)}</div>}

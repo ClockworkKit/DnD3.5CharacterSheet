@@ -3,7 +3,20 @@ import {scaledSpellText,type Roll} from './rules.ts';
 import {manifestDefinition,psionicProgression,resourceTableAvailable} from './advancement.ts';
 import {effectBonus} from './effects.ts';
 import {racialPowerPoints,effectiveScore} from './ancestry.ts';
+import {psionListLevel,type PsionDiscipline} from './psion-disciplines.ts';
 export type PowerReference={id:string,name:string,school:string,levels:Record<string,number>,levelText:string,cost:number,display:string,manifesting:string,range:string,target:string,duration:string,save:string,resistance:string,description:string,source:string};
+/** Use the level on the selected class list for the power's base cost. */
+export function powerLibraryEntry(power:PowerReference,filter:string,classId?:string,discipline?:PsionDiscipline){
+ const levels=power.levels;
+ const ownLevel=classId==='psion'?psionListLevel(levels,discipline)
+  :classId==='wilder'?levels['Psion/Wilder']
+  :classId==='psychic-warrior'?levels['Psychic Warrior']
+  :classId==='psychic-rogue'?levels['Psychic Rogue']:undefined;
+ const level=filter==='all'?(ownLevel??Math.min(...Object.values(levels)))
+  :filter==='class-list'?ownLevel:levels[filter];
+ if(level===undefined||!Number.isFinite(level))return;
+ return {level,cost:2*level-1};
+}
 export function powerReserve(c:Character){const max=c.psionics.reduce((a,p)=>a+p.max,0)+racialPowerPoints(c),spent=c.psionics.reduce((a,p)=>a+p.spent,0)+c.ancestry.powerPointsSpent;return {max,spent,remaining:Math.max(0,max-spent)};}
 export function powerDC(c:Character,p:Psionic,k:Psionic['powers'][number]){return 10+k.level+Math.floor((effectiveScore(c,p.ability)-10)/2)+p.dcExtra+(c.automation.enabled?effectBonus(c,'powerDC'):0);}
 export function manifestingProblem(c:Character,p:Psionic,k:Psionic['powers'][number]){

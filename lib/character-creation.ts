@@ -6,6 +6,7 @@ import {initializeClassResources} from './level-up.ts';
 import {findRace} from './ancestry.ts';
 import {activateAutomation} from './automation.ts';
 import {applyClericSpecialty} from './cleric-specialty.ts';
+import {setPsionDiscipline} from './skill-points.ts';
 import {recompute} from './automation.ts';
 import {secureDie} from './dice.mjs';
 import {recordStartingHitDice} from './character-rules.ts';
@@ -57,7 +58,7 @@ export function abilityRollRecord(method:AbilityMethod,scores:AbilityScores,roll
 }
 
 export type StartingClassPair={left:string;right:string};
-export type CharacterCreationOptions={name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],hpRolls?:number[],clericSpecialty?:Character['clericSpecialty'],advancementMode?:Character['advancementMode'],gestaltPairs?:StartingClassPair[],gestaltBonusMethod?:GestaltBonusMethod;customClasses?:Character['customClasses']};
+export type CharacterCreationOptions=Pick<Character,'psionDiscipline'>&{name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],hpRolls?:number[],clericSpecialty?:Character['clericSpecialty'],advancementMode?:Character['advancementMode'],gestaltPairs?:StartingClassPair[],gestaltBonusMethod?:GestaltBonusMethod;customClasses?:Character['customClasses']};
 
 export function createPlayerCharacter(options:CharacterCreationOptions):Character{
   const {name,kind,level,raceId,scores}=options;
@@ -68,6 +69,7 @@ export function createPlayerCharacter(options:CharacterCreationOptions):Characte
   if(options.gestaltPairs||options.gestaltBonusMethod)throw new Error('Starting pairs and paired bonus methods require explicit gestalt advancement.');
   const record=abilityRollRecord(options.method,scores,options.rolls,options.assignment);
   const c=newCharacter(kind,level,raceId,customClasses);
+  setPsionDiscipline(c,options.psionDiscipline);
   c.name=name.trim()||'Unnamed adventurer';c.scores={...scores};
   // Keep class/race rules, but do not give new players a sample character's possessions or choices.
   c.gear=[];c.weapons=[];c.coins={cp:0,sp:0,gp:0,pp:0};
@@ -107,7 +109,7 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  // Reuse the standard blank-character, ability and race setup, without rolling
  // provisional dice. Only the final paired sequence receives starting HP rolls.
  const first=definitions[0][0];
- const c=createPlayerCharacter({...options,kind:first.id.startsWith('custom-')?first.id:first.name,level:1,hpMethod:'maximum',hpRolls:undefined,clericSpecialty:'none',advancementMode:'standard',gestaltPairs:undefined,gestaltBonusMethod:undefined});
+ const c=createPlayerCharacter({...options,psionDiscipline:undefined,kind:first.id.startsWith('custom-')?first.id:first.name,level:1,hpMethod:'maximum',hpRolls:undefined,clericSpecialty:'none',advancementMode:'standard',gestaltPairs:undefined,gestaltBonusMethod:undefined});
  c.classLevels=[];c.casters=[];c.psionics=[];c.features=c.features.filter(f=>f.kind==='Racial trait');
  c.automation.history=[];c.automation.levelOrder=[];c.automation.hpRolls=[];c.automation.firstClassId='';
  const levels=definitions.map(sides=>{
@@ -119,6 +121,7 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
   return {id:uid(),left:ids[0],right:ids[1],approvals:[]};
  });
  c.advancementMode='gestalt';c.gestaltProgression=gestaltProgressionSchema.parse({version:1,bonusMethod:options.gestaltBonusMethod??'printed-table-v1',levels});
+ setPsionDiscipline(c,options.psionDiscipline);
  for(const entry of c.classLevels)initializeClassResources(c,findClass(entry.classId,c)!,entry.level);
  copyClassFeatures(c);recompute(c);
  if(options.clericSpecialty&&options.clericSpecialty!=='none'){
