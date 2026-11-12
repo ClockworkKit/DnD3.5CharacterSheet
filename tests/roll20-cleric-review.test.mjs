@@ -6,6 +6,10 @@ import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {characterSchema,uid} from '../lib/model.ts';
 import {recompute} from '../lib/automation.ts';
 import {axeBrotherDomainList} from '../lib/cleric-domains.ts';
+import {useStrengthDomain,strengthDomainPower} from '../lib/strength-domain.ts';
+import {effectiveScore} from '../lib/ancestry.ts';
+import {addEffect,advanceEffects} from '../lib/effects.ts';
+import {resetDaily} from '../lib/rules.ts';
 import {castingNumbers} from '../lib/advancement.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
 
@@ -22,6 +26,44 @@ const raw=(extra={})=>({format:'roll20-dnd35-export',version:1,exportedAt:'2026-
 const save=c=>JSON.parse(JSON.stringify(c));
 const repair=c=>repairAxeBrotherImport(c,roll20SpellCatalog());
 const load=c=>prepareCharacter(characterSchema.parse(save(c)));
+
+test('a reviewed Strength domain uses current Cleric levels, shares its counter and expires after one round',async()=>{
+ const c=await load(repair(importRoll20(raw()).character));
+ const base=effectiveScore(c,'STR'),book=save(c.casters);
+ c.classLevels[0].level=5;
+ c.classLevels.push({id:uid(),classId:'fighter',name:'Fighter',level:2,notes:''});
+ addEffect(c,'ability-STR');
+ assert.equal(effectiveScore(c,'STR'),base+4);
+ useStrengthDomain(c,true);
+ assert.equal(effectiveScore(c,'STR'),base+5);
+ assert.equal(effectiveScore(c,'STR',true),base);
+ assert.deepEqual(save(c.casters),book);
+ const reloaded=await load(c);
+ const power=strengthDomainPower(reloaded);
+ assert.equal(power.feature.used,1);
+ assert.equal(power.effect.rounds,1);
+ assert.throws(()=>useStrengthDomain(reloaded,true),/spent/);
+ advanceEffects(reloaded);
+ assert.equal(effectiveScore(reloaded,'STR'),base+4);
+ assert.equal(strengthDomainPower(reloaded).feature.used,1);
+ const tomorrow=resetDaily(reloaded);
+ useStrengthDomain(tomorrow,false);
+ assert.equal(strengthDomainPower(tomorrow).effect.active,false);
+ assert.equal(strengthDomainPower(tomorrow).feature.used,1);
+ assert.equal(effectiveScore(resetDaily(c),'STR'),base+4);
+});
+
+test('recording an earlier use preserves manual limits and blocks grants replaced by alternate features',async()=>{
+ const c=await load(repair(importRoll20(raw()).character));
+ const card=strengthDomainPower(c).feature;
+ card.max=2;card.used=1;c.automation.enabled=false;
+ assert.throws(()=>useStrengthDomain(c,true),/calculations/);
+ useStrengthDomain(c,false);
+ assert.equal(card.used,2);assert.equal(card.max,2);assert.equal(c.effects.length,0);
+ c.alternateFeatures.selected.push('cleric-golarion-cleric');
+ assert.throws(()=>useStrengthDomain(c,false),/alternate class feature/);
+ assert.equal(card.used,2);
+});
 
 test('domain rows including Roll20 doains typo become visible feature cards without duplicate feat grants',()=>{
  const c=importRoll20(raw()).character;

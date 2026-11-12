@@ -99,3 +99,16 @@ level and choosing Ray of Frost as unused, one cast rolled a ranged touch
 attack and cold damage and spent one inspiration. An encounter refresh and
 native reload restored encounter inspiration and retained the spent daily
 choice and the archived Roll20 book.
+
+### Strength domain in combat
+
+The standard Strength domain grants a one-round enhancement to Strength as a
+free action once per day. Its size is the character's cleric level. See the
+[Strength domain granted power](https://www.d20srd.org/srd/spellLists/clericDomains.htm#strengthDomain).
+
+Combat uses the recorded Strength domain class feature and its existing daily
+counter. A player who used the power before opening the sheet can record that
+use without activating it again. The power expires with the round controls
+and shares enhancement stacking with Bull's Strength. Clerics who have
+modified their domains through an alternate feature use their feature card
+to track the agreed power.

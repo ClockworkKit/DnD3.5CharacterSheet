@@ -66,7 +66,7 @@ export function repairAxeBrotherImport(c:Character,spells:Spell[]):Character {
   else next.roll20Import!.report.warnings.push(note);
  }
  applyClericSpecialty(next,'axe-brother');
- for(const [name,description] of [['Dwarf domain','Grants Great Fortitude (+2 Fortitude); do not add it twice if already recorded. Domain spells use the shared Dwarf / Strength book. Spell Compendium p.273.'],['Strength domain','Once per day, as a free action, gain an enhancement bonus to Strength equal to your cleric level for 1 round. Apply and track this power manually; it does not stack with another enhancement bonus.']]){
+ for(const [name,description] of [['Dwarf domain','Grants Great Fortitude (+2 Fortitude); do not add it twice if already recorded. Domain spells use the shared Dwarf / Strength book. Spell Compendium p.273.'],['Strength domain','Once per day, as a free action, gain an enhancement bonus to Strength equal to your cleric level for 1 round. Use the power under Class ability numbers in Combat. Only the highest enhancement bonus applies.']]){
   if(!next.features.some(f=>f.name.toLowerCase()===name.toLowerCase()))next.features.push({id:uid(),name,description,kind:'Class feature',source:'Cleric domain review',max:0,used:0});
  }
  // Recovering missing levels must not add their HP/BAB/saves on top of old manual totals.
