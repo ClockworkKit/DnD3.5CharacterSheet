@@ -3,7 +3,7 @@ import assert from 'node:assert/strict';
 import fs from 'node:fs';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
 import {characterSchema} from '../lib/model.ts';
-import {spellAttackProfile,spellAttackBonus,makeSpellAttackOnlyRoll} from '../lib/spell-attacks.ts';
+import {spellAttackProfile,spellAttackBonus,makeSpellAttackOnlyRoll,ongoingSpiritualWeaponRoll} from '../lib/spell-attacks.ts';
 import {makeSpellRoll,makeRequest,spendSpell,sheetTotals} from '../lib/rules.ts';
 import {makeDilettanteRoll} from '../lib/factotum-rolls.ts';
 import {castDilettante,chooseDilettante} from '../lib/factotum.ts';
@@ -53,6 +53,42 @@ test('Spiritual Weapon uses BAB + Wisdom and only one normal-AC attack on castin
  c.size='Small';c.situational=5;c.globalCombat={enabled:true,attack:7,damage:8,extraDamage:''};
  Object.assign(c.automation.context,{flanking:true,charge:true,twoWeapon:true,powerAttack:5,combatExpertise:5});feat(c,'Power Attack');feat(c,'Combat Expertise');
  const r=makeSpellRoll(c,p,k,s,true);assert.equal(r.rolls.length,2);assert.equal(r.rolls[0].formula,'1d20+'+(c.bab+sheetTotals(c).mods.WIS));assert.equal(r.rolls[1].formula,'1d8+3');
+});
+
+test('an active Spiritual Weapon uses BAB for later attacks and its own tradition for damage',async()=>{
+ const c=createPlayerCharacter({name:'Paired cleric',kind:'Cleric',level:11,raceId:'human',method:'manual',hpMethod:'average',
+  scores:{STR:10,DEX:10,CON:12,INT:14,WIS:18,CHA:10},advancementMode:'gestalt',
+  gestaltPairs:Array.from({length:11},(_,i)=>({left:'fighter',right:i<3?'cleric':'wizard'}))});
+ const p=c.casters.find(t=>t.casting.classId==='cleric'),wizard=c.casters.find(t=>t.casting.classId==='wizard');
+ const s=spell('spiritual-weapon'),k=known(s.id);
+ p.spells=[k];wizard.slots[0].used=1;c.hp-=4;
+ assert.equal(p.level,3);
+ assert.equal(c.bab,11);
+ assert.deepEqual(makeSpellRoll(c,p,k,s,true).rolls.map(r=>r.formula),['1d20+15','1d8+1']);
+ Object.assign(p,spendSpell(p,k,c));
+ const before=save(c);
+ const same=ongoingSpiritualWeaponRoll(c,s,p.level,'same');
+ assert.deepEqual(same.rolls.map(r=>r.formula),['1d20+15','1d8+1','1d20+10','1d8+1','1d20+5','1d8+1']);
+ assert.equal((makeRequest(same,c.name,'https://example.com/').message.match(/\[\[1d20/g)||[]).length,3);
+ assert.deepEqual(ongoingSpiritualWeaponRoll(c,s,p.level,'new').rolls.map(r=>r.formula),['1d20+15','1d8+1']);
+ assert.deepEqual(save(c),before);
+ const loaded=await prepareCharacter(parseCharacterFile(JSON.stringify(c)));
+ assert.equal(loaded.casters.find(t=>t.id===p.id).spells[0].spent,1);
+ assert.equal(loaded.casters.find(t=>t.id===wizard.id).slots[0].used,1);
+ assert.equal(loaded.maxHp-loaded.hp,4);
+});
+
+test('Spiritual Weapon follows iterative thresholds and respects an explicit effect override',()=>{
+ const c=create('Cleric'),s=spell('spiritual-weapon');
+ Object.assign(c.automation.context,{flanking:true,charge:true,twoWeapon:true,rapidShot:true});
+ c.globalCombat={enabled:true,attack:7,damage:8,extraDamage:''};
+ for(const [bab,count] of [[0,1],[5,1],[6,2],[10,2],[11,3],[15,3],[16,4],[25,4]]){
+  c.bab=bab;
+  const roll=ongoingSpiritualWeaponRoll(c,s,18,'same',{mode:'auto',count:8,bonus:2},'2d6');
+  assert.deepEqual(roll.rolls.filter((_,i)=>i%2===0).map(r=>r.formula),Array.from({length:count},(_,i)=>'1d20+'+(bab+6-i*5)));
+  assert.deepEqual(roll.rolls.filter((_,i)=>i%2).map(r=>r.formula),Array(count).fill('2d6'));
+ }
+ assert.equal(ongoingSpiritualWeaponRoll(c,s,18,'new').rolls[1].formula,'1d8+5');
 });
 
 test('compendium and custom spell attacks use the same route, including non-touch Splinterbolt',()=>{

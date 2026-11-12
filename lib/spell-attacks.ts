@@ -2,7 +2,7 @@ import type {Character,Spell,Weapon} from './model.ts';
 import type {SpellAttackSettings} from './spell-attack-schema.ts';
 import {spellAttackSchema} from './spell-attack-schema.ts';
 import {spellEffectTargetNote} from './spell-effect-targets.ts';
-import {weaponAttack,sheetTotals,withBonus,type Roll} from './rules.ts';
+import {attacksFromBab,spellFormula,weaponAttack,sheetTotals,withBonus,type Roll} from './rules.ts';
 import {hasFeat} from './effects.ts';
 import {finesseShieldPenalty} from './weapon-finesse.ts';
 
@@ -63,16 +63,28 @@ export function spellAttackBonus(c:Character,s:Spell,cl:number,settings?:SpellAt
 }
 
 /** Add attack/effect pairs to the same request; generating a roll never spends a resource. */
-export function withSpellAttacks(c:Character,s:Spell,cl:number,roll:Roll,settings?:SpellAttackSettings):Roll{
+export function withSpellAttacks(c:Character,s:Spell,cl:number,roll:Roll,settings?:SpellAttackSettings,continuingSpiritualWeapon=false):Roll{
  const p=spellAttackProfile(s,cl,settings);if(p.mode==='none')return roll;
  const bonus=spellAttackBonus(c,s,cl,settings),label=spellAttackModes.find(([id])=>id===p.mode)![1],rows:NonNullable<Roll['rolls']>=[];
- for(let i=0;i<p.count;i++){
-  const prefix=p.count>1?`${i+1}. `:'';
-  rows.push({label:prefix+label,formula:withBonus('1d20',bonus)});
+ const iterative=continuingSpiritualWeapon&&p.mode==='spiritual-weapon';
+ const count=iterative?attacksFromBab(c.bab):p.count;
+ for(let i=0;i<count;i++){
+  const prefix=count>1?`${i+1}. `:'';
+  rows.push({label:prefix+label,formula:withBonus('1d20',iterative?bonus-i*5:bonus)});
   if(key(s)==='meteor swarm'&&roll.formula==='2d6+6d6')rows.push({label:prefix+'Impact on hit (bludgeoning)',formula:'2d6'},{label:prefix+'Explosion (fire; check save)',formula:'6d6'});
   else if(roll.formula)rows.push({label:prefix+(s.id==='poison'?'Initial Constitution damage (Fortitude negates)':'Effect on hit'),formula:roll.formula});
  }
  return {...roll,formula:undefined,rolls:rows,details:[roll.details,p.note].filter(Boolean).join(' ')};
+}
+
+export function ongoingSpiritualWeaponRoll(c:Character,s:Spell,cl:number,target:'same'|'new',settings?:SpellAttackSettings,damage=spellFormula(s,cl,settings)):Roll{
+ if(spellAttackProfile(s,cl,settings).mode!=='spiritual-weapon')throw new Error('Choose Spiritual Weapon attack delivery for this roll.');
+ const redirect=target==='new';
+ return withSpellAttacks(c,s,cl,{
+  title:s.name+(redirect?' - redirect':' - same target'),
+  details:redirect?'Move action to redirect an active weapon. Check spell resistance the first time it strikes this creature.':'The active weapon continues attacking the previous target on your turn.',
+  formula:damage,fields:[['Caster level',String(cl)]],
+ },settings,!redirect);
 }
 
 export function makeSpellAttackOnlyRoll(c:Character,s:Spell,cl:number,settings?:SpellAttackSettings):Roll{

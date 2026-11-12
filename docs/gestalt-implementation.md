@@ -1270,6 +1270,17 @@ known, three powers known, maximum power level 1 and a three-point contribution
 to the daily reserve. Wizard and the custom arcanist retained their independent
 caster levels of 1 and 2. Cancelling closed the review. All 895 tests passed.
 
+## Spiritual Weapon on subsequent rounds
+
+A Cleric 3 on one side of an 11-level gestalt Fighter can cast Spiritual
+Weapon at caster level 3 with BAB +11. With Wisdom 18, the casting round
+attacks at +15 for 1d8+1 force damage. On a later round against the same
+target it attacks at +15/+10/+5. Redirecting it takes a move action and
+makes one attack at +15. Both ongoing actions use the selected spellbook's
+damage formula. Only the initial cast spends a preparation or slot. The player tracks the active spell's duration, legal
+targets, spell resistance and weapon-form criticals.
+[Spiritual Weapon](https://www.d20srd.org/srd/spells/spiritualWeapon.htm)
+
 ## Psionic skills and Cerebremancer entry
 
 Fresh player characters include Autohypnosis (Wis), Knowledge (psionics)
