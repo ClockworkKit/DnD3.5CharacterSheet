@@ -156,7 +156,7 @@ test('paired fourth level offers one ability increase and independent class mile
 
 test('both sides can change classes and initialize independent casting and manifesting once',()=>{
  const c=paired(repeat('fighter','rogue',1));c.experience=3000;
- applyReview(c,previewGestaltLevel(c,{left:'cleric',right:'psion',hitDieRoll:6}));
+ applyReview(c,previewGestaltLevel(c,{left:'cleric',right:'psion',hitDieRoll:6,psionDiscipline:'Seer'}));
  assert.equal(c.level,2);assert.equal(c.casters.length,1);assert.equal(c.psionics.length,1);assert.equal(c.casters[0].casting.classId,'cleric');assert.equal(c.psionics[0].manifesting.classId,'psion');
  c.psionics[0].spent=1;c.psionics[0].focused=true;c.casters[0].slots[1].used=1;
  applyReview(c,previewGestaltLevel(c,{left:'psion',right:'cleric',hitDieRoll:5}));
@@ -168,7 +168,7 @@ test('paired review previews class allowances and counter changes without refres
  const c=paired([['fighter','rogue']]);
  c.experience=3000;
  const selection={left:'bard',right:'psion',hitDieRoll:4};
- const first=previewGestaltLevel(c,selection);
+ const first=previewGestaltLevel(c,{...selection,psionDiscipline:'Telepath'});
  const added=first.summary.featureCapacities.find(f=>f.name==='Bardic music');
  assert.equal(added.before,undefined);
  assert.equal(added.after,1);

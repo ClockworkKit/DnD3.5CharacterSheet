@@ -1292,6 +1292,13 @@ list's level and base cost. Existing known powers keep their recorded values.
 [Psion disciplines and class skills](https://www.d20srd.org/srd/psionic/classes/psion.htm) ·
 [Cerebremancer entry](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm)
 
+Guided level-up offers the discipline when a character takes its first Psion
+level in standard advancement or on either side of a gestalt pair. The player
+chooses before gaining the level. Paired review displays the choice and
+recalculates the proposed skill costs. Cancelling leaves the save untouched.
+Existing Psions with an unrecorded discipline can still advance and record
+their choice in Classes. [Psion discipline at first level](https://www.d20srd.org/srd/psionic/classes/psion.htm#discipline)
+
 Older native sheets can add missing entries individually in Skills. On an
 older Roll20 import, opening the sheet recovers missing ranks from its retained
 fixed skill fields. Recovered ranks count immediately. When training history

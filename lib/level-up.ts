@@ -11,6 +11,18 @@ import {effectiveClassMilestone} from './alternate-features.ts';
 import {resolveGestaltCastingTargets,retainGestaltCastingHistory,retainCastingHistory} from './gestalt-casting.ts';
 import type {GestaltCastingTarget} from './gestalt-schema.ts';
 import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
+import {psionDisciplines,type PsionDiscipline} from './psion-disciplines.ts';
+
+export function needsPsionDiscipline(c:Character,classIds:string[]){
+ return classIds.includes('psion')&&!c.psionDiscipline&&!c.classLevels.some(e=>e.classId==='psion'&&e.level>0);
+}
+
+function validateDiscipline(c:Character,classIds:string[],discipline?:PsionDiscipline){
+ if(needsPsionDiscipline(c,classIds)){
+  if(!discipline||!psionDisciplines.includes(discipline))throw new Error('Choose a discipline for your first Psion level.');
+ }else if(discipline!==undefined)throw new Error('A new discipline can only be selected when entering Psion.');
+}
+
 export function levelUpStatus(c:Character){
  const n=advancementNumbers(c);let eligible=n.ecl;
  while(eligible<100&&c.experience>=eligible*(eligible+1)*500)eligible++;
@@ -24,7 +36,7 @@ export function levelUpClasses(c:Character,showAll=false){return characterClasse
 function updateLevelRecords<T extends {id:string}>(current:T[],pending:T[]){
  for(const row of pending){const existing=current.find(p=>p.id===row.id);if(existing)Object.assign(existing,row);else current.push(row);}
 }
-export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingTargets:GestaltCastingTarget[]=[]){
+export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingTargets:GestaltCastingTarget[]=[],psionDiscipline?:PsionDiscipline){
  if(c.advancementMode==='gestalt')throw new Error('Choose a pair of classes to advance a gestalt character.');
  if(c.sheetKind==='monster')throw new Error('Advance monster Hit Dice and class levels manually.');
  if(!c.automation.enabled)throw new Error('Enable automatic calculations before using guided level-up.');
@@ -32,6 +44,7 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingT
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId,c);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
+ validateDiscipline(c,[classId],psionDiscipline);
  const targets=def.advances?resolveGestaltCastingTargets(c,[classId],castingTargets):[];
  if(castingTargets.length&&!def.advances)throw new Error('This class does not use custom prestige target choices.');
  const next=structuredClone(c);
@@ -46,6 +59,7 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingT
  if(next.casters.length!==c.casters.length||next.psionics.length!==c.psionics.length)retainCastingHistory(c,next);
  assertCustomResourceTables(next);
  copyClassFeatures(next);
+ if(psionDiscipline)c.psionDiscipline=psionDiscipline;
  updateLevelRecords(c.classLevels,next.classLevels);
  updateLevelRecords(c.features,next.features);
  c.casters.push(...next.casters.filter(p=>!c.casters.some(old=>old.id===p.id)));
@@ -60,7 +74,7 @@ export function initializeClassResources(c:Character,def:ClassDefinition,level:n
  if((def.kind==='Psionic'||def.manifesting)&&level>=(def.manifesting?.startLevel??1)&&!c.psionics.some(p=>manifestDefinition(p,c)?.id===def.id))c.psionics.push(makePsionic(def,level,effectiveScore(c,manifestingAbility(def))));
 }
 
-export type GestaltLevelSelection={left:string;right:string;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};
+export type GestaltLevelSelection={left:string;right:string;psionDiscipline?:PsionDiscipline;hitDieRoll?:number;approvals?:GestaltProgression['levels'][number]['approvals'];castingTargets?:GestaltCastingTarget[]};
 export type GestaltLevelPreview=ReturnType<typeof previewGestaltLevel>;
 
 function featureCapacityChanges(before:Character,after:Character){
@@ -97,6 +111,8 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};next.classLevels.push(entry);}
   return entry;
  });
+ validateDiscipline(c,[selection.left,selection.right],selection.psionDiscipline);
+ if(selection.psionDiscipline)next.psionDiscipline=selection.psionDiscipline;
  retainGestaltCastingHistory(c,next);
  const castingTargets=resolveGestaltCastingTargets(c,[selection.left,selection.right],selection.castingTargets);
  const pair={id:uid(),left:entries[0].id,right:entries[1].id,approvals:structuredClone(selection.approvals??[]),...(castingTargets.length?{castingTargets}:{})};

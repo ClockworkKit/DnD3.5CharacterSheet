@@ -7,6 +7,9 @@ import {powerLibraryEntry} from '../lib/psionics.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 
+import {gainLevel,previewGestaltLevel,applyGestaltLevel} from '../lib/level-up.ts';
+import {recompute} from '../lib/automation.ts';
+
 const options={name:'Discipline QA',kind:'Psion',level:1,raceId:'human',method:'manual',hpMethod:'average',
  scores:{STR:10,DEX:12,CON:12,INT:16,WIS:14,CHA:10}};
 const skillsByDiscipline={
@@ -56,6 +59,41 @@ test('a later starting pair can grant discipline skills on either side',()=>{
  assert.deepEqual(skillLedger(c).levels.map(r=>r.costs[s.id]),[2,1,1]);
  assert.throws(()=>createPlayerCharacter({...options,kind:'Wilder',psionDiscipline:'Shaper'}),/Psion level/);
 });
+
+for(const mode of ['standard','gestalt']){
+ test(mode+' level-up records a first Psion discipline and preserves earlier purchases',async()=>{
+  const paired=mode==='gestalt';
+  const c=createPlayerCharacter({...options,kind:'Wizard',advancementMode:mode,
+   ...(paired?{gestaltPairs:[{left:'wizard',right:'fighter'}]}:{})});
+  c.experience=3000;c.hp-=2;c.casters[0].slots[0].used=1;
+  const id=c.skills.find(row=>row.name==='Use Psionic Device').id;
+  setSkillPoints(c,skillLedger(c).levels[0].key,id,2);
+  const before=structuredClone(c);
+  const pair={left:'psion',right:'wizard'};
+  for(const invalid of [undefined,'unknown']){
+   assert.throws(()=>paired?previewGestaltLevel(c,{...pair,psionDiscipline:invalid}):gainLevel(c,'psion',undefined,[],invalid),/Choose a discipline/);
+   assert.deepEqual(c,before);
+  }
+  if(paired){
+   const review=previewGestaltLevel(c,{...pair,psionDiscipline:'Shaper'});
+   assert.equal(review.character.psionDiscipline,'Shaper');
+   assert.deepEqual(c,before);
+   review.selection.psionDiscipline='Telepath';
+   assert.throws(()=>applyGestaltLevel(c,review),/choices changed/);
+   assert.deepEqual(c,before);
+   applyGestaltLevel(c,previewGestaltLevel(c,{...pair,psionDiscipline:'Shaper'}));
+  }else gainLevel(c,'psion',undefined,[],'Shaper');
+  recompute(c,before);
+  const saved=await prepareCharacter(parseCharacterFile(JSON.stringify(c)));
+  assert.equal(saved.psionDiscipline,'Shaper');
+  assert.equal(saved.level,2);
+  assert.equal(saved.maxHp-saved.hp,2);
+  assert.equal(saved.casters[0].slots[0].used,1);
+  assert.deepEqual(skillLedger(saved).levels.map(r=>r.costs[id]),[2,1]);
+  assert.equal(skillLedger(saved).spent,2);
+  assert.throws(()=>paired?previewGestaltLevel(saved,{...pair,psionDiscipline:'Telepath'}):gainLevel(saved,'psion',undefined,[],'Telepath'),/only be selected when entering/);
+ });
+}
 
 test('the power library uses the chosen list for eligibility, level and base cost',()=>{
  const refs=JSON.parse(readFileSync(new URL('../public/data/powers.json',import.meta.url),'utf8'));

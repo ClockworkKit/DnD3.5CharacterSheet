@@ -5,10 +5,13 @@ import {ZodError} from 'zod';
 import {findClass} from '@/lib/classes';
 import {gestaltClassPolicies} from '@/lib/gestalt-progression';
 import {gestaltCastingChoices} from '@/lib/gestalt-casting';
-import {applyGestaltLevel,levelUpClasses,levelUpStatus,previewGestaltLevel,type GestaltLevelPreview} from '@/lib/level-up';
+import {applyGestaltLevel,levelUpClasses,levelUpStatus,needsPsionDiscipline,previewGestaltLevel,type GestaltLevelPreview} from '@/lib/level-up';
 import {prestigeEligibility} from '@/lib/prerequisites';
 import {Btn,Choice,F,N,type SheetProps} from './sheet-ui';
 import {PrerequisiteStatus} from './prerequisite-status';
+
+import {PsionDisciplineChoice} from './psion-discipline';
+import type {PsionDiscipline} from '@/lib/psion-disciplines';
 
 type Props=Pick<SheetProps,'c'|'edit'>&{navigate:(tab:string)=>void};
 type Approval={gm:string;reason:string};
@@ -23,6 +26,8 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  const [die,setDie]=useState(1),[approvals,setApprovals]=useState<Record<string,Approval>>({});
  const [review,setReview]=useState<GestaltLevelPreview>(),[error,setError]=useState('');
  const [targetSelection,setTargetSelection]=useState<Record<string,string>>({});
+ const [discipline,setDiscipline]=useState<PsionDiscipline>();
+ const enteringPsion=needsPsionDiscipline(c,[left,right]);
  const status=levelUpStatus(c),options=levelUpClasses(c,true);
  const sides=[left,right].map(id=>options.find(d=>d.id===id));
  const castingChoices=gestaltCastingChoices(c,[left,right]);
@@ -32,6 +37,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  const clearReview=()=>{setReview(undefined);setError('');};
  function choose(side:'left'|'right',id:string){
   (side==='left'?setLeft:setRight)(id);setDie(1);setApprovals({});setTargetSelection({});clearReview();
+  if(id!=='psion'&&(side==='left'?right:left)!=='psion')setDiscipline(undefined);
  }
  function prepare(){
   try{
@@ -42,7 +48,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     if(!traditionId)throw new Error('Choose '+choice.label+' before reviewing this level.');
     return {classId:choice.classId,kind:choice.kind,traditionId};
    });
-   setReview(previewGestaltLevel(c,{left,right,hitDieRoll:die,castingTargets,approvals:combinationClasses.map(classId=>({classId,gm:approvals[classId].gm.trim(),reason:approvals[classId].reason.trim()}))}));
+   setReview(previewGestaltLevel(c,{left,right,psionDiscipline:enteringPsion?discipline:undefined,hitDieRoll:die,castingTargets,approvals:combinationClasses.map(classId=>({classId,gm:approvals[classId].gm.trim(),reason:approvals[classId].reason.trim()}))}));
    setError('');
   }catch(e){setReview(undefined);setError(errorMessage(e,'Could not preview this level.'));}
  }
@@ -67,6 +73,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
      {entering&&<PrerequisiteStatus value={prestigeEligibility(c,def)} edit={edit}/>}
     </div>;
    })}
+   {enteringPsion&&<PsionDisciplineChoice value={discipline} onChange={value=>{setDiscipline(value);clearReview();}}/>}
    {castingChoices.length>0&&<fieldset><legend>Prestige advancement for this level</legend>
     <p className="fine">Choose a tradition held before entering this prestige class. Each choice is saved with this pair; earlier gains stay where they were. Overlapping advancement of the same tradition counts once.</p>
     {castingChoices.map(choice=>{
@@ -81,7 +88,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <F label={'Approval reason for '+findClass(id,c)?.name} area value={approvals[id]?.reason??''} onChange={reason=>{setApprovals(a=>({...a,[id]:{gm:a[id]?.gm??'',reason}}));clearReview();}}/>
    </fieldset>)}
    {c.automation.hpMethod==='rolled'?<N label={'One new Hit Die roll (d'+hitDie+')'} value={die} min={1} max={hitDie} onChange={v=>{setDie(v);clearReview();}}/>:<p>HP method: {c.automation.hpMethod}. The larger Hit Die is used once.</p>}
-   <div className="button-row"><Btn disabled={sides.some(d=>!d)} onClick={prepare}>{review?'Refresh paired level review':'Review paired level'}</Btn></div>
+   <div className="button-row"><Btn disabled={sides.some(d=>!d)||(enteringPsion&&!discipline)} onClick={prepare}>{review?'Refresh paired level review':'Review paired level'}</Btn></div>
    {error&&<p role="alert">{error}</p>}
    {stale&&<p role="status">The character changed. Refresh the paired level review before confirming.</p>}
    {review&&!stale&&<section aria-label="Paired level review" aria-live="polite">
@@ -101,6 +108,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
      })}</ul>
     </details>
     <h4>Class milestones</h4>
+    {review.selection.psionDiscipline&&<p>New Psion discipline is {review.selection.psionDiscipline}.</p>}
     <ul>{review.summary.milestones.map(m=><li key={m.classId}>{m.name} {m.level}: {m.text||'No new named class milestone.'}</li>)}</ul>
     <h4>New feat and ability choices</h4>
     {review.summary.choices.length?<ul>{review.summary.choices.map(choice=><li key={choice.key}>{choice.label}</li>)}</ul>:<p>No new feat or ability-score choices at this level.</p>}
