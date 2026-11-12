@@ -15,6 +15,9 @@ import {repairRoll20SkillAliases} from './roll20-skill-aliases.ts';
 import {reviewRoll20SpellPreparation} from './roll20-spell-preparation.ts';
 import {reviewRoll20WeaponModes} from './roll20-weapon-mode.ts';
 import {skillFeatBonus} from './advancement.ts';
+import {missingPsionicSkills} from './psionic-skills.ts';
+import {attributeReader} from './roll20-attributes.ts';
+import {roll20ExportSchema} from './roll20-schema.ts';
 
 // Only subtract bonuses recorded at import time, never today's level/feat gains.
 // Keeping the adjustment separate also leaves the original misc field editable.
@@ -38,8 +41,14 @@ export async function repairRoll20SkillBonuses(c:Character){
   warn('Imported skill bonuses could not be checked against the original export. Current values were kept; review Skills.');
   return c;
  }
- const manual=structuredClone(source);
- const calculated=activateAutomation(migrateRoll20Automation(source));
+ applyOriginalSkillBonuses(c,source);
+ imported.skillBonusMigration=1;
+ if(c.skills.some(s=>s.roll20Bonus?.status==='review'))warn('Some imported miscellaneous skill bonuses may already include feat bonuses. Open Skills > Imported bonus review and confirm what was included. No ambiguous bonus was subtracted automatically.');
+ return c;
+}
+
+function applyOriginalSkillBonuses(c:Character,manual:Character){
+ const calculated=activateAutomation(migrateRoll20Automation(structuredClone(manual)));
  for(const original of manual.skills){
   const same=(s:Skill)=>s.name===original.name&&s.ability===original.ability;
   const oldMatches=manual.skills.filter(same),matches=c.skills.filter(same);
@@ -55,13 +64,53 @@ export async function repairRoll20SkillBonuses(c:Character){
   const preserveTotal=total!==undefined&&unchanged;
   current.roll20Bonus={sourceMisc:original.misc,...(total!==undefined?{sourceTotal:total}:{}),automatic,adjustment:preserveTotal?-automatic:0,status:preserveTotal?'total':'review'};
  }
- imported.skillBonusMigration=1;
- if(c.skills.some(s=>s.roll20Bonus?.status==='review'))warn('Some imported miscellaneous skill bonuses may already include feat bonuses. Open Skills > Imported bonus review and confirm what was included. No ambiguous bonus was subtracted automatically.');
- return c;
+}
+
+async function recoverFixedPsionicSkills(c:Character){
+ const imported=c.roll20Import;
+ if(!imported||imported.psionicSkillsMigration||c.sheetKind==='monster')return;
+ const warn=(message:string)=>{if(!imported.report.warnings.includes(message))imported.report.warnings.push(message);};
+ const parsed=roll20ExportSchema.safeParse(imported.raw);
+ if(!parsed.success||parsed.data.version!==1){
+  warn('Could not read the original psionic skills. Review the retained Roll20 export before adding ranks.');
+  return;
+ }
+ const reader=attributeReader(parsed.data,warn);
+ const missing=missingPsionicSkills(c.skills).filter(({prefix})=>
+  ['','ranks','_ranks','miscmod','tempmod','actionmod'].some(suffix=>reader.number(prefix+suffix)!==undefined)
+  ||reader.boolean(prefix+'classskill')===true
+ );
+ if(missing.length){
+  let original:Character;
+  try{
+   const {importRoll20}=await import('./roll20-import.ts');
+   original=importRoll20(imported.raw).character;
+   applyOriginalSkillBonuses(original,structuredClone(original));
+  }catch{
+   warn('Could not read the original psionic skills. Review the retained Roll20 export before adding ranks.');
+   return;
+  }
+  let full=false;
+  for(const {skill} of missing){
+   // Only fixed fields were omitted by the old importer. Repeating specialties
+   // had player-editable IDs and may already have been renamed or removed.
+   const source=original.skills.find(s=>s.id===skill.id);
+   if(!source||(!source.ranks&&!source.misc&&!source.classSkill&&!source.roll20Bonus))continue;
+   if(c.skills.length>=120){full=true;continue;}
+   c.skills.push(source);
+   if(c.automation.skillTraining.version===1&&source.ranks){
+    c.automation.skillTraining.unassigned[source.id]=source.ranks;
+   }
+   warn('Recovered '+source.name+' from fixed Roll20 fields. Existing skill purchases were retained.');
+  }
+  if(full){warn('Make room in Skills to recover additional psionic ranks from the original Roll20 export.');return;}
+ }
+ imported.psionicSkillsMigration=1;
 }
 
 // All UI load/import entry points use the same awaited migration.
 export async function prepareCharacter(c:Character){
+ await recoverFixedPsionicSkills(c);
  reviewRoll20WeaponModes(c);
  reviewRoll20SpellPreparation(c);
  await repairRoll20SkillAliases(c);

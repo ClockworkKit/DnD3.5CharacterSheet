@@ -4,6 +4,7 @@ import {useState} from 'react';
 import {Table,TableHeader,TableBody,TableHead,TableRow,TableCell} from '@/components/ui/table';
 import {F,N,Choice,Check,Btn,Section,Stat,type SheetProps} from './sheet-ui';
 import {abilityKeys,uid,type Skill} from '@/lib/model';
+import {missingPsionicSkills} from '@/lib/psionic-skills';
 import {canRollSkill,skillBonus,skillAbility,signed,withBonus} from '@/lib/rules';
 import {racialSkill} from '@/lib/ancestry';
 import {advancementNumbers,skillExtras} from '@/lib/advancement';
@@ -15,6 +16,7 @@ export function SkillsView({c,edit,roll,confirm}:SheetProps){
   const ledger=skillLedger(c),row=ledger.levels.find(r=>r.key===selected)||ledger.levels.find(r=>r.remaining>0)||ledger.levels.at(-1);
   const paired=c.advancementMode==='gestalt',automatic=c.automation.enabled&&c.automation.skillTraining.version===1,totals=advancementNumbers(c);
   const history=row?c.automation.history.find(h=>h.key===row.key):undefined;
+  const missingPsionic=missingPsionicSkills(c.skills);
   const skills=c.skills.filter(s=>s.name.toLowerCase().includes(search.toLowerCase())&&(!trainedOnly||s.ranks>0)&&(!classOnly||!row||classSkillAt(c,s,row)));
   function points(id:string,value:number){if(!row)return;edit(d=>{const skill=d.skills.find(s=>s.id===id),h=d.automation.history.find(h=>h.key===row.key);if(!skill||!h)return;const old=(h.skillRanks[id]||0)*(classSkillAt(d,skill,row)?1:2);setSkillPoints(d,row.key,id,Math.max(0,Math.min(Math.floor(value),old+availableSkillPoints(d,row.key,id))))})}
   return <>
@@ -33,6 +35,11 @@ export function SkillsView({c,edit,roll,confirm}:SheetProps){
     </Section>}
     <Section title="Skills" note="Checks include abilities, racial traits, armor, feats, synergy, and active effects." action={<Btn disabled={c.skills.length>=120} onClick={()=>edit(d=>{d.skills.push({id:uid(),name:'Craft (specialty)',ability:'INT',ranks:0,misc:0,trained:false,armor:0,classSkill:false})})}>+ Specialty</Btn>}>
       <div className="skill-filters"><F label="Find a skill" value={search} onChange={setSearch} placeholder="Listen, Knowledge, Craft…"/><Check label="With ranks only" checked={trainedOnly} onChange={setTrainedOnly}/>{automatic&&<Check label="Class skills at this level" checked={classOnly} onChange={setClassOnly}/>}</div>
+      {missingPsionic.length>0&&<details><summary>Add psionic skills</summary><div className="button-row">
+        {missingPsionic.map(({skill})=><Btn key={skill.id} disabled={c.skills.length>=120} onClick={()=>edit(d=>{
+          if(d.skills.length<120&&missingPsionicSkills(d.skills).some(row=>row.skill.id===skill.id))d.skills.push(skill);
+        })}>Add {skill.name}</Btn>)}
+      </div></details>}
       <Table className="skills-table training-table"><TableHeader><TableRow><TableHead>Skill / ability</TableHead>{automatic&&<><TableHead>Training</TableHead><TableHead>This level</TableHead></>}<TableHead>Total ranks</TableHead><TableHead>Misc.</TableHead><TableHead>Check</TableHead></TableRow></TableHeader><TableBody>
         {skills.map(s=>{const update=(patch:Partial<Skill>)=>edit(d=>{Object.assign(d.skills.find(x=>x.id===s.id)!,patch)}),ability=skillAbility(c,s),custom=!s.id.startsWith('skill-'),isClass=row?classSkillAt(c,s,row):s.classSkill,cost=isClass?1:2,current=(history?.skillRanks[s.id]||0)*cost,available=row?.available[s.id]||0,language=s.name==='Speak Language',next=row?nextSkillPurchase(ledger.levels,row.key,s.id):undefined;return <TableRow key={s.id}>
           <TableCell><div className="skill-name">{custom?<F label="Specialty name" value={s.name} onChange={v=>update({name:v})}/>:<strong>{s.name}</strong>}<span className="fine">{language?'Record learned languages in Notes':ability+(s.trained?' · trained':'')+(s.armor?' · armor ×'+s.armor:'')}</span>{custom&&<details><summary>Skill settings</summary><Choice label="Ability" value={s.ability} options={[...abilityKeys]} onChange={v=>update({ability:v as Skill['ability']})}/><N label="Armor penalty multiplier" value={s.armor} min={0} max={2} onChange={v=>update({armor:v})}/><Check label="Trained only" checked={s.trained} onChange={v=>update({trained:v})}/><Btn className="quiet danger" onClick={()=>confirm('Remove skill?','Remove this specialty and refund its recorded skill points.',()=>edit(d=>{removeSkillPurchases(d,s.id);d.skills=d.skills.filter(x=>x.id!==s.id)}))}>Remove</Btn></details>}</div></TableCell>

@@ -1,3 +1,4 @@
+import {missingPsionicSkills,psionicSkillDefinition} from './psionic-skills.ts';
 import {abilityKeys,abilityNames,baseSkills,characterSchema,newWeapon,uid,type Character,type Caster,type Skill,type Spell} from './model.ts';
 import {findClass,makeCaster,makePsionic,castingAbility,manifestingAbility,classTotals,syncFactotumClassSkills} from './classes.ts';
 import {raceCatalog} from './ancestry.ts';
@@ -154,10 +155,21 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  for(const kind of ['Craft','Perform','Profession'])for(let i=1;i<=3;i++){const prefix=kind.toLowerCase()+i,name=core.t(prefix+'name');if(!name)continue;const base=c.skills.find(s=>s.name===kind)!;const s={...base,id:uid(),name:kind+' ('+name+')',ranks:0,misc:0};fillSkill(s,core,prefix);c.skills.push(s);}
  for(const row of Object.values(groups.skills?.rows||{})){
   const r=rowScope(row),name=r.t('otherskillname','name');if(!name)continue;
-  const s=c.skills.find(s=>normalized(s.name)===normalized(name))||{id:uid(),name,ability:ability(r.t('otherskillstat','ability'))||'INT',ranks:0,misc:0,trained:false,armor:0,classSkill:false};
+  const psionic=psionicSkillDefinition(name);
+  const s=c.skills.find(s=>normalized(s.name)===normalized(name))||{id:uid(),name,ability:ability(r.t('otherskillstat','ability'))||psionic?.ability||'INT',ranks:0,misc:0,trained:!!psionic,armor:0,classSkill:false};
   if(!c.skills.includes(s))c.skills.push(s);s.ranks=r.n('otherskillranks','ranks')??0;s.misc=sum(r,['otherskillmiscmod','otherskilltempmod','otherskillactionmod','misc']);
   const total=r.n('otherskill','total');if(total!==undefined)skillTotals.push([s,total]);
  }
+ // Preserve repeating rows and reserve remaining room for recorded fixed skills first.
+ const emptyPsionic:Skill[]=[];
+ for(const {skill,prefix} of missingPsionicSkills(c.skills)){
+  fillSkill(skill,core,prefix);
+  if(skill.ranks||skill.misc||skill.classSkill||skillTotals.some(([s])=>s===skill)){
+   if(c.skills.length<120)c.skills.push(skill);
+   else warn(skill.name+' could not fit in the skill list. Its fields remain in the attached Roll20 export.');
+  }else emptyPsionic.push(skill);
+ }
+ c.skills.push(...emptyPsionic.slice(0,Math.max(0,120-c.skills.length)));
  syncFactotumClassSkills(c);
  // Retain numeric source totals for the later automatic-bonus reconciliation,
  // which runs after feats and all source ranks have been imported.
@@ -303,6 +315,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1,monkDefenseMigration:1};
  c.roll20Import.skillAliasesMigration=1;
+ c.roll20Import.psionicSkillsMigration=1;
  c.roll20Import.spellNamesMigration=1;
  c.roll20Import.spellPreparationReview=1;
  c.roll20Import.weaponModeReview=1;

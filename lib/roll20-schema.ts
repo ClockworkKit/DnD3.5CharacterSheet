@@ -18,6 +18,7 @@ export const roll20ImportDataSchema=z.object({
  axeBrotherReview:z.number().int().min(0).max(1).optional(),
  spellPreparationReview:z.number().int().min(0).max(1).optional(),
  skillAliasesMigration:z.number().int().min(0).max(1).optional(),
+ psionicSkillsMigration:z.literal(1).optional(),
  monkDefenseMigration:z.number().int().min(0).max(1).optional(),
  powerDetailsMigration:z.number().int().min(0).max(1).optional(),
  castingProgressionMigration:z.number().int().min(0).max(1).optional(),

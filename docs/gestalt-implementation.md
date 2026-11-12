@@ -1269,3 +1269,40 @@ In the local browser the synthetic level-3 multiclass sheet previewed Bard 1
 known, three powers known, maximum power level 1 and a three-point contribution
 to the daily reserve. Wizard and the custom arcanist retained their independent
 caster levels of 1 and 2. Cancelling closed the review. All 895 tests passed.
+
+## Psionic skills and Cerebremancer entry
+
+Fresh player characters include Autohypnosis (Wis), Knowledge (psionics)
+(Int), Psicraft (Int) and Use Psionic Device (Cha). The existing skill ledger
+prices purchases against the two classes actually taken at the purchase level.
+A level-3 Wizard // Psion can buy six ranks each in Knowledge (arcana) and
+Knowledge (psionics) over three levels. This satisfies the skill requirements
+for the next level of Cerebremancer. Spellcasting, manifesting and the gestalt
+combination-class approval are checked separately. Discipline-specific
+additional class skills still use the existing training override.
+[Psionic skills](https://www.d20srd.org/srd/psionic/skills/overview.htm) ·
+[Psion disciplines and class skills](https://www.d20srd.org/srd/psionic/classes/psion.htm) ·
+[Cerebremancer entry](https://www.d20srd.org/srd/psionic/prestigeClasses/cerebremancer.htm)
+
+Older native sheets can add missing entries individually in Skills. On an
+older Roll20 import, opening the sheet recovers missing ranks from its retained
+fixed skill fields. Recovered ranks count immediately. When training history
+already exists, they remain unassigned until the player records their purchase
+levels. Existing skill rows retain their IDs, modifiers and purchases. Repeating
+specialties keep their identity, including a player's later name change.
+[Roll20 3.5 sheet fields](https://github.com/Roll20/roll20-character-sheets/blob/master/D%26D_3-5/charsheet_3-5.html)
+
+Interactive verification also covered the prestige target choices on a synthetic
+level-7 gestalt sheet. Sorcerer // Cerebremancer showed two eligible arcane
+and two eligible manifesting traditions. Missing GM approval and an unselected
+manifesting target each blocked review. Changing either target cleared the
+previous review. Selecting Sorcerer and Wilder advanced each once, including
+the overlapping Sorcerer grant. The reloaded native export retained both target
+IDs, the approval, 38/42 HP, a spent Wizard slot and two spent Psion points.
+
+On the same saved sheet, Skills offered the three missing psionic skills and
+recognized the existing six-rank Knowledge specialty. Adding Psicraft and
+spending one point raised its check from +3 to +4. Saving and reloading kept
+that rank and the original six Knowledge ranks. All 899 tests passed. Each of
+the five supplied Roll20 exports also preserved its serialized character data
+through a native save and reload.

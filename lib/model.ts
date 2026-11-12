@@ -7,6 +7,7 @@ import {creatureProfileSchema} from './creature-schema.ts';
 import {racialStateSchema,emptyRacialState} from './racial-state.ts';
 import {roll20ImportDataSchema} from './roll20-schema.ts';
 import { z } from 'zod';
+import {missingPsionicSkills} from './psionic-skills.ts';
 import {classSystemsSchema} from './class-systems-schema.ts';
 import {automationSchema,effectSchema,defaultAutomation} from './automation-schema.ts';
 import {findClass,makeCaster,makePsionic,applyStartingClass,applyClassTotals} from './classes.ts';
@@ -87,6 +88,7 @@ export function newWeapon(): Weapon {return {id:uid(),name:'New weapon',ability:
 export function newCharacter(kind='Fighter',level=3,raceId?:string,customClasses?:Character['customClasses']): Character {
  const c: Character = {advancementMode:'standard',sourceReferences:[],alternateFeatures:alternateFeaturesSchema.parse({}),sheetKind:'pc',creature:null,racialState:emptyRacialState(),prerequisiteConfirmations:{},classSystems:{choices:[],pools:{},delayedDamage:0},schemaVersion:1,advancementChoices:{},clericSpecialty:'none',factotum:{spent:0,inspirationExtra:0,knowledgeUsed:[],pietyUsed:0,dodgeUsed:false,spells:[]},automation:defaultAutomation(),effects:[],classLevels:[],psionics:[],ancestry:{raceId:'',abilityAdjustments:false,traitBonuses:false,racialHitDice:0,levelAdjustment:0,ignoreLevelAdjustment:false,powerPointsSpent:0,notes:''},name:kind==='Fighter'?'Borin Stoneward':'New '+kind.toLowerCase(),race:kind==='Fighter'?'Dwarf':'Human',classes:kind+' 3',level:3,alignment:'',deity:'',player:'',experience:3000,languages:'Common'+(kind==='Fighter'?', Dwarven':''),appearance:'',size:'Medium',scores:{STR:16,DEX:12,CON:14,INT:10,WIS:10,CHA:8},temps:{STR:0,DEX:0,CON:0,INT:0,WIS:0,CHA:0},hp:26,maxHp:30,tempHp:0,nonlethal:0,hitDice:'3d10',speed:20,initiative:0,bab:3,grapple:0,situational:0,defense:{armor:6,shield:2,natural:0,deflection:0,dodge:0,misc:0,dexCap:1,checkPenalty:-6,spellFailure:40,sr:0,dr:'',drSources:[],resistances:''},saves:{fort:{base:3,misc:0},ref:{base:1,misc:0},will:{base:1,misc:0}},skills:baseSkills.map(([name,ability,trained,armor],i)=>({id:'skill-'+i,name,ability,ranks:0,misc:0,trained,armor,classSkill:kind==='Fighter'&&['Climb','Craft','Handle Animal','Intimidate','Jump','Ride','Swim'].includes(name)})),weapons:[{...newWeapon(),name:'Battleaxe',damage:'1d8',crit:'20 / ×3'}],casters:[],gear:[{id:uid(),name:'Banded mail',qty:1,weight:35,carried:true,equipped:true,notes:'Armor +6; max Dex +1; check −6; arcane failure 35%.'},{id:uid(),name:'Heavy wooden shield',qty:1,weight:10,carried:true,equipped:true,notes:'Shield +2; check −2; arcane failure 15%.'},{id:uid(),name:'Battleaxe',qty:1,weight:6,carried:true,equipped:true,notes:''}],coins:{cp:0,sp:0,gp:50,pp:0},coinWeight:true,features:[],conditions:'',notes:'',background:''};
  c.defense.checkPenalty=-8;c.defense.spellFailure=50;
+ c.skills.push(...missingPsionicSkills(c.skills).map(entry=>entry.skill));
  if(customClasses!==undefined)c.customClasses=customClassesSchema.parse(customClasses);
  applyStartingClass(c,kind,level);
  if(raceId){
