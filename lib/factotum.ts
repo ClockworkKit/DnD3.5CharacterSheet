@@ -46,7 +46,7 @@ export function brainsOverBrawn(c:Character,ability:string) {
 }
 export function dilettanteProblem(c:Character,spell:Spell,others=c.factotum.spells.map(x=>x.spell)):string {
   const n=factotumNumbers(c),level=spell.levels['Sorcerer / Wizard'];
-  if(n.level<2||level===undefined||level>n.maxSpellLevel||effectiveScore(c,'INT')<10+level)return 'This spell is above your available Arcane Dilettante level or Intelligence.';
+  if(n.level<2||level===undefined||level>n.maxSpellLevel)return 'Choose a sorcerer/wizard spell within your available Arcane Dilettante level.';
   if(/\bXP\b/i.test(spell.components))return 'Arcane Dilettante cannot use spells with an XP cost.';
   if(others.some(s=>s.id===spell.id))return 'Choose each spell only once per day.';
   if(others.length>=n.spells)return 'All daily Arcane Dilettante choices are filled.';

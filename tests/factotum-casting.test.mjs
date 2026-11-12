@@ -46,6 +46,23 @@ test('Factotum/Cleric Axe Brother multiclassing does not share slots or reset da
  assert.equal(factotumNumbers(restored).remaining,3);
 });
 
+test('a low Intelligence modifier lowers the Dilettante save DC and permits a legal daily spell',async()=>{
+ const c=create(3);
+ c.scores.INT=8;
+ const colorSpray=spell('color-spray');
+ chooseDilettante(c,colorSpray);
+ c.temps.INT=-2;
+ const loaded=await prepareCharacter(characterSchema.parse(snapshot(c)));
+ const card=makeDilettanteRoll(loaded,loaded.factotum.spells[0].spell);
+ assert.equal(Object.fromEntries(card.fields).Save,'Will negates (DC 9)');
+ assert.equal(Object.fromEntries(card.fields)['Printed spell components'],'V, S, M');
+ castDilettante(loaded,colorSpray.id);
+ assert.equal(loaded.factotum.spent,1);
+ assert.equal(loaded.factotum.spells[0].spent,true);
+ assert.equal(Object.fromEntries(makeDilettanteRoll(loaded,spell('ray-of-frost')).fields).Save,'None');
+ assert.throws(()=>chooseDilettante(create(3),spell('fireball')),/available Arcane Dilettante level/);
+});
+
 test('insufficient inspiration cannot mark an unspent daily spell as used',()=>{
  const c=create();chooseDilettante(c,spell('magic-missile'));c.factotum.spent=factotumNumbers(c).inspiration;
  const before=snapshot(c);assert.throws(()=>castDilettante(c,'magic-missile'),/inspiration/);assert.deepEqual(snapshot(c),before);

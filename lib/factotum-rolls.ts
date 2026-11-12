@@ -32,15 +32,19 @@ export function makeCunningKnowledgeRoll(c:Character,skillId:string):Roll {
  return {title:skill.name+' — Cunning Knowledge',formula:withBonus('1d20',skillBonus(c,skill)+level),details:`Includes +${level} Cunning Knowledge. Costs 1 inspiration; once per day for this skill.`};
 }
 
+export function dilettanteSave(spell:Spell,level:number,intelligenceModifier:number):string {
+ return /^none\b/i.test(spell.save)?spell.save:`${spell.save} (DC ${10+level+intelligenceModifier})`;
+}
+
 /** A Dilettante use is a spell-like ability, not a spend from a wizard slot pool. */
 export function makeDilettanteRoll(c:Character,s:Spell):Roll {
  const n=factotumNumbers(c),level=s.levels['Sorcerer / Wizard'];
  if(level===undefined)throw new Error('Arcane Dilettante requires a sorcerer/wizard spell.');
  const formula=spellFormula(s,n.casterLevel);
  return withSpellAttacks(c,s,n.casterLevel,{title:s.name+' — Arcane Dilettante',...(formula?{formula}:{}),
-  details:'Spell-like ability; costs 1 inspiration and this daily spell choice. Resolve targets, saves and resistance separately.',
+  details:'Spell-like ability; costs 1 inspiration and this daily spell choice. Supply any required material component. Verbal and somatic components and focuses are waived.',
   fields:[['Spell level',String(level)],['Caster level',String(n.casterLevel)],['Casting time',s.castingTime],
-   ['Components',s.components],['Range',scaledSpellText(s.range,n.casterLevel)],['Target / area',s.target],
-   ['Duration',scaledSpellText(s.duration,n.casterLevel)],['Save',/^none\b/i.test(s.save)?s.save:`${s.save} (DC ${10+level+n.intelligence})`],
+   ['Printed spell components',s.components],['Range',scaledSpellText(s.range,n.casterLevel)],['Target / area',s.target],
+   ['Duration',scaledSpellText(s.duration,n.casterLevel)],['Save',dilettanteSave(s,level,n.intelligence)],
    ['Spell resistance',s.resistance],...(formula?[['Effect roll',formula] as [string,string]]:[]),['Summary',s.description.slice(0,1600)]]});
 }

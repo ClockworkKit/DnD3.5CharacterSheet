@@ -84,3 +84,18 @@ spent uses above its current capacity, injury, and prior level history. The
 supplied Cleric export was also checked in memory with its original book and
 with a personalized linked book. Both retained HP, spell IDs, preparations,
 and spent counts after repair and native reload.
+
+### Factotum daily spells and Intelligence
+
+Arcane Dilettante uses Factotum level to determine eligible spell levels and
+the Intelligence modifier to set saving throw DCs. The class grants a
+spell-like ability and gives no minimum Intelligence score for selection or
+activation. Its material component requirement and XP restriction still apply.
+See [Dungeonscape, pp. 14-16](https://dtdnd.neocities.org/books/player/Dungeonscape.pdf#page=15)
+and the [SRD spell-like ability rules](https://www.d20srd.org/srd/specialAbilities.htm#spellLikeAbilities).
+
+The supplied Factotum export was checked in memory. After confirming its
+level and choosing Ray of Frost as unused, one cast rolled a ranged touch
+attack and cold damage and spent one inspiration. An encounter refresh and
+native reload restored encounter inspiration and retained the spent daily
+choice and the archived Roll20 book.
