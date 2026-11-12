@@ -20,6 +20,16 @@ export function spellListLevel(spell:Pick<Spell,'levels'>,list:string):number|un
 export function expandSpellCatalog(base:Spell[],extensions:SpellExtension[]):Spell[]{
  const map=new Map(base.map(s=>[s.id,{...s,levels:{...s.levels}}]));
  for(const x of extensions){const s=map.get(x.id)||x.spell;if(!s)continue;const levels={...s.levels,...x.levels};map.set(x.id,{...s,levels,levelText:Object.entries(levels).map(([k,v])=>k+' '+v).join(', ').slice(0,160)});}
+ // SRD wound spell entries refer to the light version for their shared statistics.
+ for(const spell of map.values()){
+  const family=/^(cure|inflict)-(?:minor|moderate|serious|critical)-wounds(-mass)?$/.exec(spell.id);
+  if(!family)continue;
+  const parent=map.get(family[1]+'-light-wounds'+(family[2]??''));
+  if(!parent)continue;
+  for(const field of ['components','castingTime','range','target','duration','save','resistance'] as const){
+   if(spell[field]==='See description')spell[field]=parent[field];
+  }
+ }
  // These classes explicitly draw on an existing list. Spellthief is restricted
  // to five schools and spell levels 1–4; stolen spells are a separate ability.
  for(const s of map.values()){

@@ -1270,6 +1270,21 @@ known, three powers known, maximum power level 1 and a three-point contribution
 to the daily reserve. Wizard and the custom arcanist retained their independent
 caster levels of 1 and 2. Cancelling closed the review. All 895 tests passed.
 
+## Spontaneous Cleric casting
+
+The ordinary prepared Cleric book can expend a remaining copy of a prepared spell
+for a cure or inflict spell of its level or lower. A Cleric // Wizard spends
+only the chosen Cleric preparation. Domain preparations and classes that traded
+away spontaneous casting are ineligible. The converted spell uses the Cleric
+tradition's caster level, its own spell level and the chosen target's touch
+delivery. The catalog fills inherited range, saves and other statistics from
+the corresponding light or mass light spell and retains explicit exceptions.
+This control covers unmodified cure and inflict spells. The sheet
+uses the donor's recorded spell level, including explicit Heighten adjustments.
+Good and evil alignments determine the channel. For other alignment entries
+the player records the channel permitted by the deity and the character's
+turning choice. [Cleric spontaneous casting](https://www.d20srd.org/srd/classes/cleric.htm#spontaneousCasting)
+
 ## Spiritual Weapon on subsequent rounds
 
 A Cleric 3 on one side of an 11-level gestalt Fighter can cast Spiritual
