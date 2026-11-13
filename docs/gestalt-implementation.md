@@ -1347,3 +1347,12 @@ spending one point raised its check from +3 to +4. Saving and reloading kept
 that rank and the original six Knowledge ranks. All 899 tests passed. Each of
 the five supplied Roll20 exports also preserved its serialized character data
 through a native save and reload.
+
+### Adding a cleric domain pool after casting
+
+Calculations creates the restricted domain slots with zero uses spent. A
+standard cleric and a paired Wizard / Cleric both retain the preparations and
+expenditure in their existing books. A level-five cleric with sufficient
+Wisdom starts with one domain slot each at levels one through three. The new
+pool also follows this limit when the ordinary book uses manual progression.
+See the [cleric domain spell rules](https://www.d20srd.org/srd/classes/cleric.htm#deityDomainsAndDomainSpells).

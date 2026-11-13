@@ -6,6 +6,7 @@ import {baseClasses,findClass} from '../lib/classes.ts';
 import {raceCatalog} from '../lib/ancestry.ts';
 import {recompute} from '../lib/automation.ts';
 import {advancementNumbers} from '../lib/advancement.ts';
+import {addClericDomainSlots} from '../lib/cleric-domain-slots.ts';
 import {advancementChoices} from '../lib/advancement-choices.ts';
 import {hitDieSequence} from '../lib/level-history.ts';
 import {skillLedger,setSkillPoints} from '../lib/skill-points.ts';
@@ -39,6 +40,30 @@ test('Ranger/Rogue creation unions class skills and uses one first-level multipl
   const skill=c.skills.find(s=>s.name===name);assert.ok(skill.classSkill,name);setSkillPoints(c,c.automation.history[0].key,skill.id,4);
  }
  assert.equal(skillLedger(c).spent,12);assert.ok(c.features.some(f=>f.name==='Ranger class features'));assert.ok(c.features.some(f=>f.name==='Rogue class features'));
+});
+
+test('opening domain slots after casting preserves separate Wizard and Cleric books across reload',async()=>{
+ for(const paired of [false,true]){
+  const c=paired?create(pairs('wizard','cleric',5),{hpMethod:'average'}):createPlayerCharacter({...options,kind:'Cleric',level:5,hpMethod:'average'});
+  const cleric=c.casters.find(p=>p.casting.classId==='cleric');
+  for(const book of c.casters)book.slots[1].used=2;
+  cleric.notes='Personal book notes';
+  cleric.casting.automatic=paired;
+  const original=structuredClone(c.casters);
+  addClericDomainSlots(c,cleric.id);
+  addClericDomainSlots(c,cleric.id);
+  assert.deepEqual(c.casters.slice(0,-1),original);
+  const domain=c.casters.at(-1);
+  assert.equal(domain.casting.domain,true);
+  assert.equal(domain.level,5);
+  assert.deepEqual(domain.slots.map(s=>s.max),[0,1,1,1,0,0,0,0,0,0]);
+  assert.ok(domain.slots.every(s=>s.used===0));
+  domain.slots[1].used=1;
+  const restored=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+  assert.equal(restored.casters.length,original.length+1);
+  assert.equal(restored.casters.at(-1).slots[1].used,1);
+  assert.ok(restored.casters.slice(0,-1).every(p=>p.slots[1].used===2));
+ }
 });
 
 test('fresh Wizard/Cleric and psionic pairs retain independent traditions',()=>{
