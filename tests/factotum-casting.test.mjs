@@ -6,6 +6,7 @@ import {characterSchema,uid} from '../lib/model.ts';
 import {recompute} from '../lib/automation.ts';
 import {chooseDilettante,castDilettante,factotumNumbers} from '../lib/factotum.ts';
 import {makeDilettanteRoll} from '../lib/factotum-rolls.ts';
+import {previewGestaltLevel,applyGestaltLevel} from '../lib/level-up.ts';
 import {makeRequest} from '../lib/rules.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {applyClericSpecialty} from '../lib/cleric-specialty.ts';
@@ -66,4 +67,26 @@ test('a low Intelligence modifier lowers the Dilettante save DC and permits a le
 test('insufficient inspiration cannot mark an unspent daily spell as used',()=>{
  const c=create();chooseDilettante(c,spell('magic-missile'));c.factotum.spent=factotumNumbers(c).inspiration;
  const before=snapshot(c);assert.throws(()=>castDilettante(c,'magic-missile'),/inspiration/);assert.deepEqual(snapshot(c),before);
+});
+
+test('paired advancement reviews Factotum allowances on either side and preserves the spent daily spell',async()=>{
+ const c=createPlayerCharacter({name:'Paired Factotum QA',kind:'Fighter',level:4,raceId:'human',scores:{STR:12,DEX:14,CON:12,INT:18,WIS:16,CHA:10},method:'manual',hpMethod:'average',
+  advancementMode:'gestalt',gestaltPairs:Array.from({length:4},()=>({left:'fighter',right:'factotum'}))});
+ c.experience=15000;
+ chooseDilettante(c,spell('ray-of-frost'));castDilettante(c,spell('ray-of-frost').id);
+ const before=structuredClone(c);
+ assert.equal(previewGestaltLevel(c,{left:'fighter',right:'rogue'}).summary.factotum,undefined);
+ for(const [left,right] of [['factotum','fighter'],['fighter','factotum']]){
+  const {before:old,after}=previewGestaltLevel(c,{left,right}).summary.factotum;
+  assert.deepEqual([old.inspiration,after.inspiration,after.remaining],[3,4,3]);
+  assert.deepEqual([after.spells,after.maxSpellLevel,after.casterLevel,after.piety],[2,2,5,6]);
+ }
+ assert.deepEqual(c,before);
+ applyGestaltLevel(c,previewGestaltLevel(c,{left:'fighter',right:'factotum'}));recompute(c,before);
+ const loaded=await prepareCharacter(characterSchema.parse(snapshot(c)));
+ assert.deepEqual(loaded.factotum,before.factotum);
+ loaded.factotum.pietyUsed=2;
+ const sixth=previewGestaltLevel(loaded,{left:'factotum',right:'fighter'});
+ assert.equal(sixth.character.factotum.pietyUsed,2);
+ assert.equal(sixth.summary.factotum.after.casterLevel,6);
 });

@@ -1,4 +1,5 @@
 import {addStartingClericDomainSlots} from './cleric-domain-slots.ts';
+import {factotumNumbers} from './factotum.ts';
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
@@ -140,6 +141,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   bonusDecision:gestaltBonusLedger(rows).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
   milestones:definitions.map((def,i)=>({classId:def.id,name:def.name,level:entries[i].level,text:effectiveClassMilestone(next,def.id,def.levels.find(r=>r.level===entries[i].level)!.special,entries[i].level)})),
   featureCapacities:featureCapacityChanges(c,next),
+  factotum:definitions.some(def=>def.id==='factotum')?{before:factotumNumbers(c),after:factotumNumbers(next)}:undefined,
   casting:next.casters.map(p=>({id:p.id,name:p.name,level:p.level,slots:p.slots.map(s=>s.max),known:castingNumbers(next,p).known})),
   psionics:next.psionics.map(p=>{
    const progression=psionicProgression(next,p).progression;

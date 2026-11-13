@@ -113,6 +113,12 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <h4>New feat and ability choices</h4>
     {review.summary.choices.length?<ul>{review.summary.choices.map(choice=><li key={choice.key}>{choice.label}</li>)}</ul>:<p>No new feat or ability-score choices at this level.</p>}
     <p className="fine">Choices and skill points are allocated after confirmation; no feat or ability increase is selected automatically.</p>
+    {review.summary.factotum&&<section aria-label="Factotum advancement">
+     <h4>Factotum resources</h4>
+     <p>Inspiration per encounter {review.summary.factotum.before.inspiration} → {review.summary.factotum.after.inspiration}. Remaining {review.summary.factotum.after.remaining}.</p>
+     {review.summary.factotum.after.spells>0&&<p>Arcane Dilettante daily spell choices {review.summary.factotum.before.spells} → {review.summary.factotum.after.spells}. Maximum spell level {review.summary.factotum.after.maxSpellLevel}. Caster level {review.summary.factotum.after.casterLevel}.</p>}
+     {review.summary.factotum.after.level>=5&&<p>Opportunistic Piety uses per day {review.summary.factotum.before.piety} → {review.summary.factotum.after.piety}. Already spent {c.factotum.pietyUsed}.</p>}
+    </section>}
     {review.summary.featureCapacities.length>0&&<>
      <h4>Feature counters</h4>
      <ul>{review.summary.featureCapacities.map(f=><li key={f.id}>
