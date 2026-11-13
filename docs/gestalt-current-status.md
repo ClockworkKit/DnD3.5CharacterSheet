@@ -285,6 +285,14 @@ The low-level character still cannot cast Scrying. See the implementation
 record for the exact scope. All **890 tests passed**, as did TypeScript and both
 the Pages and Worker production builds.
 
+## First autosave after import (2026-11-13)
+
+The level-up form now keeps the same editing session while an imported sheet receives its first save ID. A successful switch to another character starts a new session.
+
+In an isolated browser, hold the first autosave of a disposable three-level paired import. Select Wizard and a custom combination prestige class, enter GM approval, choose the Wizard tradition, and open the review. Release the autosave. Both class choices, approval, target and open review should persist. Cancel, select Sorcerer as the arcane target, confirm, reload and export. The example advanced Wizard to 3, Sorcerer to 2, and Cleric and its domain book to 4. It retained the three points of damage and each book's spent slot. Switching away from a second character's unconfirmed review cleared it on return.
+
+The standard check selected Cleric on a first-level Wizard before releasing the import's first autosave. The choice persisted, and confirming then reloading produced Wizard 1 / Cleric 1.
+
 ## Remaining work and explicit limits
 
 The November 6 spellbook release reached Pages in run [42258109599](https://github.com/ClockworkKit/DnD3.5CharacterSheet/actions/runs/42258109599).

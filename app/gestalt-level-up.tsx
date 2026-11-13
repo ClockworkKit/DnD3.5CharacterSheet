@@ -60,7 +60,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
   }catch(e){setError(errorMessage(e,'Could not apply this level.'));}
  }
  return <section className="level-up-notice" aria-label="Paired level up">
-  <h2 role="status">Paired level up available</h2>
+  <div role="status"><h2>Paired level up available</h2></div>
   <p>{c.experience.toLocaleString()} XP qualifies for effective level {status.eligible}. Advance both classes together to gain one character level.</p>
   {!c.automation.enabled?<Btn onClick={()=>navigate('calculations')}>Enable automatic calculations</Btn>:<>
    <p>Choose each side independently. New prestige classes must qualify before this level; a GM approval does not waive their prerequisites.</p>
