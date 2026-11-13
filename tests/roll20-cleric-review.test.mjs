@@ -6,6 +6,9 @@ import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {characterSchema,uid} from '../lib/model.ts';
 import {recompute} from '../lib/automation.ts';
 import {axeBrotherDomainList} from '../lib/cleric-domains.ts';
+import {originalTurningUses} from '../lib/roll20-turning.ts';
+import {attemptTurning,turningCounter} from '../lib/turn-undead.ts';
+import {makeRequest} from '../lib/rules.ts';
 import {useStrengthDomain,strengthDomainPower} from '../lib/strength-domain.ts';
 import {effectiveScore} from '../lib/ancestry.ts';
 import {addEffect,advanceEffects} from '../lib/effects.ts';
@@ -63,6 +66,43 @@ test('recording an earlier use preserves manual limits and blocks grants replace
  c.alternateFeatures.selected.push('cleric-golarion-cleric');
  assert.throws(()=>useStrengthDomain(c,false),/alternate class feature/);
  assert.equal(card.used,2);
+});
+
+test('one turning attempt sends both dice and retains imported expenditure through repair, rejection and reload',async()=>{
+ const source=raw();
+ source.attributes.push({name:'turningperday',current:2,max:6});
+ const imported=importRoll20(source).character;
+ assert.equal(turningCounter(imported).used,4);
+ assert.equal(imported.roll20Import.report.unmapped.includes('turningperday'),false);
+ const c=await load(repair(imported)),counter=turningCounter(c);
+ assert.equal(counter.max,5);assert.equal(counter.used,4);
+ assert.equal(attemptTurning(c,()=>false),false);assert.equal(counter.used,4);
+ const books=save(c.casters),hp=c.hp;
+ assert.equal(attemptTurning(c,card=>{
+  assert.deepEqual(card.rolls.map(row=>row.formula),['1d20+2','2d6+4']);
+  const request=makeRequest(card,c.name,'https://example.com');
+  assert.match(request.message,/\[\[1d20\+2\]\]/);assert.match(request.message,/\[\[2d6\+4\]\]/);
+  return true;
+ }),true);
+ const restored=await load(c);
+ assert.equal(turningCounter(restored).used,5);
+ assert.equal(attemptTurning(restored,()=>assert.fail('exhausted counter sent a roll')),false);
+ assert.deepEqual(save(restored.casters),books);assert.equal(restored.hp,hp);
+ const rested=await load(resetDaily(restored));
+ assert.equal(turningCounter(rested).used,0);
+ assert.deepEqual(originalTurningUses(rested.roll20Import.raw),{remaining:2,max:6,used:4});
+});
+
+test('a conflicting or invalid original count cannot create a spent turning counter',()=>{
+ for(const fields of [
+  [{name:'turningperday',current:2,max:3},{name:'turningperday_max',current:6}],
+  [{name:'turningperday',current:7,max:6}],
+  [{name:'turningperday',current:2,max:6},{name:'turningperday',current:3,max:6}]
+ ]){
+  const source=raw();source.attributes.push(...fields);
+  assert.equal(originalTurningUses(source),null);
+  assert.equal(turningCounter(importRoll20(source).character),undefined);
+ }
 });
 
 test('domain rows including Roll20 doains typo become visible feature cards without duplicate feat grants',()=>{

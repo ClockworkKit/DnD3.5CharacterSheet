@@ -10,6 +10,7 @@ import {roll20SpellFailure} from './roll20-spell-failure.ts';
 import {recordRoll20WeaponFeatBonuses} from './roll20-weapon-bonuses.ts';
 import {recordRoll20WeaponEnhancement} from './roll20-weapon-enhancement.ts';
 import {readRoll20GlobalCombat,recordRoll20GlobalWeapon} from './roll20-global-combat.ts';
+import {importTurningUses} from './roll20-turning.ts';
 import {legacyDivineSpell} from './roll20-legacy-spells.ts';
 import {roll20PowerNotes} from './roll20-power-details.ts';
 import {matchRoll20AnnotatedSpell,roll20SpellNameNote} from './roll20-spell-names.ts';
@@ -314,6 +315,7 @@ export function importRoll20(raw:unknown):{character:Character,report:Roll20Repo
  if(report.unmapped.length)warn('Unmapped fields, formulas, macros, and custom sections remain in the attached original export.');
  report.warnings=[...warnings];
  c.roll20Import={format:'roll20-dnd35-export',version:data.version,exportedAt:data.exportedAt,sourceCharacterId:data.character.id,raw:JSON.parse(json),report,equipmentMigration:1,spellFailureMigration:1,weaponDiceMigration:1,weaponBonusMigration:2,weaponEnhancementMigration:1,globalCombatMigration:1,legacySpellsMigration:1,powerDetailsMigration:1,monkDefenseMigration:1};
+ importTurningUses(c,data);
  c.roll20Import.skillAliasesMigration=1;
  c.roll20Import.psionicSkillsMigration=1;
  c.roll20Import.spellNamesMigration=1;

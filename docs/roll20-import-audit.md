@@ -112,3 +112,16 @@ use without activating it again. The power expires with the round controls
 and shares enhancement stacking with Bull's Strength. Clerics who have
 modified their domains through an alternate feature use their feature card
 to track the agreed power.
+
+### Turning attempts
+
+A fresh cleric or paladin import with one identifiable turning pool carries
+over the expenditure recorded by the current and maximum Roll20 fields.
+Automatic calculations use the character's current daily limit. The Combat
+tab shows the export's original count for comparison on existing saves.
+Reloading an older sheet always uses its current counter.
+
+A turning attempt sends the Charisma check and the total Hit Dice affected
+together. The daily counter advances once when the sheet accepts the roll.
+See the [turning rules](https://www.d20srd.org/srd/combat/specialAttacks.htm#turnOrRebukeUndead)
+and [Roll20's sheet fields](https://github.com/Roll20/roll20-character-sheets/blob/master/D%26D_3-5/charsheet_3-5.html).
