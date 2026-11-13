@@ -59,6 +59,25 @@ export function abilityRollRecord(method:AbilityMethod,scores:AbilityScores,roll
 }
 
 export type StartingClassPair={left:string;right:string};
+/** Describe the proposed rows without creating a character or rolling any dice. */
+export function startingPairRows(pairs:StartingClassPair[],customClasses?:Character['customClasses']){
+ const counts=new Map<string,number>();
+ return pairs.map((pair,index)=>{
+  const sides=[pair.left,pair.right].map(id=>{
+   const definition=findClass(id,{customClasses});
+   return {id,definition,level:(counts.get(id)??0)+1};
+  });
+  for(const side of sides)counts.set(side.id,side.level);
+  let problem=pair.left===pair.right?'Choose two different classes.':gestaltVariantPairProblem(pair.left,pair.right,customClasses);
+  for(const {id,definition,level} of sides){
+   if(problem)break;
+   if(!definition||definition.id!==id)problem='Choose a supported class.';
+   else if(definition.kind==='Prestige')problem='Create your base-class levels first, then use paired level-up to enter prestige classes after allocating their prerequisites.';
+   else if(!definition.levels.some(row=>row.level===level))problem=definition.name+' has no complete table for level '+level+'.';
+  }
+  return {sides,problem:problem?'Starting level '+(index+1)+': '+problem:''};
+ });
+}
 export type CharacterCreationOptions=Pick<Character,'psionDiscipline'>&{name:string,kind:string,level:number,raceId:string,scores:AbilityScores,method:AbilityMethod,rolls?:AbilityRoll[],assignment?:number[],hpMethod?:Character['automation']['hpMethod'],hpRolls?:number[],clericSpecialty?:Character['clericSpecialty'],advancementMode?:Character['advancementMode'],gestaltPairs?:StartingClassPair[],gestaltBonusMethod?:GestaltBonusMethod;customClasses?:Character['customClasses']};
 
 export function createPlayerCharacter(options:CharacterCreationOptions):Character{
@@ -96,16 +115,10 @@ export function createPlayerCharacter(options:CharacterCreationOptions):Characte
 function createPairedCharacter(options:CharacterCreationOptions):Character{
  const pairs=options.gestaltPairs;
  if(!pairs||pairs.length!==options.level)throw new Error('Choose two classes for every starting character level.');
- for(const [index,pair] of pairs.entries()){
-  const problem=gestaltVariantPairProblem(pair.left,pair.right,options.customClasses);
-  if(problem)throw new Error('Starting level '+(index+1)+': '+problem);
- }
- const definitions=pairs.map((pair,index)=>[pair.left,pair.right].map(id=>{
-  const def=findClass(id,options);
-  if(!def||def.id!==id)throw new Error('Choose a supported class for starting level '+(index+1)+'.');
-  if(def.kind==='Prestige')throw new Error('Create your base-class levels first, then use paired level-up to enter prestige classes after allocating their prerequisites.');
-  return def;
- }));
+ const rows=startingPairRows(pairs,options.customClasses);
+ const invalid=rows.find(row=>row.problem);
+ if(invalid)throw new Error(invalid.problem);
+ const definitions=rows.map(row=>row.sides.map(side=>side.definition!));
  const race=findRace(options.raceId);
  if(race?.rhd)throw new Error('Gestalt racial Hit Dice require a supported progression policy. Choose a race without racial Hit Dice or use standard advancement.');
  // Reuse the standard blank-character, ability and race setup, without rolling

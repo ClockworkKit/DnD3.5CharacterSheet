@@ -1,6 +1,6 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import {createPlayerCharacter} from '../lib/character-creation.ts';
+import {createPlayerCharacter,startingPairRows} from '../lib/character-creation.ts';
 import {createNpcSheet} from '../lib/creatures.ts';
 import {customClassDraft,customClassTable} from '../lib/custom-class-editor.ts';
 import {characterSchema} from '../lib/model.ts';
@@ -91,4 +91,23 @@ test('new custom standard and paired sheets advance and round-trip with damage, 
   const api=createBrowserCharacterApi({scope:'/custom-creation/',storage,lock});const saved=await api('/api/characters',{method:'POST',body:JSON.stringify({data:c})});
   const fresh=createBrowserCharacterApi({scope:'/custom-creation/',storage,lock});assert.deepEqual((await fresh('/api/characters/'+saved.id)).data,c);
  }
+});
+
+test('creation identifies each invalid row before submission and tracks custom levels across side changes',()=>{
+ const custom=profile();custom.definition.levels=custom.definition.levels.slice(0,1);const id=custom.definition.id;
+ const pairs=[{left:id,right:'wizard'},{left:'fighter',right:id},{left:'rogue',right:'psychic-rogue'},{left:'wizard',right:'wizard'}];
+ const original=structuredClone(pairs);
+ const review=startingPairRows(pairs,[custom]);
+ assert.deepEqual(review.map(r=>r.sides.map(s=>s.level)),[[1,1],[1,2],[1,1],[2,2]]);
+ assert.equal(review[0].problem,'');
+ assert.match(review[1].problem,/Starting level 2: Test guardian has no complete table for level 2/);
+ assert.match(review[2].problem,/Starting level 3: .*versions of the same class/);
+ assert.match(review[3].problem,/Starting level 4: Choose two different classes/);
+ assert.deepEqual(pairs,original);
+ const input={...options,level:pairs.length,advancementMode:'gestalt',customClasses:[custom],gestaltPairs:pairs,hpMethod:'average'};
+ assert.throws(()=>createPlayerCharacter(input),error=>error.message===review[1].problem);
+ pairs[1].right='wizard';pairs[2].right='fighter';pairs[3].right='rogue';
+ assert.ok(startingPairRows(pairs,[custom]).every(row=>!row.problem));
+ const saved=createPlayerCharacter(input);
+ assert.deepEqual(saved.classLevels.map(e=>[e.classId,e.level]),[[id,1],['wizard',3],['fighter',2],['rogue',2]]);
 });
