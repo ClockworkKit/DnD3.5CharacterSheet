@@ -18,7 +18,7 @@ test('choosing a specialty without cleric levels fails without changing the char
 });
 
 test('Axe Brother reuses an unlinked legacy cleric book without refilling slots or replacing spells',()=>{
- const c=create(),p=c.casters[0];delete p.casting;p.name='My prayers';p.level=7;p.slots[1].used=2;p.notes='Existing notes';
+ const c=create();c.casters=c.casters.filter(book=>!book.casting.domain);const p=c.casters[0];delete p.casting;p.name='My prayers';p.level=7;p.slots[1].used=2;p.notes='Existing notes';
  p.spells.push({id:'prayer',spellId:'bless',level:1,slotLevel:1,prepared:2,spent:1,formula:'',notes:'Keep this',custom:null});
  const before=snapshot(p);applyClericSpecialty(c,'axe-brother');
  assert.equal(c.casters.length,1);assert.equal(c.casters[0].id,before.id);
@@ -34,7 +34,7 @@ test('ambiguous cleric books require review rather than receiving an arbitrary s
 });
 
 test('domain books and explicitly different classes are not used as ordinary cleric books',()=>{
- const c=create(),other=c.casters[0];other.casting.classId='wizard';other.name='Cleric';
+ const c=create();c.casters=c.casters.filter(book=>!book.casting.domain);const other=c.casters[0];other.casting.classId='wizard';other.name='Cleric';
  const domain=structuredClone(other);domain.id='domain-only';domain.casting.classId='cleric';domain.casting.domain=true;c.casters.push(domain);
  const before=snapshot(c.casters);applyClericSpecialty(c,'axe-brother');
  assert.equal(c.casters.length,3);assert.deepEqual(snapshot(c.casters.slice(0,2)),before);

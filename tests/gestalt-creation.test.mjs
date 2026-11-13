@@ -15,7 +15,7 @@ import {optionalRuleSettings} from '../lib/character-rules.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {createBrowserCharacterApi} from '../lib/browser-character-store.ts';
-import {previewGestaltLevel,applyGestaltLevel} from '../lib/level-up.ts';
+import {gainLevel,previewGestaltLevel,applyGestaltLevel} from '../lib/level-up.ts';
 
 const options={name:'Fresh paired QA',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:16,WIS:14,CHA:12},method:'manual'};
 const pairs=(left,right,n)=>Array.from({length:n},()=>({left,right}));
@@ -45,6 +45,8 @@ test('Ranger/Rogue creation unions class skills and uses one first-level multipl
 test('opening domain slots after casting preserves separate Wizard and Cleric books across reload',async()=>{
  for(const paired of [false,true]){
   const c=paired?create(pairs('wizard','cleric',5),{hpMethod:'average'}):createPlayerCharacter({...options,kind:'Cleric',level:5,hpMethod:'average'});
+  // An older save created before domain slots were included at creation.
+  c.casters=c.casters.filter(book=>!book.casting.domain);
   const cleric=c.casters.find(p=>p.casting.classId==='cleric');
   for(const book of c.casters)book.slots[1].used=2;
   cleric.notes='Personal book notes';
@@ -66,9 +68,24 @@ test('opening domain slots after casting preserves separate Wizard and Cleric bo
  }
 });
 
+test('standard cleric entry grants one domain pool and leaves a returning cleric choices alone',()=>{
+ const c=createPlayerCharacter({...options,kind:'Wizard',hpMethod:'average'});
+ c.experience=6000;c.casters[0].slots[1].used=1;
+ gainLevel(c,'cleric');recompute(c);
+ const domain=c.casters.find(book=>book.casting.domain);
+ assert.deepEqual(domain.slots.slice(0,3),[{max:0,used:0},{max:1,used:0},{max:0,used:0}]);
+ assert.equal(c.casters[0].slots[1].used,1);
+ domain.slots[1].used=1;gainLevel(c,'cleric');recompute(c);
+ assert.equal(c.casters.filter(book=>book.casting.domain).length,1);
+ assert.equal(domain.slots[1].used,1);
+ c.casters=c.casters.filter(book=>!book.casting.domain);
+ gainLevel(c,'cleric');recompute(c);
+ assert.equal(c.casters.some(book=>book.casting.domain),false);
+});
+
 test('fresh Wizard/Cleric and psionic pairs retain independent traditions',()=>{
  const divine=create(pairs('wizard','cleric',5),{hpMethod:'average'});
- assert.deepEqual(divine.casters.map(p=>[p.casting.classId,p.level]),[['wizard',5],['cleric',5]]);assert.equal(divine.psionics.length,0);
+ assert.deepEqual(divine.casters.map(p=>[p.casting.classId,p.casting.domain,p.level]),[['wizard',false,5],['cleric',false,5],['cleric',true,5]]);assert.equal(divine.psionics.length,0);
  assert.equal(divine.casters[0].ability,'INT');assert.equal(divine.casters[1].ability,'WIS');assert.ok(divine.casters.every(p=>p.spells.length===0&&p.slots.every(s=>s.used===0)));
  const psychic=create(pairs('psion','wilder',2),{hpRolls:[4]});assert.equal(psychic.psionics.length,2);assert.ok(psychic.psionics.every(p=>p.level===2&&p.spent===0&&p.powers.length===0));
 });
@@ -78,7 +95,7 @@ test('either starting side may change classes, retaining order and actual-level 
  const c=create(plan,{hpRolls:[3,4,5]});
  assert.deepEqual(c.classLevels.map(e=>[e.classId,e.level]),[['fighter',2],['wizard',3],['cleric',2],['rogue',1]]);
  assert.deepEqual(hitDieSequence(c).map(r=>r.classIds),plan.map(p=>[p.left,p.right]));assert.equal(c.level,4);
- assert.equal(advancementChoices(c).filter(r=>r.kind==='ability').length,1);assert.equal(c.casters.length,2);
+ assert.equal(advancementChoices(c).filter(r=>r.kind==='ability').length,1);assert.equal(c.casters.length,3);
  const before=structuredClone(c);recompute(c);assert.deepEqual(c,before);
 });
 
@@ -108,7 +125,7 @@ test('every selectable base class can occupy either starting side without duplic
   const other=def.id==='fighter'?'wizard':'fighter';
   for(const pair of [{left:def.id,right:other},{left:other,right:def.id}]){
    const c=create([pair]),before=structuredClone(c);assert.equal(c.level,1,def.name);assert.equal(c.maxHp,Math.max(def.hitDie,findClass(other).hitDie)+2,def.name);
-   assert.equal(new Set(c.casters.map(p=>p.casting.classId)).size,c.casters.length);assert.equal(new Set(c.psionics.map(p=>p.manifesting.classId)).size,c.psionics.length);
+   assert.equal(new Set(c.casters.map(p=>p.casting.classId+':'+p.casting.domain)).size,c.casters.length);assert.equal(new Set(c.psionics.map(p=>p.manifesting.classId)).size,c.psionics.length);
    recompute(c);assert.deepEqual(c,before,def.name);
   }
  }
@@ -118,7 +135,7 @@ test('created paired NPCs save/load/export and advance without losing damage, tr
  const c=createNpcSheet({...options,advancementMode:'gestalt',level:2,gestaltPairs:pairs('wizard','cleric',2),hpRolls:[3]});assert.equal(c.sheetKind,'npc');
  c.hp-=2;c.casters.forEach(p=>p.slots[1].used=1);const skill=c.skills.find(s=>s.name==='Concentration');setSkillPoints(c,c.automation.history[0].key,skill.id,4);
  c.experience=3000;const before=structuredClone(c);applyGestaltLevel(c,previewGestaltLevel(c,{left:'wizard',right:'cleric',hitDieRoll:5}));recompute(c,before);
- assert.equal(c.level,3);assert.equal(c.maxHp-c.hp,2);assert.equal(skillLedger(c).spent,4);assert.deepEqual(c.casters.map(p=>p.slots[1].used),[1,1]);
+ assert.equal(c.level,3);assert.equal(c.maxHp-c.hp,2);assert.equal(skillLedger(c).spent,4);assert.deepEqual(c.casters.map(p=>p.slots[1].used),[1,1,1]);
  const values=new Map(),api=createBrowserCharacterApi({scope:'paired-creation',storage:()=>({getItem:k=>values.get(k)??null,setItem:(k,v)=>values.set(k,v)}),lock:async(_,fn)=>fn()});
  const record=await api('/api/characters',{method:'POST',body:JSON.stringify({data:c})}),saved=(await api('/api/characters/'+record.id)).data;
  const restored=await prepareCharacter(parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:saved})));assert.deepEqual(restored,c);

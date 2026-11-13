@@ -5,11 +5,18 @@ export function hasClericDomainSlots(c:Character){
  return c.casters.some(book=>book.casting?.domain&&castingDefinition(book,c)?.id==='cleric');
 }
 
+export function addStartingClericDomainSlots(c:Character){
+ const ordinary=c.casters.find(book=>!book.casting?.domain&&castingDefinition(book,c)?.id==='cleric');
+ if(!ordinary||hasClericDomainSlots(c))return;
+ if(c.casters.length>=15)throw new Error('Adding the cleric domain pool would exceed the 15 spellbook limit.');
+ addClericDomainSlots(c,ordinary.id);
+}
+
 export function addClericDomainSlots(c:Character,ordinaryId:string){
  const ordinary=c.casters.find(book=>book.id===ordinaryId);
  if(!ordinary||ordinary.casting?.domain||castingDefinition(ordinary,c)?.id!=='cleric'||hasClericDomainSlots(c)||c.casters.length>=15)return;
- const domain:Caster={...ordinary,id:crypto.randomUUID(),name:'Domain',mode:'prepared',spells:[],
-  notes:'Prepare one spell from either of your domains at each available spell level, starting at 1st level.',
+ const domain:Caster={...ordinary,id:crypto.randomUUID(),name:'Domain',list:'Choose a domain',mode:'prepared',spells:[],
+  notes:'Prepare one spell from either of your domains at each available spell level, starting at 1st level. Select your domain in the spell library to use its spell levels.',
   casting:{classId:'cleric',domain:true,automatic:ordinary.casting?.automatic??true,progression:null,levelAdjustment:0,slotAdjustments:Array(10).fill(0)}};
  const numbers=castingNumbers(c,domain);
  domain.slots=numbers.slots.map(max=>({max,used:0}));

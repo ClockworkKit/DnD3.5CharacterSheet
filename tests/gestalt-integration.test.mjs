@@ -156,11 +156,14 @@ test('paired fourth level offers one ability increase and independent class mile
 
 test('both sides can change classes and initialize independent casting and manifesting once',()=>{
  const c=paired(repeat('fighter','rogue',1));c.experience=3000;
- applyReview(c,previewGestaltLevel(c,{left:'cleric',right:'psion',hitDieRoll:6,psionDiscipline:'Seer'}));
- assert.equal(c.level,2);assert.equal(c.casters.length,1);assert.equal(c.psionics.length,1);assert.equal(c.casters[0].casting.classId,'cleric');assert.equal(c.psionics[0].manifesting.classId,'psion');
+ const review=previewGestaltLevel(c,{left:'cleric',right:'psion',hitDieRoll:6,psionDiscipline:'Seer'});
+ assert.equal(c.casters.length,0);
+ assert.deepEqual(review.summary.casting.map(p=>[p.name,p.slots[0],p.slots[1]]),[['Cleric',3,2],['Domain',0,1]]);
+ applyReview(c,review);
+ assert.equal(c.level,2);assert.equal(c.casters.length,2);assert.equal(c.psionics.length,1);assert.equal(c.casters[0].casting.classId,'cleric');assert.equal(c.psionics[0].manifesting.classId,'psion');
  c.psionics[0].spent=1;c.psionics[0].focused=true;c.casters[0].slots[1].used=1;
  applyReview(c,previewGestaltLevel(c,{left:'psion',right:'cleric',hitDieRoll:5}));
- assert.equal(c.casters.length,1);assert.equal(c.psionics.length,1);assert.equal(c.psionics[0].spent,1);assert.equal(c.psionics[0].focused,true);assert.equal(c.casters[0].slots[1].used,1);
+ assert.equal(c.casters.length,2);assert.equal(c.psionics.length,1);assert.equal(c.psionics[0].spent,1);assert.equal(c.psionics[0].focused,true);assert.equal(c.casters[0].slots[1].used,1);
  assert.deepEqual(c.classLevels.map(e=>e.level),[1,1,2,2]);assert.equal(c.automation.history.length,3);
 });
 

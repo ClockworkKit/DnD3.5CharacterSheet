@@ -1353,6 +1353,7 @@ through a native save and reload.
 Calculations creates the restricted domain slots with zero uses spent. A
 standard cleric and a paired Wizard / Cleric both retain the preparations and
 expenditure in their existing books. A level-five cleric with sufficient
-Wisdom starts with one domain slot each at levels one through three. The new
-pool also follows this limit when the ordinary book uses manual progression.
+Wisdom starts with one domain slot each at levels one through three. Fresh standard and gestalt clerics receive this pool at creation or when they
+first take a cleric level. Previously saved clerics can add a missing pool
+from Calculations. The new pool also follows this limit when the ordinary book uses manual progression.
 See the [cleric domain spell rules](https://www.d20srd.org/srd/classes/cleric.htm#deityDomainsAndDomainSpells).

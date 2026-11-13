@@ -5,6 +5,7 @@ import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 import {initializeClassResources} from './level-up.ts';
 import {findRace} from './ancestry.ts';
 import {activateAutomation} from './automation.ts';
+import {addStartingClericDomainSlots} from './cleric-domain-slots.ts';
 import {applyClericSpecialty} from './cleric-specialty.ts';
 import {setPsionDiscipline} from './skill-points.ts';
 import {recompute} from './automation.ts';
@@ -84,6 +85,7 @@ export function createPlayerCharacter(options:CharacterCreationOptions):Characte
   c.automation.hpMethod=options.hpMethod??'rolled';
   if(c.automation.hpMethod==='rolled')c.notes+='\n\nStarting Hit Dice before Constitution\n'+recordStartingHitDice(c,options.hpRolls);
   else if(options.hpRolls)throw new Error('Recorded HP rolls require the recorded-roll HP method.');
+  addStartingClericDomainSlots(c);
   recompute(c);
   if(options.clericSpecialty&&kind==='Cleric')applyClericSpecialty(c,options.clericSpecialty);
   c.hp=c.maxHp;
@@ -123,6 +125,7 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  c.advancementMode='gestalt';c.gestaltProgression=gestaltProgressionSchema.parse({version:1,bonusMethod:options.gestaltBonusMethod??'printed-table-v1',levels});
  setPsionDiscipline(c,options.psionDiscipline);
  for(const entry of c.classLevels)initializeClassResources(c,findClass(entry.classId,c)!,entry.level);
+ addStartingClericDomainSlots(c);
  copyClassFeatures(c);recompute(c);
  if(options.clericSpecialty&&options.clericSpecialty!=='none'){
   if(!c.classLevels.some(e=>e.classId==='cleric'))throw new Error('A cleric specialty requires cleric levels.');

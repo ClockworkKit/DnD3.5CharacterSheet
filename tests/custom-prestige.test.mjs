@@ -65,10 +65,10 @@ test('gestalt arcane and divine schedules remain independent, with source prereq
  const initial=structuredClone(c),selection={left:'fighter',right:p.definition.id,approvals:[{classId:p.definition.id,gm:'Fixture GM',reason:'Explicit approval'}]};
  assert.throws(()=>previewGestaltLevel(c,selection),/prerequisites/);assert.deepEqual(c,initial);qualify(c,p);
  assert.throws(()=>previewGestaltLevel(c,{...selection,approvals:[]}),/approval/);
- const first=paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[4,3]);assert.deepEqual(first.summary.castingTargets.map(t=>t.kind),['spell']);
+ const first=paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[4,3,3]);assert.deepEqual(first.summary.castingTargets.map(t=>t.kind),['spell']);
  assert.deepEqual(gestaltCastingChoices(c,['fighter',p.definition.id]).map(q=>q.kind),['divine']);
- paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[4,4]);
- paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[5,5]);assert.equal(c.level,6);assert.equal(advancementNumbers(c).feats,4);
+ paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[4,4,4]);
+ paired(c,p);assert.deepEqual(c.casters.map(p=>p.level),[5,5,5]);assert.equal(c.level,6);assert.equal(advancementNumbers(c).feats,4);
  assert.deepEqual(c.gestaltProgression.levels.slice(-3).map(r=>r.castingTargets.map(t=>t.kind)),[['spell'],['divine'],['spell','divine']]);
  assert.deepEqual(c.casters.map(p=>p.spells),initial.casters.map(p=>p.spells));assert.equal(c.maxHp-c.hp,3);
 });
@@ -84,7 +84,7 @@ test('simultaneous base and custom prestige grants advance one tradition only on
 
 test('divine-only custom progression follows the primary cleric and preserves restricted domain preparation',()=>{
  const p=profile({spell:'none',divine:true,psi:false},[grants(false,true)]),c=base(p);qualify(c,p);
- const domain=makeCaster(findClass('cleric'),3,16);domain.name='Domain';domain.casting.domain=true;c.casters.push(domain);recompute(c);note(c);
+ assert.equal(c.casters[2].casting.domain,true);note(c);
  const before=structuredClone(c);assert.deepEqual(gestaltCastingChoices(c,['cleric',p.definition.id])[0].candidates.map(q=>q.id),[c.casters[1].id]);
  paired(c,p,'cleric');assert.equal(c.casters[1].level,4);assert.equal(c.casters[2].level,4);assert.equal(c.casters[2].slots[2].max,1);assert.equal(c.casters[2].slots[3].max,0);
  assert.deepEqual(c.casters[2].spells,before.casters[2].spells);assert.equal(c.casters[2].slots[1].used,2);
@@ -116,11 +116,11 @@ test('earned custom grants require a reviewed target for every applicable level 
   for(let n=0;n<2;n++)isPaired?paired(c,legacy):standard(c,legacy);
   note(c);const before=structuredClone(c);assert.equal(customPrestigeChoices(c,full).length,2);
   assert.throws(()=>previewCustomClassChange(c,full.definition.id,full),/Choose/);assert.deepEqual(c,before);
-  const targets=c.casters.map((p,i)=>({level:i+1,kind:'spell',traditionId:p.id}));
-  const review=previewCustomClassChange(c,full.definition.id,full,targets);assert.deepEqual(c,before);assert.deepEqual(review.character.casters.map(p=>p.level),[4,4]);
+  const targets=c.casters.filter(p=>!p.casting.domain).map((p,i)=>({level:i+1,kind:'spell',traditionId:p.id}));
+  const review=previewCustomClassChange(c,full.definition.id,full,targets);assert.deepEqual(c,before);assert.deepEqual(review.character.casters.map(p=>p.level),[4,4,4]);
   review.character.casters[0].slots[1].used=0;applyCustomClassChange(c,review);recompute(c,before);
   assert.deepEqual(c.automation.history,before.automation.history);assert.deepEqual(c.casters.map(p=>p.spells),before.casters.map(p=>p.spells));assert.ok(c.casters.every(p=>p.slots[1].used===2));assert.equal(c.maxHp-c.hp,3);
-  if(isPaired)assert.deepEqual(c.gestaltProgression.levels.slice(-2).map(r=>r.castingTargets[0].traditionId),c.casters.map(p=>p.id));
+  if(isPaired)assert.deepEqual(c.gestaltProgression.levels.slice(-2).map(r=>r.castingTargets[0].traditionId),targets.map(t=>t.traditionId));
   else assert.deepEqual(c.classLevels.find(e=>e.classId===full.definition.id).castingAdvances,targets);
   const stale=previewCustomClassChange(c,full.definition.id,full,targets);c.casters[0].slots[1].used++;assert.throws(()=>applyCustomClassChange(c,stale),/character changed/);
   const changed=previewCustomClassChange(c,full.definition.id,full,targets);changed.castingTargets[0].traditionId='none';const current=structuredClone(c);assert.throws(()=>applyCustomClassChange(c,changed),/targets changed/);assert.deepEqual(c,current);

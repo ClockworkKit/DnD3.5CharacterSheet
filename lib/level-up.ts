@@ -1,3 +1,4 @@
+import {addStartingClericDomainSlots} from './cleric-domain-slots.ts';
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
@@ -56,6 +57,7 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingT
  }
  if(c.automation.hpMethod==='rolled')next.automation.history.push({key:entry.id+'-'+entry.level,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},hitDieRoll});
  initializeClassResources(next,def,entry.level);
+ if(def.id==='cleric'&&entry.level===1)addStartingClericDomainSlots(next);
  if(next.casters.length!==c.casters.length||next.psionics.length!==c.psionics.length)retainCastingHistory(c,next);
  assertCustomResourceTables(next);
  copyClassFeatures(next);
@@ -124,6 +126,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  next.automation.history.push({key:row.key,intScore:skillIntelligence(c),skillRanks:{},skillClassOverrides:{},
   ...(next.automation.hpMethod==='rolled'?{hitDieRoll:selection.hitDieRoll}:{}),});
  definitions.forEach((def,i)=>initializeClassResources(next,def,entries[i].level));
+ if(entries.some(entry=>entry.classId==='cleric'&&entry.level===1))addStartingClericDomainSlots(next);
  copyClassFeatures(next);
  // Keep the uncalculated edit recipe too: the sheet's existing edit boundary
  // recomputes once. Installing already-adjusted HP there would heal twice.

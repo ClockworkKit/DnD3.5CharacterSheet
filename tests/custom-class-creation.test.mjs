@@ -47,7 +47,7 @@ test('custom starting pairs work on either side, retain catalog casting and coun
  const mixed=createPlayerCharacter({...pairOptions(p),gestaltPairs:[{left:p.definition.id,right:'wizard'},{left:'fighter',right:p.definition.id},{left:p.definition.id,right:'cleric'}],hpRolls:[9,6]});
  assert.equal(mixed.level,3);assert.deepEqual(hitDieSequence(mixed).map(row=>row.die),[8,10,8]);
  assert.deepEqual(mixed.classLevels.map(e=>[e.classId,e.level]),[[p.definition.id,3],['wizard',1],['fighter',1],['cleric',1]]);
- assert.deepEqual(mixed.casters.map(c=>[c.casting.classId,c.level]),[['wizard',1],['cleric',1]]);
+ assert.deepEqual(mixed.casters.map(c=>[c.casting.classId,c.level,c.casting.domain]),[['wizard',1,false],['cleric',1,false],['cleric',1,true]]);
 });
 
 test('starting custom profiles reject unsupported data, missing levels, prestige entry and same-family pairs atomically',()=>{
