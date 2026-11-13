@@ -1357,3 +1357,7 @@ Wisdom starts with one domain slot each at levels one through three. Fresh stand
 first take a cleric level. Previously saved clerics can add a missing pool
 from Calculations. The new pool also follows this limit when the ordinary book uses manual progression.
 See the [cleric domain spell rules](https://www.d20srd.org/srd/classes/cleric.htm#deityDomainsAndDomainSpells).
+
+### Standard prestige casting choices
+
+Guided standard advancement records each new prestige casting or manifesting grant on its class level. The picker uses the character’s level history to identify classes held before prestige entry. Separate arcane and divine grants have independent targets, and levels without a grant skip the picker. Earlier unrecorded levels keep their existing class-wide settings. Opening an older sheet does not write new choices into its history. See the [Mystic Theurge](https://www.d20srd.org/srd/prestigeClasses/mysticTheurge.htm#spellsperDay) and [Loremaster](https://www.d20srd.org/srd/prestigeClasses/loremaster.htm#spellsperDaySpellsKnown) class rules.

@@ -1,3 +1,4 @@
+import {advancingKinds} from './gestalt-casting.ts';
 import {customPrestigeWarnings} from './custom-prestige.ts';
 import {effectiveTurningLevel,turningDailyUses} from './turning-feats.ts';
 import {refreshResourceText,retireResources,restoreResource} from './managed-resources.ts';
@@ -18,7 +19,7 @@ import {equippedArmor,carrying,movement,matchEquipment,gearWeight,allSizes} from
 import {restoreRoll20Armor} from './roll20-equipment.ts';
 import {repairRoll20SpellFailure} from './roll20-spell-failure.ts';
 import {repairRoll20WeaponDice} from './roll20-weapon-dice.ts';
-import {resourceTableAvailable,customResourceProblems,isArcaneCaster,castingDefinition,castingNumbers,manifestDefinition,psionicProgression,hitDieSequence,hitPoints,advanceTargets} from './advancement.ts';
+import {resourceTableAvailable,customResourceProblems,advancementCandidates,castingDefinition,castingNumbers,manifestDefinition,psionicProgression,hitDieSequence,hitPoints,advanceTargets} from './advancement.ts';
 import {skillIntelligence} from './level-history.ts';
 import {initializeSkillTraining,preserveRemovedSkillLevels,syncSkillRanks,adoptManualSkillChanges} from './skill-points.ts';
 import {expression,expandFormula} from './formulas.ts';
@@ -83,5 +84,18 @@ export function activateAutomation(c:Character,preserve=true){if(c.sheetKind==='
  if(monk&&movement(c).free)c.defense.misc-=Math.floor((effectiveScore(before,'WIS')-10)/2)+Math.floor(monk/5);if(classLevel(c,'paladin')>=2){const bonus=Math.max(0,Math.floor((effectiveScore(before,'CHA')-10)/2));for(const s of ['fort','ref','will'] as const)c.saves[s].misc-=bonus;}recompute(c);c.hp=before.hp;}return c;}
 export function calculationWarnings(c:Character){if(c.sheetKind==='monster')return ['Monster base statistics are manual. Creature calculations are available through the creature backend; player-class automation is disabled.'];if(!c.automation.enabled)return [];const warnings:string[]=[...racialWarnings(c),...alternateFeatureWarnings(c),...customResourceProblems(c),...customPrestigeWarnings(c)];const t=classTotals(c.classLevels,c.ancestry,c);if(t.missing.length)warnings.push('Custom class or racial HD needs manual base totals: '+t.missing.join(', '));if(!c.classLevels.length)warnings.push('Add class levels in Classes to calculate advancement.');if(equippedArmor(c).multiple)warnings.push('More than one armor or shield is equipped. Only the highest bonus of each is used; unequip the others.');for(const p of c.casters){if(p.casting?.automatic&&!castingDefinition(p,c))warnings.push(p.name+': no supported casting table for its recorded class link. Recorded caster level and slots are retained; turn off Automatic progression to manage this pool manually.');else if(p.casting?.automatic&&!castingNumbers(c,p).linked)warnings.push(p.name+': select its class in Classes or enter a progression override.');const r=castingNumbers(c,p);if(r.known)r.known.forEach((max,i)=>{if(p.spells.filter(k=>k.level===i).length>max)warnings.push(p.name+': more level '+i+' spells recorded than its '+max+' spells known.');});}
  for(const p of c.psionics)if(p.manifesting?.automatic&&!manifestDefinition(p,c))warnings.push(p.name+': no supported manifesting table for its recorded class link. Recorded manifester level and power points are retained; turn off Automatic progression to manage this pool manually.');
- for(const e of c.classLevels){if(c.customClasses?.some(p=>p.definition.id===e.classId&&p.definition.advances))continue;const t=advanceTargets(c,e);if((t.spell&&c.casters.filter(p=>!p.casting?.domain).length>1&&!e.castingTarget)||(t.divine&&c.casters.filter(p=>!isArcaneCaster(c,p)).length>1&&!e.divineTarget)||(t.psi&&c.psionics.length>1&&!e.psionicTarget))warnings.push(e.name+': choose which tradition it advances under Calculations.');}
+ for(const e of c.classLevels){
+  if(e.classId.startsWith('custom-'))continue; // Custom profiles report their own schedule warnings.
+  const grants=advanceTargets(c,e);
+  if(!grants.spell&&!grants.divine&&!grants.psi)continue;
+  const pairs=c.advancementMode==='gestalt'?c.gestaltProgression?.levels.filter(row=>row.left===e.id||row.right===e.id):undefined;
+  const ambiguous=(['spell','divine','psi'] as const).filter(kind=>grants[kind]&&!(kind==='spell'?e.castingTarget:kind==='divine'?e.divineTarget:e.psionicTarget)&&advancementCandidates(c,e,kind).length>1);
+  if(!ambiguous.length)continue;
+  for(let level=1;level<=e.level;level++){
+   const recorded=pairs?pairs[level-1]?.castingTargets?.filter(t=>t.classId===e.classId):e.castingAdvances?.filter(t=>t.level===level);
+   if(advancingKinds(c,{...e,level}).some(kind=>ambiguous.includes(kind)&&!recorded?.some(t=>t.kind===kind))){
+    warnings.push(e.name+': choose which tradition it advances under Calculations.');break;
+   }
+  }
+ }
  for(const f of c.features)if(f.formula){try{expression(f.formula,formulaVariables(c))}catch(e){warnings.push(f.name+': '+(e instanceof Error?e.message:'invalid formula'))}}for(const e of c.effects.filter(e=>e.active))for(const m of e.modifiers){try{expression(m.value,{...baseVariables(c),CL:e.casterLevel})}catch(error){warnings.push(e.name+': '+(error instanceof Error?error.message:'invalid formula'))}}return [...new Set(warnings)];}

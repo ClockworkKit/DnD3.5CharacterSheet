@@ -2,7 +2,8 @@ import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
 import {gainLevel,levelUpStatus,levelUpClasses} from '../lib/level-up.ts';
-import {recompute} from '../lib/automation.ts';
+import {standardCastingChoices} from '../lib/gestalt-casting.ts';
+import {recompute,calculationWarnings} from '../lib/automation.ts';
 import {characterSchema} from '../lib/model.ts';
 import {configureAlternateFeature,selectAlternateFeature} from '../lib/alternate-features.ts';
 import {hitDieSequence} from '../lib/level-history.ts';
@@ -40,4 +41,45 @@ test('alternate cleric Hit Die is honored at level-up without changing standard 
   assert.throws(()=>gainLevel(ordinary,'cleric',9),/valid roll/);assert.deepEqual(ordinary,original);
   gain(ordinary,'cleric',8);assert.equal(ordinary.hitDice,'2d8');assert.equal(ordinary.maxHp,original.maxHp+10);
  }
+});
+
+test('standard Mystic Theurge records each eligible prior tradition per level and retains legacy allocations',()=>{
+ const c=create({kind:'Wizard',level:3,hpMethod:'average'});c.experience=1000000;
+ for(const id of ['sorcerer','cleric','cleric','cleric'])gain(c,id);
+ // A saved Mystic Theurge with one older, class-wide arcane grant.
+ const legacy={id:'old-theurge',classId:'mystic-theurge',name:'Mystic Theurge',level:1,notes:'Keep campaign notes',castingTarget:c.casters[0].id};
+ c.classLevels.push(legacy);recompute(c);
+ const wizard=c.casters.find(p=>p.name==='Wizard'),sorcerer=c.casters.find(p=>p.name==='Sorcerer'),cleric=c.casters.find(p=>p.name==='Cleric');
+ wizard.slots[1].used=1;c.hp-=3;
+ gain(c,'druid');
+ const choices=standardCastingChoices(c,legacy.classId);
+ assert.deepEqual(choices.map(q=>q.candidates.map(p=>p.name)),[['Wizard','Sorcerer'],['Cleric']]);
+ const snapshot=structuredClone(c);
+ assert.throws(()=>gainLevel(c,legacy.classId,undefined,[{classId:legacy.classId,kind:'divine',traditionId:c.casters.find(p=>p.name==='Druid').id}]),/eligible/);
+ assert.deepEqual(c,snapshot);
+ gainLevel(c,legacy.classId,undefined,[{classId:legacy.classId,kind:'spell',traditionId:sorcerer.id}]);recompute(c,snapshot);
+ assert.deepEqual(legacy.castingAdvances,[{level:2,kind:'spell',traditionId:sorcerer.id},{level:2,kind:'divine',traditionId:cleric.id}]);
+ assert.deepEqual([wizard.level,sorcerer.level,cleric.level],[4,2,5]);
+ const previous=structuredClone(c);gainLevel(c,legacy.classId,undefined,[{classId:legacy.classId,kind:'spell',traditionId:wizard.id}]);recompute(c,previous);
+ const loaded=characterSchema.parse(JSON.parse(JSON.stringify(c)));recompute(loaded);
+ assert.deepEqual(loaded.casters.map(p=>[p.name,p.level]),[['Wizard',5],['Sorcerer',2],['Cleric',6],['Domain',6],['Druid',1]]);
+ assert.equal(loaded.casters[0].slots[1].used,1);assert.equal(loaded.maxHp-loaded.hp,3);
+ assert.deepEqual(loaded.classLevels.find(e=>e.id===legacy.id),legacy);
+ assert.ok(!calculationWarnings(loaded).some(w=>w.startsWith('Mystic Theurge: choose')));
+});
+
+test('first catalog prestige entry requires an arcane choice and records the sole divine target automatically',()=>{
+ const c=create({kind:'Wizard',level:3,hpMethod:'average'});c.experience=1000000;
+ for(const id of ['sorcerer','cleric','cleric','cleric'])gain(c,id);
+ for(const name of ['Knowledge (arcana)','Knowledge (religion)']){
+  const skill=c.skills.find(s=>s.name===name);c.automation.history[0].skillRanks[skill.id]=4;c.automation.history[1].skillRanks[skill.id]=1;c.automation.history[2].skillRanks[skill.id]=1;
+ }
+ recompute(c);
+ const before=structuredClone(c);
+ assert.throws(()=>gainLevel(c,'mystic-theurge'),/Choose Mystic Theurge: advance arcane/);assert.deepEqual(c,before);
+ gainLevel(c,'mystic-theurge',undefined,[{classId:'mystic-theurge',kind:'spell',traditionId:c.casters[0].id}]);recompute(c,before);
+ assert.deepEqual(c.casters.map(p=>p.level),[4,1,4,4]);
+ assert.ok(!calculationWarnings(c).some(w=>w.startsWith('Mystic Theurge: choose')));
+ const entry=c.classLevels.at(-1);delete entry.castingAdvances;
+ assert.ok(calculationWarnings(c).some(w=>w.startsWith('Mystic Theurge: choose')));
 });

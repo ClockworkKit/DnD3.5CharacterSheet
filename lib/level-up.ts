@@ -48,10 +48,9 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingT
  const def=findClass(classId,c);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
  validateDiscipline(c,[classId],psionDiscipline);
- const targets=def.advances?resolveGestaltCastingTargets(c,[classId],castingTargets):[];
- if(castingTargets.length&&!def.advances)throw new Error('This class does not use custom prestige target choices.');
+ const targets=def.kind==='Prestige'||castingTargets.length?resolveGestaltCastingTargets(c,[classId],castingTargets):[];
  const next=structuredClone(c);
- if(def.advances)retainCastingHistory(c,next);
+ if(targets.length)retainCastingHistory(c,next);
  let entry=next.classLevels.find(e=>e.classId===classId);
  if(entry)entry.level++;else{entry={id:uid(),classId:def.id,name:def.name,level:1,notes:''};next.classLevels.push(entry);}
  if(targets.length){

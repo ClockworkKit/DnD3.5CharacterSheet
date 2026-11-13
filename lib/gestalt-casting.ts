@@ -1,6 +1,7 @@
 import type {Character,ClassLevel} from './model.ts';
 import {findClass} from './classes.ts';
 import {advanceTargets,advancementCandidates,selectedAdvancementTarget,castingDefinition,manifestDefinition} from './advancement.ts';
+import {hitDieSequence} from './level-history.ts';
 import {characterGestaltRows} from './gestalt-progression.ts';
 import {gestaltCastingTargetSchema,type GestaltCastingTarget} from './gestalt-schema.ts';
 
@@ -20,9 +21,9 @@ export function gestaltCastingChoices(c:Character,classIds:readonly string[]){
   const def=findClass(classId,c);if(!def)return [];
   const old=c.classLevels.find(e=>e.classId===classId);
   const entry:ClassLevel=old?{...old,level:old.level+1}:{id:'pending-'+classId,classId,name:def.name,level:1,notes:''};
-  const first=c.advancementMode==='gestalt'&&old?c.gestaltProgression?.levels.findIndex(row=>row.left===old.id||row.right===old.id)??-1:-1;
-  const priorEntries=first>=0?new Set(c.gestaltProgression!.levels.slice(0,first).flatMap(row=>[row.left,row.right])):null;
-  const priorClasses=new Set(c.classLevels.filter(e=>!priorEntries||priorEntries.has(e.id)).map(e=>e.classId));
+  const sequence=old?hitDieSequence(c):[];
+  const first=sequence.findIndex(row=>(row.classIds??[row.classId]).includes(classId));
+  const priorClasses=new Set(first<0?c.classLevels.map(e=>e.classId):sequence.slice(0,first).flatMap(row=>row.classIds??[row.classId]));
   const advance=advanceTargets(c,entry);
   return advancingKinds(c,entry).map(kind=>{
    const candidates=advancementCandidates(c,entry,kind).filter(p=>{
@@ -50,9 +51,9 @@ export function resolveGestaltCastingTargets(c:Character,classIds:readonly strin
  });
 }
 
-/** Standard custom prestige levels use the same choices, with class-level scope. */
+/** Standard prestige levels use the same choices, with class-level scope. */
 export function standardCastingChoices(c:Character,classId:string){
- return c.advancementMode!=='gestalt'&&findClass(classId,c)?.advances?gestaltCastingChoices(c,[classId]):[];
+ return c.advancementMode!=='gestalt'&&findClass(classId,c)?.kind==='Prestige'?gestaltCastingChoices(c,[classId]):[];
 }
 
 /** Capture old automatic/class-wide results before new profiles can change ambiguity.
