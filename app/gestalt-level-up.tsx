@@ -113,6 +113,10 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <h4>New feat and ability choices</h4>
     {review.summary.choices.length?<ul>{review.summary.choices.map(choice=><li key={choice.key}>{choice.label}</li>)}</ul>:<p>No new feat or ability-score choices at this level.</p>}
     <p className="fine">Choices and skill points are allocated after confirmation; no feat or ability increase is selected automatically.</p>
+    {review.summary.classAllowances.map(group=><section key={group.classId} aria-label={group.name+' allowances'}>
+     <h4>{group.name} allowances</h4>
+     <ul>{group.changes.map(change=><li key={change.label}>{change.label} {change.before} → {change.after}</li>)}</ul>
+    </section>)}
     {review.summary.factotum&&<section aria-label="Factotum advancement">
      <h4>Factotum resources</h4>
      <p>Inspiration per encounter {review.summary.factotum.before.inspiration} → {review.summary.factotum.after.inspiration}. Remaining {review.summary.factotum.after.remaining}.</p>

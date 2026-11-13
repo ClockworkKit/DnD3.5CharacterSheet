@@ -1,11 +1,11 @@
 import type {Character} from './model.ts';
 import {uid} from './model.ts';
-import {systemLimits} from './class-systems.ts';
+import {systemLimits,invocationGradeLevel} from './class-systems.ts';
 export type Invocation={id:string,name:string,classId:string,grade:'least'|'lesser'|'greater'|'dark',level:number,category:string,source:string};
 export function invocationProblem(c:Character,v:Invocation){
  const n=systemLimits(c,v.classId),level=c.classLevels.filter(e=>e.classId===v.classId).reduce((n,e)=>n+e.level,0);
  if(!n||!['warlock','dragonfire-adept'].includes(v.classId))return 'Requires the matching invocation class.';
- if(level<({least:1,lesser:6,greater:11,dark:16}[v.grade]))return 'This invocation grade is not available yet.';
+ if(level<invocationGradeLevel(v.grade))return 'This invocation grade is not available yet.';
  const known=c.classSystems.choices.filter(s=>s.classId===v.classId&&s.kind==='invocation');
  if(known.some(s=>s.name.toLowerCase()===v.name.toLowerCase()))return 'Already recorded.';
  if(known.length>=n.known)return 'All known-invocation choices are filled.';

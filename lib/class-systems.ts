@@ -16,6 +16,11 @@ const lv=(c:Character,id:string)=>c.classLevels.filter(e=>e.classId===id).reduce
 const mod=(c:Character,a:'INT'|'WIS'|'CHA'|'CON')=>Math.floor((effectiveScore(c,a)-10)/2);
 const row=(c:Character,id:string)=>findClass(id)?.levels.find(r=>r.level===Math.min(20,lv(c,id)));
 const column=(c:Character,id:string,i:number)=>parseInt(row(c,id)?.extra[i]?.replaceAll(',','')||'0')||0;
+const gradeStarts={least:1,lesser:6,greater:11,dark:16} as const;
+export const invocationGradeLevel=(grade:keyof typeof gradeStarts)=>gradeStarts[grade];
+export function highestInvocationGrade(level:number){
+ return (Object.keys(gradeStarts) as (keyof typeof gradeStarts)[]).findLast(grade=>level>=gradeStarts[grade]);
+}
 export function systemLimits(c:Character,id:string){
  const level=lv(c,id),r=row(c,id);if(!level||!r)return null;
  const total=characterHitDice(c);
@@ -30,7 +35,7 @@ export function systemLimits(c:Character,id:string){
  if(id==='marshal')return {...result,kind:'aura' as const,known:column(c,id,0)+column(c,id,1),maxLevel:0};
  return null;
 }
-export function invocationGradeAvailable(c:Character,s:SystemChoice){return s.kind!=='invocation'||!s.invocationGrade||lv(c,s.classId)>={least:1,lesser:6,greater:11,dark:16}[s.invocationGrade];}
+export function invocationGradeAvailable(c:Character,s:SystemChoice){return s.kind!=='invocation'||!s.invocationGrade||lv(c,s.classId)>=invocationGradeLevel(s.invocationGrade);}
 export function choiceDailyUses(c:Character,s:SystemChoice){const level=lv(c,s.classId);if(s.kind==='fundamental')return level>=14?Infinity:3;if(s.kind==='mystery')return s.level<=3?(level>=13?3:level>=7?2:1):s.level<=6?(level>=13?2:1):1;return Infinity;}
 export function essentiaCapacity(c:Character,s:SystemChoice){const n=systemLimits(c,s.classId);if(!n)return 0;return (n.capacity||0)+(s.classId==='incarnate'?(n!.level>=3?1:0)+(n!.level>=15?1:0):s.classId==='totemist'&&s.bound&&s.totem?(n!.level>=15?2:1):0);}
 export function systemKinds(c:Character,id:string):SystemChoice['kind'][] {const n=systemLimits(c,id);return !n?[]:n.kind==='maneuver'?['maneuver','stance']:n.kind==='mystery'?['mystery','fundamental']:[n.kind];}

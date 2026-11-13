@@ -521,3 +521,41 @@ test('Hierophant caster-level-only advancement never adds slots or duplicates si
  const ranger=half.casters.find(p=>p.casting.classId==='ranger');
  assert.equal(casterProgression(half,ranger).progression,15);assert.equal(ranger.level,8,'CL-only grant survives a half-caster level that does not itself increase CL');
 });
+
+test('paired review reports invocation grades and martial allowances without consuming recorded abilities',async()=>{
+ const c=paired(repeat('warlock','crusader',5));c.experience=15000;
+ c.classSystems.choices.push({id:'spent-strike',classId:'crusader',name:'Recorded strike',kind:'maneuver',level:1,spent:1,readied:true,granted:false,essentia:0,bound:false,totem:false,notes:'Keep this note'});
+ const original=structuredClone(c);
+ for(const [left,right] of [['warlock','crusader'],['crusader','warlock']]){
+  const review=previewGestaltLevel(c,{left,right,hitDieRoll:5});
+  const byClass=Object.fromEntries(review.summary.classAllowances.map(g=>[g.classId,g.changes]));
+  assert.deepEqual(byClass.warlock,[{label:'Invocations known',before:3,after:4},{label:'Highest invocation grade',before:'least',after:'lesser'}]);
+  assert.deepEqual(byClass.crusader,[{label:'Initiator level',before:5,after:6}]);
+ }
+ assert.deepEqual(c,original);
+ applyReview(c,previewGestaltLevel(c,{left:'warlock',right:'crusader',hitDieRoll:5}));
+ const loaded=await prepareCharacter(characterSchema.parse(JSON.parse(JSON.stringify(c))));
+ assert.deepEqual(loaded.classSystems.choices,original.classSystems.choices);
+});
+
+test('paired review accounts for inactive martial classes and first-time maneuver allowances',()=>{
+ const c=paired([['warblade','warlock'],['fighter','rogue']]);c.experience=6000;
+ const advancement={left:'fighter',right:'rogue',hitDieRoll:5};
+ const review=previewGestaltLevel(c,advancement);
+ assert.deepEqual(review.summary.classAllowances,[{classId:'warblade',name:'Warblade',changes:[{label:'Initiator level',before:1,after:2}]}]);
+ const entry=previewGestaltLevel(c,{left:'crusader',right:'dragonfire-adept',hitDieRoll:5});
+ const groups=Object.fromEntries(entry.summary.classAllowances.map(g=>[g.classId,Object.fromEntries(g.changes.map(row=>[row.label,row.after]))]));
+ assert.equal(groups.crusader['Maneuvers readied'],5);assert.equal(groups.crusader['Maneuvers initially granted'],2);assert.equal(groups.crusader['Stances known'],1);
+ assert.equal(groups['dragonfire-adept']['Highest invocation grade'],'least');assert.equal(groups['dragonfire-adept']['Invocations known'],1);
+});
+
+test('paired review shows class essentia and binds separately and uses actual level for capacity',()=>{
+ const c=paired([['incarnate','marshal']]);c.experience=1000;
+ const review=previewGestaltLevel(c,{left:'incarnate',right:'marshal',hitDieRoll:4});
+ const byClass=Object.fromEntries(review.summary.classAllowances.map(g=>[g.classId,g.changes]));
+ assert.deepEqual(byClass.incarnate,[{label:'Soulmelds shaped',before:2,after:3},{label:'Class essentia',before:1,after:2},{label:'Chakra binds',before:0,after:1}]);
+ assert.deepEqual(byClass.marshal,[{label:'Auras known',before:1,after:2}]);
+ const mixed=paired([['totemist','binder'],...repeat('fighter','rogue',4)]);mixed.experience=15000;
+ const other=previewGestaltLevel(mixed,{left:'fighter',right:'rogue',hitDieRoll:5});
+ assert.deepEqual(other.summary.classAllowances,[{classId:'totemist',name:'Totemist',changes:[{label:'Base essentia capacity',before:1,after:2}]}]);
+});

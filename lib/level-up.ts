@@ -1,4 +1,5 @@
 import {addStartingClericDomainSlots} from './cleric-domain-slots.ts';
+import {highestInvocationGrade,systemLimits} from './class-systems.ts';
 import {factotumNumbers} from './factotum.ts';
 import {prestigeEligibility} from './prerequisites.ts';
 import {uid,characterSchema,type Character} from './model.ts';
@@ -93,6 +94,33 @@ function featureCapacityChanges(before:Character,after:Character){
  return changes;
 }
 
+/** Compare every held class: a new character level can advance another class's initiator level or essentia capacity. */
+function classAllowanceChanges(before:Character,after:Character){
+ const groups=[];
+ for(const classId of new Set(after.classLevels.map(entry=>entry.classId))){
+  const current=systemLimits(after,classId);
+  if(!current)continue;
+  const previous=systemLimits(before,classId);
+  const changes:{label:string;before:number|string;after:number|string}[]=[];
+  function compare(label:string,oldValue:number|string|undefined,newValue:number|string|undefined){
+   if(newValue!==undefined&&oldValue!==newValue)changes.push({label,before:oldValue??(typeof newValue==='number'?0:'None'),after:newValue});
+  }
+  const knownLabels:Partial<Record<typeof current.kind,string>>={invocation:'Invocations known',maneuver:'Maneuvers known',vestige:'Vestiges bound at once',soulmeld:'Soulmelds shaped',mystery:'Mystery choices',utterance:'Utterances known',aura:'Auras known'};
+  compare(knownLabels[current.kind]??'Choices',previous?.known,current.known);
+  if(current.kind==='invocation')compare('Highest invocation grade',highestInvocationGrade(previous?.level??0),highestInvocationGrade(current.level));
+  if(['maneuver','mystery','vestige'].includes(current.kind))compare('Maximum '+current.kind+' level',previous?.maxLevel,current.maxLevel);
+  compare('Initiator level',previous?.initiator,current.initiator);
+  compare('Maneuvers readied',previous?.readied,current.readied);
+  compare('Maneuvers initially granted',previous?.granted,current.granted);
+  compare('Stances known',previous?.stances,current.stances);
+  compare('Class essentia',previous?.essentia,current.essentia);
+  compare('Base essentia capacity',previous?.capacity,current.capacity);
+  compare('Chakra binds',previous?.binds,current.binds);
+  if(changes.length)groups.push({classId,name:findClass(classId,after)!.name,changes});
+ }
+ return groups;
+}
+
 /** Read-only, atomic preview. Both new classes must qualify BEFORE this level. */
 function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  if(c.advancementMode!=='gestalt')throw new Error('Paired advancement requires an existing gestalt character.');
@@ -141,6 +169,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   bonusDecision:gestaltBonusLedger(rows).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
   milestones:definitions.map((def,i)=>({classId:def.id,name:def.name,level:entries[i].level,text:effectiveClassMilestone(next,def.id,def.levels.find(r=>r.level===entries[i].level)!.special,entries[i].level)})),
   featureCapacities:featureCapacityChanges(c,next),
+  classAllowances:classAllowanceChanges(c,next),
   factotum:definitions.some(def=>def.id==='factotum')?{before:factotumNumbers(c),after:factotumNumbers(next)}:undefined,
   casting:next.casters.map(p=>({id:p.id,name:p.name,level:p.level,slots:p.slots.map(s=>s.max),known:castingNumbers(next,p).known})),
   psionics:next.psionics.map(p=>{
