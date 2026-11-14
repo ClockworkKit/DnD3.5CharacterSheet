@@ -1,3 +1,4 @@
+import {deityAlignmentValue} from './deity-alignment.ts';
 import {characterSchema,type Character} from './model.ts';
 import type {Eligibility,Requirement} from './prerequisites.ts';
 import {findClass} from './classes.ts';
@@ -5,7 +6,7 @@ import {classAlignmentEligibility} from './class-alignment.ts';
 import {createPlayerCharacter,startingPairRows,type CharacterCreationOptions} from './character-creation.ts';
 import {createNpcSheet} from './creatures.ts';
 
-export type StartingAlignment=Pick<Character,'alignment'|'deity'|'prerequisiteConfirmations'>;
+export type StartingAlignment=Pick<Character,'alignment'|'deity'|'deityAlignment'|'prerequisiteConfirmations'>;
 export type StartingClassOptions=Pick<CharacterCreationOptions,'kind'|'level'|'advancementMode'|'gestaltPairs'|'customClasses'|'clericSpecialty'>;
 
 /** Review the deity the creator will actually record, including a selected specialty. */
@@ -48,5 +49,6 @@ export function createReviewedCharacter(options:CharacterCreationOptions,review:
  const confirmations=Object.fromEntries(result.requirements.filter(r=>r.state==='confirm'&&r.confirmed&&r.key).map(r=>[r.key!,true]));
  const c=(kind==='npc'?createNpcSheet:createPlayerCharacter)(options);
  c.alignment=context.alignment;c.deity=context.deity;c.prerequisiteConfirmations=confirmations;
+ if(deityAlignmentValue(context))c.deityAlignment=structuredClone(context.deityAlignment);
  return characterSchema.parse(c);
 }

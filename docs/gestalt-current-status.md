@@ -361,3 +361,9 @@ Corrected Warlock, Dread Necromancer and Wu Jen requirements in both class catal
 PC and NPC creation now records alignment/deity and checks every selected starting class, including both sides of later gestalt rows. Restricted or source-dependent cases use explicit review; only applicable confirmations are saved, and class-level exceptions do not approve future advancement. Axe Brother review uses the specialty's actual deity. Imports and existing sheets remain outside creation validation.
 
 All **958 tests**, TypeScript and the Pages build passed. Browser checks covered standard and paired creation, cancel/reopen, saved exception scope, specialty NPC identity, and a pending level-up selection surviving the first import autosave. See the implementation record for evidence and limits. Source-specific conduct/return restrictions, broader metadata review, reviewed history conversion and the remaining prestige/custom-profile matrix are still open.
+
+## 2026-11-14: Source-specific deity restrictions
+
+Identity and creation can now record a deity's alignment, tied to its name. Cleric, Favored Soul and Divine Mind evaluate their distinct source rules when enough information is recorded; unknown relationships retain source review and explicit exceptions remain per class level. Deity-free Clerics remain supported. Old saves and spent resources remain unchanged. Dragon Shaman's catalog now calls out its totem restriction; Spirit Shaman remains unrestricted.
+
+All **966 tests**, TypeScript and the Pages build passed. Browser checks covered specialty and Favored Soul creation, stale deity reviews, renamed patrons, and the first import autosave followed by paired advancement with injury/expenditure intact. See the implementation record for rules evidence and the remaining conduct, class-return, totem, conversion and browser-matrix limitations.

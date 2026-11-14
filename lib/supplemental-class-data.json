@@ -3748,7 +3748,7 @@
     }
   },
   {
-    "alignment": "Any",
+    "alignment": "Within one alignment step of the chosen totem dragon; verify the Totem Dragon table.",
     "book": "Player's Handbook II, p. 11",
     "headers": [
       "Draconic Auras Known"
@@ -4791,7 +4791,7 @@
     }
   },
   {
-    "alignment": "Any",
+    "alignment": "Any; a patron deity is required, and true neutral requires a true neutral deity.",
     "book": "Complete Divine, p. 6",
     "headers": [
       "0th",
@@ -13037,7 +13037,7 @@
     }
   },
   {
-    "alignment": "Any",
+    "alignment": "Any; a patron deity is required, and neither alignment component may oppose the deity.",
     "book": "Complete Psionic, p. 9",
     "headers": [
       "Power Points/Day",

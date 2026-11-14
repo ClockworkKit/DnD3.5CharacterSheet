@@ -1,14 +1,10 @@
+import {deityAlignmentEligibility} from './deity-alignment.ts';
 import type {Character} from './model.ts';
 import type {ClassDefinition} from './classes.ts';
 import type {Eligibility,Requirement} from './prerequisites.ts';
 
-const alignments=['lawful good','neutral good','chaotic good','lawful neutral','true neutral','chaotic neutral','lawful evil','neutral evil','chaotic evil'] as const;
-const abbreviations:Record<string,string>={lg:alignments[0],ng:alignments[1],cg:alignments[2],ln:alignments[3],n:alignments[4],tn:alignments[4],cn:alignments[5],le:alignments[6],ne:alignments[7],ce:alignments[8]};
-export function normalizedAlignment(value:string):string|null{
- const text=value.trim().toLowerCase().replace(/[-–—]/g,' ').replace(/\s+/g,' ');
- const expanded=abbreviations[text]??(text==='neutral'?'true neutral':text);
- return alignments.includes(expanded as typeof alignments[number])?expanded:null;
-}
+import {alignments,normalizedAlignment} from './alignment-values.ts';
+export {normalizedAlignment} from './alignment-values.ts';
 
 /** Only recognize complete, unambiguous rules, not keywords inside source prose. */
 function allowedAlignments(rule:string):readonly string[]|null|undefined{
@@ -21,10 +17,11 @@ function allowedAlignments(rule:string):readonly string[]|null|undefined{
 }
 
 /** Prospective advancement only: loading a sheet never removes historical levels. */
-export function classAlignmentEligibility(c:Pick<Character,'alignment'|'deity'|'prerequisiteConfirmations'|'classLevels'>,definition:ClassDefinition):Eligibility{
+export function classAlignmentEligibility(c:Pick<Character,'alignment'|'deity'|'deityAlignment'|'prerequisiteConfirmations'|'classLevels'>,definition:ClassDefinition):Eligibility{
  const rows:Requirement[]=[];
  // Prestige entry retains its own source-specific checker and continuation policy.
  if(definition.kind==='Prestige')return {eligible:true,requirements:rows,status:'Eligible'};
+ const deityCheck=deityAlignmentEligibility(c,definition);if(deityCheck)return deityCheck;
  const allowed=allowedAlignments(definition.alignment);
  if(allowed===null)return {eligible:true,requirements:rows,status:'Eligible'};
  const recorded=c.alignment.trim(),alignment=normalizedAlignment(recorded);
