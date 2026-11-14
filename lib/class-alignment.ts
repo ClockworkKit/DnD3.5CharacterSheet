@@ -21,7 +21,7 @@ function allowedAlignments(rule:string):readonly string[]|null|undefined{
 }
 
 /** Prospective advancement only: loading a sheet never removes historical levels. */
-export function classAlignmentEligibility(c:Character,definition:ClassDefinition):Eligibility{
+export function classAlignmentEligibility(c:Pick<Character,'alignment'|'deity'|'prerequisiteConfirmations'|'classLevels'>,definition:ClassDefinition):Eligibility{
  const rows:Requirement[]=[];
  // Prestige entry retains its own source-specific checker and continuation policy.
  if(definition.kind==='Prestige')return {eligible:true,requirements:rows,status:'Eligible'};
@@ -29,7 +29,7 @@ export function classAlignmentEligibility(c:Character,definition:ClassDefinition
  if(allowed===null)return {eligible:true,requirements:rows,status:'Eligible'};
  const recorded=c.alignment.trim(),alignment=normalizedAlignment(recorded);
  const label=definition.name+' alignment: '+definition.alignment;
- if(!recorded)rows.push({label:'Record the character alignment on Sheet before advancing '+definition.name+'. '+label,state:'missing'});
+ if(!recorded)rows.push({label:'Record the character alignment before taking '+definition.name+'. '+label,state:'missing'});
  else if(alignment&&allowed?.includes(alignment))rows.push({label,state:'met'});
  else{
   const exception=alignment&&allowed!==undefined;

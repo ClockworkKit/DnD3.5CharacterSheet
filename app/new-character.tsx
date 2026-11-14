@@ -4,7 +4,8 @@ import type {GestaltBonusMethod} from '@/lib/gestalt-schema';
 import {GestaltStartingLevels} from './gestalt-starting-levels';
 import {PsionDisciplineChoice} from './psion-discipline';
 import {MonsterCreation} from './monster-creation';
-import {createNpcSheet} from '@/lib/creatures';
+import {createReviewedCharacter,startingAlignmentEligibility,startingAlignmentContext} from '@/lib/reviewed-character-creation';
+import {PrerequisiteStatus} from './prerequisite-status';
 import {useEffect,useState} from 'react';
 import {hitPointMethods} from '@/lib/character-rules';
 import {Dices} from 'lucide-react';
@@ -42,10 +43,13 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
   const [raceQuery,setRaceQuery]=useState('');
   const [error,setError]=useState(''),[creating,setCreating]=useState(false);
   const ready=method==='manual'||rolls.length===6,scores=method==='manual'||!ready?manual:assignedScores(rolls,assignment),totals=startingAbilityScores(scores,raceId),race=findRace(raceId);
+  const creationOptions={name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,psionDiscipline:hasPsion?psionDiscipline:undefined,clericSpecialty:hasCleric?specialty:'none' as const,advancementMode,...(classLibrary.customClasses?{customClasses:classLibrary.customClasses}:{}),...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})};
+  const alignmentReview=startingAlignmentEligibility(creationOptions,classLibrary),alignmentContext=startingAlignmentContext(creationOptions,classLibrary);
+  const editAlignment=(recipe:(c:Character)=>void)=>setClassLibrary(previous=>{const next=structuredClone(previous);recipe(next);return next});
   function chooseMethod(value:string){const next=value as AbilityMethod;if(next===method)return;if(next==='manual')setManual({...scores});setMethod(next);setRolls([]);setAssignment(startingAssignment());setError('')}
   function rollScores(){try{if(method==='manual')return;setRolls(rollAbilityScores(method));setAssignment(startingAssignment());setError('')}catch(e){setError(e instanceof Error?e.message:'Could not roll ability scores.')}}
-  async function create(){if(creating||busy||!ready||classDraftPending||invalidPair)return;setCreating(true);setError('');try{
-    const character=(sheetKind==='npc'?createNpcSheet:createPlayerCharacter)({name,kind,level,raceId,scores,method,rolls,assignment,hpMethod,psionDiscipline:hasPsion?psionDiscipline:undefined,clericSpecialty:hasCleric?specialty:'none',advancementMode,...(classLibrary.customClasses?{customClasses:classLibrary.customClasses}:{}),...(advancementMode==='gestalt'?{gestaltPairs:startingPairs,gestaltBonusMethod:bonusMethod}:{})});
+  async function create(){if(creating||busy||!ready||classDraftPending||invalidPair||!alignmentReview.eligible)return;setCreating(true);setError('');try{
+    const character=createReviewedCharacter(creationOptions,classLibrary,sheetKind==='npc'?'npc':'pc');
     if(await onCreate(character)){onOpenChange(false);setName('');setRolls([]);setAssignment(startingAssignment());setManual(blankScores())}
     else setError('Your open character could not be saved. Close this window to review the save warning, then try again.');
   }catch(e){setError(e instanceof ZodError?e.issues.slice(0,3).map(issue=>issue.message).join(' '):e instanceof Error?e.message:'Could not create this character.')}finally{setCreating(false)}}
@@ -55,6 +59,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
       <Choice label="Advancement mode" value={advancementMode} onChange={v=>{setAdvancementMode(v as typeof advancementMode);setError('')}} options={[['standard','Standard D&D 3.5e (default)'],['gestalt','Gestalt D&D 3.5e']]}/>
       <F label="Find a race" value={raceQuery} onChange={setRaceQuery} placeholder="Name, source book, or creature type"/><div className="fields three"><Choice label="Race" value={raceId} onChange={setRaceId} options={raceCatalog.filter(r=>r.id===raceId||(r.name+' '+r.type+' '+r.book).toLowerCase().includes(raceQuery.toLowerCase())).map(r=>[r.id,r.name])}/>{advancementMode==='standard'&&<Choice label="Starting class" value={kind} onChange={setKind} options={[...baseClasses.map(d=>d.name),...(classLibrary.customClasses??[]).filter(p=>p.definition.kind!=='Prestige').map(p=>[p.definition.id,p.definition.name+' (custom)'] as [string,string])]}/>}<N label={advancementMode==='gestalt'?'Starting paired class levels':'Starting class level'} value={level} min={1} max={20} onChange={value=>setLevel(Math.floor(value))}/></div>
       {advancementMode==='gestalt'&&<GestaltStartingLevels racialHitDice={race?.rhd??0} rows={startingRows} pairs={startingPairs} onChange={p=>{setPairChoices(p);setError('')}} bonusMethod={bonusMethod} onBonusMethod={setBonusMethod} customClasses={classLibrary.customClasses}/>}
+      <section aria-label="Starting alignment"><h3>Alignment and deity</h3><div className="fields two"><F label="Starting alignment" value={classLibrary.alignment} onChange={value=>editAlignment(c=>{c.alignment=value})} placeholder="For example, Neutral Good"/><F label="Starting deity" value={alignmentContext.deity} calculated={hasCleric&&specialty==='axe-brother'} onChange={value=>editAlignment(c=>{c.deity=value})} placeholder="Optional; leave blank if none"/></div><p className="fine">The recorded alignment applies to every starting class level. Source-dependent restrictions need confirmation. Conflicting requirements need an explicit GM-approved house rule for each affected class level.</p><PrerequisiteStatus value={alignmentReview} edit={editAlignment}/></section>
       <CustomClassEditor key={classLibrary.classLevels[0].id} libraryOnly c={classLibrary} onDraftChange={setClassDraftPending} edit={recipe=>{const next=structuredClone(classLibrary);recipe(next);recompute(next,classLibrary);setClassLibrary(next);setError('')}}/>
       <Choice label="Hit points" value={hpMethod} onChange={v=>setHpMethod(v as typeof hpMethod)} options={hitPointMethods}/><p className="fine">Standard D&D 3.5e rules are the baseline; gestalt changes advancement only when explicitly selected. Armor grants AC; damage reduction and other house rules are separate optional settings. {hpMethod==='rolled'?'The first Hit Die is maximized. Later starting Hit Dice are rolled once on creation and saved in Notes and Calculations. At level-up, enter your actual die roll.':'This optional HP method applies only to the new character.'}</p>{hasCleric&&<Choice label="Cleric specialty" value={specialty} onChange={v=>setSpecialty(v as typeof specialty)} options={[['none','Standard cleric'],['axe-brother','Axe Brother of Clangeddin']]}/>}
       <p className="fine">{race?.vision} · LA +{race?.la}{race?.rhd?' · '+race.hitDice:''}</p>
@@ -71,7 +76,7 @@ export function NewCharacterDialog({open,onOpenChange,busy,onCreate}:{open:boole
       <p className="fine">HP, skill points, and spell slots use these abilities. Choose equipment, feats, skills, spells, and any level-based ability increases on the sheet.</p>
       {error&&<p className="error-box" role="alert">{error}</p>}
       {classDraftPending&&<p className="fine">Apply or cancel your custom table draft before creating the character.</p>}
-      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating||classDraftPending||invalidPair} onClick={()=>void create()}>{creating?'Creating…':sheetKind==='npc'?'Create NPC':'Create character'}</Btn></div>
+      <div className="creation-actions"><Btn onClick={()=>onOpenChange(false)}>Cancel</Btn><Btn className="primary" disabled={!ready||busy||creating||classDraftPending||invalidPair||!alignmentReview.eligible} onClick={()=>void create()}>{creating?'Creating…':sheetKind==='npc'?'Create NPC':'Create character'}</Btn></div>
     </fieldset>}
   </DialogContent></Dialog>;
 }

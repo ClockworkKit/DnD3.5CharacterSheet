@@ -355,3 +355,9 @@ Standard and paired guided level-up now validate declared alignment restrictions
 ## 2026-11-14: Supplemental class alignment metadata
 
 Corrected Warlock, Dread Necromancer and Wu Jen requirements in both class catalogs. The validator supports complete alternative alignment axes, preserving Warlock's chaotic-good option. Standard and paired advancement use these declarations; old characters keep their levels, ability choices, injuries and expenditure. All **951 tests**, TypeScript and the Pages build passed. Six isolated browser flows verified rejection, legal entry and save/reload preservation. Creation alignment and the remaining source-specific conduct/continuation audit are still open.
+
+## 2026-11-14: Guided creation alignment review
+
+PC and NPC creation now records alignment/deity and checks every selected starting class, including both sides of later gestalt rows. Restricted or source-dependent cases use explicit review; only applicable confirmations are saved, and class-level exceptions do not approve future advancement. Axe Brother review uses the specialty's actual deity. Imports and existing sheets remain outside creation validation.
+
+All **958 tests**, TypeScript and the Pages build passed. Browser checks covered standard and paired creation, cancel/reopen, saved exception scope, specialty NPC identity, and a pending level-up selection surviving the first import autosave. See the implementation record for evidence and limits. Source-specific conduct/return restrictions, broader metadata review, reviewed history conversion and the remaining prestige/custom-profile matrix are still open.
