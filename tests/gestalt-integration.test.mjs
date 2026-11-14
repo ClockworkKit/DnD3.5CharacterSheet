@@ -524,7 +524,7 @@ test('Hierophant caster-level-only advancement never adds slots or duplicates si
 });
 
 test('paired review reports invocation grades and martial allowances without consuming recorded abilities',async()=>{
- const c=paired(repeat('warlock','crusader',5));c.experience=15000;
+ const c=paired(repeat('warlock','crusader',5));c.alignment='Chaotic Good';c.experience=15000;
  c.classSystems.choices.push({id:'spent-strike',classId:'crusader',name:'Recorded strike',kind:'maneuver',level:1,spent:1,readied:true,granted:false,essentia:0,bound:false,totem:false,notes:'Keep this note'});
  const original=structuredClone(c);
  for(const [left,right] of [['warlock','crusader'],['crusader','warlock']]){

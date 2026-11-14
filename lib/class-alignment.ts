@@ -14,8 +14,8 @@ export function normalizedAlignment(value:string):string|null{
 function allowedAlignments(rule:string):readonly string[]|null|undefined{
  const text=rule.toLowerCase().trim().replace(/\.$/,'').replace(/non[- ]/g,'non');
  if(!text||/^any(?: alignment)?$/.test(text))return null;
- const axis=text.match(/^(?:any )?(non)?(lawful|chaotic|good|evil)$/);
- if(axis)return alignments.filter(a=>a.includes(axis[2])!==!!axis[1]);
+ const axes=text.split(/\s+or\s+/).map(part=>part.match(/^(?:any )?(non)?(lawful|chaotic|good|evil)$/));
+ if(axes.every(Boolean))return alignments.filter(a=>axes.some(axis=>a.includes(axis![2])!==!!axis![1]));
  const choices=text.split(/,\s*(?:or\s+)?|\s+or\s+/).map(normalizedAlignment);
  return choices.every(Boolean)?choices as string[]:undefined;
 }

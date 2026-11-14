@@ -351,3 +351,7 @@ The automatic class-skill flags now include all catalog racial-HD skill lists an
 ## 2026-11-14: Base-class alignment during advancement
 
 Standard and paired guided level-up now validate declared alignment restrictions before applying a level. Unknown wording requires explicit source review; a known mismatch requires a labeled table-approved exception scoped to that class level. Existing levels and saved resources remain unchanged. All 948 tests, TypeScript and the Pages build passed, with isolated browser checks of rejection, valid entry, exception persistence and stale reviews. Creation alignment, metadata source completeness and source-specific class-return/conduct rules remain open; see the implementation record.
+
+## 2026-11-14: Supplemental class alignment metadata
+
+Corrected Warlock, Dread Necromancer and Wu Jen requirements in both class catalogs. The validator supports complete alternative alignment axes, preserving Warlock's chaotic-good option. Standard and paired advancement use these declarations; old characters keep their levels, ability choices, injuries and expenditure. All **951 tests**, TypeScript and the Pages build passed. Six isolated browser flows verified rejection, legal entry and save/reload preservation. Creation alignment and the remaining source-specific conduct/continuation audit are still open.

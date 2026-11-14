@@ -1403,3 +1403,17 @@ Seven new regressions cover all nine core alignment cases, continued advancement
 Isolated browser QA blocked a lawful-good Fighter from gaining Barbarian, then accepted a recorded chaotic-good alignment and retained injury after save/reload. A paired Fighter/Wizard required an explicit exception to take Barbarian with lawful-good alignment. Editing alignment invalidated its open review. Confirming and reloading retained the exception, three damage and a spent Wizard slot, but the next Barbarian level required a new exception.
 
 Remaining work: integrate prospective alignment selection/validation into new-character creation; audit source completeness of catalog alignment metadata; handle source-specific class-return restrictions, conduct/atonement and variant exceptions with explicit evidence. Existing prestige entry and continuation behavior is unchanged. These are still part of the wider prerequisites and source-specific feature audit; this patch does not complete the overall goal.
+
+## 2026-11-14: Supplemental alignment catalog corrections
+
+The Warlock, Dread Necromancer and Wu Jen calculation and browser-reference entries incorrectly declared unrestricted alignment. They now record their published requirements: Warlock permits any evil or any chaotic alignment; Dread Necromancer permits nongood alignments; Wu Jen permits nonlawful alignments.
+
+Sources: [Complete Arcane, Warlock text](https://drinkinganddragons.com/SRD/srd/classes/baseCarc/warlock.html), [Heroes of Horror, Dread Necromancer text](https://srd.dndtools.org/srd/classes/baseHoh/dreadNecromancer.html), and [Complete Arcane, Wu Jen text](https://srd.dndtools.org/srd/classes/baseCarc/wujen.html). The Warlock rule is a union: chaotic good and lawful evil both qualify. The validator recognizes complete alternative axis clauses and leaves additional unrecognized qualifications for explicit source review.
+
+The existing prospective standard/paired advancement checks consume these corrected declarations. Loading old characters does not enforce alignment retroactively or remove powers, levels, ability choices, injury or spent resources. Known conflicts still offer an explicit, per-level house-rule confirmation. This patch does not implement conduct/atonement consequences or resolve source-specific continuation and class-return questions.
+
+Three regressions cover the complete nine-alignment matrix, both advancement paths with atomic rejection and successful native reload, and historical fourth-level saves with ability increases and casting expenditure. The previously unrelated Warlock/Crusader advancement fixture now explicitly records chaotic-good alignment. Existing public-reference consistency tests verify that the calculation and display catalogs agree.
+
+Isolated production-build browser checks exercised all three classes in both standard and paired advancement. Lawful-good entry was blocked; the recorded qualifying alignment allowed the level without an exception. Each save/reload retained three damage; each paired Wizard book retained its spent slot. No page errors occurred.
+
+All **951 tests**, TypeScript and the Pages production build passed. Creation alignment and the broader metadata, conduct/atonement and class-return audits remain open.

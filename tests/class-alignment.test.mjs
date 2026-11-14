@@ -5,6 +5,7 @@ import {createPlayerCharacter} from '../lib/character-creation.ts';
 import {findClass} from '../lib/classes.ts';
 import {gainLevel,previewGestaltLevel,applyGestaltLevel} from '../lib/level-up.ts';
 import {recompute} from '../lib/automation.ts';
+import {recordAdvancementChoice} from '../lib/advancement-choices.ts';
 import {parseCharacterFile} from '../lib/character-file.ts';
 import {prepareCharacter} from '../lib/roll20-skill-bonuses.ts';
 const create=(paired=false,alignment='Lawful Good')=>{
@@ -90,4 +91,45 @@ test('load preserves historical alignment conflicts and manual settings rather t
  const expected=structuredClone(c);
  const restored=await prepareCharacter(parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:c})));
  assert.deepEqual(restored,expected);assert.equal(restored.alignment,'Lawful Good');assert.equal(restored.classLevels[0].level,1);
+});
+
+test('supplemental alignment rules match all nine alignments, including either Warlock axis',()=>{
+ const expected={warlock:['CG','CN','LE','NE','CE'],'dread-necromancer':['LN','TN','CN','LE','NE','CE'],'wu-jen':['NG','CG','TN','CN','NE','CE']};
+ for(const [id,allowed] of Object.entries(expected))for(const alignment of ['LG','NG','CG','LN','TN','CN','LE','NE','CE']){
+  const result=eligibility(create(false,alignment),id);
+  assert.equal(result.eligible,allowed.includes(alignment),id+' '+alignment);
+  if(!result.eligible)assert.match(result.requirements[0].label,/House rule/);
+ }
+ const c=create(false,'CG');
+ for(const alignment of ['Any evil or any chaotic except members of the order','Any evil or a deity-approved alignment']){
+  const result=classAlignmentEligibility(c,{...findClass('warlock'),alignment});
+  assert.equal(result.eligible,false);assert.match(result.requirements[0].label,/complete class source/);
+ }
+});
+
+test('supplemental class entry blocks invalid alignments atomically and preserves expenditure on valid entry',async()=>{
+ for(const id of ['warlock','dread-necromancer','wu-jen'])for(const paired of [false,true]){
+  const c=create(paired,'LG');c.hp-=3;if(paired)c.casters[0].slots[1].used=1;
+  const before=structuredClone(c);
+  assert.throws(()=>paired?previewGestaltLevel(c,{left:id,right:'wizard'}):gainLevel(c,id),/alignment requirement/);
+  assert.deepEqual(c,before);
+  c.alignment=id==='dread-necromancer'?'TN':'CG';const old=structuredClone(c);
+  if(paired)applyGestaltLevel(c,previewGestaltLevel(c,{left:id,right:'wizard'}));else gainLevel(c,id);
+  recompute(c,old);
+  assert.equal(c.level,2);assert.equal(c.classLevels.find(d=>d.classId===id).level,1);assert.equal(c.maxHp-c.hp,3);
+  if(paired)assert.equal(c.casters.find(p=>p.casting.classId==='wizard').slots[1].used,1);
+  const restored=await prepareCharacter(parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:c})));
+  assert.deepEqual(restored,c);
+ }
+});
+
+test('corrected supplemental metadata does not rewrite old conflicting character saves',async()=>{
+ for(const id of ['warlock','dread-necromancer','wu-jen']){
+  const c=createPlayerCharacter({name:'Old catalog save',kind:findClass(id).name,level:4,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:16,WIS:16,CHA:16},method:'manual',hpMethod:'average'});
+  c.alignment='LG';c.hp-=3;c.notes='Keep my level-up choices';recordAdvancementChoice(c,'ability-1','INT',true);
+  if(c.casters.length)c.casters[0].slots[1].used=1;
+  recompute(c);const expected=structuredClone(c);
+  const restored=await prepareCharacter(parseCharacterFile(JSON.stringify({format:'barrow-ledger-character',version:1,data:c})));
+  assert.deepEqual(restored,expected);assert.equal(restored.classLevels[0].level,4);
+ }
 });
