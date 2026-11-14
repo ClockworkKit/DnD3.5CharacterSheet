@@ -5,6 +5,7 @@ import {classCatalog,classHitDie,classSkillPoints,type ClassDefinition} from './
 import {hasAlternateFeature} from './alternate-features.ts';
 import {gestaltVariantPairProblem} from './gestalt-class-families.ts';
 import type {LevelRow} from './level-history.ts';
+import {raceProgression,racialHDProgression} from './ancestry.ts';
 
 /** Extension point for source-specific class families and combination prestige rules. */
 export type GestaltBonusProfile={bab:'full'|'medium'|'poor';fort:'good'|'poor';ref:'good'|'poor';will:'good'|'poor'};
@@ -105,9 +106,9 @@ function bonusRates(def:ClassDefinition,policy:GestaltClassPolicy,golarion:boole
 export function gestaltLevelSequence(c:Character,input:GestaltProgression,options:GestaltOptions={}):GestaltLevelRow[]{
  const plan=gestaltProgressionSchema.parse(input);
  if(c.sheetKind==='monster')throw new Error('Gestalt progression requires a class-based character sheet.');
- // UA does not specify how monster/RHD levels occupy the two class choices.
- // Do not invent an implicit monster-class progression or silently drop racial HD.
- if(c.ancestry.racialHitDice)throw new Error('Gestalt racial Hit Dice require an explicit supported progression policy.');
+ // Retained racial HD precede class pairs (recorded interpretation in rules-policy.md).
+ if(c.ancestry.racialHitDice===1)throw new Error('Replace the single racial Hit Die with class levels: record zero retained racial Hit Dice.');
+ if(c.ancestry.racialHitDice&&!raceProgression(c.ancestry.raceId))throw new Error('Gestalt racial Hit Dice require a supported racial progression.');
  const entries=new Map<string,ClassLevel>(),classIds=new Set<string>();
  for(const entry of c.classLevels){
   if(entries.has(entry.id)||classIds.has(entry.classId))throw new Error('Gestalt needs one unique entry per class.');
@@ -175,11 +176,19 @@ export type GestaltBonusContribution={classId:string;classLevel:number;units:num
  * display names and entry UUIDs never change the result. See the policy document.
  * All arithmetic uses twelfths so fractional thirds cannot round down spuriously.
  */
-export function gestaltBonusLedger(rows:readonly GestaltLevelRow[]){
+export function gestaltBonusLedger(rows:readonly GestaltLevelRow[],ancestry?:Character['ancestry']){
  if(!rows.length)throw new Error('Record at least one paired level.');
  const method=gestaltBonusMethodSchema.parse(rows[0].bonusMethod);
  if(rows.some(row=>row.bonusMethod!==method))throw new Error('All paired levels must use the same bonus method.');
- const previous:Partial<Record<keyof BaseProgression,string>>={},totals:BaseProgression={bab:0,fort:0,ref:0,will:0};
+ const racial=racialHDProgression(ancestry),profile=ancestry&&raceProgression(ancestry.raceId);
+ const totals={} as BaseProgression;
+ for(const stat of baseStats){
+  const value=method==='fractional-v1'&&racial.level&&profile
+   ?stat==='bab'?racial.level*profile.bab:profile.goodSaves.includes(stat)?2+racial.level/2:racial.level/3
+   :racial[stat];
+  totals[stat]=Math.round(value*12);
+ }
+ const previous:Partial<Record<keyof BaseProgression,string>>={};
  return rows.map(row=>{
   const bonuses={} as Record<keyof BaseProgression,GestaltBonusContribution>;
   for(const stat of baseStats){
@@ -195,10 +204,11 @@ export function gestaltBonusLedger(rows:readonly GestaltLevelRow[]){
  });
 }
 
-export function gestaltBaseTotals(rows:readonly GestaltLevelRow[]){
- const ledger=gestaltBonusLedger(rows);
+export function gestaltBaseTotals(rows:readonly GestaltLevelRow[],ancestry?:Character['ancestry']){
+ const ledger=gestaltBonusLedger(rows,ancestry),racial=racialHDProgression(ancestry);
  const dice=new Map<number,number>();
- const totals={level:rows.length,bab:0,fort:0,ref:0,will:0,hitDice:''};
+ if(racial.level)dice.set(racial.die,racial.level);
+ const totals={level:rows.length+racial.level,bab:0,fort:0,ref:0,will:0,hitDice:''};
  for(const row of rows) dice.set(row.die,(dice.get(row.die)??0)+1);
  const last=ledger[ledger.length-1];
  for(const stat of baseStats)totals[stat]=last.bonuses[stat].total;

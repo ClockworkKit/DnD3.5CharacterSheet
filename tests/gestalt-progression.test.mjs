@@ -191,7 +191,7 @@ test('explicit custom tables and class policies are supported; missing or replac
  const malformed={...definition,levels:[{...definition.levels[0],bab:2}]};assert.throws(()=>compile(f,{definitions:[malformed]}),/explicit progression policy/);
 });
 
-test('racial-HD and monster combinations fail explicitly; level adjustment does not create paired levels',()=>{
+test('unsupported racial-HD and monster combinations fail explicitly; level adjustment does not create paired levels',()=>{
  const f=make(repeat('fighter','wizard',2));f.c.ancestry.levelAdjustment=2;assert.equal(gestaltBaseTotals(compile(f)).level,2);
  f.c.ancestry.racialHitDice=2;assert.throws(()=>compile(f),/racial Hit Dice/);f.c.ancestry.racialHitDice=0;f.c.sheetKind='monster';assert.throws(()=>compile(f),/class-based/);
 });

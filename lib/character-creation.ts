@@ -119,8 +119,6 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  const invalid=rows.find(row=>row.problem);
  if(invalid)throw new Error(invalid.problem);
  const definitions=rows.map(row=>row.sides.map(side=>side.definition!));
- const race=findRace(options.raceId);
- if(race?.rhd)throw new Error('Gestalt racial Hit Dice require a supported progression policy. Choose a race without racial Hit Dice or use standard advancement.');
  // Reuse the standard blank-character, ability and race setup, without rolling
  // provisional dice. Only the final paired sequence receives starting HP rolls.
  const first=definitions[0][0];

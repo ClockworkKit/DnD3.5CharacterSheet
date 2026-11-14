@@ -5,7 +5,7 @@ import type {StartingClassPair,startingPairRows} from '@/lib/character-creation'
 import type {GestaltBonusMethod} from '@/lib/gestalt-schema';
 import {Choice} from './sheet-ui';
 
-export function GestaltStartingLevels({pairs,rows,onChange,bonusMethod,onBonusMethod,customClasses}:{pairs:StartingClassPair[];rows:ReturnType<typeof startingPairRows>;onChange:(pairs:StartingClassPair[])=>void;bonusMethod:GestaltBonusMethod;onBonusMethod:(method:GestaltBonusMethod)=>void;customClasses?:Character['customClasses']}){
+export function GestaltStartingLevels({pairs,rows,onChange,bonusMethod,onBonusMethod,customClasses,racialHitDice=0}:{racialHitDice?:number;pairs:StartingClassPair[];rows:ReturnType<typeof startingPairRows>;onChange:(pairs:StartingClassPair[])=>void;bonusMethod:GestaltBonusMethod;onBonusMethod:(method:GestaltBonusMethod)=>void;customClasses?:Character['customClasses']}){
 
  const baseClasses=characterClasses({customClasses}).filter(d=>d.kind!=='Prestige');
  return <section aria-label="Starting paired levels">
@@ -16,8 +16,8 @@ export function GestaltStartingLevels({pairs,rows,onChange,bonusMethod,onBonusMe
    const {sides,problem}=rows[i];
    const labels=sides.map(({id,definition,level})=>(definition?.name??id)+' '+level);
    return <fieldset className="subcard" key={i}>
-    <legend>Character level {i+1}: {labels.join(' // ')}</legend>
-    <div className="fields two">{(['left','right'] as const).map(side=><Choice key={side} label={'Level '+(i+1)+' '+side+' class'} value={pair[side]} onChange={id=>onChange(pairs.map((p,index)=>index===i?{...p,[side]:id}:p))} options={baseClasses.map(d=>[d.id,d.name+(d.id.startsWith('custom-')?' (custom)':'')])}/>)}</div>
+    <legend>Character level {racialHitDice+i+1}: {labels.join(' // ')}</legend>
+    <div className="fields two">{(['left','right'] as const).map(side=><Choice key={side} label={'Level '+(racialHitDice+i+1)+' '+side+' class'} value={pair[side]} onChange={id=>onChange(pairs.map((p,index)=>index===i?{...p,[side]:id}:p))} options={baseClasses.map(d=>[d.id,d.name+(d.id.startsWith('custom-')?' (custom)':'')])}/>)}</div>
     {problem&&<p className="error-text" role="alert">{problem}</p>}
    </fieldset>;
   })}

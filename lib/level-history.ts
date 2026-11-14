@@ -12,10 +12,11 @@ export function skillIntelligence(c:Character):number {
 }
 
 export function hitDieSequence(c:Character):LevelRow[] {
-  const paired=characterGestaltRows(c);if(paired)return paired;
+  const paired=characterGestaltRows(c);
   const racial:LevelRow[]=[];
   const progression=raceProgression(c.ancestry.raceId);
   for(let i=1;i<=c.ancestry.racialHitDice;i++)racial.push({key:'racial-'+i,entryId:'racial',label:'Racial HD '+i,die:progression?.die||8,skillBase:progression?.skillBase||2,classId:'racial',classLevel:i});
+  if(paired)return [...racial,...paired];
   const rows:LevelRow[]=[];
   const entries=[...c.classLevels].sort((a,b)=>a.id===c.automation.firstClassId?-1:b.id===c.automation.firstClassId?1:0);
   for(const e of entries){for(let i=1;i<=e.level;i++)rows.push({key:e.id+'-'+i,entryId:e.id,label:e.name+' '+i,die:classHitDie(c,e.classId),skillBase:classSkillPoints(c,e.classId),classId:e.classId,classLevel:i})}

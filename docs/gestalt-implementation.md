@@ -1361,3 +1361,19 @@ See the [cleric domain spell rules](https://www.d20srd.org/srd/classes/cleric.ht
 ### Standard prestige casting choices
 
 Guided standard advancement records each new prestige casting or manifesting grant on its class level. The picker uses the character’s level history to identify classes held before prestige entry. Separate arcane and divine grants have independent targets, and levels without a grant skip the picker. Earlier unrecorded levels keep their existing class-wide settings. Opening an older sheet does not write new choices into its history. See the [Mystic Theurge](https://www.d20srd.org/srd/prestigeClasses/mysticTheurge.htm#spellsperDay) and [Loremaster](https://www.d20srd.org/srd/prestigeClasses/loremaster.htm#spellsperDaySpellsKnown) class rules.
+
+## 2026-11-13: Racial Hit Dice before paired class levels
+
+Implemented the recorded conservative interpretation of [monster characters](https://www.d20srd.org/srd/monstersAsRaces.htm#humanoidsAndClassLevels) with [gestalt](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter). The published texts do not explicitly place racial dice on a gestalt track. Retained racial Hit Dice precede pairs; classes on both sides keep their own advancement. This supersedes earlier notes that all racial-HD combinations are unsupported.
+
+Creation, totals, history, skill training, level-up review and casting-history labels use this order. The first racial die receives the first-HD HP and skill treatment; the first class pair receives ordinary later-level grants. HD-based feats, ability increases and rank limits count racial dice plus pairs. XP adds level adjustment. Class casting does not acquire racial levels. Printed racial BAB/saves add normally; the optional fractional method carries the racial fractions before rounding the combined total, using the existing good-save-start convention.
+
+A gnoll with Fighter 1 // Wizard 1 has three HD, ECL4, BAB+2 and base saves +5/+0/+2. With base CON14 and INT16 (racial adjustments enabled), recorded dice 8/4/5 give 26 HP and skill grants 16/4/4. Wizard remains CL1. Advancing the pair at 10,000 XP reaches HD4/ECL5, grants one ability increase, and uses the next class Hit Die once.
+
+Unknown racial progressions and a single retained die are rejected explicitly. Catalog races that replace their single racial die already record zero retained dice. Existing sheets are not converted on load. Changing a saved racial-HD count or switching its racial history requires the still-unimplemented reviewed conversion. Rejected Race edits, including detaching a racial reference, show an alert and leave the save intact. Ordinary races without retained dice can still be changed normally.
+
+Seven regression cases cover the concrete calculations, fractional carry, subsequent advancement, unsupported histories, standard/replacement races, every catalog racial progression's stable creation, and first import save/native reload. The persistence case retains the level-four ability increase, assigned feat, historical training, injury and spent spell slot. All **936 tests** and TypeScript passed; both Pages and Worker production builds passed with existing script, bundle and plugin notices.
+
+Isolated browser QA created the gnoll through the real dialog and checked its actual-level history. A separate synthetic already-leveled import selected Rogue and a new HP roll before its first autosave. Both draft selections survived that save. The resulting level-five confirmation saved/reloaded with the original ability and feat assignments, four earlier history rows, skill ranks, three damage and one spent slot intact. No real player storage or private exports were used.
+
+The broader goal remains open, including reviewed progression/racial-history conversion and the remaining documented class-specific and browser acceptance cases.

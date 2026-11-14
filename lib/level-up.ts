@@ -165,7 +165,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
  return {pending,source:JSON.stringify(c),selection:structuredClone(selection),selectionKey:JSON.stringify(selection),character:next,summary:{
   level:next.level,label:row.label,die:row.die,hpGain:next.maxHp-c.maxHp,skillPoints:after.skillBudget-before.skillBudget,castingTargets,
   bab:{before:c.bab,after:next.bab},saves:{before:{fort:c.saves.fort.base,ref:c.saves.ref.base,will:c.saves.will.base},after:{fort:next.saves.fort.base,ref:next.saves.ref.base,will:next.saves.will.base}},
-  bonusDecision:gestaltBonusLedger(rows).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
+  bonusDecision:gestaltBonusLedger(rows,next.ancestry).at(-1)!,choices:advancementChoices(next).filter(choice=>!oldChoices.has(choice.key)),
   milestones:definitions.map((def,i)=>({classId:def.id,name:def.name,level:entries[i].level,text:effectiveClassMilestone(next,def.id,def.levels.find(r=>r.level===entries[i].level)!.special,entries[i].level)})),
   featureCapacities:featureCapacityChanges(c,next),
   classAllowances:classAllowanceChanges(c,next),

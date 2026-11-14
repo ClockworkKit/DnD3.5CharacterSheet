@@ -103,7 +103,7 @@ test('invalid starting plans fail without mutating supplied choices or silently 
  const plan=pairs('fighter','wizard',2),before=structuredClone(plan);
  for(const extra of [{level:1},{level:0},{gestaltPairs:undefined},{gestaltBonusMethod:'unknown'},{hpRolls:[11]},{hpRolls:[]},{hpMethod:'average',hpRolls:[3]}])assert.throws(()=>create(plan,extra));
  for(const pair of [{left:'fighter',right:'fighter'},{left:'missing',right:'wizard'},{left:'Fighter',right:'wizard'},{left:'fighter',right:'eldritch-knight'}])assert.throws(()=>create([pair]));
- const racial=raceCatalog.find(r=>r.rhd>0);assert.throws(()=>create(plan,{raceId:racial.id}),/racial Hit Dice/);
+
  assert.throws(()=>createPlayerCharacter({...options,gestaltPairs:plan}),/explicit gestalt/);
  assert.throws(()=>createPlayerCharacter({...options,gestaltBonusMethod:'fractional-v1'}),/explicit gestalt/);
  assert.throws(()=>create(plan,{clericSpecialty:'axe-brother'}),/requires cleric/);assert.deepEqual(plan,before);

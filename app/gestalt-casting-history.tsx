@@ -8,7 +8,7 @@ export function GestaltCastingHistory({c}:{c:Character}){
   if(!records.length)return null;
   return <details><summary>Recorded prestige targets by class level</summary><p className="fine">Each recorded choice belongs to the indicated prestige level. General class settings apply to levels without a recorded choice.</p><ul>{records.map(t=><li key={t.entry.id+':'+t.level+':'+t.kind}>{t.entry.name} {t.level} ({t.kind}): {t.traditionId==='none'?'No advancement':advancementCandidates(c,t.entry,t.kind).find(p=>p.id===t.traditionId)?.name??'Recorded tradition is missing or no longer eligible; no replacement is applied.'}</li>)}</ul></details>;
  }
- const rows=c.gestaltProgression!.levels.flatMap((row,index)=>(row.castingTargets??[]).map(target=>({level:index+1,...target})));
+ const rows=c.gestaltProgression!.levels.flatMap((row,index)=>(row.castingTargets??[]).map(target=>({level:c.ancestry.racialHitDice+index+1,...target})));
  if(!rows.length)return <p className="fine">Paired level-up will record prestige casting choices separately for each new level. Existing unrecorded levels still use the class-wide settings below.</p>;
  return <details><summary>Recorded prestige casting choices by character level</summary>
   <p className="fine">These choices stay with their recorded pairs. Class-wide settings below affect only unrecorded historical levels and suggestions for future advancement. Use paired level-up to choose the next level's target.</p>
