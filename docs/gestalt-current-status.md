@@ -320,9 +320,7 @@ level 3 and 22/25 HP. Both unconfirmed reviews cleared on switch.
    Mixed/staggered shared essentia now has an explicit, persisted GM ruling;
    exceptional meld effects, chakra choices and other source prerequisites still
    require review rather than being inferred from free-form notes.
-4. Racial-HD occupancy in gestalt remains explicitly unsupported. Level
-   adjustment is supported without adding paired levels. Existing standard
-   racial-HD support remains intact.
+4. Retained racial Hit Dice now precede pairs in creation, advancement and saved history. Level adjustment affects XP separately. Unknown racial progressions are rejected explicitly. Changing an existing racial-HD history still requires a reviewed conversion. See the November 13 implementation evidence below.
 5. Full reviewed mode conversion remains a planned enhancement. Current mode
    changes are blocked rather than converting, dropping a class track or
    rewriting history. No existing character is automatically made gestalt.
@@ -345,3 +343,7 @@ Seven regression cases cover the concrete calculations, fractional carry, subseq
 Isolated browser QA created the gnoll through the real dialog and checked its actual-level history. A separate synthetic already-leveled import selected Rogue and a new HP roll before its first autosave. Both draft selections survived that save. The resulting level-five confirmation saved/reloaded with the original ability and feat assignments, four earlier history rows, skill ranks, three damage and one spent slot intact. No real player storage or private exports were used.
 
 The broader goal remains open, including reviewed progression/racial-history conversion and the remaining documented class-specific and browser acceptance cases.
+
+## 2026-11-14: Racial skill summary consistency
+
+The automatic class-skill flags now include all catalog racial-HD skill lists and always-class racial grants. Per-level training costs and explicit overrides remain intact. Five new regressions and isolated browser purchases/reloads preserve existing advancement, skill history, damage and spent slots. All 941 tests, TypeScript and the Pages build passed. See the implementation record for rules sources and concrete checks.

@@ -1,4 +1,4 @@
-import {findRace,raceProgression} from './ancestry.ts';
+import {racialClassSkill} from './ancestry.ts';
 import {alternateClassSkill} from './alternate-benefits.ts';
 import type {Character,Skill} from './model.ts';
 import {findClass,isClassSkill} from './classes.ts';
@@ -8,9 +8,8 @@ export function classSkillAt(c:Character,skill:Skill,row:LevelRow):boolean {
   const override=c.automation.history.find(h=>h.key===row.key)?.skillClassOverrides[skill.id];
   if(override!==undefined)return override;
   if(skill.classSkillOverride!==undefined)return skill.classSkillOverride;
-  if(c.ancestry.raceId==='illumian'&&skill.name==='Speak Language')return true;
-  if(findRace(c.ancestry.raceId)?.alwaysClassSkills?.includes(skill.name))return true;
-  if(row.classId==='racial')return (raceProgression(c.ancestry.raceId)?.classSkills||[]).some(name=>name===skill.name||name.replace(/ \(any\)$/,'')===skill.name.split(' (')[0]);
+  if(racialClassSkill(c,skill.name,row.classId==='racial'))return true;
+  if(row.classId==='racial')return false;
   return (row.classIds??[row.classId]).some(classId=>{
     const definition=findClass(classId,c);
     return definition?alternateClassSkill(c,classId,skill.name,isClassSkill(skill.name,[definition])):skill.classSkill;

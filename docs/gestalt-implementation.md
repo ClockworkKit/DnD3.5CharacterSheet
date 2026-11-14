@@ -1377,3 +1377,15 @@ Seven regression cases cover the concrete calculations, fractional carry, subseq
 Isolated browser QA created the gnoll through the real dialog and checked its actual-level history. A separate synthetic already-leveled import selected Rogue and a new HP roll before its first autosave. Both draft selections survived that save. The resulting level-five confirmation saved/reloaded with the original ability and feat assignments, four earlier history rows, skill ranks, three damage and one spent slot intact. No real player storage or private exports were used.
 
 The broader goal remains open, including reviewed progression/racial-history conversion and the remaining documented class-specific and browser acceptance cases.
+
+## 2026-11-14: Consistent racial class-skill records
+
+The character-wide class-skill flags previously recognized racial Hit Dice only for gnolls and lizardfolk, while the training ledger already used every catalog racial progression. This made a hound archon's Listen and Hide purchases legal class-skill training in its outsider levels but recorded them as cross-class in its summary. Always-class racial grants, such as a silverbrow human's Disguise, had the same summary mismatch.
+
+Both paths now share the racial lookup. The summary includes skills from retained racial dice and always-class grants. Per-level purchase costs still follow the advancing class or pair, except for explicit always-class grants. Historical and character-wide overrides retain precedence, and restricted specialties remain restricted. This changes automatic summary flags; it does not move ranks, reprice earlier training, create racial dice or rewrite manual character settings.
+
+Rules evidence: [hound archon racial skills](https://www.d20srd.org/srd/monsters/archon.htm#houndArchonsAsCharacters), [skill costs and rank limits](https://www.d20srd.org/srd/skills/skillsSummary.htm), and the [Dragon Magic racial trait text](https://srd.dndtools.org/srd/races/racesDrm.html#silverbrow-humans). Racial-HD skills contribute to the maximum-rank history; this does not turn every later class's skill purchases into racial-level purchases.
+
+Five regressions cover standard and paired training, racial always-class exceptions, specialty boundaries, explicit overrides and a previously leveled native save with outdated summary flags. The repaired save retains all other character data, including purchases, history, damage and casting expenditure, across import, first storage write and reload. All **941 tests**, TypeScript and the Pages production build passed.
+
+Isolated browser QA imported a synthetic hound archon with outdated flags, spent four racial-level points and two subsequent Fighter/Wizard points on Listen, and reloaded five ranks with six points spent. The export retained the separate four-rank and one-rank history entries, three damage and a spent spell slot. A separate silverbrow import bought four Disguise ranks for four points and retained them after reload. No page errors occurred. No private exports or player storage were changed.

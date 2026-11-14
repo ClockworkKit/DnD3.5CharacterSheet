@@ -20,6 +20,13 @@ export const racialBonusSkillPoints=(c:Character)=>racialTraits(c)?.bonusSkillPo
 export function raceProgression(id:string):RacialProgression|undefined {return findRace(id)?.racialProgression||({gnoll:{type:'Humanoid',die:8,bab:.75,goodSaves:['fort'],skillBase:2,classSkills:['Climb','Listen','Spot']},lizardfolk:{type:'Humanoid',die:8,bab:.75,goodSaves:['ref'],skillBase:2,classSkills:['Balance','Jump','Swim']}} as Record<string,RacialProgression>)[id];}
 
 export const findRace=(id:string)=>raceCatalog.find(r=>r.id===id);
+/** Racial class-skill grants; racial-HD lists apply only to their own training levels. */
+export function racialClassSkill(c:Pick<Character,'ancestry'>,name:string,includeRacialHitDice=false):boolean {
+ if(c.ancestry.raceId==='illumian'&&name==='Speak Language')return true;
+ if(findRace(c.ancestry.raceId)?.alwaysClassSkills?.includes(name))return true;
+ return includeRacialHitDice&&c.ancestry.racialHitDice>0&&(raceProgression(c.ancestry.raceId)?.classSkills??[])
+  .some(entry=>entry===name||entry.replace(/ \(any\)$/,'')===name.split(' (')[0]);
+}
 export function racialAbility(c:Character,a:Ability){const delta=c.ancestry.abilityAdjustments?(findRace(c.ancestry.raceId)?.abilities[a]||0):0;return c.ancestry.abilityAdjustments&&['half-orc','water-half-orc'].includes(c.ancestry.raceId)&&a==='INT'?Math.max(3,c.scores[a]+delta)-c.scores[a]:delta;}
 // Numeric compatibility for legacy formulas; creatureAbilityScore exposes absence as null.
 export function effectiveScore(c:Character,a:Ability,lasting=false){if(c.creature?.nonabilities.includes(a))return 10;return c.scores[a]+racialAbility(c,a)+(lasting?0:c.temps[a])+classAbilityBonus(c,a)+effectBonus(c,a,{},lasting);}
