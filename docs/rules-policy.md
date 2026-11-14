@@ -70,3 +70,12 @@ visible for review rather than silently discarded.
 milestones and unfinished gates. Update it with the rules evidence, behavior,
 tests and limitations of each mechanics change. Keep remaining gaps explicit;
 passing a subset of tests does not establish completion of the full goal.
+
+### Racial Hit Dice with gestalt
+
+The user requested the option closest to the published rules on 2026-11-13.
+Use the conservative interpretation that retained racial Hit Dice precede the paired class levels. Total Hit Dice are racial Hit Dice plus the number of pairs; effective character level also adds level adjustment. Treat the first actual Hit Die as first level for feats, skills and HP. Apply the ordinary replacement rule for creatures with one or fewer racial Hit Dice.
+
+This is an interpretation of the two rule sets together. Unearthed Arcana defines pairing classes and does not explicitly assign racial Hit Dice to a gestalt side. Keep that distinction visible when implementing the option. The current compiler still rejects racial Hit Dice in gestalt until the history, calculations, creation and saved-data paths support them together. This recorded decision specifies the pending implementation.
+
+Sources: [Gestalt character construction](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter), [monster character levels and racial Hit Dice](https://www.d20srd.org/srd/monstersAsRaces.htm#humanoidsAndClassLevels), and [effective character level](https://www.d20srd.org/srd/monstersAsRaces.htm#levelAdjustmentAndEffectiveCharacterLevel).
