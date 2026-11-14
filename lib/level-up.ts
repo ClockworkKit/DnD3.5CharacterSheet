@@ -2,6 +2,7 @@ import {addStartingClericDomainSlots} from './cleric-domain-slots.ts';
 import {highestInvocationGrade,systemLimits} from './class-systems.ts';
 import {factotumNumbers} from './factotum.ts';
 import {prestigeEligibility} from './prerequisites.ts';
+import {assertClassAlignment} from './class-alignment.ts';
 import {uid,characterSchema,type Character} from './model.ts';
 import {characterClasses,classTotals,classHitDie,findClass,copyClassFeatures,makeCaster,makePsionic,castingAbility,manifestingAbility,type ClassDefinition} from './classes.ts';
 import {assertCustomResourceTables,advancementNumbers,castingDefinition,castingNumbers,manifestDefinition,psionicProgression} from './advancement.ts';
@@ -46,6 +47,7 @@ export function gainLevel(c:Character,classId:string,hitDieRoll?:number,castingT
  if(!c.classLevels.length||classTotals(c.classLevels,c.ancestry,c).missing.length)throw new Error('Record supported class levels before using guided level-up.');
  if(levelUpStatus(c).available<1)throw new Error('Not enough XP for another level.');
  const def=findClass(classId,c);if(def?.kind==='Prestige'&&!c.classLevels.some(e=>e.classId===classId)&&!prestigeEligibility(c,def).eligible)throw new Error('Prestige prerequisites are not met.');if(!def||!levelUpClasses(c).some(d=>d.id===classId))throw new Error('No further supported levels in this class.');
+ assertClassAlignment(c,def);
  if(c.automation.hpMethod==='rolled'&&(!Number.isInteger(hitDieRoll)||hitDieRoll!<1||hitDieRoll!>classHitDie(c,def.id)))throw new Error('Record a valid roll for the new Hit Die.');
  validateDiscipline(c,[classId],psionDiscipline);
  const targets=def.kind==='Prestige'||castingTargets.length?resolveGestaltCastingTargets(c,[classId],castingTargets):[];
@@ -134,6 +136,7 @@ function buildGestaltLevelPreview(c:Character,selection:GestaltLevelSelection){
   const def=findClass(id,c),entry=c.classLevels.find(e=>e.classId===id);
   if(!def||def.id!==id||!def.levels.some(row=>row.level===(entry?.level??0)+1))throw new Error('No further supported levels in this class.');
   if(def.kind==='Prestige'&&!entry&&!prestigeEligibility(c,def).eligible)throw new Error(def.name+' prerequisites must be met before gaining this level.');
+  assertClassAlignment(c,def);
   return def;
  });
  const next=structuredClone(c),entries=definitions.map(def=>{

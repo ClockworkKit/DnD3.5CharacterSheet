@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -7,7 +8,7 @@ import {recompute,calculationWarnings} from '../lib/automation.ts';
 import {characterSchema} from '../lib/model.ts';
 import {configureAlternateFeature,selectAlternateFeature} from '../lib/alternate-features.ts';
 import {hitDieSequence} from '../lib/level-history.ts';
-const create=(extra={})=>createPlayerCharacter({name:'XP test',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual',...extra});
+const create=(extra={})=>withFixtureAlignment(createPlayerCharacter({name:'XP test',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual',...extra}));
 const gain=(c,id,roll)=>{const previous=structuredClone(c);gainLevel(c,id,roll);recompute(c,previous)};
 test('30000 XP offers advancement through level 8, retains XP, damage and history',()=>{
  const c=create();c.experience=30000;c.hp-=3;assert.equal(levelUpStatus(c).eligible,8);

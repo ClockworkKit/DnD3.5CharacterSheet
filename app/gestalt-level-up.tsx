@@ -7,6 +7,7 @@ import {gestaltClassPolicies} from '@/lib/gestalt-progression';
 import {gestaltCastingChoices} from '@/lib/gestalt-casting';
 import {applyGestaltLevel,levelUpClasses,levelUpStatus,needsPsionDiscipline,previewGestaltLevel,type GestaltLevelPreview} from '@/lib/level-up';
 import {prestigeEligibility} from '@/lib/prerequisites';
+import {classAlignmentEligibility} from '@/lib/class-alignment';
 import {Btn,Choice,F,N,type SheetProps} from './sheet-ui';
 import {PrerequisiteStatus} from './prerequisite-status';
 
@@ -33,6 +34,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  const castingChoices=gestaltCastingChoices(c,[left,right]);
  const hitDie=Math.max(...sides.map(d=>d?.hitDie??1));
  const combinationClasses=[...new Set([left,right])].filter(id=>(gestaltClassPolicies[id]?.combinationPrestige||c.customClasses?.find(row=>row.definition.id===id)?.policy.combinationPrestige));
+ const alignmentChecks=sides.map(def=>def?classAlignmentEligibility(c,def):null);
  const stale=!!review&&review.source!==JSON.stringify(c);
  const clearReview=()=>{setReview(undefined);setError('');};
  function choose(side:'left'|'right',id:string){
@@ -70,6 +72,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     return <div key={side}>
      <Choice label={side==='left'?'Left class to advance':'Right class to advance'} value={selected} onChange={id=>choose(side,id)} options={options.map(d=>[d.id,d.name+' '+((c.classLevels.find(e=>e.classId===d.id)?.level??0)+1)])}/>
      {!def&&<p>Choose a class with another supported level.</p>}
+     {!!alignmentChecks[i]?.requirements.length&&<div><p className="fine">{def?.name} alignment requirements apply to this new level. Record alignment on Sheet; confirm a house-rule exception only with your table's approval.</p><PrerequisiteStatus value={alignmentChecks[i]!} edit={edit}/></div>}
      {entering&&<PrerequisiteStatus value={prestigeEligibility(c,def)} edit={edit}/>}
     </div>;
    })}
@@ -88,7 +91,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     <F label={'Approval reason for '+findClass(id,c)?.name} area value={approvals[id]?.reason??''} onChange={reason=>{setApprovals(a=>({...a,[id]:{gm:a[id]?.gm??'',reason}}));clearReview();}}/>
    </fieldset>)}
    {c.automation.hpMethod==='rolled'?<N label={'One new Hit Die roll (d'+hitDie+')'} value={die} min={1} max={hitDie} onChange={v=>{setDie(v);clearReview();}}/>:<p>HP method: {c.automation.hpMethod}. The larger Hit Die is used once.</p>}
-   <div className="button-row"><Btn disabled={sides.some(d=>!d)||(enteringPsion&&!discipline)} onClick={prepare}>{review?'Refresh paired level review':'Review paired level'}</Btn></div>
+   <div className="button-row"><Btn disabled={sides.some(d=>!d)||alignmentChecks.some(check=>!check?.eligible)||(enteringPsion&&!discipline)} onClick={prepare}>{review?'Refresh paired level review':'Review paired level'}</Btn></div>
    {error&&<p role="alert">{error}</p>}
    {stale&&<p role="status">The character changed. Refresh the paired level review before confirming.</p>}
    {review&&!stale&&<section aria-label="Paired level review" aria-live="polite">

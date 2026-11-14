@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {execFileSync} from 'node:child_process';
@@ -78,7 +79,7 @@ test('explicit essentia rulings validate before mutation and keep their GM/sourc
 });
 
 test('advancement retains a saved ruling but requires renewal for the changed progression',()=>{
- const c=mixed();recordEssentiaRuling(c,{total:6,gm:'Table GM',reason:'Reviewed existing progression.'});const saved=structuredClone(c.classSystems.essentiaRuling);
+ const c=withFixtureAlignment(mixed());recordEssentiaRuling(c,{total:6,gm:'Table GM',reason:'Reviewed existing progression.'});const saved=structuredClone(c.classSystems.essentiaRuling);
  c.experience=21000;const preview=previewGestaltLevel(c,{left:'incarnate',right:'totemist'});applyGestaltLevel(c,preview);recompute(c);
  assert.deepEqual(c.classSystems.essentiaRuling,saved);assert.equal(meldshapingSummary(c).staleRuling,true);assert.equal(meldshapingSummary(c).essentia,null);assert.match(meldshapingSummary(c).review,/needs review after progression changed/);
  recordEssentiaRuling(c,{total:7,gm:'Table GM',reason:'Reviewed the new level.'});assert.equal(meldshapingSummary(c).essentia,7);

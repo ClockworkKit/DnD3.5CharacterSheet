@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -89,7 +90,7 @@ test('manual resource limits remain untouched until automatic calculations are e
 
 test('standard and paired advancement preserve source levels, history, injuries, preparations and spent attempts',()=>{
  for(const paired of [false,true])for(const [kind,id]of [['Dread Necromancer','dread-necromancer'],['Death Master','death-master']]){
-  const c=make(kind,4,paired),key='supp:'+id+':Rebuke undead';feat(c,'Extra Turning');feat(c,'Improved Turning');recompute(c);
+  const c=withFixtureAlignment(make(kind,4,paired),'Neutral Evil'),key='supp:'+id+':Rebuke undead';feat(c,'Extra Turning');feat(c,'Improved Turning');recompute(c);
   const f=pool(c,key);f.name='Personal rebuking';f.description='Keep my tactics.\n'+f.description;f.source='My reference';f.used=7;c.hp-=3;c.experience=10000;
   const caster=c.casters.find(p=>p.casting?.classId===id);caster.slots[1].used=1;caster.spells.push({id:'kept-spell',spellId:'chill-touch',level:1,slotLevel:1,prepared:2,spent:1,formula:'',notes:'Keep prepared choices',custom:null});
   const before=structuredClone(c),history=structuredClone(c.automation.history);

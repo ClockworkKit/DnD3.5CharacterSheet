@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {readFileSync} from 'node:fs';
@@ -32,7 +33,7 @@ test('split casting abilities control eligibility, bonus slots and DC independen
 });
 
 test('late spellcasting retains zero-base bonus slots and half caster levels',()=>{
- for(const kind of ['Hexblade','Spellthief']){const c=create(kind,3);assert.equal(c.casters[0].slots[1].max,0);assert.equal(c.casters[0].level,0);c.experience=6000;gainLevel(c,findClass(kind).id,4);recompute(c);assert.equal(c.casters[0].level,2);assert.equal(c.casters[0].slots[1].max,1);assert.equal(spellSlots(findClass(kind),4,10)[1].max,0);}
+ for(const kind of ['Hexblade','Spellthief']){const c=withFixtureAlignment(create(kind,3),'Neutral Evil');assert.equal(c.casters[0].slots[1].max,0);assert.equal(c.casters[0].level,0);c.experience=6000;gainLevel(c,findClass(kind).id,4);recompute(c);assert.equal(c.casters[0].level,2);assert.equal(c.casters[0].slots[1].max,1);assert.equal(spellSlots(findClass(kind),4,10)[1].max,0);}
  const dn=create('Dread Necromancer');assert.equal(dn.casters[0].slots[0].max,0);assert.equal(dn.casters[0].slots[1].max,4);
 });
 

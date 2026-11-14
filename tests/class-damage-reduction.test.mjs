@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -117,7 +118,7 @@ test('ordinary and gestalt DR keep class sources separate; overlapping grants ne
 });
 
 test('ordinary advancement unlocks DR without healing, refunding uses or duplicating manual sources on native reload',async()=>{
- const c=create('Barbarian',6);c.hp-=3;c.experience=500000;
+ const c=withFixtureAlignment(create('Barbarian',6));c.hp-=3;c.experience=500000;
  c.features.push({id:'spent',name:'Player counter',kind:'Other',description:'Keep this note',source:'',max:4,used:2});
  c.defense.drSources=[{...newDamageReductionSource(),source:'Campaign armor',amount:2,notes:'Keep armor rule'}];
  assert.equal(earned(c).length,0);const previous=structuredClone(c);

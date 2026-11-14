@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -96,7 +97,7 @@ test('injury and resource edits during review are preserved rather than overwrit
 });
 
 test('paired level-up retains the decision and old training but requires a fresh progression review',()=>{
- const c=mixed();record(c);c.hp-=4;c.casters[0].slots[1].used=1;c.experience=28000;
+ const c=withFixtureAlignment(mixed());record(c);c.hp-=4;c.casters[0].slots[1].used=1;c.experience=28000;
  const saved=structuredClone(c.classSystems.uncannyDodgeRuling),history=structuredClone(c.automation.history),oldReview=previewUncannyDodgeRuling(c,decision),before=structuredClone(c);
  applyGestaltLevel(c,previewGestaltLevel(c,{left:'barbarian',right:'wizard'}));recompute(c,before);
  assert.deepEqual(c.classSystems.uncannyDodgeRuling,saved);assert.equal(uncannyDodgeFeatures(c).staleRuling,true);assert.equal(uncannyDodgeFeatures(c).improved,false);

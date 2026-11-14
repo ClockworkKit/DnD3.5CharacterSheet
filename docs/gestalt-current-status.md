@@ -347,3 +347,7 @@ The broader goal remains open, including reviewed progression/racial-history con
 ## 2026-11-14: Racial skill summary consistency
 
 The automatic class-skill flags now include all catalog racial-HD skill lists and always-class racial grants. Per-level training costs and explicit overrides remain intact. Five new regressions and isolated browser purchases/reloads preserve existing advancement, skill history, damage and spent slots. All 941 tests, TypeScript and the Pages build passed. See the implementation record for rules sources and concrete checks.
+
+## 2026-11-14: Base-class alignment during advancement
+
+Standard and paired guided level-up now validate declared alignment restrictions before applying a level. Unknown wording requires explicit source review; a known mismatch requires a labeled table-approved exception scoped to that class level. Existing levels and saved resources remain unchanged. All 948 tests, TypeScript and the Pages build passed, with isolated browser checks of rejection, valid entry, exception persistence and stale reviews. Creation alignment, metadata source completeness and source-specific class-return/conduct rules remain open; see the implementation record.

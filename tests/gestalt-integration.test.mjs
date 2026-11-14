@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -24,7 +25,7 @@ import {characterHitDice} from '../lib/character-level.ts';
 import {racialHD} from '../lib/racial-abilities.ts';
 import {systemLimits} from '../lib/class-systems.ts';
 
-const standard=()=>createPlayerCharacter({name:'Paired integration QA',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual'});
+const standard=()=>withFixtureAlignment(createPlayerCharacter({name:'Paired integration QA',kind:'Fighter',level:1,raceId:'human',scores:{STR:14,DEX:12,CON:14,INT:12,WIS:14,CHA:10},method:'manual'}));
 const repeat=(a,b,n)=>Array.from({length:n},()=>[a,b]);
 const unarmed=()=>({...newWeapon(),name:'Unarmed strike'});
 // Mirror CharacterSheet.edit: apply the recipe, then recalculate exactly once.

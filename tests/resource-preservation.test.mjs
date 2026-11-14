@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -15,7 +16,7 @@ function advance(c,id){const before=structuredClone(c);c.experience=10000;if(c.a
 
 test('renamed daily and supplemental resources retain identity, annotations and expenditure through advancement',()=>{
  for(const paired of [false,true])for(const [kind,key]of [['barbarian','daily:Rage'],['ninja','supp:ninja:Ki power']]){
-  const c=make(kind,paired),f=c.features.find(f=>f.ruleId===key);personalize(f);c.hp-=3;
+  const c=withFixtureAlignment(make(kind,paired)),f=c.features.find(f=>f.ruleId===key);personalize(f);c.hp-=3;
   const original=structuredClone(f);recompute(c);
   assert.equal(c.features.find(f=>f.ruleId===key)?.id,original.id);
   assert.equal(c.features.find(f=>f.ruleId===key)?.used,1);

@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -69,7 +70,7 @@ test('opening domain slots after casting preserves separate Wizard and Cleric bo
 });
 
 test('standard cleric entry grants one domain pool and leaves a returning cleric choices alone',()=>{
- const c=createPlayerCharacter({...options,kind:'Wizard',hpMethod:'average'});
+ const c=withFixtureAlignment(createPlayerCharacter({...options,kind:'Wizard',hpMethod:'average'}));
  c.experience=6000;c.casters[0].slots[1].used=1;
  gainLevel(c,'cleric');recompute(c);
  const domain=c.casters.find(book=>book.casting.domain);
@@ -132,7 +133,7 @@ test('every selectable base class can occupy either starting side without duplic
 });
 
 test('created paired NPCs save/load/export and advance without losing damage, training or expenditures',async()=>{
- const c=createNpcSheet({...options,advancementMode:'gestalt',level:2,gestaltPairs:pairs('wizard','cleric',2),hpRolls:[3]});assert.equal(c.sheetKind,'npc');
+ const c=withFixtureAlignment(createNpcSheet({...options,advancementMode:'gestalt',level:2,gestaltPairs:pairs('wizard','cleric',2),hpRolls:[3]}));assert.equal(c.sheetKind,'npc');
  c.hp-=2;c.casters.forEach(p=>p.slots[1].used=1);const skill=c.skills.find(s=>s.name==='Concentration');setSkillPoints(c,c.automation.history[0].key,skill.id,4);
  c.experience=3000;const before=structuredClone(c);applyGestaltLevel(c,previewGestaltLevel(c,{left:'wizard',right:'cleric',hitDieRoll:5}));recompute(c,before);
  assert.equal(c.level,3);assert.equal(c.maxHp-c.hp,2);assert.equal(skillLedger(c).spent,4);assert.deepEqual(c.casters.map(p=>p.slots[1].used),[1,1,1]);

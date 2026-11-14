@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -25,7 +26,7 @@ function profile(config={spell:'any',divine:false,psi:false},rows=[grants(true),
 }
 function base(p,other='cleric',paired=true){
  const c=createPlayerCharacter({...options,customClasses:[p],...(paired?{advancementMode:'gestalt',gestaltPairs:Array.from({length:3},()=>({left:'wizard',right:other}))}:{})});
- c.experience=1000000;
+ withFixtureAlignment(c);c.experience=1000000;
  if(!paired&&other)for(let i=0;i<3;i++){const before=structuredClone(c);gainLevel(c,other);recompute(c,before);}
  return c;
 }

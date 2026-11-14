@@ -1,3 +1,4 @@
+import {withFixtureAlignment} from './alignment-fixture.mjs';
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import {createPlayerCharacter} from '../lib/character-creation.ts';
@@ -67,7 +68,7 @@ test('overlapping fixed class grants keep one existing source and ordinary perso
 test('catalog level changes and paired advancement preserve grant records, damage and spell expenditure',()=>{
  const c=make('Artificer',6),f=c.features.find(f=>f.ruleId==='granted:artificer:6:Craft Wand');personalized(f);const original=structuredClone(f);
  c.classLevels[0].level=4;recompute(c);assert.ok(c.retiredResources.some(f=>f.id===original.id));c.classLevels[0].level=6;recompute(c);assert.deepEqual(c.features.find(f=>f.id===original.id),original);
- const g=make('Barbarian',3,true);choose(g,'barbarian-city-brawler');const feat=g.features.find(f=>f.ruleId===brawler);personalized(feat);const before=structuredClone(feat);g.hp-=3;g.casters[0].slots[1].used=1;g.experience=6000;
+ const g=withFixtureAlignment(make('Barbarian',3,true));choose(g,'barbarian-city-brawler');const feat=g.features.find(f=>f.ruleId===brawler);personalized(feat);const before=structuredClone(feat);g.hp-=3;g.casters[0].slots[1].used=1;g.experience=6000;
  applyGestaltLevel(g,previewGestaltLevel(g,{left:'barbarian',right:'wizard'}));recompute(g);assert.deepEqual(g.features.find(f=>f.id===feat.id),before);assert.equal(g.maxHp-g.hp,3);assert.equal(g.casters[0].slots[1].used,1);
 });
 
