@@ -381,3 +381,19 @@ advancement choices, historical ranks, damage and spent spells, and verify draft
 class/HP choices survive the first import autosave. Reproduction commands and
 scope are in [the implementation record](gestalt-implementation.md#2026-11-15-importsave-race-and-repeatable-browser-regressions).
 The broader goal and its remaining acceptance/conversion gates stay open.
+
+## 2026-11-15: Named browser acceptance completed
+
+The complete `qa-progression-acceptance.mjs` run passed against the Pages build.
+It covers the original named standard Fighter, legacy homebrew, Fighter/Wizard,
+Ranger/Rogue, Wizard/Cleric, independent side changes, prestige entry/restrictions,
+single-counted feats/ability increases, and browser/native persistence scenarios.
+See [the implementation record](gestalt-implementation.md#2026-11-15-original-named-browser-acceptance-matrix)
+for exact values, fixture scope and reproduction commands. Earlier statements
+that these specific named browser cases were unverified are superseded.
+
+The goal remains open. A separate audit confirmed that ordinary Monk and Paladin
+can currently return after taking a Fighter level without a continuation check.
+Resolve this prospectively with source exceptions and reliable history handling;
+do not rewrite existing player progression. Broader custom/source-specific cases
+and reviewed history conversion remain outside this matrix's evidence.

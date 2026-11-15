@@ -1498,3 +1498,54 @@ part of the Node unit suite.
 
 This closes the reproduced overwrite case. The broader goal's remaining
 acceptance matrix and reviewed progression-conversion limitations remain open.
+
+## 2026-11-15: Original named browser acceptance matrix
+
+Added `scripts/qa-progression-acceptance.mjs`, a repeatable isolated-browser
+check of the goal's original named scenarios. It uses synthetic characters and
+the actual UI; literal expected values check the exported state. Creation,
+choices, skill purchases and advancement go through the interface. Synthetic
+native fixtures are used for an old house-rule save, already-spent casting
+resources, and the feats needed to qualify the two-prestige rejection case.
+
+The complete local Pages run passed:
+
+| Scenario | Observed acceptance |
+| --- | --- |
+| New standard Fighter | Standard/rolled defaults; HP12, BAB1, saves2/0/0, 16 skill points, two general feats and one Fighter feat; Chainmail gives AC16 with no DR. Level2 with roll2 preserves three damage at 13/16HP. Switching maximum/average/rolled gives 24/20/16HP without replacing recorded dice or healing damage. |
+| Existing homebrew character | Exact import/export/reload equality retains maximum HP, ignored LA, disabled encumbrance, calculation overrides, custom historical skill grants/classification, DR, injury and a spent slot. |
+| Fighter5 // Wizard5 | Five actual levels; BAB5, saves4/1/4, 48 skill points, three general feats, three Fighter bonus feats, one Wizard bonus feat and one ability increase. Actual rolls remain recorded, CON contributes once, DEX increases once, and both tracks survive native/browser round trips. |
+| Ranger3 // Rogue3 | 72 skill points, both feature cards, Survival/Use Magic Device/Search class skills; four points in each produce four ranks each and twelve spent points after reload. |
+| Wizard5 // Cleric5 | Three independent books including domain slots; correct casting abilities and level5 domain allowance. Paired level6 retains each book's spent slots and three damage. |
+| Independent side changes | Fighter2/Wizard2 then Cleric1/Rogue1 then Wizard3/Cleric2 gives four actual levels and the correct four class totals. Cancel leaves levels unchanged; a changed character invalidates the open review. |
+| Prestige restrictions | Wizard4/Fighter4 cannot borrow Wizard5 casting to enter Eldritch Knight. After level5, entry still needs the per-level combination exception. Legal entry gives Wizard6/Fighter5/Eldritch Knight1 and CL6. Individually qualified Arcane Archer/Eldritch Knight choices cannot form a two-prestige pair; duplicate Wizard choices also fail atomically. |
+
+Run from the repository root:
+
+```sh
+node --experimental-strip-types scripts/qa-progression-acceptance.mjs
+```
+
+Like the import browser scripts, use `LEDGER_QA_PLAYWRIGHT` and
+`LEDGER_QA_BROWSER` for an externally supplied runtime/browser. The default
+tests `dist-pages`; `--live` tests Pages, and `LEDGER_QA_ASSET` can require the
+exact CI entry bundle. This browser suite is separate from the 966 Node tests
+that passed at application commit `2aae01b`. This patch changes tests and
+documentation only.
+
+This supersedes the missing-browser-evidence status for these specific named
+cases. It does not claim exhaustive prestige/custom-table or source-specific
+feature coverage, automatic history conversion, or completion of the whole goal.
+
+### Confirmed next correctness gap
+
+A read-only synthetic audit reproduced standard Monk1 -> Fighter1 -> Monk2 and
+Paladin1 -> Fighter1 -> Paladin2 being accepted by guided advancement's engine.
+The ordinary [Monk return restriction](https://www.d20srd.org/srd/classes/monk.htm#exMonks)
+and [Paladin return restriction](https://www.d20srd.org/srd/classes/paladin.htm#exPaladins)
+require handling. Prospective checks must distinguish recorded history from an
+inferred class order, support source-specific exceptions, and preserve existing
+levels, choices, injuries and expenditures. Do not retrofit an inferred history
+or silently revoke existing class abilities. The relationship to simultaneous
+gestalt advancement needs explicit source evidence or a documented interpretation,
+not a blanket restriction that ignores the variant's paired progression.
