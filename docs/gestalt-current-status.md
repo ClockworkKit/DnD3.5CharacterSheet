@@ -412,3 +412,18 @@ UA text. All 976 tests, TypeScript, Pages build, focused browser continuation
 checks and the first-import autosave check passed. See the implementation record
 for sources and scope. Conduct/atonement and other source-specific exceptions
 are not automated by this patch; the final original-goal audit remains open.
+
+
+## 2026-11-15: Original-goal resource audit and Cleric channel fix
+
+Neutral Cleric spontaneous casting now respects the current recorded deity's
+good/evil alignment. A saved conflicting channel stays on the sheet and is
+explained, not erased. Renamed patrons do not reuse old alignment evidence.
+The picker and transaction agree; preparations and expenditure survive reload.
+All 978 tests, TypeScript, Pages build and the focused browser regression passed.
+
+The original-goal audit is **not complete**: Dread Necromancer // Death Master
+currently exposes duplicate independent Rebuke Undead counters. Resolve shared
+gestalt turning/rebuking resources with their source/energy distinctions and
+counter-preserving behavior next. See the implementation record for the concrete
+reproduction, source links and required preservation checks.

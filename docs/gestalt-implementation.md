@@ -1635,3 +1635,59 @@ Use the same `LEDGER_QA_PLAYWRIGHT`, `LEDGER_QA_BROWSER`,
 `LEDGER_QA_ASSET` and `--live` conventions as the other browser scripts.
 The broader goal still needs its final requirement-by-requirement audit;
 historical enhancement lists are not a substitute for the original objective.
+
+
+## 2026-11-15: Deity-dependent spontaneous Cleric channel
+
+The original-goal resource audit found that spontaneous casting checked only the
+character's good/evil alignment. A neutral cleric could select Inflict despite a
+recorded good deity (or Cure despite an evil deity). Two new regressions failed
+before the fix.
+
+The [Cleric spontaneous-casting rule](https://www.d20srd.org/srd/classes/cleric.htm#spontaneousCasting)
+requires neutral clerics of good/evil deities to use the corresponding channel.
+The [turning rule](https://www.d20srd.org/srd/classes/cleric.htm#turnOrRebukeUndead)
+ties the neutral/neutral permanent choice to turning/rebuking.
+
+A read-only channel resolver now uses the character's good/evil alignment first,
+then a recognized neutral character's recorded good/evil deity alignment. The
+existing deity-name binding prevents a renamed patron inheriting the old
+alignment. Unrecognized character alignment does not imply neutrality. Neutral
+or unrecorded patron cases retain the existing player/source-review choice.
+This is not automatic enforcement of ex-cleric conduct or deity eligibility.
+
+Both the spell picker and casting transaction use the same resolver. The UI
+explains a fixed channel and discloses a conflicting saved choice. That choice is
+retained verbatim, including through reload; no history, preparation, damage or
+expenditure is migrated away. Invalid conversions are rejected before mutation.
+A successful conversion spends the chosen prepared copy, not an additional slot.
+Prepared-caster slot expenditure separately records slots spent on abilities.
+
+Validation: **978 tests passed**, TypeScript and the Pages build passed.
+`scripts/qa-cleric-channel.mjs` passed against the local Pages build for good,
+evil, neutral and renamed patrons. Each scenario checks the actual UI choices,
+casts through Practice, reloads and compares the complete character with only the
+selected prepared-copy expenditure changed. Both spellbooks, old channel choice,
+three points of damage and other spent resources remain intact.
+
+### Original-goal audit still open: overlapping rebuking resources
+
+A synthetic Dread Necromancer 3 // Death Master 3 with Charisma 14 currently
+receives two independent five-use Rebuke Undead cards. The original goal requires
+shared/nonstacking abilities to be handled correctly; the earlier turning-feat
+milestone explicitly did not settle cross-class resource overlap.
+[UA](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter)
+requires shared class features to accrue at the faster rate.
+Dread Necromancer invokes the cleric rebuking feature (Heroes of Horror p. 85;
+[transcribed feature](https://stg.dndtools.org/classes/dread-necromancer-75));
+[Death Master](https://srd.dndtools.org/srd/classes/baseDc/deathMaster.html)
+grants rebuking with 3 + Charisma attempts.
+
+Next, resolve overlap across the supported sources, distinguishing positive
+turning from negative rebuking and retaining class-specific source exceptions.
+Reuse the recorded cleric channel; do not infer one from a name or unknown
+alignment. Preserve every existing counter's identity, notes and expenditure
+without granting fresh uses during grouping or replacement. Verify standard
+multiclass separately from gestalt. This concrete open case prevents claiming
+the original goal complete; broader source-specific automation and a full mode
+converter must not be substituted for the original acceptance requirements.

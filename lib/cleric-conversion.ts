@@ -1,3 +1,5 @@
+import {clericChannelState} from './cleric-channel.ts';
+export {alignmentChannel} from './cleric-channel.ts';
 import type {Caster,Character,KnownSpell,Spell} from './model.ts';
 import {castingDefinition} from './advancement.ts';
 import {featureReplaced} from './alternate-features.ts';
@@ -9,15 +11,8 @@ export function hasClericConversion(c:Character,p:Caster){
   &&!featureReplaced(c,'cleric','spontaneous-casting')&&!featureReplaced(c,'cleric','spellcasting');
 }
 
-export function alignmentChannel(alignment:string){
- const value=alignment.toLowerCase().trim();
- if(/^(?:[lnc]g|(?:lawful |neutral |chaotic )?good)$/.test(value))return 'cure';
- if(/^(?:[lnc]e|(?:lawful |neutral |chaotic )?evil)$/.test(value))return 'inflict';
- return undefined;
-}
-
 export function eligibleConversionSpell(c:Character,donor:KnownSpell,spell:Spell){
- const channel=alignmentChannel(c.alignment)??c.clericChannel;
+ const {channel}=clericChannelState(c);
  const level=spell.levels.Cleric;
  return !!channel&&level!==undefined&&level<=Math.min(donor.level,donor.slotLevel)
   &&spell.name.toLowerCase().split(/\W+/).includes(channel);
