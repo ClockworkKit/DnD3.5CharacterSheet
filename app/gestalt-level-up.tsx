@@ -7,7 +7,7 @@ import {gestaltClassPolicies} from '@/lib/gestalt-progression';
 import {gestaltCastingChoices} from '@/lib/gestalt-casting';
 import {applyGestaltLevel,levelUpClasses,levelUpStatus,needsPsionDiscipline,previewGestaltLevel,type GestaltLevelPreview} from '@/lib/level-up';
 import {prestigeEligibility} from '@/lib/prerequisites';
-import {classAlignmentEligibility} from '@/lib/class-alignment';
+import {classAdvancementEligibility} from '@/lib/class-advancement-eligibility';
 import {Btn,Choice,F,N,type SheetProps} from './sheet-ui';
 import {PrerequisiteStatus} from './prerequisite-status';
 
@@ -34,7 +34,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
  const castingChoices=gestaltCastingChoices(c,[left,right]);
  const hitDie=Math.max(...sides.map(d=>d?.hitDie??1));
  const combinationClasses=[...new Set([left,right])].filter(id=>(gestaltClassPolicies[id]?.combinationPrestige||c.customClasses?.find(row=>row.definition.id===id)?.policy.combinationPrestige));
- const alignmentChecks=sides.map(def=>def?classAlignmentEligibility(c,def):null);
+ const alignmentChecks=sides.map(def=>def?classAdvancementEligibility(c,def):null);
  const stale=!!review&&review.source!==JSON.stringify(c);
  const clearReview=()=>{setReview(undefined);setError('');};
  function choose(side:'left'|'right',id:string){
@@ -72,7 +72,7 @@ export function GestaltLevelUp({c,edit,navigate}:Props){
     return <div key={side}>
      <Choice label={side==='left'?'Left class to advance':'Right class to advance'} value={selected} onChange={id=>choose(side,id)} options={options.map(d=>[d.id,d.name+' '+((c.classLevels.find(e=>e.classId===d.id)?.level??0)+1)])}/>
      {!def&&<p>Choose a class with another supported level.</p>}
-     {!!alignmentChecks[i]?.requirements.length&&<div><p className="fine">{def?.name} alignment requirements apply to this new level. Record alignment on Sheet; confirm a house-rule exception only with your table's approval.</p><PrerequisiteStatus value={alignmentChecks[i]!} edit={edit}/></div>}
+     {!!alignmentChecks[i]?.requirements.length&&<div><p className="fine">{def?.name} alignment and continuation requirements apply to this new level. Confirm unknown history or source exceptions only after reviewing them with your table.</p><PrerequisiteStatus value={alignmentChecks[i]!} edit={edit}/></div>}
      {entering&&<PrerequisiteStatus value={prestigeEligibility(c,def)} edit={edit}/>}
     </div>;
    })}

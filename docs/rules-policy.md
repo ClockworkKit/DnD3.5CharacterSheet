@@ -79,3 +79,18 @@ Use the conservative interpretation that retained racial Hit Dice precede the pa
 This is an interpretation of the two rule sets together. Unearthed Arcana defines pairing classes and does not explicitly assign racial Hit Dice to a gestalt side. Keep that distinction visible when implementing the option. Creation and advancement now support retained racial Hit Dice with a recorded racial progression. The racial history precedes paired history. Printed-table racial bonuses add to paired bonuses; the optional fractional method carries racial fractions into the combined total before rounding. A retained single racial die is rejected with replacement guidance. Existing sheets are never converted on load; changes to an existing racial-HD count or racial history require a reviewed conversion, which remains unfinished.
 
 Sources: [Gestalt character construction](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter), [monster character levels and racial Hit Dice](https://www.d20srd.org/srd/monstersAsRaces.htm#humanoidsAndClassLevels), and [effective character level](https://www.d20srd.org/srd/monstersAsRaces.htm#levelAdjustmentAndEffectiveCharacterLevel).
+
+### Monk/Paladin continuation
+
+Ordinary multiclass return restrictions are checked prospectively during guided
+advancement. Verified Illumian and Psionic Fist exceptions are supported;
+other source exceptions and unknown imported class order require explicit review.
+Never infer a prohibited past order from grouped class totals or rewrite old
+levels to enforce this rule.
+
+For gestalt, the user chose uninterrupted advancement on either side on
+2026-11-15. This remains a labeled interpretation,
+with per-level rules review available as a saved alternative in Calculations.
+A pair omitting the restricted class triggers return review. See
+[the implementation record](gestalt-implementation.md#2026-11-15-prospective-monkpaladin-continuation-checks)
+for the published sources, scope and preservation tests.

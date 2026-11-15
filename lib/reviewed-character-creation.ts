@@ -1,3 +1,4 @@
+import {continuationRequirements} from './class-continuation.ts';
 import {deityAlignmentValue} from './deity-alignment.ts';
 import {characterSchema,type Character} from './model.ts';
 import type {Eligibility,Requirement} from './prerequisites.ts';
@@ -7,7 +8,7 @@ import {createPlayerCharacter,startingPairRows,type CharacterCreationOptions} fr
 import {createNpcSheet} from './creatures.ts';
 
 export type StartingAlignment=Pick<Character,'alignment'|'deity'|'deityAlignment'|'prerequisiteConfirmations'>;
-export type StartingClassOptions=Pick<CharacterCreationOptions,'kind'|'level'|'advancementMode'|'gestaltPairs'|'customClasses'|'clericSpecialty'>;
+export type StartingClassOptions=Pick<CharacterCreationOptions,'kind'|'level'|'advancementMode'|'gestaltPairs'|'customClasses'|'clericSpecialty'|'raceId'>;
 
 /** Review the deity the creator will actually record, including a selected specialty. */
 export function startingAlignmentContext(options:StartingClassOptions,review:StartingAlignment):StartingAlignment{
@@ -19,21 +20,23 @@ export function startingAlignmentEligibility(options:StartingClassOptions,review
  const requirements:Requirement[]=[];
  const missing=(label:string)=>requirements.push({label,state:'missing'});
  const context=startingAlignmentContext(options,review);
- const check=(id:string,level:number)=>{
+ const check=(id:string,level:number,history?:string[][])=>{
   const definition=findClass(id,options);
   if(!definition){missing('Choose a supported starting class.');return;}
   if(definition.kind==='Prestige'){missing('Create base-class levels first, then use guided level-up for prestige entry.');return;}
   if(!definition.levels.some(r=>r.level===level)){missing(definition.name+' has no level '+level+' in its table.');return;}
   const classLevels=[{id:'starting-review',classId:definition.id,name:definition.name,level:level-1,notes:''}];
   requirements.push(...classAlignmentEligibility({...context,classLevels},definition).requirements);
+  if(history)requirements.push(...continuationRequirements(definition.id,definition.name,level,history,{raceId:options.raceId,confirmations:context.prerequisiteConfirmations,scope:{starting:history}}));
  };
  if(!Number.isInteger(options.level)||options.level<1||options.level>20)missing('Choose a starting class level from 1 to 20.');
  else if(options.advancementMode==='gestalt'){
   if(options.gestaltPairs?.length!==options.level)missing('Choose two classes for every starting paired level.');
-  else for(const row of startingPairRows(options.gestaltPairs,options.customClasses)){
+  else {const history:string[][]=[];for(const row of startingPairRows(options.gestaltPairs,options.customClasses)){
    if(row.problem)missing(row.problem);
-   else for(const side of row.sides)check(side.id,side.level);
-  }
+   else for(const side of row.sides)check(side.id,side.level,history);
+   history.push(row.sides.map(side=>side.id));
+  }}
  }else for(let level=1;level<=options.level;level++)check(options.kind,level);
  const rows=[...new Map(requirements.map(r=>[r.key??r.label,r])).values()];
  const eligible=rows.every(r=>r.state==='met'||r.state==='confirm'&&r.confirmed);
@@ -43,7 +46,7 @@ export function startingAlignmentEligibility(options:StartingClassOptions,review
 /** Entry point for guided PC/NPC creation; imports and low-level draft builders do not call it. */
 export function createReviewedCharacter(options:CharacterCreationOptions,review:StartingAlignment,kind:'pc'|'npc'='pc'):Character{
  const result=startingAlignmentEligibility(options,review);
- if(!result.eligible)throw new Error('Starting class alignment needs review. '+result.requirements.find(r=>r.state!=='met'&&!r.confirmed)!.label);
+ if(!result.eligible)throw new Error('Starting class requirements need review. '+result.requirements.find(r=>r.state!=='met'&&!r.confirmed)!.label);
  const context=startingAlignmentContext(options,review);
  // Keep only confirmations applicable to this exact build, never discarded drafts or future levels.
  const confirmations=Object.fromEntries(result.requirements.filter(r=>r.state==='confirm'&&r.confirmed&&r.key).map(r=>[r.key!,true]));

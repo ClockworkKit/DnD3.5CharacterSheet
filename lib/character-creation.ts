@@ -1,3 +1,4 @@
+import {classOrderKeys} from './class-continuation.ts';
 import {abilityKeys,newCharacter,uid,characterSchema,type Character} from './model.ts';
 import {findClass,copyClassFeatures} from './classes.ts';
 import {gestaltProgressionSchema,type GestaltBonusMethod} from './gestalt-schema.ts';
@@ -107,7 +108,7 @@ export function createPlayerCharacter(options:CharacterCreationOptions):Characte
   addStartingClericDomainSlots(c);
   recompute(c);
   if(options.clericSpecialty&&kind==='Cleric')applyClericSpecialty(c,options.clericSpecialty);
-  c.hp=c.maxHp;
+  c.hp=c.maxHp;c.classAdvancementOrder=classOrderKeys(c);
   return c;
 }
 
@@ -123,6 +124,7 @@ function createPairedCharacter(options:CharacterCreationOptions):Character{
  // provisional dice. Only the final paired sequence receives starting HP rolls.
  const first=definitions[0][0];
  const c=createPlayerCharacter({...options,psionDiscipline:undefined,kind:first.id.startsWith('custom-')?first.id:first.name,level:1,hpMethod:'maximum',hpRolls:undefined,clericSpecialty:'none',advancementMode:'standard',gestaltPairs:undefined,gestaltBonusMethod:undefined});
+ delete c.classAdvancementOrder;
  c.classLevels=[];c.casters=[];c.psionics=[];c.features=c.features.filter(f=>f.kind==='Racial trait');
  c.automation.history=[];c.automation.levelOrder=[];c.automation.hpRolls=[];c.automation.firstClassId='';
  const levels=definitions.map(sides=>{

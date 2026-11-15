@@ -62,6 +62,9 @@ const characterDataSchema = z.object({
   conditions:z.string().max(2000),notes:note,background:note,
   automation:automationSchema.default({}),effects:z.array(effectSchema).max(100).default([]),
   classLevels:z.array(classLevelSchema).max(30).default([]),
+    // Exact history keys recorded by creation/guided advancement, never inferred on import.
+    classAdvancementOrder:z.array(z.string().max(200)).max(100).optional(),
+    gestaltContinuationRule:z.enum(['continuous','review']).optional(),
   psionDiscipline:z.enum(psionDisciplines).optional(),
   customClasses:customClassesSchema.optional(),
   psionics:z.array(psionicSchema).max(15).default([]),

@@ -397,3 +397,18 @@ can currently return after taking a Fighter level without a continuation check.
 Resolve this prospectively with source exceptions and reliable history handling;
 do not rewrite existing player progression. Broader custom/source-specific cases
 and reviewed history conversion remain outside this matrix's evidence.
+
+## 2026-11-15: Monk/Paladin continuation corrected
+
+Guided creation/advancement now reviews restricted returns before changing the
+sheet. New standard characters and known guided histories record class order;
+old inferred import ordering remains unverified. Illumian and Psionic Fist
+exceptions are recognized. Other source exceptions or uncertain history require
+a class-level-scoped confirmation. Earned levels and resources remain intact.
+
+Gestalt's uninterrupted-either-side interpretation is visible and has a saved
+per-level-review alternative in Calculations. It is not described as unambiguous
+UA text. All 976 tests, TypeScript, Pages build, focused browser continuation
+checks and the first-import autosave check passed. See the implementation record
+for sources and scope. Conduct/atonement and other source-specific exceptions
+are not automated by this patch; the final original-goal audit remains open.

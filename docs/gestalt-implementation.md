@@ -1549,3 +1549,89 @@ levels, choices, injuries and expenditures. Do not retrofit an inferred history
 or silently revoke existing class abilities. The relationship to simultaneous
 gestalt advancement needs explicit source evidence or a documented interpretation,
 not a blanket restriction that ignores the variant's paired progression.
+
+## 2026-11-15: Prospective Monk/Paladin continuation checks
+
+Resolved the reproduced standard Monk -> Fighter -> Monk and Paladin -> Fighter
+-> Paladin advancement gap. Guided standard and paired level-up now combine
+alignment and continuation checks before mutating the character. Starting paired
+plans review interruptions before constructing the character or rolling HP.
+
+Sources:
+- [Monk, Ex-Monks](https://www.d20srd.org/srd/classes/monk.htm#exMonks):
+  ordinary advancement in another class prevents a later return, while earned
+  Monk abilities remain.
+- [Paladin, Ex-Paladins](https://www.d20srd.org/srd/classes/paladin.htm#exPaladins):
+  ordinary multiclass advancement likewise prevents returning to Paladin;
+  this is distinct from conduct violations and their loss/atonement rules.
+- [Psionic Fist multiclass note](https://www.d20srd.org/srd/psionic/prestigeClasses/psionicFist.htm#multiclassNote):
+  its advancement permits continued Monk advancement.
+- *Races of Destiny*, p. 55, Illumian Favored Class, checked in the
+  [book transcription](https://manuals.plus/m/c37e1bf79d8a95b70e4ce7556a9a359490a2ac9c9574079acf20b04a07753f87):
+  Illumians can leave and return to Monk/Paladin without the restriction.
+- [Gestalt construction](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter)
+  supplies simultaneous class advancement and keeps class restrictions. It does
+  not explicitly resolve the multiclass-return interaction.
+
+### History, review and compatibility
+
+New standard creation records optional `classAdvancementOrder` keys. Guided
+standard advancement extends them only when the earlier order is known. A
+single-class history has no inter-class ambiguity. The old
+`automation.levelOrder` is generated on imports as well as real advancement,
+so it is never treated as provenance by itself. A mismatched marker stays
+retained and is treated as unverified; manual edits do not silently certify it.
+Racial dice are outside this class-order marker.
+
+A known prohibited return needs confirmation of a documented source exception
+or GM house rule for that particular new class level. A mixed legacy history
+with no verified order requests history/source review without asserting that a
+prohibited break definitely occurred. Reviews are scoped to the class level and
+relevant history/source choices; they do not approve future levels. The two
+verified exceptions above are recognized directly. Other feat, prestige, order
+or campaign exceptions require explicit source review; free-form names and
+descriptions never grant invented exceptions. Monk/Psionic Fist-only histories
+need no inferred order because either order is permitted.
+
+Existing sheets receive neither a new default field nor a rewritten timeline on
+load. Current levels, abilities, feat/ability choices, historical purchases,
+injuries and spent resources remain intact. This does not implement conduct
+violations, atonement, automatic loss/restoration of powers, or retroactive
+rejection of past choices.
+
+### Explicit gestalt interpretation
+
+The default interpretation treats a restricted class as uninterrupted while it
+advances on either side of every pair. A later pair omitting it triggers
+continuation review; the Psionic Fist exception is limited to that class.
+This is labeled as an interpretation, not a verbatim UA rule.
+
+Calculations exposes **Monk / Paladin gestalt continuation** with an alternative
+**Review each paired continuation**. The optional `gestaltContinuationRule`
+persists the selected handling. Policy changes invalidate open level reviews
+and do not rewrite earlier levels. New-character guidance explains the default.
+The user selected uninterrupted advancement on either side on 2026-11-15.
+Keep this recorded table interpretation distinct from explicit UA text; the
+per-level review alternative remains available on the sheet.
+
+### Validation
+
+Ten new regressions cover ordinary rejection, uninterrupted chronology, unknown
+legacy history, source exceptions, per-level/scoped confirmation, paired gaps,
+the optional review policy, higher-level creation, and native/browser storage
+preservation. All **976 tests**, TypeScript and the Pages production build passed.
+
+`scripts/qa-class-continuation.mjs` passed against the local Pages build:
+standard rejection and scoped confirmation preserve history/choices, four
+damage and a spent Wizard slot; unknown history stays unchanged; an Illumian
+Paladin continues; paired policy changes invalidate reviews; interrupted
+starting plans require review and cancelling keeps the current sheet intact.
+The existing first-import autosave browser regression also passed. The full
+original named browser acceptance matrix also passed on this build, covering
+standard/legacy preservation, paired calculations and independent spellbooks,
+changes on either side, and prestige prerequisites/restrictions.
+
+Use the same `LEDGER_QA_PLAYWRIGHT`, `LEDGER_QA_BROWSER`,
+`LEDGER_QA_ASSET` and `--live` conventions as the other browser scripts.
+The broader goal still needs its final requirement-by-requirement audit;
+historical enhancement lists are not a substitute for the original objective.
