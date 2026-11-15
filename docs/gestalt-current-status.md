@@ -367,3 +367,17 @@ All **958 tests**, TypeScript and the Pages build passed. Browser checks covered
 Identity and creation can now record a deity's alignment, tied to its name. Cleric, Favored Soul and Divine Mind evaluate their distinct source rules when enough information is recorded; unknown relationships retain source review and explicit exceptions remain per class level. Deity-free Clerics remain supported. Old saves and spent resources remain unchanged. Dragon Shaman's catalog now calls out its totem restriction; Spirit Shaman remains unrestricted.
 
 All **966 tests**, TypeScript and the Pages build passed. Browser checks covered specialty and Favored Soul creation, stale deity reviews, renamed patrons, and the first import autosave followed by paired advancement with injury/expenditure intact. See the implementation record for rules evidence and the remaining conduct, class-return, totem, conversion and browser-matrix limitations.
+
+## 2026-11-15: Save isolation during imports
+
+Fixed a reproduced race where Ctrl+S during delayed import migration could attach
+the previous character's save ID to the incoming sheet and cause an overwrite.
+New saves are blocked during switching; the switch's own flush still preserves
+outgoing edits. No schema or game-mechanics change.
+
+All **966 tests**, TypeScript, the Pages build and both standalone browser
+regressions passed. The browser checks retain separate records, existing
+advancement choices, historical ranks, damage and spent spells, and verify draft
+class/HP choices survive the first import autosave. Reproduction commands and
+scope are in [the implementation record](gestalt-implementation.md#2026-11-15-importsave-race-and-repeatable-browser-regressions).
+The broader goal and its remaining acceptance/conversion gates stay open.

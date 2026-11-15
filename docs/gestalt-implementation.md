@@ -1451,3 +1451,50 @@ Eight regression cases cover all 81 recorded character/deity combinations for ea
 Isolated browser QA created an Axe Brother after recording a legal patron alignment and rejected an opposed record without changing the specialty identity. True-neutral Favored Soul creation required a true-neutral patron record. A paired import retained its pending Divine Mind selection through the first autosave. Changing the patron alignment invalidated the open review; a valid refreshed review advanced once and retained three damage and one spent Wizard slot after reload. Renaming the patron displayed its alignment as unrecorded and required renewed review. No page errors occurred.
 
 The broader source-specific conduct/atonement, class-return, structured totem/feature, reviewed history-conversion and remaining prestige/custom-profile browser gates remain open.
+
+## 2026-11-15: Import/save race and repeatable browser regressions
+
+A delayed native import that needed Roll20 migration exposed a save race:
+Ctrl+S could start saving the outgoing character while migration was in progress.
+If that save returned after the incoming sheet opened, its old record ID could
+be attached to the incoming sheet, and the next autosave could overwrite the
+outgoing character. The Save button was disabled, but the shortcut reached the
+shared save function.
+
+The shared save function now rejects new saves while character switching is
+locked. Only the switch's own flush can save pending outgoing edits. The existing
+editing-session key still preserves level-up draft choices when an import
+receives its first save ID. No character schema, saved progression, house rules,
+or resource calculations change.
+
+Reproduced the overwrite with a synthetic old-format psionic import and a delayed
+save in a fresh browser context; the regression failed before the fix and passed
+afterward. It checks separate records, the outgoing character's exact data,
+injury/spent slots, recovered Psicraft ranks, reload, and a subsequent switch with
+unsaved edits. A second browser script verifies actual gnoll/gestalt creation,
+rejects an unsupported racial-history edit atomically, then selects a new class
+and HP roll before an import's first autosave. Confirmation/reload preserves
+prior ability/feat choices, purchased ranks, history, injury and expenditure.
+
+Validation: **966 automated tests passed**, TypeScript and the Pages production
+build passed, and both standalone browser regressions passed against that build.
+The existing bundle-size and non-module-script notices remain. No private
+exports or real browser saves were used.
+
+Reproduction (from repository root, with Playwright Core available):
+
+```sh
+node --experimental-strip-types scripts/qa-import-save-race.mjs
+node --experimental-strip-types scripts/qa-import-level-up.mjs
+```
+
+Set `LEDGER_QA_PLAYWRIGHT` to an importable Playwright Core module/file URL when
+it is supplied outside the repository, and `LEDGER_QA_BROWSER` to the browser
+executable when needed. Both scripts use the local `dist-pages` build by default;
+`--live` tests the deployed site. Set `LEDGER_QA_ASSET` to the CI entry asset to
+assert the deployed version. The save-race script also accepts
+`LEDGER_QA_URL` for the site base URL. These are browser acceptance checks, not
+part of the Node unit suite.
+
+This closes the reproduced overwrite case. The broader goal's remaining
+acceptance matrix and reviewed progression-conversion limitations remain open.
