@@ -7,9 +7,9 @@ implementation record; earlier milestone notes below remain historical.
 Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
-**The overall goal remains open.** This page separates currently verified
-behavior from the historical record's unfinished work. It is not a replacement
-for the user's completion criteria or evidence of browser acceptance.
+Current original-goal status is assessed in the [acceptance audit](gestalt-acceptance-audit.md).
+This page preserves historical milestones; dated unfinished notes must be read
+with their later resolutions. The final publication/live gate remains explicit.
 
 ## Goal and implemented boundaries
 

@@ -1,13 +1,14 @@
 # Standard defaults and gestalt progression
 
-Current continuation: [verified behavior and remaining gates](gestalt-current-status.md).
+Current acceptance: [original-requirement audit](gestalt-acceptance-audit.md).
+Historical continuation: [verified behavior and milestone gates](gestalt-current-status.md).
 
 **Standing requirement:** follow the [rules-as-written policy](rules-policy.md)
 before changing mechanics. The 2026-10-27 user direction resolves the earlier
 Uncanny Dodge question in favor of the gestalt faster-class rule; historical
 notes below that say the choice is pending are superseded by this decision.
 
-Goal source: the user-supplied `goal-objective.md` (2026-10-25). This work is not complete merely when the phases below have unit coverage; creation, advancement, persistence, UI and existing saves must all be verified.
+Goal source: the user-supplied [original objective](goal-objective.md). This work is not complete merely when the phases below have unit coverage; creation, advancement, persistence, UI and existing saves must all be verified.
 
 ## Architecture findings
 
@@ -1773,3 +1774,26 @@ also passed: first autosave preserved pending class/HP selections, and the
 completed level-up reloaded with historical training, damage, spell expenditure
 and advancement choices intact. Final settings-summary assertions also passed
 in the focused 17-test standard/shared-resource run.
+
+## 2026-11-16: Original-goal acceptance audit
+
+The [complete original objective](goal-objective.md) is now retained verbatim in
+the repository, replacing the earlier unresolved filename reference. The
+[acceptance audit](gestalt-acceptance-audit.md) maps every phase and named test
+case to implementation and concrete assertions. It distinguishes the required
+mode-switch safety guard from a future conversion wizard and preserves the
+documented limits on exceptional source-specific automation.
+
+The new `qa-custom-prestige.mjs` browser script passed for ordinary and gestalt
+characters. It configures advancement for earned custom prestige levels,
+requires target selection, checks cancellation and stale review, saves different
+Wizard/Cleric targets, then advances and reloads without changing earlier
+targets, preparations, spent slots, damage, feature records or training.
+The class is explicitly a synthetic test profile, not a published rules claim.
+Final CI/publication/live checks remain required before closing the goal.
+
+The complete named browser matrix also passed again against the current local
+Pages build after the shared-turning changes. All six scenario groups, including
+legal prestige entry and qualified two-prestige/same-class rejection, passed
+without browser page errors. The copied original objective has the same SHA-256
+as the user attachment; no requirements were removed or rewritten.
