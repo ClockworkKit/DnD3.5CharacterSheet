@@ -1691,3 +1691,85 @@ without granting fresh uses during grouping or replacement. Verify standard
 multiclass separately from gestalt. This concrete open case prevents claiming
 the original goal complete; broader source-specific automation and a full mode
 converter must not be substituted for the original acceptance requirements.
+
+## 2026-11-15: Shared gestalt turning and rebuking
+
+The reproduced Dread Necromancer // Death Master duplicate-attempt bug is fixed.
+Known grants of the same ability share one daily limit in automatic gestalt
+calculations. Source cards remain separate editable records; their spent counts
+are summed for the shared remaining total. The best active limit applies once.
+The supported grants are Cleric, Paladin (after level 3), Blackguard (after level
+2), Dread Necromancer and Death Master. Positive turning and negative rebuking
+remain distinct. Domain-specific creature types and unrecognized custom grants
+are not guessed from names.
+
+Rules references:
+- [UA shared features](https://www.d20srd.org/srd/variant/classes/gestaltCharacters.htm#buildingAGestaltCharacter):
+  take the better overlapping ability and accrue shared features at the faster
+  rate; spellcasting remains independent.
+- [Cleric turning](https://www.d20srd.org/srd/classes/cleric.htm#turnOrRebukeUndead)
+  determines positive/negative channel and the 3 + Charisma daily limit.
+- [Blackguard Command Undead](https://www.d20srd.org/srd/prestigeClasses/blackguard.htm#commandUndead)
+  starts at class level 3 with effective level two below the class level.
+- Dread Necromancer, Heroes of Horror p. 85, refers to the Cleric ability
+  ([transcription](https://stg.dndtools.org/classes/dread-necromancer-75)).
+- [Death Master](https://srd.dndtools.org/srd/classes/baseDc/deathMaster.html)
+  grants rebuking with 3 + Charisma daily uses.
+- [Extra Turning](https://www.d20srd.org/srd/feats.htm#extraTurning) and
+  [Improved Turning](https://www.d20srd.org/srd/feats.htm#improvedTurning)
+  apply once to the shared ability, not once per duplicate class source.
+
+### Interpretation and review boundaries
+
+For mixed histories, eligible advancement on either side counts once per pair;
+nonoverlapping eligible rows accrue, and delayed grants contribute only after
+their stated delay. This extends the existing shared-feature approach. UA does
+not specify every mixed supplemental-class case, so this is a documented
+application of the faster-progression rule, not a claimed explicit example.
+Calculations offers a saved **Independent class pools (house rule)** alternative.
+Neither switching that option nor loading a sheet edits its spent counters.
+Standard multiclass and manually managed limits remain independent of this
+gestalt rule.
+
+The Cleric channel uses the existing character/deity resolver. Combat now
+provides the same permanent choice as Magic when the rules do not fix it from
+alignment. Unknown channels remain separate with review guidance. A legacy core
+card representing both positive and negative class grants cannot allocate its
+old expenditure between them: the sheet flags review and does not invent a
+split. Free-form custom grants remain manual. These are visible review cases,
+not additional automatically supported combinations.
+
+### Preservation and integration
+
+There is no destructive loading migration or mirrored synthetic counter.
+Every original ID, personal name, description, source, explicit formula and
+spent count stays intact. Retired source expenditure is included while another
+source of the shared ability remains active. Restoring a replaced feature
+restores its original record without granting fresh uses. Overspent records
+remain overspent. An explicit daily reset clears the counters as before.
+
+Features, Magic, Combat attempts, feature-funded alternate actions and Illumian
+costs consult the same remaining total. Accepted actions spend one source record;
+rejected handoffs do not spend. Shared source cards direct class replacements to
+Classes instead of offering deletion that would regenerate a fresh counter.
+Explicit spent-count editing remains available for corrections. A formula-order
+bug uncovered by this test was also corrected: explicit daily formulas apply
+after supplemental resource generation, so that generation cannot overwrite
+the chosen limit.
+
+Validation: all **988 tests** pass, as do TypeScript and the Pages build.
+Ten new regressions cover shared exhaustion, staggered and delayed advancement,
+feats, opposite/unknown channels, replacement/restoration, Illumian and spell-like
+costs, independent/manual settings, formula limits, level-up and complete native
+and fresh browser-store round trips. The browser/deployment checks are recorded
+below when complete. The original goal's final requirement-by-requirement
+completion audit remains open.
+
+Browser validation: `qa-shared-turning.mjs` passed against the local Pages build.
+It exercises source-card, Combat and Magic spending through exhaustion, exact
+whole-character export/reload, independent/shared setting changes, explicit daily
+reset, and neutral Cleric channel review from Combat. `qa-import-level-up.mjs`
+also passed: first autosave preserved pending class/HP selections, and the
+completed level-up reloaded with historical training, damage, spell expenditure
+and advancement choices intact. Final settings-summary assertions also passed
+in the focused 17-test standard/shared-resource run.

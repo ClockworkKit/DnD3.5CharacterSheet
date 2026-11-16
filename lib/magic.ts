@@ -1,3 +1,4 @@
+import {featureUseNumbers,spendTrackedFeature} from './shared-turning.ts';
 import type {Character} from './model.ts';
 import {systemLimits} from './class-systems.ts';
 export const magicalSystemIds=['warlock','dragonfire-adept','artificer','healer','binder','incarnate','soulborn','totemist','shadowcaster','truenamer'];
@@ -11,5 +12,5 @@ export function magicSections(c:Character){return {
 };}
 
 export const spellLikeUsesTracked=(f:Character['features'][number])=>f.max>0||!!f.formula||!!f.ruleId?.match(/^(daily|supp):/);
-export const canUseSpellLike=(f:Character['features'][number])=>!spellLikeUsesTracked(f)||f.used<f.max;
-export function spendSpellLike(c:Character,id:string){const f=c.features.find(f=>f.id===id);if(!f||!canUseSpellLike(f))throw new Error('No uses remain for this ability.');if(spellLikeUsesTracked(f))f.used++;}
+export const canUseSpellLike=(f:Character['features'][number],c?:Character)=>!spellLikeUsesTracked(f)||(c?featureUseNumbers(c,f).remaining>0:f.used<f.max);
+export function spendSpellLike(c:Character,id:string){const f=c.features.find(f=>f.id===id);if(!f||!canUseSpellLike(f,c))throw new Error('No uses remain for this ability.');if(spellLikeUsesTracked(f))spendTrackedFeature(c,f.id);}

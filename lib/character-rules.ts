@@ -26,6 +26,7 @@ export function recordStartingHitDice(c:Character,provided?:number[]){
 /** A view of existing independent settings, not a second set of homebrew flags. */
 export function optionalRuleSettings(c:Character){
  const settings:string[]=[];
+ if(c.advancementMode==='gestalt'&&c.gestaltTurningPools==='independent')settings.push('Independent class turning / rebuking pools (house rule)');
  if(c.automation.hpMethod!=='rolled')settings.push(c.automation.hpMethod==='maximum'?'Maximum HP at every level':'Average HP after the first Hit Die');
  if(c.ancestry.ignoreLevelAdjustment)settings.push('Level adjustment ignored');
  if(!c.automation.encumbrance)settings.push('Weight-based encumbrance disabled');

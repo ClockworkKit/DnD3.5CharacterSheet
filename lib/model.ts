@@ -65,6 +65,7 @@ const characterDataSchema = z.object({
     // Exact history keys recorded by creation/guided advancement, never inferred on import.
     classAdvancementOrder:z.array(z.string().max(200)).max(100).optional(),
     gestaltContinuationRule:z.enum(['continuous','review']).optional(),
+    gestaltTurningPools:z.enum(['shared','independent']).optional(),
   psionDiscipline:z.enum(psionDisciplines).optional(),
   customClasses:customClassesSchema.optional(),
   psionics:z.array(psionicSchema).max(15).default([]),

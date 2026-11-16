@@ -1,3 +1,5 @@
+import {featureUseNumbers,spendTrackedFeature,sharedTurningPools} from './shared-turning.ts';
+import {effectiveTurningLevel} from './turning-feats.ts';
 import type {Character} from './model.ts';
 import {resourceNumbers} from './automation.ts';
 import {withBonus,type Roll} from './rules.ts';
@@ -21,8 +23,20 @@ export function turningRoll(c:Character):Roll{
 
 export function attemptTurning(c:Character,send:(card:Roll)=>boolean){
  const counter=turningCounter(c);
- if(!counter||counter.used>=counter.max||!resourceNumbers(c).turnLevel)return false;
+ if(!counter||featureUseNumbers(c,counter).remaining<1||!resourceNumbers(c).turnLevel)return false;
  const accepted=send(turningRoll(c));
- if(accepted)counter.used++;
+ if(accepted)spendTrackedFeature(c,counter.id);
  return accepted;
+}
+
+export function attemptSharedTurning(c:Character,kind:'turn'|'rebuke',send:(card:Roll)=>boolean){
+ const pool=sharedTurningPools(c).find(p=>p.kind===kind);
+ if(!pool||pool.remaining<1||!pool.activeCards.length)return false;
+ const base=resourceNumbers(c),level=effectiveTurningLevel(c,pool.baseLevel);
+ const card:Roll={title:pool.label,rolls:[
+  {label:'Turning check',formula:withBonus('1d20',base.turnCheck)},
+  {label:'Total undead HD affected',formula:withBonus('2d6',base.turnDamage-base.turnLevel+level)}
+ ],fields:[['Effective turning level',String(level)],['Shared sources',pool.active.map(s=>s.name).join(', ')]],
+ details:'One shared daily pool. Apply the turning check and total undead HD to eligible targets within 60 feet, closest first.'};
+ const accepted=send(card);if(accepted)spendTrackedFeature(c,pool.activeCards[0].id);return accepted;
 }

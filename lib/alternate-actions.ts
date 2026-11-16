@@ -1,3 +1,4 @@
+import {featureUseNumbers,spendTrackedFeature} from './shared-turning.ts';
 import type {Character} from './model.ts';
 import type {AlternateResource} from './alternate-features.ts';
 import {activeAlternateFeatures,alternateClassLevel,alternateSettings,configureAlternateFeature,alternateResourceUsed,setAlternateResourceUsed,hasAlternateFeature} from './alternate-features.ts';
@@ -72,7 +73,7 @@ export function alternateActions(c:Character):AlternateAction[]{
  return out;
 }
 export function automatedAlternateResources(c:Character):AlternateResource[]{const pools=new Map<string,AlternateResource>();for(const a of alternateActions(c))if(a.pool&&!a.pool.startsWith('feature:')&&a.max!==undefined)pools.set(a.pool,{key:a.pool,name:a.name,max:a.max,period:'day',description:a.description});return [...pools.values()];}
-export function alternateActionRemaining(c:Character,a:AlternateAction){if(!a.pool)return Infinity;if(a.pool.startsWith('feature:')){const f=c.features.find(f=>f.ruleId===a.pool!.slice(8));return f?Math.max(0,f.max-f.used):0;}return Math.max(0,(a.max||0)-alternateResourceUsed(c,a.pool));}
+export function alternateActionRemaining(c:Character,a:AlternateAction){if(!a.pool)return Infinity;if(a.pool.startsWith('feature:')){const f=c.features.find(f=>f.ruleId===a.pool!.slice(8));return f?featureUseNumbers(c,f).remaining:0;}return Math.max(0,(a.max||0)-alternateResourceUsed(c,a.pool));}
 export function alternateActionProblem(c:Character,featureId:string,id:string,cost=1){
  if(!c.automation.enabled)return 'Enable automatic calculations to activate ability effects.';
  const a=alternateActions(c).find(a=>a.featureId===featureId&&a.id===id);if(!a)return 'This ability is not available.';
@@ -87,7 +88,7 @@ export function alternateActionProblem(c:Character,featureId:string,id:string,co
 export function useAlternateAction(c:Character,featureId:string,id:string,cost=1){
  const problem=alternateActionProblem(c,featureId,id,cost);if(problem)throw new Error(problem);
  const a=alternateActions(c).find(a=>a.featureId===featureId&&a.id===id)!;
- if(a.pool){const spent=a.variableCost?cost:a.cost||1;if(a.pool.startsWith('feature:'))c.features.find(f=>f.ruleId===a.pool!.slice(8))!.used+=spent;else setAlternateResourceUsed(c,a.pool,alternateResourceUsed(c,a.pool)+spent);}
+ if(a.pool){const spent=a.variableCost?cost:a.cost||1;if(a.pool.startsWith('feature:'))spendTrackedFeature(c,c.features.find(f=>f.ruleId===a.pool!.slice(8))!.id,spent);else setAlternateResourceUsed(c,a.pool,alternateResourceUsed(c,a.pool)+spent);}
  if(a.duration||a.cooldown){const actions={...alternateSettings(c,featureId).actions};actions[id]={rounds:a.duration||0,cooldown:a.cooldown||0};configureAlternateFeature(c,featureId,{actions});}
 }
 export function endAlternateAction(c:Character,featureId:string,id:string){const s=alternateSettings(c,featureId),a=s.actions[id];if(a)configureAlternateFeature(c,featureId,{actions:{...s.actions,[id]:{...a,rounds:0}}});}

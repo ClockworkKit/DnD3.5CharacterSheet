@@ -1,7 +1,10 @@
 # Standard defaults and gestalt: current handoff
 
-Updated 2026-11-06 after desktop continuation from Cloud Astra's merged
-`88c9d83`, including the standard prestige form correction below. Read [the rules policy](rules-policy.md) and
+Updated 2026-11-15 after the named browser acceptance matrix, first-import
+autosave fix, Monk/Paladin continuation checks, Cleric channel correction and
+shared gestalt turning/rebuking integration. Recent evidence is appended to the
+implementation record; earlier milestone notes below remain historical.
+Read [the rules policy](rules-policy.md) and
 [the implementation record](gestalt-implementation.md) before changing mechanics.
 
 **The overall goal remains open.** This page separates currently verified
